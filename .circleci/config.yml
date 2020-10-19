@@ -70,7 +70,7 @@ jobs:
           command: |
             swift build
             swift test --enable-code-coverage
-#            llvm-cov export -format="lcov" .build/debug/influxdb-client-swiftPackageTests.xctest/Contents/MacOS/influxdb-client-swiftPackageTests -instr-profile .build/debug/codecov/default.profdata > info.lcov
+            llvm-cov export -format="lcov" .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
       - save_cache:
           name: Saving Package Cache
           key: *cache-key
@@ -81,7 +81,7 @@ jobs:
 #          path: test-reports
       - run:
           name: "Collecting coverage reports"
-          command: bash <(curl -s https://codecov.io/bash) -f .build/debug/codecov/influxdb-client-swift.json || echo "Codecov did not collect coverage reports"
+          command: bash <(curl -s https://codecov.io/bash) -f ./info.lcov || echo "Codecov did not collect coverage reports"
 
 workflows:
   version: 2
