@@ -31,6 +31,8 @@ commands:
             apt-get update
             apt-get install wget
             apt-get install curl
+            apt-get install ruby --yes
+            gem install xcpretty
       - run:
           name: "Post onBoarding request to InfluxDB 2"
           command: ./Scripts/influxdb-onboarding.sh
@@ -69,7 +71,7 @@ jobs:
           name: Run tests
           command: |
             swift build
-            swift test --enable-code-coverage
+            swift test --enable-code-coverage | xcpretty --report junit
             llvm-cov export -format="lcov" .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
       - save_cache:
           name: Saving Package Cache
@@ -77,8 +79,8 @@ jobs:
           paths:
             - Package.resolved
             - ./builde/repositories
-#      - store_test_results:
-#          path: test-reports
+      - store_test_results:
+          path: build/reports/junit.xml
       - run:
           name: "Collecting coverage reports"
           command: bash <(curl -s https://codecov.io/bash) -f ./info.lcov || echo "Codecov did not collect coverage reports"
