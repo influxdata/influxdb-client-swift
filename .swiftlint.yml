@@ -38,3 +38,4 @@ excluded:
   - .build
   - Package.swift
   - Tests/LinuxMain.swift
+  - Tests/influxdb-client-swiftTests/XCTestManifests.swift
