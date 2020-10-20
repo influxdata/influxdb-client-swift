@@ -84,14 +84,21 @@ jobs:
       - run:
           name: "Collecting coverage reports"
           command: bash <(curl -s https://codecov.io/bash) -f ./info.lcov || echo "Codecov did not collect coverage reports"
+
   check-code-style:
     docker:
-      - image: norionomura/swiftlint:0.40.3_swift-5.3.0
+      - image: *default-swift-image
     steps:
       - checkout
+      - run: |
+          apt-get update
+          apt-get install wget unzip --yes
+          wget https://github.com/realm/SwiftLint/releases/download/0.40.3/swiftlint_linux.zip
+          unzip -n swiftlint_linux.zip
       - run:
           name: Checks style consistency across sources.
-          command: swiftlint lint
+          command: ./swiftlint lint
+
   check-documentation:
     docker:
       - image: *default-swift-image
