@@ -107,7 +107,7 @@ jobs:
       - restore_cache:
           name: Restoring SourceKitten
           keys:
-            - &documentation-cache-key sc-cache-*default-swift-image
+            - &documentation-cache-key sc-cache-swift:5.3
             - sc-cache-
       - run: |
           apt-get update

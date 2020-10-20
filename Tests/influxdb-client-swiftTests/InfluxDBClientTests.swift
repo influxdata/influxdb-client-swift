@@ -7,7 +7,7 @@ import XCTest
 
 final class InfluxDBClientTests: XCTestCase {
     func testCreateInstance() {
-        XCTAssertNil(InfluxDBClient())
+        XCTAssertNotNil(InfluxDBClient())
     }
 
     static var allTests = [
