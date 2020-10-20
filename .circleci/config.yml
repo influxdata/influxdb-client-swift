@@ -104,6 +104,11 @@ jobs:
       - image: *default-swift-image
     steps:
       - checkout
+      - restore_cache:
+          name: Restoring SourceKitten
+          keys:
+            - &documentation-cache-key sc-cache-*default-swift-image
+            - sc-cache-
       - run: |
           apt-get update
           apt-get install ruby-dev libsqlite3-dev --yes
@@ -118,6 +123,11 @@ jobs:
             swift build
             SourceKitten/.build/debug/sourcekitten doc --spm > doc.json
             jazzy --sourcekitten-sourcefile doc.json --config .jazzy.yml
+      - save_cache:
+          name: Saving SourceKitten
+          key: *documentation-cache-key
+          paths:
+            - ./SourceKitten/.build/debug/sourcekitten
 
 workflows:
   version: 2
