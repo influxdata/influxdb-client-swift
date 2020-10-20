@@ -110,16 +110,16 @@ jobs:
             - &documentation-cache-key sc-cache-v2-swift:5.3
       - run:
           name: Build SourceKitten and jazzy
-      - |
-          apt-get update
-          apt-get install ruby-dev libsqlite3-dev --yes
-          gem install jazzy
-          if [ ! -f ./SourceKitten/.build/debug/sourcekitten ]; then
-            git clone https://github.com/jpsim/SourceKitten.git
-            cd SourceKitten
-            swift build
-            cd ../
-          fi
+          command: |
+            apt-get update
+            apt-get install ruby-dev libsqlite3-dev --yes
+            gem install jazzy
+            if [ ! -f ./SourceKitten/.build/debug/sourcekitten ]; then
+              git clone https://github.com/jpsim/SourceKitten.git
+              cd SourceKitten
+              swift build
+              cd ../
+            fi
       - run:
           name: Checks generating docs.
           command: |
