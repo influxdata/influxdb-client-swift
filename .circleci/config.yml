@@ -107,8 +107,7 @@ jobs:
       - restore_cache:
           name: Restoring SourceKitten
           keys:
-            - &documentation-cache-key sc-cache-swift:5.3
-            - sc-cache-
+            - &documentation-cache-key sc-cache-v2-swift:5.3
       - run: |
           if [ ! -f ./SourceKitten/.build/debug/sourcekitten ]; then
             apt-get update
@@ -130,6 +129,7 @@ jobs:
           key: *documentation-cache-key
           paths:
             - ./SourceKitten/.build/debug/sourcekitten
+            - /var/lib/gems/
 
 workflows:
   version: 2
