@@ -16,9 +16,43 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
 
 ## Features
 
+TBD
+
+## Supported Platforms
+
+This package requires Swift 5 and Xcode 12.
+
+- iOS 14.0+
+- macOS 11.0+
+- tvOS 14.0+
+- watchOS 7.0+
+- Linux
+
 ## Installation
 
-TBD
+### Swift Package Manager
+
+Add this line to your `Package.swift` :
+
+~~~swift
+.Package(url: "https://github.com/bonitoo-io/influxdb-client-swift", from: "0.0.1")
+~~~
+
+### CocoaPods
+
+Add this line to your `Podfile`:
+
+~~~ruby
+pod 'influxdb-client-swift', '~> 0.0.1'
+~~~
+
+### Carthage
+
+Add this line to your Cartfile:
+
+~~~
+github "bonitoo-io/influxdb-client-swift" ~> 0.0.1
+~~~
 
 ## Usage
 
@@ -44,7 +78,29 @@ TBD
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/bonitoo-io/influxdb-client-swift.
+If you would like to contribute code you can do through GitHub by forking the repository and sending a pull request into the `master` branch.
+
+Build Requirements:
+
+- swift 5.3 or higher
+
+Run tests:
+
+```bash
+$ swift test
+```
+
+Check code coverage:
+
+```bash
+$ swift test --enable-code-coverage
+```
+
+Build distributions:
+
+```bash
+$ swift build
+```
 
 ## License
 

@@ -91,3 +91,8 @@ iOSInjectionProject/
 
 # JetBrains
 .idea/
+
+# Documentation
+docs/
+doc.json
+SourceKitten/
