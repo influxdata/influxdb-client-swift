@@ -1,13 +1,153 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
+#
+# The MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+
 version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+
+commands:
+  influxdb-onboarding:
+    steps:
+      - run:
+          name: "Install onBoarding dependencies"
+          command: |
+            apt-get update
+            apt-get install wget
+            apt-get install curl
+            apt-get install ruby --yes
+            gem install xcpretty
+      - run:
+          name: "Post onBoarding request to InfluxDB 2"
+          command: ./Scripts/influxdb-onboarding.sh
+  prepare:
+    description: "Prepare environment to tests"
+    steps:
+      - checkout
+      - influxdb-onboarding
+
+jobs:
+  tests-swift:
+    parameters:
+      swift-image:
+        type: string
+        default: &default-swift-image "swift:5.3"
+      influxdb-image:
+        type: string
+        default: &default-influxdb-image "influxdb:2.0.0-rc"
+    docker:
+      - image: << parameters.swift-image >>
+      - image: &influx-image quay.io/influxdb/<< parameters.influxdb-image >>
+        environment:
+          INFLUXD_HTTP_BIND_ADDRESS: :8086
+    steps:
+      - prepare
+      - restore_cache:
+          name: Restoring Package Cache
+          keys:
+            - &cache-key package-cache-{{ checksum "Package.swift" }}-<< parameters.swift-image >>
+            - package-cache-{{ checksum "Package.swift" }}
+            - package-cache-
+      - run:
+          name: Install dependencies
+          command: swift package update
+      - run:
+          name: Run tests
+          command: |
+            swift build
+            swift test --enable-code-coverage 2>&1 | xcpretty --report junit
+            llvm-cov export -format="lcov" .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
+      - save_cache:
+          name: Saving Package Cache
+          key: *cache-key
+          paths:
+            - Package.resolved
+            - ./builde/repositories
+      - store_test_results:
+          path: build/
+      - run:
+          name: Collecting coverage reports
+          command: bash <(curl -s https://codecov.io/bash) -f ./info.lcov || echo "Codecov did not collect coverage reports"
+
+  check-code-style:
+    docker:
+      - image: *default-swift-image
+    steps:
+      - checkout
+      - run: |
+          apt-get update
+          apt-get install wget unzip --yes
+          wget https://github.com/realm/SwiftLint/releases/download/0.40.3/swiftlint_linux.zip
+          unzip -n swiftlint_linux.zip
+      - run:
+          name: Checks style consistency across sources.
+          command: ./swiftlint lint
+
+  check-documentation:
+    docker:
+      - image: *default-swift-image
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restoring Cache
+          keys:
+            - &documentation-cache-key sc-cache-v2-swift:5.3
+      - run:
+          name: Build SourceKitten and jazzy
+          command: |
+            apt-get update
+            apt-get install ruby-dev libsqlite3-dev --yes
+            gem install jazzy
+            if [ ! -f ./SourceKitten/.build/debug/sourcekitten ]; then
+              git clone https://github.com/jpsim/SourceKitten.git
+              cd SourceKitten
+              swift build
+              cd ../
+            fi
+      - run:
+          name: Checks generating docs.
+          command: |
+            swift build
+            SourceKitten/.build/debug/sourcekitten doc --spm > doc.json
+            jazzy --sourcekitten-sourcefile doc.json --config .jazzy.yml
+      - save_cache:
+          name: Saving Cache
+          key: *documentation-cache-key
+          paths:
+            - ./SourceKitten/.build/debug/sourcekitten
+            - /var/lib/gems/
+
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
+  version: 2
+  build:
     jobs:
-      - welcome/run
+      - check-code-style
+      - check-documentation
+      - tests-swift:
+          name: swift-5.3
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - tests-swift
