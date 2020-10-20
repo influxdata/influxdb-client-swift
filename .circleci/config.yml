@@ -82,7 +82,7 @@ jobs:
       - store_test_results:
           path: build/
       - run:
-          name: "Collecting coverage reports"
+          name: Collecting coverage reports
           command: bash <(curl -s https://codecov.io/bash) -f ./info.lcov || echo "Codecov did not collect coverage reports"
 
   check-code-style:
@@ -105,14 +105,16 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          name: Restoring SourceKitten
+          name: Restoring Cache
           keys:
             - &documentation-cache-key sc-cache-v2-swift:5.3
-      - run: |
+      - run:
+          name: Build SourceKitten and jazzy
+      - |
+          apt-get update
+          apt-get install ruby-dev libsqlite3-dev --yes
+          gem install jazzy
           if [ ! -f ./SourceKitten/.build/debug/sourcekitten ]; then
-            apt-get update
-            apt-get install ruby-dev libsqlite3-dev --yes
-            gem install jazzy
             git clone https://github.com/jpsim/SourceKitten.git
             cd SourceKitten
             swift build
@@ -125,7 +127,7 @@ jobs:
             SourceKitten/.build/debug/sourcekitten doc --spm > doc.json
             jazzy --sourcekitten-sourcefile doc.json --config .jazzy.yml
       - save_cache:
-          name: Saving SourceKitten
+          name: Saving Cache
           key: *documentation-cache-key
           paths:
             - ./SourceKitten/.build/debug/sourcekitten
