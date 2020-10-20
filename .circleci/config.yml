@@ -71,7 +71,7 @@ jobs:
           name: Run tests
           command: |
             swift build
-            swift test --enable-code-coverage | xcpretty --report junit
+            swift test --enable-code-coverage 2>&1 | xcpretty --report junit
             llvm-cov export -format="lcov" .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
       - save_cache:
           name: Saving Package Cache
