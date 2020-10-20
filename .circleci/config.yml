@@ -92,12 +92,32 @@ jobs:
       - run:
           name: Checks style consistency across sources.
           command: swiftlint lint
+  check-documentation:
+    docker:
+      - image: *default-swift-image
+    steps:
+      - checkout
+      - run: |
+          apt-get update
+          apt-get install ruby-dev libsqlite3-dev --yes
+          gem install jazzy
+          git clone https://github.com/jpsim/SourceKitten.git
+          cd SourceKitten
+          swift build
+          cd ../
+      - run:
+          name: Checks generating docs.
+          command: |
+            swift build
+            SourceKitten/.build/debug/sourcekitten doc --spm > doc.json
+            jazzy --sourcekitten-sourcefile doc.json --config .jazzy.yml
 
 workflows:
   version: 2
   build:
     jobs:
       - check-code-style
+      - check-documentation
       - tests-swift:
           name: swift-5.3
   nightly:
