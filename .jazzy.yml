@@ -1,0 +1,6 @@
+author: InfluxData
+author_url: https://www.influxdata.com
+github_url: https://github.com/bonitoo-io/influxdb-client-swift
+module: influxdb_client_swift
+swift_build_tool: spm
+clean: true
