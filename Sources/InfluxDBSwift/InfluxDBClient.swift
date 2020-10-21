@@ -4,4 +4,8 @@
 
 /// A InfluxDB Client providing a support for APIs to write and query data.
 public class InfluxDBClient {
+    /// Dummy function.
+    public func dummy() -> Int {
+        Int.random(in: 1..<10)
+    }
 }
