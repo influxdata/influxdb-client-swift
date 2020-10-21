@@ -16,7 +16,21 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
 
 ## Features
 
-TBD
+InfluxDB 2.0 client consists of two packages
+
+- `InfluxDBSwift`
+  - Querying data using the Flux language
+  - Writing data
+    - batched in chunks on background
+    - automatic retries on write failures
+  - Health check
+- `InfluxDBSwiftApis`
+  - provides all other InfluxDB 2.0 APIs for managing
+    - sources, buckets
+    - tasks
+    - authorizations
+    - ...
+  - built on top of `InfluxDBSwift`
 
 ## Supported Platforms
 
@@ -36,6 +50,18 @@ Add this line to your `Package.swift` :
 
 ~~~swift
 .Package(url: "https://github.com/bonitoo-io/influxdb-client-swift", from: "0.0.1")
+// swift-tools-version:5.3
+import PackageDescription
+
+let package = Package(
+    name: "MyPackage",
+    dependencies: [
+        .package(url: "https://github.com/bonitoo-io/influxdb-client-swift", from: "0.0.1"),
+    ],
+    targets: [
+        .target(name: "MyModule", dependencies: ["InfluxDBSwift"])
+    ]
+)
 ~~~
 
 ### CocoaPods
@@ -43,15 +69,7 @@ Add this line to your `Package.swift` :
 Add this line to your `Podfile`:
 
 ~~~ruby
-pod 'influxdb-client-swift', '~> 0.0.1'
-~~~
-
-### Carthage
-
-Add this line to your Cartfile:
-
-~~~
-github "bonitoo-io/influxdb-client-swift" ~> 0.0.1
+pod 'InfluxDBSwift', '~> 0.0.1'
 ~~~
 
 ## Usage

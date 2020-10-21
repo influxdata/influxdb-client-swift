@@ -38,4 +38,5 @@ excluded:
   - .build
   - Package.swift
   - Tests/LinuxMain.swift
-  - Tests/influxdb-client-swiftTests/XCTestManifests.swift
+  - Tests/InfluxDBSwiftTests/XCTestManifests.swift
+  - Tests/InfluxDBSwiftApisTests/XCTestManifests.swift

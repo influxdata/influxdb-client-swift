@@ -12,10 +12,8 @@ let package = Package(
 //        .tvOS(.v14)
 //    ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "influxdb-client-swift",
-            targets: ["influxdb-client-swift"]),
+        .library(name: "InfluxDBSwift", targets: ["InfluxDBSwift"]),
+        .library(name: "InfluxDBSwiftApis", targets: ["InfluxDBSwiftApis"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -24,11 +22,9 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "influxdb-client-swift",
-            dependencies: []),
-        .testTarget(
-            name: "influxdb-client-swiftTests",
-            dependencies: ["influxdb-client-swift"]),
+        .target(name: "InfluxDBSwift", dependencies: []),
+        .target(name: "InfluxDBSwiftApis", dependencies: []),
+        .testTarget(name: "InfluxDBSwiftTests", dependencies: ["InfluxDBSwift"]),
+        .testTarget(name: "InfluxDBSwiftApisTests", dependencies: ["InfluxDBSwiftApis"]),
     ]
 )

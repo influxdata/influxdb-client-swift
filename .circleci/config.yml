@@ -26,7 +26,7 @@ commands:
   influxdb-onboarding:
     steps:
       - run:
-          name: "Install onBoarding dependencies"
+          name: Install onBoarding dependencies
           command: |
             apt-get update
             apt-get install wget
@@ -34,10 +34,10 @@ commands:
             apt-get install ruby --yes
             gem install xcpretty
       - run:
-          name: "Post onBoarding request to InfluxDB 2"
+          name: Post onBoarding request to InfluxDB 2
           command: ./Scripts/influxdb-onboarding.sh
   prepare:
-    description: "Prepare environment to tests"
+    description: Prepare environment to tests
     steps:
       - checkout
       - influxdb-onboarding
@@ -70,8 +70,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            swift build
-            swift test --enable-code-coverage 2>&1 | xcpretty --report junit
+            make test
             llvm-cov export -format="lcov" .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
       - save_cache:
           name: Saving Package Cache
@@ -95,9 +94,10 @@ jobs:
           apt-get install wget unzip --yes
           wget https://github.com/realm/SwiftLint/releases/download/0.40.3/swiftlint_linux.zip
           unzip -n swiftlint_linux.zip
+          ln -s /root/project/swiftlint /usr/bin/swiftlint
       - run:
           name: Checks style consistency across sources.
-          command: ./swiftlint lint
+          command: make check-lint
 
   check-documentation:
     docker:
@@ -120,12 +120,11 @@ jobs:
               swift build
               cd ../
             fi
+            ln -s /root/project/SourceKitten/.build/debug/sourcekitten /usr/bin/sourcekitten
       - run:
-          name: Checks generating docs.
+          name: Checks generating docs
           command: |
-            swift build
-            SourceKitten/.build/debug/sourcekitten doc --spm > doc.json
-            jazzy --sourcekitten-sourcefile doc.json --config .jazzy.yml
+            make doc
       - save_cache:
           name: Saving Cache
           key: *documentation-cache-key
