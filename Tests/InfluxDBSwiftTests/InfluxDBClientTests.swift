@@ -8,5 +8,6 @@ import XCTest
 final class InfluxDBClientTests: XCTestCase {
     func testCreateInstance() {
         XCTAssertNotNil(InfluxDBClient())
+        XCTAssertGreaterThan(InfluxDBClient().dummy(), 0)
     }
 }

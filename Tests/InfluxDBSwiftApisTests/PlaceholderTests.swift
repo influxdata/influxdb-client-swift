@@ -8,5 +8,6 @@ import XCTest
 final class PlaceholderTests: XCTestCase {
     func testCreateInstance() {
         XCTAssertNotNil(Placeholder())
+        XCTAssertGreaterThan(Placeholder().dummy(), 0)
     }
 }
