@@ -3,8 +3,8 @@
 [![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-client-swift.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-client-swift)
 [![codecov](https://codecov.io/gh/bonitoo-io/influxdb-client-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-client-swift)
 [![License](https://img.shields.io/github/license/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/LICENSE)
-[![Latest Version](https://img.shields.io/cocoapods/v/influxdb_client_swift.svg)](https://cocoapods.org/pods/influxdb_client_swift)
-[![Cocoapods platforms](https://img.shields.io/cocoapods/p/influxdb_client_swift.svg)](https://cocoapods.org/pods/influxdb_client_swift)
+[![Latest Version](https://img.shields.io/cocoapods/v/InfluxDBSwift.svg)](https://cocoapods.org/pods/InfluxDBSwift)
+[![Cocoapods platforms](https://img.shields.io/cocoapods/p/InfluxDBSwift.svg)](https://cocoapods.org/pods/InfluxDBSwift)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://bonitoo-io.github.io/influxdb-client-swift/)
 [![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/pulls)
@@ -102,6 +102,12 @@ Build Requirements:
 
 - swift 5.3 or higher
 
+Build source and test targets:
+
+```bash
+$ swift build --build-tests
+```
+
 Run tests:
 
 ```bash
@@ -112,12 +118,6 @@ Check code coverage:
 
 ```bash
 $ swift test --enable-code-coverage
-```
-
-Build distributions:
-
-```bash
-$ swift build
 ```
 
 ## License
