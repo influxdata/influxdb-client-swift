@@ -71,7 +71,7 @@ jobs:
           name: Run tests
           command: |
             make test
-            llvm-cov report .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata
+            llvm-cov report .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata -use-color
             llvm-cov export -format="lcov" .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
       - save_cache:
           name: Saving Package Cache
