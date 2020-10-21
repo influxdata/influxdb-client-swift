@@ -1,7 +1,10 @@
 import XCTest
 
-import influxdb_client_swiftTests
+import InfluxDBSwiftApisTests
+import InfluxDBSwiftTests
 
 var tests = [XCTestCaseEntry]()
-tests += influxdb_client_swiftTests.allTests()
+tests += InfluxDBSwiftApisTests.__allTests()
+tests += InfluxDBSwiftTests.__allTests()
+
 XCTMain(tests)
