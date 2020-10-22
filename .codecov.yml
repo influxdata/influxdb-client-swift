@@ -1,3 +1,5 @@
 ignore:
   - "Tests/*"
   - "Tests/**/*"
+  - "Sources/InfluxDBSwiftApis/Generated/*"
+  - "Sources/InfluxDBSwiftApis/Generated/**/*"

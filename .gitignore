@@ -96,3 +96,6 @@ iOSInjectionProject/
 docs/
 doc*.json
 SourceKitten/
+
+# Swagger
+.m2/

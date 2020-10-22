@@ -18,6 +18,14 @@ test: ## Run tests
 	swift build
 	swift test --enable-code-coverage 2>&1 | xcpretty --report junit
 
+generate-sources: ## Generate Models and APIs from swagger
+	docker run --rm -it \
+	    -v "${PWD}":/code \
+	    -v "${PWD}/Scripts/.m2":/root/.m2 \
+	    -w /code \
+	    maven:3.6-slim /code/Scripts/generate-sources.sh
+	$(MAKE) build
+
 generate-test: ## Generate LinuxMain.swift entries for the package
 	swift test --generate-linuxmain
 
