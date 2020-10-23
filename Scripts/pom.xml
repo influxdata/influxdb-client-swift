@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>influxdb-client-swift</name>
-<!--    https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/swift5.md -->
+    <!-- https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/swift5.md -->
     <build>
         <plugins>
             <plugin>
@@ -28,6 +28,7 @@
                     <generateModelTests>false</generateModelTests>
                     <verbose>false</verbose>
                     <output>generated</output>
+                    <templateDirectory>templates</templateDirectory>
                 </configuration>
             </plugin>
         </plugins>

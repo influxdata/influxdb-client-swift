@@ -35,3 +35,5 @@ doc: ## Generate documentation
 	sourcekitten doc --spm --module-name InfluxDBSwiftApis > doc_swift_apis.json
 	jazzy --clean --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
 
+docker-cli: ## Start and connect into swift:5.3 container
+	docker run --rm --privileged --interactive --tty -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
