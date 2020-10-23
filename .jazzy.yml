@@ -4,3 +4,64 @@ github_url: https://github.com/bonitoo-io/influxdb-client-swift
 module: influxdb_client_swift
 swift_build_tool: spm
 clean: true
+
+custom_categories:
+  - name: Client
+    children:
+      - InfluxDBClient
+
+  - name: APIs
+    children:
+      - InfluxDB2API
+
+  - name: APIs / Models
+    children:
+      - AddResourceMemberRequestBody
+      - Authorization
+      - AuthorizationAllOfLinks
+      - Authorizations
+      - AuthorizationUpdateRequest
+      - Bucket
+      - BucketLinks
+      - Buckets
+      - InvitesLinks
+      - Label
+      - LabelMapping
+      - LabelResponse
+      - LabelsResponse
+      - Links
+      - Permission
+      - PostBucketRequest
+      - Resource
+      - ResourceMember
+      - ResourceMembers
+      - ResourceOwner
+      - ResourceOwners
+      - RetentionRule
+      - UserLinks
+
+  - name: APIs / Supporting Files
+    children:
+      - APIHelper
+      - APIs
+      - CodableHelper
+      - DecodableRequestBuilderError
+      - DownloadException
+      - ErrorResponse
+      - Extensions
+      - HTTPMethod
+      - JSONDataEncoding
+      - JSONEncodingHelper
+      - KeyedDecodingContainerProtocol
+      - KeyedEncodingContainerProtocol
+      - Models
+      - OpenISO8601DateFormatter
+      - ParameterEncoding
+      - RequestBuilder
+      - RequestBuilderFactory
+      - Response
+      - String
+      - SynchronizedDictionary
+      - URLSessionImplementations
+      - URLSessionDecodableRequestBuilder
+      - URLSessionRequestBuilder

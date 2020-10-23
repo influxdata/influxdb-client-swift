@@ -15,7 +15,7 @@ check-lint: ## Check that all files are formatted properly
 	swiftlint lint
 
 test: ## Run tests
-	swift build
+	$(MAKE) build
 	swift test --enable-code-coverage 2>&1 | xcpretty --report junit
 
 generate-sources: ## Generate Models and APIs from swagger
@@ -30,7 +30,7 @@ generate-test: ## Generate LinuxMain.swift entries for the package
 	swift test --generate-linuxmain
 
 doc: ## Generate documentation
-	swift build
+	$(MAKE) build
 	sourcekitten doc --spm --module-name InfluxDBSwift > doc_swift.json
 	sourcekitten doc --spm --module-name InfluxDBSwiftApis > doc_swift_apis.json
 	jazzy --clean --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
