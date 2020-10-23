@@ -133,12 +133,38 @@ jobs:
             - ./SourceKitten/.build/debug/sourcekitten
             - /var/lib/gems/
 
+  check-generate-sources:
+    docker:
+      - image: *default-swift-image
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restoring Cache
+          keys:
+            - &generate-sources-cache-key gs-cache-v1-swift:5.3
+      - run:
+          name: Install Maven
+          command: |
+            apt-get update
+            apt-get install maven --yes
+      - run:
+          name: Checks generating sources from swagger
+          command: |
+            ./Scripts/generate-sources.sh
+            make build
+      - save_cache:
+          name: Saving Cache
+          key: *generate-sources-cache-key
+          paths:
+            - ~/.m2
+
 workflows:
   version: 2
   build:
     jobs:
       - check-code-style
       - check-documentation
+      - check-generate-sources
       - tests-swift:
           name: swift-5.3
   nightly:
