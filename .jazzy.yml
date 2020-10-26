@@ -24,6 +24,9 @@ custom_categories:
       - Bucket
       - BucketLinks
       - Buckets
+      - DBRP
+      - DBRPUpdate
+      - DBRPs
       - InvitesLinks
       - Label
       - LabelMapping
