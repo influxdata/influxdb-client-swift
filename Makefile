@@ -6,6 +6,8 @@ help:
 
 .PHONY: build
 build: ## Build both source and test targets
+	swift build --target InfluxDBSwift
+	swift build --target InfluxDBSwiftApis
 	swift build --build-tests
 
 lint: ## Format code
@@ -15,15 +17,33 @@ check-lint: ## Check that all files are formatted properly
 	swiftlint lint
 
 test: ## Run tests
-	swift build
+	$(MAKE) build
 	swift test --enable-code-coverage 2>&1 | xcpretty --report junit
+
+generate-sources: ## Generate Models and APIs from swagger
+	docker run --rm -it \
+	    -v "${PWD}":/code \
+	    -v "${PWD}/Scripts/.m2":/root/.m2 \
+	    -w /code \
+	    maven:3.6-slim /code/Scripts/generate-sources.sh
+	$(MAKE) build
 
 generate-test: ## Generate LinuxMain.swift entries for the package
 	swift test --generate-linuxmain
 
 doc: ## Generate documentation
-	swift build
+	$(MAKE) build
 	sourcekitten doc --spm --module-name InfluxDBSwift > doc_swift.json
 	sourcekitten doc --spm --module-name InfluxDBSwiftApis > doc_swift_apis.json
 	jazzy --clean --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
 
+docker-cli: ## Start and connect into swift:5.3 container
+	docker run --rm --privileged --interactive --tty -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
+
+clean: ## Clean builds, generated docs, resolved dependencies, ...
+	rm -rf Packages
+	rm -rf .build
+	rm -rf build
+	rm -rf docs
+	rm -rf doc*.json
+	rm Package.resolved

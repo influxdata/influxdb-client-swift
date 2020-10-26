@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.influxdata</groupId>
+    <artifactId>influxdb-client-swift</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>influxdb-client-swift</name>
+    <!-- https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/swift5.md -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>5.0.0-SNAPSHOT</version>
+                <configuration>
+                    <inputSpec>https://raw.githubusercontent.com/influxdata/influxdb/master/http/swagger.yml</inputSpec>
+                    <generatorName>swift5</generatorName>
+                    <configOptions>
+                        <projectName>InfluxDB2</projectName>
+                        <swiftUseApiNamespace>true</swiftUseApiNamespace>
+                    </configOptions>
+                    <generateModelDocumentation>false</generateModelDocumentation>
+                    <generateApiDocumentation>false</generateApiDocumentation>
+                    <generateApis>true</generateApis>
+                    <generateApiTests>false</generateApiTests>
+                    <generateSupportingFiles>true</generateSupportingFiles>
+                    <generateModelTests>false</generateModelTests>
+                    <verbose>false</verbose>
+                    <output>generated</output>
+                    <templateDirectory>templates</templateDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>oss.sonatype.org-snapshot</id>
+            <name>Maven Plugin Snapshots</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
