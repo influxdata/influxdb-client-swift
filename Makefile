@@ -6,6 +6,8 @@ help:
 
 .PHONY: build
 build: ## Build both source and test targets
+	swift build --target InfluxDBSwift
+	swift build --target InfluxDBSwiftApis
 	swift build --build-tests
 
 lint: ## Format code
@@ -37,3 +39,11 @@ doc: ## Generate documentation
 
 docker-cli: ## Start and connect into swift:5.3 container
 	docker run --rm --privileged --interactive --tty -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
+
+clean: ## Clean builds, generated docs, resolved dependencies, ...
+	rm -rf Packages
+	rm -rf .build
+	rm -rf build
+	rm -rf docs
+	rm -rf doc*.json
+	rm Package.resolved
