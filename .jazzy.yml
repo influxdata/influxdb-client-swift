@@ -30,6 +30,10 @@ custom_categories:
       - LabelResponse
       - LabelsResponse
       - Links
+      - Organization
+      - Organizations
+      - OrganizationLinks
+      - PasswordResetBody
       - Permission
       - PostBucketRequest
       - Resource
@@ -38,6 +42,11 @@ custom_categories:
       - ResourceOwner
       - ResourceOwners
       - RetentionRule
+      - SecretKeysResponse
+      - SecretKeysResponseAllOfLinks
+      - SecretKeys
+      - User
+      - Users
       - UserLinks
 
   - name: APIs / Supporting Files
