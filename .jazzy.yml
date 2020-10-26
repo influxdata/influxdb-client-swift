@@ -37,6 +37,8 @@ custom_categories:
       - LabelUpdate
       - LabelsResponse
       - Links
+      - LogEvent
+      - Logs
       - OnboardingRequest
       - OnboardingResponse
       - Organization
@@ -52,9 +54,20 @@ custom_categories:
       - ResourceOwner
       - ResourceOwners
       - RetentionRule
+      - Run
+      - RunLinks
+      - RunLog
+      - RunManually
+      - Runs
       - SecretKeysResponse
       - SecretKeysResponseAllOfLinks
       - SecretKeys
+      - Task
+      - TaskCreateRequest
+      - TaskLinks
+      - TaskUpdateRequest
+      - TaskStatusType
+      - Tasks
       - User
       - Users
       - UserLinks
