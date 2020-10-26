@@ -27,18 +27,25 @@ custom_categories:
       - DBRP
       - DBRPUpdate
       - DBRPs
+      - HealthCheck
       - InvitesLinks
+      - IsOnboarding
       - Label
+      - LabelCreateRequest
       - LabelMapping
       - LabelResponse
+      - LabelUpdate
       - LabelsResponse
       - Links
+      - OnboardingRequest
+      - OnboardingResponse
       - Organization
       - Organizations
       - OrganizationLinks
       - PasswordResetBody
       - Permission
       - PostBucketRequest
+      - Ready
       - Resource
       - ResourceMember
       - ResourceMembers
@@ -51,6 +58,10 @@ custom_categories:
       - User
       - Users
       - UserLinks
+      - Variable
+      - VariableLinks
+      - VariableProperties
+      - Variables
 
   - name: APIs / Supporting Files
     children:

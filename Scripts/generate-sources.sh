@@ -21,13 +21,15 @@ rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/*.swift
 ## copy apis
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/AuthorizationsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/BucketsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/OrganizationsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/UsersAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/DBRPsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/HealthAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/LabelsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/OrganizationsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/ReadyAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/SecretsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/SetupAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/UsersAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/VariablesAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 
 ## copy models
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Authorizations.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
@@ -70,6 +72,12 @@ cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/HealthCheck.s
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/IsOnboarding.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/OnboardingRequest.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/OnboardingResponse.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/LabelCreateRequest.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/LabelUpdate.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Variable.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Variables.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/VariableLinks.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/VariableProperties.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
 
 # copy supporting files
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/
