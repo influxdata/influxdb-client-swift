@@ -74,14 +74,29 @@ pod 'InfluxDBSwift', '~> 0.0.1'
 
 ## Usage
 
+> Important: You should call `close()` at the end of your application to release allocated resources.
+
 ### Creating a client
 
-TBD
+```swift
+import InfluxDBSwift
+
+let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+        bucket: "my-bucket",
+        org: "my-org",
+        precision: InfluxDBClient.WritePrecision.ns)
+
+let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+
+client.close()
+```
 
 #### Client Options
 
 | Option | Description | Type | Default |
 |---|---|---|---|
+| url | InfluxDB host and port | String | none |
+| token | Authentication token | String | none |
 | bucket | Default destination bucket for writes | String | none |
 | org | Default organization bucket for writes | String | none |
 | precision | Default precision for the unix timestamps within the body line-protocol | WritePrecision | ns |
