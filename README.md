@@ -79,14 +79,9 @@ pod 'InfluxDBSwift', '~> 0.0.1'
 ### Creating a client
 
 ```swift
-import InfluxDBSwift
+let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
 
-let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
-        bucket: "my-bucket",
-        org: "my-org",
-        precision: InfluxDBClient.WritePrecision.ns)
-
-let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+...
 
 client.close()
 ```
@@ -103,7 +98,18 @@ client.close()
 
 ##### Configure default `Bucket`, `Organization` and `Precision`
 
-TBD
+```swift
+let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+        bucket: "my-bucket",
+        org: "my-org",
+        precision: InfluxDBClient.WritePrecision.ns)
+
+let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+
+...
+
+client.close()
+```
 
 #### InfluxDB 1.8 API compatibility
 
