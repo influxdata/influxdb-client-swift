@@ -58,13 +58,16 @@ public class InfluxDBClient {
     ///   - protocolClasses: optional array of extra protocol subclasses that handle requests.
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v1.8/tools/api/#influxdb-2-0-api-compatibility-endpoints
-    public convenience init(url: String, username: String, password: String, database: String, retention_policy: String,
-                            precision: WritePrecision = WritePrecision.ns, protocolClasses: [AnyClass]? = nil) {
-
-        let options: InfluxDBOptions = InfluxDBOptions(bucket: "\(database)/\(retention_policy)", precision: precision)
+    public convenience init(url: String,
+                            username: String,
+                            password: String,
+                            database: String,
+                            retentionPolicy: String,
+                            precision: WritePrecision = WritePrecision.ns,
+                            protocolClasses: [AnyClass]? = nil) {
+        let options = InfluxDBOptions(bucket: "\(database)/\(retentionPolicy)", precision: precision)
 
         self.init(url: url, token: "\(username):\(password)", options: options, protocolClasses: protocolClasses)
-
     }
 
     /// Release all allocated resources.

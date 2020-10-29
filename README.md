@@ -115,7 +115,7 @@ client.close()
 
 ```swift
 client = InfluxDBClient(url: "http://localhost:8086", username: "user", password: "pass",
-                        database: "my-db", retention_policy: "autogen")
+                        database: "my-db", retentionPolicy: "autogen")
 
 ...
 
