@@ -7,6 +7,8 @@ extension InfluxDBClientTests {
     // to regenerate.
     static let __allTests__InfluxDBClientTests = [
         ("testCreateInstance", testCreateInstance),
+        ("testTokenHeader", testTokenHeader),
+        ("testUserAgentHeader", testUserAgentHeader),
     ]
 }
 

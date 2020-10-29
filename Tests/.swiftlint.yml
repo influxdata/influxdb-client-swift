@@ -1,3 +1,4 @@
 disabled_rules:
   - explicit_acl
   - missing_docs
+  - force_unwrapping
