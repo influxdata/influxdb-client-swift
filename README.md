@@ -74,9 +74,18 @@ pod 'InfluxDBSwift', '~> 0.0.1'
 
 ## Usage
 
-### Creating a client
+> Important: You should call `close()` at the end of your application to release allocated resources.
 
-TBD
+### Creating a client
+Specify **url** and **token** via parameters:
+
+```swift
+let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+
+...
+
+client.close()
+```
 
 #### Client Options
 
@@ -85,14 +94,34 @@ TBD
 | bucket | Default destination bucket for writes | String | none |
 | org | Default organization bucket for writes | String | none |
 | precision | Default precision for the unix timestamps within the body line-protocol | WritePrecision | ns |
+| timeoutIntervalForRequest | The max time interval to wait between server responses before cancelling the request. | TimeInterval | 60 sec |
+| timeoutIntervalForResource | The max time interval allowed for downloading a request payload. | TimeInterval | 5 min |
 
 ##### Configure default `Bucket`, `Organization` and `Precision`
 
-TBD
+```swift
+let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+        bucket: "my-bucket",
+        org: "my-org",
+        precision: InfluxDBClient.WritePrecision.ns)
+
+let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+
+...
+
+client.close()
+```
 
 #### InfluxDB 1.8 API compatibility
 
-TBD
+```swift
+client = InfluxDBClient(url: "http://localhost:8086", username: "user", password: "pass",
+                        database: "my-db", retentionPolicy: "autogen")
+
+...
+
+client.close()
+```
 
 ## Contributing
 

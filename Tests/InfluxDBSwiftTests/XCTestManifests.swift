@@ -7,6 +7,10 @@ extension InfluxDBClientTests {
     // to regenerate.
     static let __allTests__InfluxDBClientTests = [
         ("testCreateInstance", testCreateInstance),
+        ("testSessionHeaders", testSessionHeaders),
+        ("testSessionHeadersV1", testSessionHeadersV1),
+        ("testTimeoutConfigured", testTimeoutConfigured),
+        ("testTimeoutDefault", testTimeoutDefault),
     ]
 }
 
