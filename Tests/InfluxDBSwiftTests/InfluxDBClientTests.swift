@@ -49,6 +49,22 @@ final class InfluxDBClientTests: XCTestCase {
         XCTAssertEqual("Token user:pass", headers["Authorization"])
         XCTAssertEqual("influxdb-client-swift/\(InfluxDBClient.version)", headers["User-Agent"])
 
-        XCTAssertEqual(client?.options.bucket, "my-db/autogen")
+        XCTAssertEqual("my-db/autogen", client?.options.bucket)
+    }
+
+    func testTimeoutDefault() {
+        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        XCTAssertEqual(60, client?.session.configuration.timeoutIntervalForRequest)
+        XCTAssertEqual(300, client?.session.configuration.timeoutIntervalForResource)
+    }
+
+    func testTimeoutConfigured() {
+        let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+                timeoutIntervalForRequest: 100,
+                timeoutIntervalForResource: 5000)
+
+        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+        XCTAssertEqual(100, client?.session.configuration.timeoutIntervalForRequest)
+        XCTAssertEqual(5000, client?.session.configuration.timeoutIntervalForResource)
     }
 }

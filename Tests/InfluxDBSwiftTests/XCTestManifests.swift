@@ -9,6 +9,8 @@ extension InfluxDBClientTests {
         ("testCreateInstance", testCreateInstance),
         ("testSessionHeaders", testSessionHeaders),
         ("testSessionHeadersV1", testSessionHeadersV1),
+        ("testTimeoutConfigured", testTimeoutConfigured),
+        ("testTimeoutDefault", testTimeoutDefault),
     ]
 }
 

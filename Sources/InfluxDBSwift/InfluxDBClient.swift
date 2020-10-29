@@ -41,6 +41,8 @@ public class InfluxDBClient {
 
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = headers
+        configuration.timeoutIntervalForRequest = self.options.timeoutIntervalForRequest
+        configuration.timeoutIntervalForResource = self.options.timeoutIntervalForResource
         configuration.protocolClasses = protocolClasses
 
         self.session = URLSession(configuration: configuration)
@@ -88,6 +90,12 @@ extension InfluxDBClient {
         /// Default precision for the unix timestamps within the body line-protocol.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/glossary/#precision
         public var precision = WritePrecision.ns
+        /// The max time interval to wait between server responses before cancelling the request. Default to 60 sec.
+        /// - SeeAlso: http://bit.ly/timeoutIntervalForRequest
+        public var timeoutIntervalForRequest: TimeInterval = 60
+        /// The max time interval allowed for downloading a request payload. Default to 5 min.
+        /// - SeeAlso: http://bit.ly/timeoutIntervalForResource
+        public var timeoutIntervalForResource: TimeInterval = 60 * 5
     }
 }
 
