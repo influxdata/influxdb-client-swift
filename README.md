@@ -113,7 +113,14 @@ client.close()
 
 #### InfluxDB 1.8 API compatibility
 
-TBD
+```swift
+client = InfluxDBClient(url: "http://localhost:8086", username: "user", password: "pass",
+                        database: "my-db", retention_policy: "autogen")
+
+...
+
+client.close()
+```
 
 ## Contributing
 

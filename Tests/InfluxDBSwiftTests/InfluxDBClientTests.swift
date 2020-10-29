@@ -55,7 +55,8 @@ final class InfluxDBClientTests: XCTestCase {
 
     func testSessionHeadersV1() {
         client = InfluxDBClient(
-                url: "http://localhost:8086", token: "my-token", protocolClasses: [MockingURLProtocol.self])
+                url: "http://localhost:8086", username: "user", password: "pass", database: "my-db",
+                retention_policy: "autogen", protocolClasses: [MockingURLProtocol.self])
 
         let onRequestExpectation = expectation(description: "Authorization and User-Agent token")
 
@@ -64,7 +65,7 @@ final class InfluxDBClientTests: XCTestCase {
         var mock = Mock(url: url, dataType: .json, statusCode: 204, data: [.get: Data()])
         mock.onRequest = { request, postBodyArguments in
             XCTAssertEqual(request.url?.description, "http://localhost:8086")
-            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Token my-token")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Token user:pass")
             XCTAssertEqual(
                     request.value(forHTTPHeaderField: "User-Agent"),
                     "influxdb-client-swift/\(InfluxDBClient.version)")
@@ -74,5 +75,7 @@ final class InfluxDBClientTests: XCTestCase {
 
         client?.session.dataTask(with: URLRequest(url: url)).resume()
         wait(for: [onRequestExpectation], timeout: 2.0)
+
+        XCTAssertEqual(client?.options.bucket, "my-db/autogen")
     }
 }

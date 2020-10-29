@@ -22,10 +22,11 @@ public class InfluxDBClient {
 
     /// Create a new client for a InfluxDB.
     ///
-    /// - Parameter url: InfluxDB host and port.
-    /// - Parameter token: Authentication token.
-    /// - Parameter options: optional `InfluxDBOptions` to use for this client.
-    /// - Parameter protocolClasses: optional array of extra protocol subclasses that handle requests.
+    /// - Parameters:
+    ///   - url: InfluxDB host and port.
+    ///   - token: Authentication token.
+    ///   - options: optional `InfluxDBOptions` to use for this client.
+    ///   - protocolClasses: optional array of extra protocol subclasses that handle requests.
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/urls/#influxdb-oss-urls
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/security/tokens/
@@ -43,6 +44,27 @@ public class InfluxDBClient {
         configuration.protocolClasses = protocolClasses
 
         self.session = URLSession(configuration: configuration)
+    }
+
+    /// Create a new client for InfluxDB 1.8 compatibility API.
+    ///
+    /// - Parameters:
+    ///   - url: InfluxDB host and port.
+    ///   - username: Username for authentication.
+    ///   - password: Password for authentication.
+    ///   - database: Target database.
+    ///   - retention_policy: Target retention policy.
+    ///   - precision: Default precision for the unix timestamps within the body line-protocol.
+    ///   - protocolClasses: optional array of extra protocol subclasses that handle requests.
+    ///
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/v1.8/tools/api/#influxdb-2-0-api-compatibility-endpoints
+    public convenience init(url: String, username: String, password: String, database: String, retention_policy: String,
+                            precision: WritePrecision = WritePrecision.ns, protocolClasses: [AnyClass]? = nil) {
+
+        let options: InfluxDBOptions = InfluxDBOptions(bucket: "\(database)/\(retention_policy)", precision: precision)
+
+        self.init(url: url, token: "\(username):\(password)", options: options, protocolClasses: protocolClasses)
+
     }
 
     /// Release all allocated resources.
