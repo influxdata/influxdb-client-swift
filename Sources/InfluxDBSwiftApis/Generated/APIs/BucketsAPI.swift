@@ -25,7 +25,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteBucketsID(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteBucketsID(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteBucketsIDWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -43,7 +43,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteBucketsIDWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteBucketsIDWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/buckets/{bucketID}"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -59,7 +59,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -71,7 +71,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteBucketsIDLabelsID(bucketID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteBucketsIDLabelsID(bucketID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteBucketsIDLabelsIDWithRequestBuilder(bucketID: bucketID, labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -90,7 +90,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteBucketsIDLabelsIDWithRequestBuilder(bucketID: String, labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteBucketsIDLabelsIDWithRequestBuilder(bucketID: String, labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/buckets/{bucketID}/labels/{labelID}"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -109,7 +109,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -121,7 +121,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteBucketsIDMembersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteBucketsIDMembersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteBucketsIDMembersIDWithRequestBuilder(userID: userID, bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -140,7 +140,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteBucketsIDMembersIDWithRequestBuilder(userID: String, bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteBucketsIDMembersIDWithRequestBuilder(userID: String, bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/buckets/{bucketID}/members/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -159,7 +159,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -171,7 +171,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteBucketsIDOwnersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteBucketsIDOwnersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteBucketsIDOwnersIDWithRequestBuilder(userID: userID, bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -190,7 +190,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteBucketsIDOwnersIDWithRequestBuilder(userID: String, bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteBucketsIDOwnersIDWithRequestBuilder(userID: String, bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/buckets/{bucketID}/owners/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -209,7 +209,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -225,7 +225,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getBuckets(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Buckets?,_ error: Error?) -> Void)) {
+    public func getBuckets(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Buckets?,_ error: Error?) -> Void)) {
         getBucketsWithRequestBuilder(zapTraceSpan: zapTraceSpan, offset: offset, limit: limit, after: after, org: org, orgID: orgID, name: name).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -248,7 +248,7 @@ public class BucketsAPI {
      - parameter name: (query) Only returns buckets with a specific name. (optional)
      - returns: RequestBuilder<Buckets> 
      */
-    public func getBucketsWithRequestBuilder(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil) -> RequestBuilder<Buckets> {
+    internal func getBucketsWithRequestBuilder(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil) -> RequestBuilder<Buckets> {
         let path = "/buckets"
         let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
@@ -269,7 +269,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Buckets>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -280,7 +280,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getBucketsID(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Bucket?,_ error: Error?) -> Void)) {
+    public func getBucketsID(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Bucket?,_ error: Error?) -> Void)) {
         getBucketsIDWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -298,7 +298,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Bucket> 
      */
-    public func getBucketsIDWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Bucket> {
+    internal func getBucketsIDWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Bucket> {
         var path = "/buckets/{bucketID}"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -314,7 +314,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Bucket>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -325,7 +325,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getBucketsIDLabels(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: LabelsResponse?,_ error: Error?) -> Void)) {
+    public func getBucketsIDLabels(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: LabelsResponse?,_ error: Error?) -> Void)) {
         getBucketsIDLabelsWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -343,7 +343,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<LabelsResponse> 
      */
-    public func getBucketsIDLabelsWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<LabelsResponse> {
+    internal func getBucketsIDLabelsWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<LabelsResponse> {
         var path = "/buckets/{bucketID}/labels"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -359,7 +359,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<LabelsResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -370,7 +370,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getBucketsIDMembers(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
+    public func getBucketsIDMembers(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
         getBucketsIDMembersWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -388,7 +388,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMembers> 
      */
-    public func getBucketsIDMembersWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
+    internal func getBucketsIDMembersWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
         var path = "/buckets/{bucketID}/members"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -404,7 +404,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<ResourceMembers>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -415,7 +415,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getBucketsIDOwners(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
+    public func getBucketsIDOwners(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
         getBucketsIDOwnersWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -433,7 +433,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwners> 
      */
-    public func getBucketsIDOwnersWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
+    internal func getBucketsIDOwnersWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
         var path = "/buckets/{bucketID}/owners"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -449,7 +449,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwners>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -461,7 +461,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getSourcesIDBuckets(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Buckets?,_ error: Error?) -> Void)) {
+    public func getSourcesIDBuckets(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Buckets?,_ error: Error?) -> Void)) {
         getSourcesIDBucketsWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -480,7 +480,7 @@ public class BucketsAPI {
      - parameter org: (query) The organization name. (optional)
      - returns: RequestBuilder<Buckets> 
      */
-    public func getSourcesIDBucketsWithRequestBuilder(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil) -> RequestBuilder<Buckets> {
+    internal func getSourcesIDBucketsWithRequestBuilder(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil) -> RequestBuilder<Buckets> {
         var path = "/sources/{sourceID}/buckets"
         let sourceIDPreEscape = "\(APIHelper.mapValueToPathItem(sourceID))"
         let sourceIDPostEscape = sourceIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -499,7 +499,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Buckets>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -511,7 +511,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchBucketsID(bucketID: String, bucket: Bucket, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Bucket?,_ error: Error?) -> Void)) {
+    public func patchBucketsID(bucketID: String, bucket: Bucket, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Bucket?,_ error: Error?) -> Void)) {
         patchBucketsIDWithRequestBuilder(bucketID: bucketID, bucket: bucket, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -530,7 +530,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Bucket> 
      */
-    public func patchBucketsIDWithRequestBuilder(bucketID: String, bucket: Bucket, zapTraceSpan: String? = nil) -> RequestBuilder<Bucket> {
+    internal func patchBucketsIDWithRequestBuilder(bucketID: String, bucket: Bucket, zapTraceSpan: String? = nil) -> RequestBuilder<Bucket> {
         var path = "/buckets/{bucketID}"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -546,7 +546,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Bucket>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -557,7 +557,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postBuckets(postBucketRequest: PostBucketRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Bucket?,_ error: Error?) -> Void)) {
+    public func postBuckets(postBucketRequest: PostBucketRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Bucket?,_ error: Error?) -> Void)) {
         postBucketsWithRequestBuilder(postBucketRequest: postBucketRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -575,7 +575,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Bucket> 
      */
-    public func postBucketsWithRequestBuilder(postBucketRequest: PostBucketRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Bucket> {
+    internal func postBucketsWithRequestBuilder(postBucketRequest: PostBucketRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Bucket> {
         let path = "/buckets"
         let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: postBucketRequest)
@@ -588,7 +588,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<Bucket>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -600,7 +600,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postBucketsIDLabels(bucketID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
+    public func postBucketsIDLabels(bucketID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
         postBucketsIDLabelsWithRequestBuilder(bucketID: bucketID, labelMapping: labelMapping, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -619,7 +619,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<LabelResponse> 
      */
-    public func postBucketsIDLabelsWithRequestBuilder(bucketID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
+    internal func postBucketsIDLabelsWithRequestBuilder(bucketID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
         var path = "/buckets/{bucketID}/labels"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -635,7 +635,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<LabelResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -647,7 +647,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postBucketsIDMembers(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
+    public func postBucketsIDMembers(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
         postBucketsIDMembersWithRequestBuilder(bucketID: bucketID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -666,7 +666,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMember> 
      */
-    public func postBucketsIDMembersWithRequestBuilder(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
+    internal func postBucketsIDMembersWithRequestBuilder(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
         var path = "/buckets/{bucketID}/members"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -682,7 +682,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<ResourceMember>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -694,7 +694,7 @@ public class BucketsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postBucketsIDOwners(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
+    public func postBucketsIDOwners(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
         postBucketsIDOwnersWithRequestBuilder(bucketID: bucketID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -713,7 +713,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwner> 
      */
-    public func postBucketsIDOwnersWithRequestBuilder(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
+    internal func postBucketsIDOwnersWithRequestBuilder(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
         var path = "/buckets/{bucketID}/owners"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -729,7 +729,7 @@ public class BucketsAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwner>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
 }

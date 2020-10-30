@@ -22,13 +22,7 @@ class URLSessionRequestBuilderFactory: RequestBuilderFactory {
     }
 }
 
-// Store the URLSession to retain its reference
-private var urlSessionStore = SynchronizedDictionary<String, URLSession>()
-
-open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
-    
-    // swiftlint:disable:next weak_delegate
-    fileprivate let sessionDelegate = SessionDelegate()
+internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
     
     /**
      May be assigned if you want to control the authentication challenges.
@@ -43,22 +37,10 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
      */
     public var taskCompletionShouldRetry: ((Data?, URLResponse?, Error?, @escaping (Bool) -> Void) -> Void)?
     
-    required public init(method: String, URLString: String, parameters: [String : Any]?, isBody: Bool, headers: [String : String] = [:]) {
-        super.init(method: method, URLString: URLString, parameters: parameters, isBody: isBody, headers: headers)
+    required public init(method: String, URLString: String, parameters: [String : Any]?, isBody: Bool, headers: [String : String] = [:], influxDB2API: InfluxDB2API) {
+        super.init(method: method, URLString: URLString, parameters: parameters, isBody: isBody, headers: headers, influxDB2API: influxDB2API)
     }
     
-    /**
-     May be overridden by a subclass if you want to control the URLSession
-     configuration.
-     */
-    open func createURLSession() -> URLSession {
-        let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = buildHeaders()
-        sessionDelegate.credential = credential
-        sessionDelegate.taskDidReceiveChallenge = taskDidReceiveChallenge
-        return URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: nil)
-    }
-
     /**
      May be overridden by a subclass if you want to control the Content-Type
      that is given to an uploaded form part.
@@ -66,7 +48,7 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
      Return nil to use the default behavior (inferring the Content-Type from
      the file extension).  Return the desired Content-Type otherwise.
      */
-    open func contentTypeForFormPart(fileURL: URL) -> String? {
+    internal func contentTypeForFormPart(fileURL: URL) -> String? {
         return nil
     }
 
@@ -74,7 +56,7 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
      May be overridden by a subclass if you want to control the URLRequest
      configuration (e.g. to override the cache policy).
      */
-    open func createURLRequest(urlSession: URLSession, method: HTTPMethod, encoding: ParameterEncoding, headers: [String:String]) throws -> URLRequest {
+    internal func createURLRequest(urlSession: URLSession, method: HTTPMethod, encoding: ParameterEncoding, headers: [String:String]) throws -> URLRequest {
         
         guard let url = URL(string: URLString) else {
             throw DownloadException.requestMissingURL
@@ -97,12 +79,9 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
         return modifiedRequest
     }
 
-    override open func execute(_ apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) {
-        let urlSessionId:String = UUID().uuidString
-        // Create a new manager for each request to customize its request header
-        let urlSession = createURLSession()
-        urlSessionStore[urlSessionId] = urlSession
-        
+    override internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) {
+        let urlSession = self.influxDB2API.getURLSession()
+
         let parameters: [String: Any] = self.parameters ?? [:]
         
         let fileKeys = parameters.filter { $1 is URL }
@@ -121,10 +100,6 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
             fatalError("Unsuported Http method - \(method)")
         }
         
-        let cleanupRequest = {
-            urlSessionStore[urlSessionId] = nil
-        }
-        
         do {
             let request = try createURLRequest(urlSession: urlSession, method: xMethod, encoding: encoding, headers: headers)
             
@@ -139,7 +114,6 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
                         guard let self = self else { return }
                         
                         if shouldRetry {
-                            cleanupRequest()
                             self.execute(apiResponseQueue, completion)
                         } else {
                             apiResponseQueue.async {
@@ -162,7 +136,6 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
             
         } catch {
             apiResponseQueue.async {
-                cleanupRequest()
                 completion(.failure(ErrorResponse.error(415, nil, error)))
             }
         }
@@ -244,9 +217,6 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
         for (key, value) in self.headers {
             httpHeaders[key] = value
         }
-        for (key, value) in InfluxDB2API.customHeaders {
-            httpHeaders[key] = value
-        }
         return httpHeaders
     }
 
@@ -303,7 +273,7 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
 
 }
 
-open class URLSessionDecodableRequestBuilder<T:Decodable>: URLSessionRequestBuilder<T> {
+internal class URLSessionDecodableRequestBuilder<T:Decodable>: URLSessionRequestBuilder<T> {
     override fileprivate func processRequestResponse(urlRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?, completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) {
 
         if let error = error {
@@ -352,36 +322,6 @@ open class URLSessionDecodableRequestBuilder<T:Decodable>: URLSessionRequestBuil
                 completion(.failure(ErrorResponse.error(httpResponse.statusCode, data, error)))
             }
         }
-    }
-}
-
-fileprivate class SessionDelegate: NSObject, URLSessionDelegate, URLSessionDataDelegate {
-    
-    var credential: URLCredential?
-    
-    var taskDidReceiveChallenge: ((URLSession, URLSessionTask, URLAuthenticationChallenge) -> (URLSession.AuthChallengeDisposition, URLCredential?))?
-
-    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-
-        var disposition: URLSession.AuthChallengeDisposition = .performDefaultHandling
-
-        var credential: URLCredential?
-
-        if let taskDidReceiveChallenge = taskDidReceiveChallenge {
-            (disposition, credential) = taskDidReceiveChallenge(session, task, challenge)
-        } else {
-            if challenge.previousFailureCount > 0 {
-                disposition = .rejectProtectionSpace
-            } else {
-                credential = self.credential ?? session.configuration.urlCredentialStorage?.defaultCredential(for: challenge.protectionSpace)
-
-                if credential != nil {
-                    disposition = .useCredential
-                }
-            }
-        }
-
-        completionHandler(disposition, credential)
     }
 }
 

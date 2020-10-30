@@ -24,7 +24,7 @@ public class ReadyAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getReady(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Ready?,_ error: Error?) -> Void)) {
+    public func getReady(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Ready?,_ error: Error?) -> Void)) {
         getReadyWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -41,7 +41,7 @@ public class ReadyAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Ready> 
      */
-    public func getReadyWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<Ready> {
+    internal func getReadyWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<Ready> {
         let path = "/ready"
         let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
@@ -54,7 +54,7 @@ public class ReadyAPI {
 
         let requestBuilder: RequestBuilder<Ready>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
 }

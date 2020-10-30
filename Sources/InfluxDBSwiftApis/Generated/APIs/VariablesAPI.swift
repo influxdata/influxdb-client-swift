@@ -25,7 +25,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteVariablesID(variableID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteVariablesID(variableID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteVariablesIDWithRequestBuilder(variableID: variableID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -43,7 +43,7 @@ public class VariablesAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteVariablesIDWithRequestBuilder(variableID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteVariablesIDWithRequestBuilder(variableID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/variables/{variableID}"
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -59,7 +59,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -71,7 +71,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteVariablesIDLabelsID(variableID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteVariablesIDLabelsID(variableID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteVariablesIDLabelsIDWithRequestBuilder(variableID: variableID, labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -90,7 +90,7 @@ public class VariablesAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteVariablesIDLabelsIDWithRequestBuilder(variableID: String, labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteVariablesIDLabelsIDWithRequestBuilder(variableID: String, labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/variables/{variableID}/labels/{labelID}"
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -109,7 +109,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -121,7 +121,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getVariables(zapTraceSpan: String? = nil, org: String? = nil, orgID: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Variables?,_ error: Error?) -> Void)) {
+    public func getVariables(zapTraceSpan: String? = nil, org: String? = nil, orgID: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Variables?,_ error: Error?) -> Void)) {
         getVariablesWithRequestBuilder(zapTraceSpan: zapTraceSpan, org: org, orgID: orgID).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -140,7 +140,7 @@ public class VariablesAPI {
      - parameter orgID: (query) The organization ID. (optional)
      - returns: RequestBuilder<Variables> 
      */
-    public func getVariablesWithRequestBuilder(zapTraceSpan: String? = nil, org: String? = nil, orgID: String? = nil) -> RequestBuilder<Variables> {
+    internal func getVariablesWithRequestBuilder(zapTraceSpan: String? = nil, org: String? = nil, orgID: String? = nil) -> RequestBuilder<Variables> {
         let path = "/variables"
         let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
@@ -157,7 +157,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<Variables>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -168,7 +168,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getVariablesID(variableID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Variable?,_ error: Error?) -> Void)) {
+    public func getVariablesID(variableID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Variable?,_ error: Error?) -> Void)) {
         getVariablesIDWithRequestBuilder(variableID: variableID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -186,7 +186,7 @@ public class VariablesAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Variable> 
      */
-    public func getVariablesIDWithRequestBuilder(variableID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
+    internal func getVariablesIDWithRequestBuilder(variableID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
         var path = "/variables/{variableID}"
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -202,7 +202,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<Variable>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -213,7 +213,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getVariablesIDLabels(variableID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: LabelsResponse?,_ error: Error?) -> Void)) {
+    public func getVariablesIDLabels(variableID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: LabelsResponse?,_ error: Error?) -> Void)) {
         getVariablesIDLabelsWithRequestBuilder(variableID: variableID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -231,7 +231,7 @@ public class VariablesAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<LabelsResponse> 
      */
-    public func getVariablesIDLabelsWithRequestBuilder(variableID: String, zapTraceSpan: String? = nil) -> RequestBuilder<LabelsResponse> {
+    internal func getVariablesIDLabelsWithRequestBuilder(variableID: String, zapTraceSpan: String? = nil) -> RequestBuilder<LabelsResponse> {
         var path = "/variables/{variableID}/labels"
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -247,7 +247,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<LabelsResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -259,7 +259,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchVariablesID(variableID: String, variable: Variable, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Variable?,_ error: Error?) -> Void)) {
+    public func patchVariablesID(variableID: String, variable: Variable, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Variable?,_ error: Error?) -> Void)) {
         patchVariablesIDWithRequestBuilder(variableID: variableID, variable: variable, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -278,7 +278,7 @@ public class VariablesAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Variable> 
      */
-    public func patchVariablesIDWithRequestBuilder(variableID: String, variable: Variable, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
+    internal func patchVariablesIDWithRequestBuilder(variableID: String, variable: Variable, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
         var path = "/variables/{variableID}"
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -294,7 +294,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<Variable>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -305,7 +305,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postVariables(variable: Variable, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Variable?,_ error: Error?) -> Void)) {
+    public func postVariables(variable: Variable, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Variable?,_ error: Error?) -> Void)) {
         postVariablesWithRequestBuilder(variable: variable, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -323,7 +323,7 @@ public class VariablesAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Variable> 
      */
-    public func postVariablesWithRequestBuilder(variable: Variable, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
+    internal func postVariablesWithRequestBuilder(variable: Variable, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
         let path = "/variables"
         let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: variable)
@@ -336,7 +336,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<Variable>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -348,7 +348,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postVariablesIDLabels(variableID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
+    public func postVariablesIDLabels(variableID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
         postVariablesIDLabelsWithRequestBuilder(variableID: variableID, labelMapping: labelMapping, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -367,7 +367,7 @@ public class VariablesAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<LabelResponse> 
      */
-    public func postVariablesIDLabelsWithRequestBuilder(variableID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
+    internal func postVariablesIDLabelsWithRequestBuilder(variableID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
         var path = "/variables/{variableID}/labels"
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -383,7 +383,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<LabelResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -395,7 +395,7 @@ public class VariablesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func putVariablesID(variableID: String, variable: Variable, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Variable?,_ error: Error?) -> Void)) {
+    public func putVariablesID(variableID: String, variable: Variable, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Variable?,_ error: Error?) -> Void)) {
         putVariablesIDWithRequestBuilder(variableID: variableID, variable: variable, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -414,7 +414,7 @@ public class VariablesAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Variable> 
      */
-    public func putVariablesIDWithRequestBuilder(variableID: String, variable: Variable, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
+    internal func putVariablesIDWithRequestBuilder(variableID: String, variable: Variable, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
         var path = "/variables/{variableID}"
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -430,7 +430,7 @@ public class VariablesAPI {
 
         let requestBuilder: RequestBuilder<Variable>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
 }

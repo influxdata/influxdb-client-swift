@@ -25,7 +25,7 @@ public class AuthorizationsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteAuthorizationsID(authID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteAuthorizationsID(authID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteAuthorizationsIDWithRequestBuilder(authID: authID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -43,7 +43,7 @@ public class AuthorizationsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteAuthorizationsIDWithRequestBuilder(authID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteAuthorizationsIDWithRequestBuilder(authID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/authorizations/{authID}"
         let authIDPreEscape = "\(APIHelper.mapValueToPathItem(authID))"
         let authIDPostEscape = authIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -59,7 +59,7 @@ public class AuthorizationsAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -73,7 +73,7 @@ public class AuthorizationsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getAuthorizations(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Authorizations?,_ error: Error?) -> Void)) {
+    public func getAuthorizations(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Authorizations?,_ error: Error?) -> Void)) {
         getAuthorizationsWithRequestBuilder(zapTraceSpan: zapTraceSpan, userID: userID, user: user, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -94,7 +94,7 @@ public class AuthorizationsAPI {
      - parameter org: (query) Only show authorizations that belong to a organization name. (optional)
      - returns: RequestBuilder<Authorizations> 
      */
-    public func getAuthorizationsWithRequestBuilder(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil) -> RequestBuilder<Authorizations> {
+    internal func getAuthorizationsWithRequestBuilder(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil) -> RequestBuilder<Authorizations> {
         let path = "/authorizations"
         let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
@@ -113,7 +113,7 @@ public class AuthorizationsAPI {
 
         let requestBuilder: RequestBuilder<Authorizations>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -124,7 +124,7 @@ public class AuthorizationsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getAuthorizationsID(authID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Authorization?,_ error: Error?) -> Void)) {
+    public func getAuthorizationsID(authID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Authorization?,_ error: Error?) -> Void)) {
         getAuthorizationsIDWithRequestBuilder(authID: authID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -142,7 +142,7 @@ public class AuthorizationsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Authorization> 
      */
-    public func getAuthorizationsIDWithRequestBuilder(authID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Authorization> {
+    internal func getAuthorizationsIDWithRequestBuilder(authID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Authorization> {
         var path = "/authorizations/{authID}"
         let authIDPreEscape = "\(APIHelper.mapValueToPathItem(authID))"
         let authIDPostEscape = authIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -158,7 +158,7 @@ public class AuthorizationsAPI {
 
         let requestBuilder: RequestBuilder<Authorization>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -170,7 +170,7 @@ public class AuthorizationsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchAuthorizationsID(authID: String, authorizationUpdateRequest: AuthorizationUpdateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Authorization?,_ error: Error?) -> Void)) {
+    public func patchAuthorizationsID(authID: String, authorizationUpdateRequest: AuthorizationUpdateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Authorization?,_ error: Error?) -> Void)) {
         patchAuthorizationsIDWithRequestBuilder(authID: authID, authorizationUpdateRequest: authorizationUpdateRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -189,7 +189,7 @@ public class AuthorizationsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Authorization> 
      */
-    public func patchAuthorizationsIDWithRequestBuilder(authID: String, authorizationUpdateRequest: AuthorizationUpdateRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Authorization> {
+    internal func patchAuthorizationsIDWithRequestBuilder(authID: String, authorizationUpdateRequest: AuthorizationUpdateRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Authorization> {
         var path = "/authorizations/{authID}"
         let authIDPreEscape = "\(APIHelper.mapValueToPathItem(authID))"
         let authIDPostEscape = authIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -205,7 +205,7 @@ public class AuthorizationsAPI {
 
         let requestBuilder: RequestBuilder<Authorization>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -216,7 +216,7 @@ public class AuthorizationsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postAuthorizations(authorization: Authorization, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Authorization?,_ error: Error?) -> Void)) {
+    public func postAuthorizations(authorization: Authorization, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Authorization?,_ error: Error?) -> Void)) {
         postAuthorizationsWithRequestBuilder(authorization: authorization, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -234,7 +234,7 @@ public class AuthorizationsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Authorization> 
      */
-    public func postAuthorizationsWithRequestBuilder(authorization: Authorization, zapTraceSpan: String? = nil) -> RequestBuilder<Authorization> {
+    internal func postAuthorizationsWithRequestBuilder(authorization: Authorization, zapTraceSpan: String? = nil) -> RequestBuilder<Authorization> {
         let path = "/authorizations"
         let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: authorization)
@@ -247,7 +247,7 @@ public class AuthorizationsAPI {
 
         let requestBuilder: RequestBuilder<Authorization>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
 }

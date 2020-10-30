@@ -12,13 +12,13 @@ public class InfluxDBClient {
     /// Version of client.
     public static var version: String = "0.0.1"
     /// InfluxDB host and port.
-    internal let url: String
+    public let url: String
     /// Authentication token.
     internal let token: String
     /// The options to configre client.
     internal let options: InfluxDBOptions
     /// Shared URLSession across the client.
-    internal let session: URLSession
+    public let session: URLSession
 
     /// Create a new client for a InfluxDB.
     ///

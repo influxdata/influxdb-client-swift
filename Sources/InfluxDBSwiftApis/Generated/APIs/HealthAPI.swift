@@ -24,7 +24,7 @@ public class HealthAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getHealth(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: HealthCheck?,_ error: Error?) -> Void)) {
+    public func getHealth(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: HealthCheck?,_ error: Error?) -> Void)) {
         getHealthWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -41,7 +41,7 @@ public class HealthAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<HealthCheck> 
      */
-    public func getHealthWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<HealthCheck> {
+    internal func getHealthWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<HealthCheck> {
         let path = "/health"
         let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
@@ -54,7 +54,7 @@ public class HealthAPI {
 
         let requestBuilder: RequestBuilder<HealthCheck>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
 }

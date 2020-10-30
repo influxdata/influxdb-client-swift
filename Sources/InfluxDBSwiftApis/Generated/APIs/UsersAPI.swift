@@ -26,7 +26,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteBucketsIDMembersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteBucketsIDMembersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteBucketsIDMembersIDWithRequestBuilder(userID: userID, bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -45,7 +45,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteBucketsIDMembersIDWithRequestBuilder(userID: String, bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteBucketsIDMembersIDWithRequestBuilder(userID: String, bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/buckets/{bucketID}/members/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -64,7 +64,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -76,7 +76,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteBucketsIDOwnersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteBucketsIDOwnersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteBucketsIDOwnersIDWithRequestBuilder(userID: userID, bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -95,7 +95,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteBucketsIDOwnersIDWithRequestBuilder(userID: String, bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteBucketsIDOwnersIDWithRequestBuilder(userID: String, bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/buckets/{bucketID}/owners/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -114,7 +114,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -126,7 +126,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteDashboardsIDMembersID(userID: String, dashboardID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteDashboardsIDMembersID(userID: String, dashboardID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteDashboardsIDMembersIDWithRequestBuilder(userID: userID, dashboardID: dashboardID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -145,7 +145,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteDashboardsIDMembersIDWithRequestBuilder(userID: String, dashboardID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteDashboardsIDMembersIDWithRequestBuilder(userID: String, dashboardID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/dashboards/{dashboardID}/members/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -164,7 +164,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -176,7 +176,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteDashboardsIDOwnersID(userID: String, dashboardID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteDashboardsIDOwnersID(userID: String, dashboardID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteDashboardsIDOwnersIDWithRequestBuilder(userID: userID, dashboardID: dashboardID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -195,7 +195,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteDashboardsIDOwnersIDWithRequestBuilder(userID: String, dashboardID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteDashboardsIDOwnersIDWithRequestBuilder(userID: String, dashboardID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/dashboards/{dashboardID}/owners/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -214,7 +214,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -226,7 +226,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteOrgsIDMembersID(userID: String, orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteOrgsIDMembersID(userID: String, orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteOrgsIDMembersIDWithRequestBuilder(userID: userID, orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -245,7 +245,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteOrgsIDMembersIDWithRequestBuilder(userID: String, orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteOrgsIDMembersIDWithRequestBuilder(userID: String, orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/orgs/{orgID}/members/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -264,7 +264,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -276,7 +276,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteOrgsIDOwnersID(userID: String, orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteOrgsIDOwnersID(userID: String, orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteOrgsIDOwnersIDWithRequestBuilder(userID: userID, orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -295,7 +295,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteOrgsIDOwnersIDWithRequestBuilder(userID: String, orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteOrgsIDOwnersIDWithRequestBuilder(userID: String, orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/orgs/{orgID}/owners/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -314,7 +314,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -326,7 +326,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteScrapersIDMembersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteScrapersIDMembersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteScrapersIDMembersIDWithRequestBuilder(userID: userID, scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -345,7 +345,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteScrapersIDMembersIDWithRequestBuilder(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteScrapersIDMembersIDWithRequestBuilder(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/scrapers/{scraperTargetID}/members/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -364,7 +364,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -376,7 +376,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteScrapersIDOwnersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteScrapersIDOwnersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteScrapersIDOwnersIDWithRequestBuilder(userID: userID, scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -395,7 +395,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteScrapersIDOwnersIDWithRequestBuilder(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteScrapersIDOwnersIDWithRequestBuilder(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/scrapers/{scraperTargetID}/owners/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -414,7 +414,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -426,7 +426,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteTasksIDMembersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteTasksIDMembersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteTasksIDMembersIDWithRequestBuilder(userID: userID, taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -445,7 +445,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteTasksIDMembersIDWithRequestBuilder(userID: String, taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTasksIDMembersIDWithRequestBuilder(userID: String, taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/tasks/{taskID}/members/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -464,7 +464,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -476,7 +476,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteTasksIDOwnersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteTasksIDOwnersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteTasksIDOwnersIDWithRequestBuilder(userID: userID, taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -495,7 +495,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteTasksIDOwnersIDWithRequestBuilder(userID: String, taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTasksIDOwnersIDWithRequestBuilder(userID: String, taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/tasks/{taskID}/owners/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -514,7 +514,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -526,7 +526,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteTelegrafsIDMembersID(userID: String, telegrafID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteTelegrafsIDMembersID(userID: String, telegrafID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteTelegrafsIDMembersIDWithRequestBuilder(userID: userID, telegrafID: telegrafID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -545,7 +545,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteTelegrafsIDMembersIDWithRequestBuilder(userID: String, telegrafID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTelegrafsIDMembersIDWithRequestBuilder(userID: String, telegrafID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/telegrafs/{telegrafID}/members/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -564,7 +564,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -576,7 +576,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteTelegrafsIDOwnersID(userID: String, telegrafID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteTelegrafsIDOwnersID(userID: String, telegrafID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteTelegrafsIDOwnersIDWithRequestBuilder(userID: userID, telegrafID: telegrafID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -595,7 +595,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteTelegrafsIDOwnersIDWithRequestBuilder(userID: String, telegrafID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTelegrafsIDOwnersIDWithRequestBuilder(userID: String, telegrafID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/telegrafs/{telegrafID}/owners/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -614,7 +614,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -625,7 +625,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteUsersID(userID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func deleteUsersID(userID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         deleteUsersIDWithRequestBuilder(userID: userID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -643,7 +643,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func deleteUsersIDWithRequestBuilder(userID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteUsersIDWithRequestBuilder(userID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/users/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -659,7 +659,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -670,7 +670,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getBucketsIDMembers(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
+    public func getBucketsIDMembers(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
         getBucketsIDMembersWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -688,7 +688,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMembers> 
      */
-    public func getBucketsIDMembersWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
+    internal func getBucketsIDMembersWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
         var path = "/buckets/{bucketID}/members"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -704,7 +704,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMembers>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -715,7 +715,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getBucketsIDOwners(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
+    public func getBucketsIDOwners(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
         getBucketsIDOwnersWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -733,7 +733,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwners> 
      */
-    public func getBucketsIDOwnersWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
+    internal func getBucketsIDOwnersWithRequestBuilder(bucketID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
         var path = "/buckets/{bucketID}/owners"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -749,7 +749,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwners>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -760,7 +760,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getDashboardsIDMembers(dashboardID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
+    public func getDashboardsIDMembers(dashboardID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
         getDashboardsIDMembersWithRequestBuilder(dashboardID: dashboardID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -778,7 +778,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMembers> 
      */
-    public func getDashboardsIDMembersWithRequestBuilder(dashboardID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
+    internal func getDashboardsIDMembersWithRequestBuilder(dashboardID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
         var path = "/dashboards/{dashboardID}/members"
         let dashboardIDPreEscape = "\(APIHelper.mapValueToPathItem(dashboardID))"
         let dashboardIDPostEscape = dashboardIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -794,7 +794,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMembers>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -805,7 +805,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getDashboardsIDOwners(dashboardID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
+    public func getDashboardsIDOwners(dashboardID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
         getDashboardsIDOwnersWithRequestBuilder(dashboardID: dashboardID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -823,7 +823,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwners> 
      */
-    public func getDashboardsIDOwnersWithRequestBuilder(dashboardID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
+    internal func getDashboardsIDOwnersWithRequestBuilder(dashboardID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
         var path = "/dashboards/{dashboardID}/owners"
         let dashboardIDPreEscape = "\(APIHelper.mapValueToPathItem(dashboardID))"
         let dashboardIDPostEscape = dashboardIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -839,7 +839,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwners>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -849,7 +849,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getFlags(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: [String:Any]?,_ error: Error?) -> Void)) {
+    public func getFlags(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: [String:Any]?,_ error: Error?) -> Void)) {
         getFlagsWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -866,7 +866,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<[String:String]> 
      */
-    public func getFlagsWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<[String:String]> {
+    internal func getFlagsWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<[String:String]> {
         let path = "/flags"
         let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
@@ -879,7 +879,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<[String:String]>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -889,7 +889,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getMe(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: User?,_ error: Error?) -> Void)) {
+    public func getMe(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: User?,_ error: Error?) -> Void)) {
         getMeWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -906,7 +906,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<User> 
      */
-    public func getMeWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<User> {
+    internal func getMeWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<User> {
         let path = "/me"
         let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
@@ -919,7 +919,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<User>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -930,7 +930,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getOrgsIDMembers(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
+    public func getOrgsIDMembers(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
         getOrgsIDMembersWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -948,7 +948,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMembers> 
      */
-    public func getOrgsIDMembersWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
+    internal func getOrgsIDMembersWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
         var path = "/orgs/{orgID}/members"
         let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
         let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -964,7 +964,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMembers>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -975,7 +975,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getOrgsIDOwners(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
+    public func getOrgsIDOwners(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
         getOrgsIDOwnersWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -993,7 +993,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwners> 
      */
-    public func getOrgsIDOwnersWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
+    internal func getOrgsIDOwnersWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
         var path = "/orgs/{orgID}/owners"
         let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
         let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1009,7 +1009,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwners>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1020,7 +1020,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getScrapersIDMembers(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
+    public func getScrapersIDMembers(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
         getScrapersIDMembersWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1038,7 +1038,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMembers> 
      */
-    public func getScrapersIDMembersWithRequestBuilder(scraperTargetID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
+    internal func getScrapersIDMembersWithRequestBuilder(scraperTargetID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
         var path = "/scrapers/{scraperTargetID}/members"
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1054,7 +1054,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMembers>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1065,7 +1065,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getScrapersIDOwners(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
+    public func getScrapersIDOwners(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
         getScrapersIDOwnersWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1083,7 +1083,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwners> 
      */
-    public func getScrapersIDOwnersWithRequestBuilder(scraperTargetID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
+    internal func getScrapersIDOwnersWithRequestBuilder(scraperTargetID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
         var path = "/scrapers/{scraperTargetID}/owners"
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1099,7 +1099,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwners>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1110,7 +1110,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getTasksIDMembers(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
+    public func getTasksIDMembers(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
         getTasksIDMembersWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1128,7 +1128,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMembers> 
      */
-    public func getTasksIDMembersWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
+    internal func getTasksIDMembersWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
         var path = "/tasks/{taskID}/members"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1144,7 +1144,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMembers>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1155,7 +1155,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getTasksIDOwners(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
+    public func getTasksIDOwners(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
         getTasksIDOwnersWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1173,7 +1173,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwners> 
      */
-    public func getTasksIDOwnersWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
+    internal func getTasksIDOwnersWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
         var path = "/tasks/{taskID}/owners"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1189,7 +1189,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwners>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1200,7 +1200,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getTelegrafsIDMembers(telegrafID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
+    public func getTelegrafsIDMembers(telegrafID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
         getTelegrafsIDMembersWithRequestBuilder(telegrafID: telegrafID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1218,7 +1218,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMembers> 
      */
-    public func getTelegrafsIDMembersWithRequestBuilder(telegrafID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
+    internal func getTelegrafsIDMembersWithRequestBuilder(telegrafID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
         var path = "/telegrafs/{telegrafID}/members"
         let telegrafIDPreEscape = "\(APIHelper.mapValueToPathItem(telegrafID))"
         let telegrafIDPostEscape = telegrafIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1234,7 +1234,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMembers>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1245,7 +1245,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getTelegrafsIDOwners(telegrafID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
+    public func getTelegrafsIDOwners(telegrafID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
         getTelegrafsIDOwnersWithRequestBuilder(telegrafID: telegrafID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1263,7 +1263,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwners> 
      */
-    public func getTelegrafsIDOwnersWithRequestBuilder(telegrafID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
+    internal func getTelegrafsIDOwnersWithRequestBuilder(telegrafID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
         var path = "/telegrafs/{telegrafID}/owners"
         let telegrafIDPreEscape = "\(APIHelper.mapValueToPathItem(telegrafID))"
         let telegrafIDPostEscape = telegrafIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1279,7 +1279,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwners>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1289,7 +1289,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getUsers(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Users?,_ error: Error?) -> Void)) {
+    public func getUsers(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Users?,_ error: Error?) -> Void)) {
         getUsersWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1306,7 +1306,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Users> 
      */
-    public func getUsersWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<Users> {
+    internal func getUsersWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<Users> {
         let path = "/users"
         let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
@@ -1319,7 +1319,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Users>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1330,7 +1330,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getUsersID(userID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: User?,_ error: Error?) -> Void)) {
+    public func getUsersID(userID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: User?,_ error: Error?) -> Void)) {
         getUsersIDWithRequestBuilder(userID: userID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1348,7 +1348,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<User> 
      */
-    public func getUsersIDWithRequestBuilder(userID: String, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
+    internal func getUsersIDWithRequestBuilder(userID: String, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
         var path = "/users/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1364,7 +1364,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<User>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1376,7 +1376,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchUsersID(userID: String, user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: User?,_ error: Error?) -> Void)) {
+    public func patchUsersID(userID: String, user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: User?,_ error: Error?) -> Void)) {
         patchUsersIDWithRequestBuilder(userID: userID, user: user, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1395,7 +1395,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<User> 
      */
-    public func patchUsersIDWithRequestBuilder(userID: String, user: User, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
+    internal func patchUsersIDWithRequestBuilder(userID: String, user: User, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
         var path = "/users/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1411,7 +1411,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<User>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1423,7 +1423,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postBucketsIDMembers(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
+    public func postBucketsIDMembers(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
         postBucketsIDMembersWithRequestBuilder(bucketID: bucketID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1442,7 +1442,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMember> 
      */
-    public func postBucketsIDMembersWithRequestBuilder(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
+    internal func postBucketsIDMembersWithRequestBuilder(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
         var path = "/buckets/{bucketID}/members"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1458,7 +1458,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMember>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1470,7 +1470,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postBucketsIDOwners(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
+    public func postBucketsIDOwners(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
         postBucketsIDOwnersWithRequestBuilder(bucketID: bucketID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1489,7 +1489,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwner> 
      */
-    public func postBucketsIDOwnersWithRequestBuilder(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
+    internal func postBucketsIDOwnersWithRequestBuilder(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
         var path = "/buckets/{bucketID}/owners"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1505,7 +1505,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwner>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1517,7 +1517,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postDashboardsIDMembers(dashboardID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
+    public func postDashboardsIDMembers(dashboardID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
         postDashboardsIDMembersWithRequestBuilder(dashboardID: dashboardID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1536,7 +1536,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMember> 
      */
-    public func postDashboardsIDMembersWithRequestBuilder(dashboardID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
+    internal func postDashboardsIDMembersWithRequestBuilder(dashboardID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
         var path = "/dashboards/{dashboardID}/members"
         let dashboardIDPreEscape = "\(APIHelper.mapValueToPathItem(dashboardID))"
         let dashboardIDPostEscape = dashboardIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1552,7 +1552,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMember>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1564,7 +1564,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postDashboardsIDOwners(dashboardID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
+    public func postDashboardsIDOwners(dashboardID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
         postDashboardsIDOwnersWithRequestBuilder(dashboardID: dashboardID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1583,7 +1583,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwner> 
      */
-    public func postDashboardsIDOwnersWithRequestBuilder(dashboardID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
+    internal func postDashboardsIDOwnersWithRequestBuilder(dashboardID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
         var path = "/dashboards/{dashboardID}/owners"
         let dashboardIDPreEscape = "\(APIHelper.mapValueToPathItem(dashboardID))"
         let dashboardIDPostEscape = dashboardIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1599,7 +1599,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwner>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1611,7 +1611,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postOrgsIDMembers(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
+    public func postOrgsIDMembers(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
         postOrgsIDMembersWithRequestBuilder(orgID: orgID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1630,7 +1630,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMember> 
      */
-    public func postOrgsIDMembersWithRequestBuilder(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
+    internal func postOrgsIDMembersWithRequestBuilder(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
         var path = "/orgs/{orgID}/members"
         let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
         let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1646,7 +1646,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMember>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1658,7 +1658,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postOrgsIDOwners(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
+    public func postOrgsIDOwners(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
         postOrgsIDOwnersWithRequestBuilder(orgID: orgID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1677,7 +1677,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwner> 
      */
-    public func postOrgsIDOwnersWithRequestBuilder(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
+    internal func postOrgsIDOwnersWithRequestBuilder(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
         var path = "/orgs/{orgID}/owners"
         let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
         let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1693,7 +1693,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwner>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1705,7 +1705,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postScrapersIDMembers(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
+    public func postScrapersIDMembers(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
         postScrapersIDMembersWithRequestBuilder(scraperTargetID: scraperTargetID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1724,7 +1724,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMember> 
      */
-    public func postScrapersIDMembersWithRequestBuilder(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
+    internal func postScrapersIDMembersWithRequestBuilder(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
         var path = "/scrapers/{scraperTargetID}/members"
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1740,7 +1740,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMember>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1752,7 +1752,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postScrapersIDOwners(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
+    public func postScrapersIDOwners(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
         postScrapersIDOwnersWithRequestBuilder(scraperTargetID: scraperTargetID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1771,7 +1771,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwner> 
      */
-    public func postScrapersIDOwnersWithRequestBuilder(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
+    internal func postScrapersIDOwnersWithRequestBuilder(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
         var path = "/scrapers/{scraperTargetID}/owners"
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1787,7 +1787,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwner>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1799,7 +1799,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postTasksIDMembers(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
+    public func postTasksIDMembers(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
         postTasksIDMembersWithRequestBuilder(taskID: taskID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1818,7 +1818,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMember> 
      */
-    public func postTasksIDMembersWithRequestBuilder(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
+    internal func postTasksIDMembersWithRequestBuilder(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
         var path = "/tasks/{taskID}/members"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1834,7 +1834,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMember>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1846,7 +1846,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postTasksIDOwners(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
+    public func postTasksIDOwners(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
         postTasksIDOwnersWithRequestBuilder(taskID: taskID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1865,7 +1865,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwner> 
      */
-    public func postTasksIDOwnersWithRequestBuilder(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
+    internal func postTasksIDOwnersWithRequestBuilder(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
         var path = "/tasks/{taskID}/owners"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1881,7 +1881,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwner>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1893,7 +1893,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postTelegrafsIDMembers(telegrafID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
+    public func postTelegrafsIDMembers(telegrafID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
         postTelegrafsIDMembersWithRequestBuilder(telegrafID: telegrafID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1912,7 +1912,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMember> 
      */
-    public func postTelegrafsIDMembersWithRequestBuilder(telegrafID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
+    internal func postTelegrafsIDMembersWithRequestBuilder(telegrafID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
         var path = "/telegrafs/{telegrafID}/members"
         let telegrafIDPreEscape = "\(APIHelper.mapValueToPathItem(telegrafID))"
         let telegrafIDPostEscape = telegrafIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1928,7 +1928,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceMember>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1940,7 +1940,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postTelegrafsIDOwners(telegrafID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
+    public func postTelegrafsIDOwners(telegrafID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
         postTelegrafsIDOwnersWithRequestBuilder(telegrafID: telegrafID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1959,7 +1959,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwner> 
      */
-    public func postTelegrafsIDOwnersWithRequestBuilder(telegrafID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
+    internal func postTelegrafsIDOwnersWithRequestBuilder(telegrafID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
         var path = "/telegrafs/{telegrafID}/owners"
         let telegrafIDPreEscape = "\(APIHelper.mapValueToPathItem(telegrafID))"
         let telegrafIDPostEscape = telegrafIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1975,7 +1975,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<ResourceOwner>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -1986,7 +1986,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postUsers(user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: User?,_ error: Error?) -> Void)) {
+    public func postUsers(user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: User?,_ error: Error?) -> Void)) {
         postUsersWithRequestBuilder(user: user, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -2004,7 +2004,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<User> 
      */
-    public func postUsersWithRequestBuilder(user: User, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
+    internal func postUsersWithRequestBuilder(user: User, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
         let path = "/users"
         let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: user)
@@ -2017,7 +2017,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<User>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -2029,7 +2029,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postUsersIDPassword(userID: String, passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func postUsersIDPassword(userID: String, passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         postUsersIDPasswordWithRequestBuilder(userID: userID, passwordResetBody: passwordResetBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -2051,7 +2051,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func postUsersIDPasswordWithRequestBuilder(userID: String, passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func postUsersIDPasswordWithRequestBuilder(userID: String, passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/users/{userID}/password"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -2067,7 +2067,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
     /**
@@ -2078,7 +2078,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func putMePassword(passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    public func putMePassword(passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         putMePasswordWithRequestBuilder(passwordResetBody: passwordResetBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -2099,7 +2099,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    public func putMePasswordWithRequestBuilder(passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func putMePasswordWithRequestBuilder(passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         let path = "/me/password"
         let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: passwordResetBody)
@@ -2112,7 +2112,7 @@ public class UsersAPI {
 
         let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
     }
 
 }
