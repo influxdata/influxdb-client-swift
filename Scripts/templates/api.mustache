@@ -263,9 +263,9 @@ extension {{projectName}}API {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders){{/hasMore}}{{/headerParams}}
 
-        let requestBuilder: RequestBuilder<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}>.Type = influxDB2API.requestBuilderFactory.{{#returnType}}getBuilder(){{/returnType}}{{^returnType}}getNonDecodableBuilder(){{/returnType}}
+        let requestBuilder: RequestBuilder<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> = influxDB2API.requestBuilderFactory.{{#returnType}}getRequestDecodableBuilder(method: "{{httpMethod}}", URLString: (url?.string ?? URLString), parameters: parameters, isBody: {{hasBodyParam}}{{#headerParams}}{{^secondaryParam}}, headers: headerParameters{{/secondaryParam}}{{/headerParams}}{{^headerParams}}{{^secondaryParam}}, headers: [:]{{/secondaryParam}}{{/headerParams}}, influxDB2API: influxDB2API){{/returnType}}{{^returnType}}getRequestNonDecodableBuilder(method: "{{httpMethod}}", URLString: (url?.string ?? URLString), parameters: parameters, isBody: {{hasBodyParam}}{{#headerParams}}{{^secondaryParam}}, headers: headerParameters{{/secondaryParam}}{{/headerParams}}{{^headerParams}}{{^secondaryParam}}, headers: [:]{{/secondaryParam}}{{/headerParams}}, influxDB2API: influxDB2API){{/returnType}}
 
-        return requestBuilder.init(method: "{{httpMethod}}", URLString: (url?.string ?? URLString), parameters: parameters, isBody: {{hasBodyParam}}{{#headerParams}}{{^secondaryParam}}, headers: headerParameters{{/secondaryParam}}{{/headerParams}}, influxDB2API: influxDB2API)
+        return requestBuilder
     }
 
 {{/operation}}

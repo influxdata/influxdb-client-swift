@@ -23,7 +23,7 @@ internal class RequestBuilder<T> {
     /// If you need to get the request's progress in older OS versions, please use Alamofire http client.{{/useURLSession}}
     {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} var onProgressReady: ((Progress) -> ())?
 
-    required internal init(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String] = [:], influxDB2API: InfluxDB2API) {
+    internal init(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String] = [:], influxDB2API: InfluxDB2API) {
         self.method = method
         self.URLString = URLString
         self.parameters = parameters
@@ -53,6 +53,6 @@ internal class RequestBuilder<T> {
 }
 
 internal protocol RequestBuilderFactory {
-    func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type
-    func getBuilder<T:Decodable>() -> RequestBuilder<T>.Type
+    func getRequestNonDecodableBuilder<T>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String], influxDB2API: InfluxDB2API) -> RequestBuilder<T>
+    func getRequestDecodableBuilder<T:Decodable>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String], influxDB2API: InfluxDB2API) -> RequestBuilder<T>
 }

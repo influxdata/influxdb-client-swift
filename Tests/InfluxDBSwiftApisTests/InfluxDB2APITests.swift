@@ -10,7 +10,7 @@ final class InfluxDB2APITests: XCTestCase {
     private var client: InfluxDBClient?
 
     override func setUp() {
-        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        client = InfluxDBClient(url: "http://localhost:9999", token: "my-token")
     }
 
     override func tearDown() {

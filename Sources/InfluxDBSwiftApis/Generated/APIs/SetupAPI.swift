@@ -53,9 +53,9 @@ public class SetupAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<IsOnboarding>.Type = influxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<IsOnboarding> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
+        return requestBuilder
     }
 
     /**
@@ -96,9 +96,9 @@ public class SetupAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<OnboardingResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<OnboardingResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
+        return requestBuilder
     }
 
     /**
@@ -139,9 +139,9 @@ public class SetupAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<OnboardingResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<OnboardingResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
+        return requestBuilder
     }
 
 }

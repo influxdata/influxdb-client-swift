@@ -13,17 +13,19 @@ import MobileCoreServices
 #endif
 
 class URLSessionRequestBuilderFactory: RequestBuilderFactory {
-    func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type {
-        return URLSessionRequestBuilder<T>.self
+    func getRequestNonDecodableBuilder<T>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String] = [:], influxDB2API: InfluxDB2API) -> RequestBuilder<T> {
+        URLSessionRequestBuilder<T>(method: method, URLString: URLString, parameters: parameters, isBody: isBody, influxDB2API: influxDB2API)
     }
 
-    func getBuilder<T:Decodable>() -> RequestBuilder<T>.Type {
-        return URLSessionDecodableRequestBuilder<T>.self
+    func getRequestDecodableBuilder<T:Decodable>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String] = [:], influxDB2API: InfluxDB2API) -> RequestBuilder<T> {
+        URLSessionDecodableRequestBuilder<T>(method: method, URLString: URLString, parameters: parameters, isBody: isBody, influxDB2API: influxDB2API)
     }
 }
 
 internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
-    
+
+    fileprivate var requestDelegate: URLSessionRequestBuilder<T>? = nil
+
     /**
      May be assigned if you want to control the authentication challenges.
      */
@@ -37,7 +39,7 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
      */
     {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} var taskCompletionShouldRetry: ((Data?, URLResponse?, Error?, @escaping (Bool) -> Void) -> Void)?
     
-    required {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} init(method: String, URLString: String, parameters: [String : Any]?, isBody: Bool, headers: [String : String] = [:], influxDB2API: InfluxDB2API) {
+    internal override init(method: String, URLString: String, parameters: [String : Any]?, isBody: Bool, headers: [String : String] = [:], influxDB2API: InfluxDB2API) {
         super.init(method: method, URLString: URLString, parameters: parameters, isBody: isBody, headers: headers, influxDB2API: influxDB2API)
     }
     
@@ -99,7 +101,11 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
         guard let xMethod = HTTPMethod(rawValue: method) else {
             fatalError("Unsuported Http method - \(method)")
         }
-        
+
+        let cleanupRequest = {
+            self.requestDelegate = nil
+        }
+
         do {
             let request = try createURLRequest(urlSession: urlSession, method: xMethod, encoding: encoding, headers: headers)
             
@@ -114,15 +120,18 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
                         guard let self = self else { return }
                         
                         if shouldRetry {
+                            cleanupRequest()
                             self.execute(apiResponseQueue, completion)
                         } else {
                             apiResponseQueue.async {
+                                cleanupRequest()
                                 self.processRequestResponse(urlRequest: request, data: data, response: response, error: error, completion: completion)
                             }
                         }
                     }
                 } else {
                     apiResponseQueue.async {
+                        cleanupRequest()
                         self.processRequestResponse(urlRequest: request, data: data, response: response, error: error, completion: completion)
                     }
                 }
@@ -136,6 +145,7 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
             
         } catch {
             apiResponseQueue.async {
+                cleanupRequest()
                 completion(.failure(ErrorResponse.error(415, nil, error)))
             }
         }
