@@ -10,7 +10,13 @@ import Foundation
 extension InfluxDB2API {
 
 
-open class LabelsAPI {
+public class LabelsAPI {
+    private let influxDB2API: InfluxDB2API
+
+    public init(influxDB2API: InfluxDB2API) {
+        self.influxDB2API = influxDB2API
+    }
+
     /**
      Delete a label
      
@@ -19,8 +25,8 @@ open class LabelsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteLabelsID(labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteLabelsIDWithRequestBuilder(labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func deleteLabelsID(labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteLabelsIDWithRequestBuilder(labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -37,12 +43,12 @@ open class LabelsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteLabelsIDWithRequestBuilder(labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    public func deleteLabelsIDWithRequestBuilder(labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/labels/{labelID}"
         let labelIDPreEscape = "\(APIHelper.mapValueToPathItem(labelID))"
         let labelIDPostEscape = labelIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{labelID}", with: labelIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -51,7 +57,7 @@ open class LabelsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Void>.Type = InfluxDB2API.requestBuilderFactory.getNonDecodableBuilder()
+        let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
         return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
     }
@@ -64,8 +70,8 @@ open class LabelsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getLabels(zapTraceSpan: String? = nil, orgID: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: LabelsResponse?,_ error: Error?) -> Void)) {
-        getLabelsWithRequestBuilder(zapTraceSpan: zapTraceSpan, orgID: orgID).execute(apiResponseQueue) { result -> Void in
+    public func getLabels(zapTraceSpan: String? = nil, orgID: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: LabelsResponse?,_ error: Error?) -> Void)) {
+        getLabelsWithRequestBuilder(zapTraceSpan: zapTraceSpan, orgID: orgID).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -82,9 +88,9 @@ open class LabelsAPI {
      - parameter orgID: (query) The organization ID. (optional)
      - returns: RequestBuilder<LabelsResponse> 
      */
-    open class func getLabelsWithRequestBuilder(zapTraceSpan: String? = nil, orgID: String? = nil) -> RequestBuilder<LabelsResponse> {
+    public func getLabelsWithRequestBuilder(zapTraceSpan: String? = nil, orgID: String? = nil) -> RequestBuilder<LabelsResponse> {
         let path = "/labels"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -96,7 +102,7 @@ open class LabelsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<LabelsResponse>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<LabelsResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
     }
@@ -109,8 +115,8 @@ open class LabelsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getLabelsID(labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
-        getLabelsIDWithRequestBuilder(labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getLabelsID(labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
+        getLabelsIDWithRequestBuilder(labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -127,12 +133,12 @@ open class LabelsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<LabelResponse> 
      */
-    open class func getLabelsIDWithRequestBuilder(labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
+    public func getLabelsIDWithRequestBuilder(labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
         var path = "/labels/{labelID}"
         let labelIDPreEscape = "\(APIHelper.mapValueToPathItem(labelID))"
         let labelIDPostEscape = labelIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{labelID}", with: labelIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -141,7 +147,7 @@ open class LabelsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<LabelResponse>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<LabelResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
     }
@@ -155,8 +161,8 @@ open class LabelsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func patchLabelsID(labelID: String, labelUpdate: LabelUpdate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
-        patchLabelsIDWithRequestBuilder(labelID: labelID, labelUpdate: labelUpdate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func patchLabelsID(labelID: String, labelUpdate: LabelUpdate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
+        patchLabelsIDWithRequestBuilder(labelID: labelID, labelUpdate: labelUpdate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -174,12 +180,12 @@ open class LabelsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<LabelResponse> 
      */
-    open class func patchLabelsIDWithRequestBuilder(labelID: String, labelUpdate: LabelUpdate, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
+    public func patchLabelsIDWithRequestBuilder(labelID: String, labelUpdate: LabelUpdate, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
         var path = "/labels/{labelID}"
         let labelIDPreEscape = "\(APIHelper.mapValueToPathItem(labelID))"
         let labelIDPostEscape = labelIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{labelID}", with: labelIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: labelUpdate)
 
         let url = URLComponents(string: URLString)
@@ -188,7 +194,7 @@ open class LabelsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<LabelResponse>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<LabelResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
     }
@@ -200,8 +206,8 @@ open class LabelsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postLabels(labelCreateRequest: LabelCreateRequest, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
-        postLabelsWithRequestBuilder(labelCreateRequest: labelCreateRequest).execute(apiResponseQueue) { result -> Void in
+    public func postLabels(labelCreateRequest: LabelCreateRequest, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
+        postLabelsWithRequestBuilder(labelCreateRequest: labelCreateRequest).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -217,14 +223,14 @@ open class LabelsAPI {
      - parameter labelCreateRequest: (body) Label to create 
      - returns: RequestBuilder<LabelResponse> 
      */
-    open class func postLabelsWithRequestBuilder(labelCreateRequest: LabelCreateRequest) -> RequestBuilder<LabelResponse> {
+    public func postLabelsWithRequestBuilder(labelCreateRequest: LabelCreateRequest) -> RequestBuilder<LabelResponse> {
         let path = "/labels"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: labelCreateRequest)
 
         let url = URLComponents(string: URLString)
 
-        let requestBuilder: RequestBuilder<LabelResponse>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<LabelResponse>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
     }

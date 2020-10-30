@@ -10,7 +10,13 @@ import Foundation
 extension InfluxDB2API {
 
 
-open class HealthAPI {
+public class HealthAPI {
+    private let influxDB2API: InfluxDB2API
+
+    public init(influxDB2API: InfluxDB2API) {
+        self.influxDB2API = influxDB2API
+    }
+
     /**
      Get the health of an instance
      
@@ -18,8 +24,8 @@ open class HealthAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getHealth(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: HealthCheck?,_ error: Error?) -> Void)) {
-        getHealthWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getHealth(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: HealthCheck?,_ error: Error?) -> Void)) {
+        getHealthWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -35,9 +41,9 @@ open class HealthAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<HealthCheck> 
      */
-    open class func getHealthWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<HealthCheck> {
+    public func getHealthWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<HealthCheck> {
         let path = "/health"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -46,7 +52,7 @@ open class HealthAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<HealthCheck>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<HealthCheck>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
     }

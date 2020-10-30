@@ -10,7 +10,13 @@ import Foundation
 extension InfluxDB2API {
 
 
-open class ReadyAPI {
+public class ReadyAPI {
+    private let influxDB2API: InfluxDB2API
+
+    public init(influxDB2API: InfluxDB2API) {
+        self.influxDB2API = influxDB2API
+    }
+
     /**
      Get the readiness of an instance at startup
      
@@ -18,8 +24,8 @@ open class ReadyAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getReady(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Ready?,_ error: Error?) -> Void)) {
-        getReadyWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getReady(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Ready?,_ error: Error?) -> Void)) {
+        getReadyWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -35,9 +41,9 @@ open class ReadyAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Ready> 
      */
-    open class func getReadyWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<Ready> {
+    public func getReadyWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<Ready> {
         let path = "/ready"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -46,7 +52,7 @@ open class ReadyAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Ready>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Ready>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
     }

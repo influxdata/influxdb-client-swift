@@ -10,7 +10,13 @@ import Foundation
 extension InfluxDB2API {
 
 
-open class DBRPsAPI {
+public class DBRPsAPI {
+    private let influxDB2API: InfluxDB2API
+
+    public init(influxDB2API: InfluxDB2API) {
+        self.influxDB2API = influxDB2API
+    }
+
     /**
      Delete a database retention policy
      
@@ -20,8 +26,8 @@ open class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteDBRPID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteDBRPIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func deleteDBRPID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteDBRPIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -39,12 +45,12 @@ open class DBRPsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteDBRPIDWithRequestBuilder(orgID: String, dbrpID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    public func deleteDBRPIDWithRequestBuilder(orgID: String, dbrpID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/dbrps/{dbrpID}"
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{dbrpID}", with: dbrpIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -56,7 +62,7 @@ open class DBRPsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Void>.Type = InfluxDB2API.requestBuilderFactory.getNonDecodableBuilder()
+        let requestBuilder: RequestBuilder<Void>.Type = influxDB2API.requestBuilderFactory.getNonDecodableBuilder()
 
         return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
     }
@@ -74,8 +80,8 @@ open class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getDBRPs(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: DBRPs?,_ error: Error?) -> Void)) {
-        getDBRPsWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan, id: id, bucketID: bucketID, _default: _default, db: db, rp: rp).execute(apiResponseQueue) { result -> Void in
+    public func getDBRPs(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: DBRPs?,_ error: Error?) -> Void)) {
+        getDBRPsWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan, id: id, bucketID: bucketID, _default: _default, db: db, rp: rp).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -97,9 +103,9 @@ open class DBRPsAPI {
      - parameter rp: (query) Specifies the retention policy to filter on (optional)
      - returns: RequestBuilder<DBRPs> 
      */
-    open class func getDBRPsWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil) -> RequestBuilder<DBRPs> {
+    public func getDBRPsWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil) -> RequestBuilder<DBRPs> {
         let path = "/dbrps"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -116,7 +122,7 @@ open class DBRPsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<DBRPs>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<DBRPs>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
     }
@@ -130,8 +136,8 @@ open class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getDBRPsID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: DBRP?,_ error: Error?) -> Void)) {
-        getDBRPsIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getDBRPsID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: DBRP?,_ error: Error?) -> Void)) {
+        getDBRPsIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -149,12 +155,12 @@ open class DBRPsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<DBRP> 
      */
-    open class func getDBRPsIDWithRequestBuilder(orgID: String, dbrpID: String, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
+    public func getDBRPsIDWithRequestBuilder(orgID: String, dbrpID: String, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
         var path = "/dbrps/{dbrpID}"
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{dbrpID}", with: dbrpIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -166,7 +172,7 @@ open class DBRPsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<DBRP>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<DBRP>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
     }
@@ -181,8 +187,8 @@ open class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func patchDBRPID(orgID: String, dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: DBRP?,_ error: Error?) -> Void)) {
-        patchDBRPIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, dBRPUpdate: dBRPUpdate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func patchDBRPID(orgID: String, dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: DBRP?,_ error: Error?) -> Void)) {
+        patchDBRPIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, dBRPUpdate: dBRPUpdate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -201,12 +207,12 @@ open class DBRPsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<DBRP> 
      */
-    open class func patchDBRPIDWithRequestBuilder(orgID: String, dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
+    public func patchDBRPIDWithRequestBuilder(orgID: String, dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
         var path = "/dbrps/{dbrpID}"
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{dbrpID}", with: dbrpIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: dBRPUpdate)
 
         var url = URLComponents(string: URLString)
@@ -218,7 +224,7 @@ open class DBRPsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<DBRP>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<DBRP>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
     }
@@ -231,8 +237,8 @@ open class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postDBRP(DBRP: DBRP, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: DBRP?,_ error: Error?) -> Void)) {
-        postDBRPWithRequestBuilder(DBRP: DBRP, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func postDBRP(DBRP: DBRP, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue?, completion: @escaping ((_ data: DBRP?,_ error: Error?) -> Void)) {
+        postDBRPWithRequestBuilder(DBRP: DBRP, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -249,9 +255,9 @@ open class DBRPsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<DBRP> 
      */
-    open class func postDBRPWithRequestBuilder(DBRP: DBRP, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
+    public func postDBRPWithRequestBuilder(DBRP: DBRP, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
         let path = "/dbrps"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: DBRP)
 
         let url = URLComponents(string: URLString)
@@ -260,7 +266,7 @@ open class DBRPsAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<DBRP>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<DBRP>.Type = influxDB2API.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
     }
