@@ -94,8 +94,8 @@ client.close()
 | bucket | Default destination bucket for writes | String | none |
 | org | Default organization bucket for writes | String | none |
 | precision | Default precision for the unix timestamps within the body line-protocol | WritePrecision | ns |
-| timeoutIntervalForRequest | The max time interval to wait between server responses before cancelling the request. | TimeInterval | 60 sec |
-| timeoutIntervalForResource | The max time interval allowed for downloading a request payload. | TimeInterval | 5 min |
+| timeoutIntervalForRequest | The timeout interval to use when waiting for additional data. | TimeInterval | 60 sec |
+| timeoutIntervalForResource | The maximum amount of time that a resource request should be allowed to take. | TimeInterval | 5 min |
 
 ##### Configure default `Bucket`, `Organization` and `Precision`
 
