@@ -10,7 +10,13 @@ import Foundation
 extension InfluxDB2API {
 
 
-open class SetupAPI {
+public class SetupAPI {
+    private let influxDB2API: InfluxDB2API
+
+    public init(influxDB2API: InfluxDB2API) {
+        self.influxDB2API = influxDB2API
+    }
+
     /**
      Check if database has default user, org, bucket
      
@@ -18,8 +24,8 @@ open class SetupAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getSetup(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: IsOnboarding?,_ error: Error?) -> Void)) {
-        getSetupWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getSetup(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: IsOnboarding?,_ error: Error?) -> Void)) {
+        getSetupWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -36,9 +42,9 @@ open class SetupAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<IsOnboarding> 
      */
-    open class func getSetupWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<IsOnboarding> {
+    internal func getSetupWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<IsOnboarding> {
         let path = "/setup"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -47,9 +53,9 @@ open class SetupAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<IsOnboarding>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<IsOnboarding> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -60,8 +66,8 @@ open class SetupAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postSetup(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: OnboardingResponse?,_ error: Error?) -> Void)) {
-        postSetupWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func postSetup(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: OnboardingResponse?,_ error: Error?) -> Void)) {
+        postSetupWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -79,9 +85,9 @@ open class SetupAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<OnboardingResponse> 
      */
-    open class func postSetupWithRequestBuilder(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil) -> RequestBuilder<OnboardingResponse> {
+    internal func postSetupWithRequestBuilder(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil) -> RequestBuilder<OnboardingResponse> {
         let path = "/setup"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: onboardingRequest)
 
         let url = URLComponents(string: URLString)
@@ -90,9 +96,9 @@ open class SetupAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<OnboardingResponse>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<OnboardingResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -103,8 +109,8 @@ open class SetupAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postSetupUser(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: OnboardingResponse?,_ error: Error?) -> Void)) {
-        postSetupUserWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func postSetupUser(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: OnboardingResponse?,_ error: Error?) -> Void)) {
+        postSetupUserWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -122,9 +128,9 @@ open class SetupAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<OnboardingResponse> 
      */
-    open class func postSetupUserWithRequestBuilder(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil) -> RequestBuilder<OnboardingResponse> {
+    internal func postSetupUserWithRequestBuilder(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil) -> RequestBuilder<OnboardingResponse> {
         let path = "/setup/user"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: onboardingRequest)
 
         let url = URLComponents(string: URLString)
@@ -133,9 +139,9 @@ open class SetupAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<OnboardingResponse>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<OnboardingResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder
     }
 
 }

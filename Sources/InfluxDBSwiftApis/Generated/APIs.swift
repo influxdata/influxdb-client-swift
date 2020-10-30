@@ -9,35 +9,27 @@ import Foundation
 import FoundationNetworking
 #endif
 
-open class InfluxDB2API {
-    public static var basePath = "https://raw.githubusercontent.com/api/v2"
-    public static var credential: URLCredential?
-    public static var customHeaders: [String:String] = [:]
-    public static var requestBuilderFactory: RequestBuilderFactory = URLSessionRequestBuilderFactory()
-    public static var apiResponseQueue: DispatchQueue = .main
-}
-
-open class RequestBuilder<T> {
+internal class RequestBuilder<T> {
     var credential: URLCredential?
     var headers: [String:String]
     public let parameters: [String:Any]?
     public let isBody: Bool
     public let method: String
     public let URLString: String
+    internal let influxDB2API: InfluxDB2API
 
     /// Optional block to obtain a reference to the request's progress instance when available.
     /// With the URLSession http client the request's progress only works on iOS 11.0, macOS 10.13, macCatalyst 13.0, tvOS 11.0, watchOS 4.0.
     /// If you need to get the request's progress in older OS versions, please use Alamofire http client.
     public var onProgressReady: ((Progress) -> ())?
 
-    required public init(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String] = [:]) {
+    internal init(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String] = [:], influxDB2API: InfluxDB2API) {
         self.method = method
         self.URLString = URLString
         self.parameters = parameters
         self.isBody = isBody
         self.headers = headers
-
-        addHeaders(InfluxDB2API.customHeaders)
+        self.influxDB2API = influxDB2API
     }
 
     open func addHeaders(_ aHeaders:[String:String]) {
@@ -46,7 +38,7 @@ open class RequestBuilder<T> {
         }
     }
 
-    open func execute(_ apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) { }
+    internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) { }
 
     public func addHeader(name: String, value: String) -> Self {
         if !value.isEmpty {
@@ -55,13 +47,12 @@ open class RequestBuilder<T> {
         return self
     }
 
-    open func addCredential() -> Self {
-        self.credential = InfluxDB2API.credential
-        return self
+    internal func addCredential() -> Self {
+        self
     }
 }
 
-public protocol RequestBuilderFactory {
-    func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type
-    func getBuilder<T:Decodable>() -> RequestBuilder<T>.Type
+internal protocol RequestBuilderFactory {
+    func getRequestNonDecodableBuilder<T>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String], influxDB2API: InfluxDB2API) -> RequestBuilder<T>
+    func getRequestDecodableBuilder<T:Decodable>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String], influxDB2API: InfluxDB2API) -> RequestBuilder<T>
 }

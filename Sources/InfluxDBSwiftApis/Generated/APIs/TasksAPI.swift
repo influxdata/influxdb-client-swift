@@ -10,7 +10,13 @@ import Foundation
 extension InfluxDB2API {
 
 
-open class TasksAPI {
+public class TasksAPI {
+    private let influxDB2API: InfluxDB2API
+
+    public init(influxDB2API: InfluxDB2API) {
+        self.influxDB2API = influxDB2API
+    }
+
     /**
      Delete a task
      
@@ -19,8 +25,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteTasksID(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteTasksIDWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func deleteTasksID(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteTasksIDWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -38,12 +44,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteTasksIDWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTasksIDWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/tasks/{taskID}"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -52,9 +58,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Void>.Type = InfluxDB2API.requestBuilderFactory.getNonDecodableBuilder()
+        let requestBuilder: RequestBuilder<Void> = influxDB2API.requestBuilderFactory.getRequestNonDecodableBuilder(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -66,8 +72,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteTasksIDLabelsID(taskID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteTasksIDLabelsIDWithRequestBuilder(taskID: taskID, labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func deleteTasksIDLabelsID(taskID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteTasksIDLabelsIDWithRequestBuilder(taskID: taskID, labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -85,7 +91,7 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteTasksIDLabelsIDWithRequestBuilder(taskID: String, labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTasksIDLabelsIDWithRequestBuilder(taskID: String, labelID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/tasks/{taskID}/labels/{labelID}"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -93,7 +99,7 @@ open class TasksAPI {
         let labelIDPreEscape = "\(APIHelper.mapValueToPathItem(labelID))"
         let labelIDPostEscape = labelIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{labelID}", with: labelIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -102,9 +108,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Void>.Type = InfluxDB2API.requestBuilderFactory.getNonDecodableBuilder()
+        let requestBuilder: RequestBuilder<Void> = influxDB2API.requestBuilderFactory.getRequestNonDecodableBuilder(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -116,8 +122,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteTasksIDMembersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteTasksIDMembersIDWithRequestBuilder(userID: userID, taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func deleteTasksIDMembersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteTasksIDMembersIDWithRequestBuilder(userID: userID, taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -135,7 +141,7 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteTasksIDMembersIDWithRequestBuilder(userID: String, taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTasksIDMembersIDWithRequestBuilder(userID: String, taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/tasks/{taskID}/members/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -143,7 +149,7 @@ open class TasksAPI {
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -152,9 +158,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Void>.Type = InfluxDB2API.requestBuilderFactory.getNonDecodableBuilder()
+        let requestBuilder: RequestBuilder<Void> = influxDB2API.requestBuilderFactory.getRequestNonDecodableBuilder(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -166,8 +172,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteTasksIDOwnersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteTasksIDOwnersIDWithRequestBuilder(userID: userID, taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func deleteTasksIDOwnersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteTasksIDOwnersIDWithRequestBuilder(userID: userID, taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -185,7 +191,7 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteTasksIDOwnersIDWithRequestBuilder(userID: String, taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTasksIDOwnersIDWithRequestBuilder(userID: String, taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/tasks/{taskID}/owners/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -193,7 +199,7 @@ open class TasksAPI {
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -202,9 +208,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Void>.Type = InfluxDB2API.requestBuilderFactory.getNonDecodableBuilder()
+        let requestBuilder: RequestBuilder<Void> = influxDB2API.requestBuilderFactory.getRequestNonDecodableBuilder(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -216,8 +222,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteTasksIDRunsID(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteTasksIDRunsIDWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func deleteTasksIDRunsID(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteTasksIDRunsIDWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -235,7 +241,7 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteTasksIDRunsIDWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteTasksIDRunsIDWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/tasks/{taskID}/runs/{runID}"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -243,7 +249,7 @@ open class TasksAPI {
         let runIDPreEscape = "\(APIHelper.mapValueToPathItem(runID))"
         let runIDPostEscape = runIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{runID}", with: runIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -252,9 +258,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Void>.Type = InfluxDB2API.requestBuilderFactory.getNonDecodableBuilder()
+        let requestBuilder: RequestBuilder<Void> = influxDB2API.requestBuilderFactory.getRequestNonDecodableBuilder(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -279,8 +285,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasks(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Tasks?,_ error: Error?) -> Void)) {
-        getTasksWithRequestBuilder(zapTraceSpan: zapTraceSpan, name: name, after: after, user: user, org: org, orgID: orgID, status: status, limit: limit).execute(apiResponseQueue) { result -> Void in
+    public func getTasks(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Tasks?,_ error: Error?) -> Void)) {
+        getTasksWithRequestBuilder(zapTraceSpan: zapTraceSpan, name: name, after: after, user: user, org: org, orgID: orgID, status: status, limit: limit).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -303,9 +309,9 @@ open class TasksAPI {
      - parameter limit: (query) The number of tasks to return (optional, default to 100)
      - returns: RequestBuilder<Tasks> 
      */
-    open class func getTasksWithRequestBuilder(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil) -> RequestBuilder<Tasks> {
+    internal func getTasksWithRequestBuilder(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil) -> RequestBuilder<Tasks> {
         let path = "/tasks"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -323,9 +329,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Tasks>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Tasks> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -336,8 +342,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasksID(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Task?,_ error: Error?) -> Void)) {
-        getTasksIDWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getTasksID(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Task?,_ error: Error?) -> Void)) {
+        getTasksIDWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -354,12 +360,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Task> 
      */
-    open class func getTasksIDWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Task> {
+    internal func getTasksIDWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Task> {
         var path = "/tasks/{taskID}"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -368,9 +374,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Task>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Task> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -381,8 +387,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasksIDLabels(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: LabelsResponse?,_ error: Error?) -> Void)) {
-        getTasksIDLabelsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getTasksIDLabels(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: LabelsResponse?,_ error: Error?) -> Void)) {
+        getTasksIDLabelsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -399,12 +405,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<LabelsResponse> 
      */
-    open class func getTasksIDLabelsWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<LabelsResponse> {
+    internal func getTasksIDLabelsWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<LabelsResponse> {
         var path = "/tasks/{taskID}/labels"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -413,9 +419,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<LabelsResponse>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<LabelsResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -426,8 +432,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasksIDLogs(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Logs?,_ error: Error?) -> Void)) {
-        getTasksIDLogsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getTasksIDLogs(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Logs?,_ error: Error?) -> Void)) {
+        getTasksIDLogsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -444,12 +450,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Logs> 
      */
-    open class func getTasksIDLogsWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Logs> {
+    internal func getTasksIDLogsWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Logs> {
         var path = "/tasks/{taskID}/logs"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -458,9 +464,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Logs>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Logs> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -471,8 +477,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasksIDMembers(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
-        getTasksIDMembersWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getTasksIDMembers(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMembers?,_ error: Error?) -> Void)) {
+        getTasksIDMembersWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -489,12 +495,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMembers> 
      */
-    open class func getTasksIDMembersWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
+    internal func getTasksIDMembersWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMembers> {
         var path = "/tasks/{taskID}/members"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -503,9 +509,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<ResourceMembers>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<ResourceMembers> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -516,8 +522,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasksIDOwners(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
-        getTasksIDOwnersWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getTasksIDOwners(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwners?,_ error: Error?) -> Void)) {
+        getTasksIDOwnersWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -534,12 +540,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwners> 
      */
-    open class func getTasksIDOwnersWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
+    internal func getTasksIDOwnersWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwners> {
         var path = "/tasks/{taskID}/owners"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -548,9 +554,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<ResourceOwners>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<ResourceOwners> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -565,8 +571,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasksIDRuns(taskID: String, zapTraceSpan: String? = nil, after: String? = nil, limit: Int? = nil, afterTime: Date? = nil, beforeTime: Date? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Runs?,_ error: Error?) -> Void)) {
-        getTasksIDRunsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan, after: after, limit: limit, afterTime: afterTime, beforeTime: beforeTime).execute(apiResponseQueue) { result -> Void in
+    public func getTasksIDRuns(taskID: String, zapTraceSpan: String? = nil, after: String? = nil, limit: Int? = nil, afterTime: Date? = nil, beforeTime: Date? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Runs?,_ error: Error?) -> Void)) {
+        getTasksIDRunsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan, after: after, limit: limit, afterTime: afterTime, beforeTime: beforeTime).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -587,12 +593,12 @@ open class TasksAPI {
      - parameter beforeTime: (query) Filter runs to those scheduled before this time, RFC3339 (optional)
      - returns: RequestBuilder<Runs> 
      */
-    open class func getTasksIDRunsWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil, after: String? = nil, limit: Int? = nil, afterTime: Date? = nil, beforeTime: Date? = nil) -> RequestBuilder<Runs> {
+    internal func getTasksIDRunsWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil, after: String? = nil, limit: Int? = nil, afterTime: Date? = nil, beforeTime: Date? = nil) -> RequestBuilder<Runs> {
         var path = "/tasks/{taskID}/runs"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -607,9 +613,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Runs>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Runs> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -621,8 +627,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasksIDRunsID(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Run?,_ error: Error?) -> Void)) {
-        getTasksIDRunsIDWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getTasksIDRunsID(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Run?,_ error: Error?) -> Void)) {
+        getTasksIDRunsIDWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -640,7 +646,7 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Run> 
      */
-    open class func getTasksIDRunsIDWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Run> {
+    internal func getTasksIDRunsIDWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Run> {
         var path = "/tasks/{taskID}/runs/{runID}"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -648,7 +654,7 @@ open class TasksAPI {
         let runIDPreEscape = "\(APIHelper.mapValueToPathItem(runID))"
         let runIDPostEscape = runIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{runID}", with: runIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -657,9 +663,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Run>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Run> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -671,8 +677,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getTasksIDRunsIDLogs(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Logs?,_ error: Error?) -> Void)) {
-        getTasksIDRunsIDLogsWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func getTasksIDRunsIDLogs(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Logs?,_ error: Error?) -> Void)) {
+        getTasksIDRunsIDLogsWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -690,7 +696,7 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Logs> 
      */
-    open class func getTasksIDRunsIDLogsWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Logs> {
+    internal func getTasksIDRunsIDLogsWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Logs> {
         var path = "/tasks/{taskID}/runs/{runID}/logs"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -698,7 +704,7 @@ open class TasksAPI {
         let runIDPreEscape = "\(APIHelper.mapValueToPathItem(runID))"
         let runIDPostEscape = runIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{runID}", with: runIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -707,9 +713,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Logs>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Logs> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -721,8 +727,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func patchTasksID(taskID: String, taskUpdateRequest: TaskUpdateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Task?,_ error: Error?) -> Void)) {
-        patchTasksIDWithRequestBuilder(taskID: taskID, taskUpdateRequest: taskUpdateRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func patchTasksID(taskID: String, taskUpdateRequest: TaskUpdateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Task?,_ error: Error?) -> Void)) {
+        patchTasksIDWithRequestBuilder(taskID: taskID, taskUpdateRequest: taskUpdateRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -741,12 +747,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Task> 
      */
-    open class func patchTasksIDWithRequestBuilder(taskID: String, taskUpdateRequest: TaskUpdateRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Task> {
+    internal func patchTasksIDWithRequestBuilder(taskID: String, taskUpdateRequest: TaskUpdateRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Task> {
         var path = "/tasks/{taskID}"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: taskUpdateRequest)
 
         let url = URLComponents(string: URLString)
@@ -755,9 +761,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Task>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Task> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -768,8 +774,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postTasks(taskCreateRequest: TaskCreateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Task?,_ error: Error?) -> Void)) {
-        postTasksWithRequestBuilder(taskCreateRequest: taskCreateRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func postTasks(taskCreateRequest: TaskCreateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Task?,_ error: Error?) -> Void)) {
+        postTasksWithRequestBuilder(taskCreateRequest: taskCreateRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -786,9 +792,9 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Task> 
      */
-    open class func postTasksWithRequestBuilder(taskCreateRequest: TaskCreateRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Task> {
+    internal func postTasksWithRequestBuilder(taskCreateRequest: TaskCreateRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Task> {
         let path = "/tasks"
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: taskCreateRequest)
 
         let url = URLComponents(string: URLString)
@@ -797,9 +803,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Task>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Task> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -811,8 +817,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postTasksIDLabels(taskID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
-        postTasksIDLabelsWithRequestBuilder(taskID: taskID, labelMapping: labelMapping, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func postTasksIDLabels(taskID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: LabelResponse?,_ error: Error?) -> Void)) {
+        postTasksIDLabelsWithRequestBuilder(taskID: taskID, labelMapping: labelMapping, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -830,12 +836,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<LabelResponse> 
      */
-    open class func postTasksIDLabelsWithRequestBuilder(taskID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
+    internal func postTasksIDLabelsWithRequestBuilder(taskID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil) -> RequestBuilder<LabelResponse> {
         var path = "/tasks/{taskID}/labels"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: labelMapping)
 
         let url = URLComponents(string: URLString)
@@ -844,9 +850,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<LabelResponse>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<LabelResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -858,8 +864,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postTasksIDMembers(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
-        postTasksIDMembersWithRequestBuilder(taskID: taskID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func postTasksIDMembers(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceMember?,_ error: Error?) -> Void)) {
+        postTasksIDMembersWithRequestBuilder(taskID: taskID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -877,12 +883,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceMember> 
      */
-    open class func postTasksIDMembersWithRequestBuilder(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
+    internal func postTasksIDMembersWithRequestBuilder(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceMember> {
         var path = "/tasks/{taskID}/members"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: addResourceMemberRequestBody)
 
         let url = URLComponents(string: URLString)
@@ -891,9 +897,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<ResourceMember>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<ResourceMember> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -905,8 +911,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postTasksIDOwners(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
-        postTasksIDOwnersWithRequestBuilder(taskID: taskID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func postTasksIDOwners(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: ResourceOwner?,_ error: Error?) -> Void)) {
+        postTasksIDOwnersWithRequestBuilder(taskID: taskID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -924,12 +930,12 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ResourceOwner> 
      */
-    open class func postTasksIDOwnersWithRequestBuilder(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
+    internal func postTasksIDOwnersWithRequestBuilder(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil) -> RequestBuilder<ResourceOwner> {
         var path = "/tasks/{taskID}/owners"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: addResourceMemberRequestBody)
 
         let url = URLComponents(string: URLString)
@@ -938,9 +944,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<ResourceOwner>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<ResourceOwner> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -952,8 +958,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postTasksIDRuns(taskID: String, zapTraceSpan: String? = nil, runManually: RunManually? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Run?,_ error: Error?) -> Void)) {
-        postTasksIDRunsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan, runManually: runManually).execute(apiResponseQueue) { result -> Void in
+    public func postTasksIDRuns(taskID: String, zapTraceSpan: String? = nil, runManually: RunManually? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Run?,_ error: Error?) -> Void)) {
+        postTasksIDRunsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan, runManually: runManually).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -971,12 +977,12 @@ open class TasksAPI {
      - parameter runManually: (body)  (optional)
      - returns: RequestBuilder<Run> 
      */
-    open class func postTasksIDRunsWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil, runManually: RunManually? = nil) -> RequestBuilder<Run> {
+    internal func postTasksIDRunsWithRequestBuilder(taskID: String, zapTraceSpan: String? = nil, runManually: RunManually? = nil) -> RequestBuilder<Run> {
         var path = "/tasks/{taskID}/runs"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{taskID}", with: taskIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: runManually)
 
         let url = URLComponents(string: URLString)
@@ -985,9 +991,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Run>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Run> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters)
+        return requestBuilder
     }
 
     /**
@@ -999,8 +1005,8 @@ open class TasksAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func postTasksIDRunsIDRetry(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue = InfluxDB2API.apiResponseQueue, completion: @escaping ((_ data: Run?,_ error: Error?) -> Void)) {
-        postTasksIDRunsIDRetryWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue) { result -> Void in
+    public func postTasksIDRunsIDRetry(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: Run?,_ error: Error?) -> Void)) {
+        postTasksIDRunsIDRetryWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -1018,7 +1024,7 @@ open class TasksAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Run> 
      */
-    open class func postTasksIDRunsIDRetryWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Run> {
+    internal func postTasksIDRunsIDRetryWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Run> {
         var path = "/tasks/{taskID}/runs/{runID}/retry"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1026,7 +1032,7 @@ open class TasksAPI {
         let runIDPreEscape = "\(APIHelper.mapValueToPathItem(runID))"
         let runIDPostEscape = runIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{runID}", with: runIDPostEscape, options: .literal, range: nil)
-        let URLString = InfluxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -1035,9 +1041,9 @@ open class TasksAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Run>.Type = InfluxDB2API.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<Run> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters)
+        return requestBuilder
     }
 
 }

@@ -12,13 +12,13 @@ public class InfluxDBClient {
     /// Version of client.
     public static var version: String = "0.0.1"
     /// InfluxDB host and port.
-    internal let url: String
+    public let url: String
     /// Authentication token.
     internal let token: String
     /// The options to configre client.
     internal let options: InfluxDBOptions
     /// Shared URLSession across the client.
-    internal let session: URLSession
+    public let session: URLSession
 
     /// Create a new client for a InfluxDB.
     ///
@@ -90,10 +90,10 @@ extension InfluxDBClient {
         /// Default precision for the unix timestamps within the body line-protocol.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/glossary/#precision
         public var precision = WritePrecision.ns
-        /// The max time interval to wait between server responses before cancelling the request. Default to 60 sec.
+        /// The timeout interval to use when waiting for additional data. Default to 60 sec.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForRequest
         public var timeoutIntervalForRequest: TimeInterval = 60
-        /// The max time interval allowed for downloading a request payload. Default to 5 min.
+        /// The maximum amount of time that a resource request should be allowed to take. Default to 5 min.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForResource
         public var timeoutIntervalForResource: TimeInterval = 60 * 5
     }
