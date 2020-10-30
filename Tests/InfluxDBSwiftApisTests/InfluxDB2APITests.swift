@@ -39,4 +39,9 @@ final class InfluxDB2APITests: XCTestCase {
         XCTAssertNotNil(api.getUsersAPI())
         XCTAssertNotNil(api.getVariablesAPI())
     }
+
+    func testURLSession() {
+        let api = InfluxDB2API(client: client!)
+        XCTAssertEqual(client?.session, api.getURLSession())
+    }
 }

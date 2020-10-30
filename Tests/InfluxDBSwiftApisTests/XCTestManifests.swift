@@ -8,6 +8,7 @@ extension InfluxDB2APITests {
     static let __allTests__InfluxDB2APITests = [
         ("testCreateApis", testCreateApis),
         ("testCreateInstance", testCreateInstance),
+        ("testURLSession", testURLSession),
     ]
 }
 
