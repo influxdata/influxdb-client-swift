@@ -79,6 +79,8 @@ jobs:
             - ./builde/repositories
       - store_test_results:
           path: build/
+      - store_artifacts:
+          path: build/reports/junit.xml
       - run:
           name: Collecting coverage reports
           command: bash <(curl -s https://codecov.io/bash) -f ./info.lcov || echo "Codecov did not collect coverage reports"

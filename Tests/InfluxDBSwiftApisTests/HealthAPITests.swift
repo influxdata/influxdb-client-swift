@@ -10,6 +10,10 @@ final class HealthAPITests: APIXCTestCase {
     func testHealth() {
         var checker: (HealthCheck) -> Void = { response in
             XCTAssertEqual(HealthCheck.Status.pass, response.status)
+            XCTAssertEqual("influxdb", response.name)
+            XCTAssertNotNil(response.message)
+            XCTAssertNotNil(response.version)
+            XCTAssertNotNil(response.commit)
         }
 
         check(api?.getHealthAPI().getHealth, &checker)
