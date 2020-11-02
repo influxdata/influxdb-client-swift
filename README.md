@@ -14,6 +14,19 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
 
 #### Disclaimer: This library is a work in progress and should not be considered production ready yet.
 
+- [Features](#features)
+- [Supported Platforms](#supported-platforms)
+- [Installation](#installation)
+    - [Swift Package Manager](#swift-package-manager)
+    - [CocoaPods](#cocoapods)
+- [Usage](#usage)
+    - [Creating a client](#creating-a-client)
+    - [Writing data](#writes)
+    - [Querying data](#queries)
+    - [Management API](#management-api)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 InfluxDB 2.0 client consists of two packages
@@ -23,9 +36,9 @@ InfluxDB 2.0 client consists of two packages
   - Writing data
     - batched in chunks on background
     - automatic retries on write failures
-  - Health check
 - `InfluxDBSwiftApis`
   - provides all other InfluxDB 2.0 APIs for managing
+    - health check
     - sources, buckets
     - tasks
     - authorizations
@@ -121,6 +134,42 @@ client = InfluxDBClient(url: "http://localhost:8086", username: "user", password
 ...
 
 client.close()
+```
+
+### Writes
+
+TBP
+
+### Queries
+
+TBP
+
+### Management API
+
+The client supports following management API:
+
+|  | API docs |
+| --- | --- |
+| [**AuthorizationsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/AuthorizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Authorizations |
+| [**BucketsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
+| [**DBRPsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/DBRPs |
+| [**HealthAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Health |
+| [**LabelsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
+| [**OrganizationsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
+| [**ReadyAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Ready |
+| [**ScraperTargetsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/ScraperTargetsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/ScraperTargets |
+| [**SecretsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/SecretsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Secrets|
+| [**SetupAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/SetupAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Tasks |
+| [**SourcesAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/SourcesAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Sources |
+| [**TasksAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/TasksAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Tasks |
+| [**UsersAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/UsersAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Users |
+| [**VariablesAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/VariablesAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Variables |
+
+
+The following example demonstrates how to use a InfluxDB 2.0 Management API to create new bucket. For further information see docs and [examples](/Examples).
+
+```swift
+TBD
 ```
 
 ## Contributing

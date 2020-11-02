@@ -60,9 +60,16 @@ custom_categories:
       - RunLog
       - RunManually
       - Runs
+      - ScraperTargetRequest
+      - ScraperTargetResponse
+      - ScraperTargetResponseAllOfLinks
+      - ScraperTargetResponses
       - SecretKeysResponse
       - SecretKeysResponseAllOfLinks
       - SecretKeys
+      - Source
+      - SourceLinks
+      - Sources
       - Task
       - TaskCreateRequest
       - TaskLinks
