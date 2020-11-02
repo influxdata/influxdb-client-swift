@@ -33,8 +33,10 @@ final class InfluxDB2APITests: XCTestCase {
         XCTAssertNotNil(api.getLabelsAPI())
         XCTAssertNotNil(api.getOrganizationsAPI())
         XCTAssertNotNil(api.getReadyAPI())
+        XCTAssertNotNil(api.getScraperTargetsAPI())
         XCTAssertNotNil(api.getSecretsAPI())
         XCTAssertNotNil(api.getSetupAPI())
+        XCTAssertNotNil(api.getSourcesAPI())
         XCTAssertNotNil(api.getTasksAPI())
         XCTAssertNotNil(api.getUsersAPI())
         XCTAssertNotNil(api.getVariablesAPI())
@@ -43,5 +45,49 @@ final class InfluxDB2APITests: XCTestCase {
     func testURLSession() {
         let api = InfluxDB2API(client: client!)
         XCTAssertEqual(client?.session, api.getURLSession())
+    }
+}
+
+class APIXCTestCase: XCTestCase {
+    internal var client: InfluxDBClient?
+    internal var api: InfluxDB2API?
+
+    override func setUp() {
+        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        api = InfluxDB2API(client: client!)
+    }
+
+    override func tearDown() {
+        if let client = client {
+            client.close()
+        }
+    }
+
+    func check<RF: Codable>(_ request: ((String?, Dispatch.DispatchQueue?, @escaping (RF?, Error?) -> Void) -> Void)?,
+                            _ checker: inout (RF) -> Void) {
+        if request == nil {
+            XCTFail("Request is not defined!")
+            return
+        }
+
+        let expectation = self.expectation(description: "Download apple.com home page")
+        let check = checker
+
+        if let request = request {
+            request(nil, nil) { response, error in
+                if let error = error {
+                    XCTFail("Error occurs: \(error)")
+                    return
+                }
+
+                if let response = response {
+                    print("Response: \(response)")
+                    check(response)
+                    expectation.fulfill()
+                }
+            }
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
     }
 }

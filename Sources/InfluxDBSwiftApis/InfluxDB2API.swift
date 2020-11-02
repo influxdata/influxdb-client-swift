@@ -104,6 +104,13 @@ extension InfluxDB2API {
         ReadyAPI(influxDB2API: self)
     }
 
+    /// Create a new instance of `ScraperTargetsAPI`.
+    ///
+    /// - Returns: ScraperTargetsAPI
+    public func getScraperTargetsAPI() -> InfluxDB2API.ScraperTargetsAPI {
+        ScraperTargetsAPI(influxDB2API: self)
+    }
+
     /// Create a new instance of `SecretsAPI`.
     ///
     /// - Returns: SecretsAPI
@@ -116,6 +123,13 @@ extension InfluxDB2API {
     /// - Returns: SetupAPI
     public func getSetupAPI() -> InfluxDB2API.SetupAPI {
         SetupAPI(influxDB2API: self)
+    }
+
+    /// Create a new instance of `SourcesAPI`.
+    ///
+    /// - Returns: SourcesAPI
+    public func getSourcesAPI() -> InfluxDB2API.SourcesAPI {
+        SourcesAPI(influxDB2API: self)
     }
 
     /// Create a new instance of `TasksAPI`.
