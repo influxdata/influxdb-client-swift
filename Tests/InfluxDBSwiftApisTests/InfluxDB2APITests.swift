@@ -88,7 +88,6 @@ class APIXCTestCase: XCTestCase {
                 }
 
                 if let response = response {
-                    print("Response: \(dump(response))")
                     check(response)
                     expectation.fulfill()
                 }
@@ -119,7 +118,6 @@ class APIXCTestCase: XCTestCase {
                 }
 
                 if let response = response {
-                    print("Response: \(dump(response))")
                     check(response)
                     expectation.fulfill()
                 }

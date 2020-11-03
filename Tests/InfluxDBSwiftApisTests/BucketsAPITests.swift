@@ -16,7 +16,6 @@ class BucketsAPITests: APIXCTestCase {
                         bucket.name.hasSuffix("_TEST")
                     }.forEach { bucket in
                         self.api?.getBucketsAPI().deleteBucketsID(bucketID: bucket.id!) { _, _ in
-                            print("Deleted bucket: \(bucket.name)")
                         }
                     }
         }
