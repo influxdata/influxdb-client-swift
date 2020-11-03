@@ -51,10 +51,12 @@ final class InfluxDB2APITests: XCTestCase {
 class APIXCTestCase: XCTestCase {
     internal var client: InfluxDBClient?
     internal var api: InfluxDB2API?
+    internal static var orgID: String = ""
 
     override func setUp() {
         client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
         api = InfluxDB2API(client: client!)
+        findMyOrg()
     }
 
     override func tearDown() {
@@ -63,14 +65,19 @@ class APIXCTestCase: XCTestCase {
         }
     }
 
-    func check<RF: Codable>(_ request: ((String?, Dispatch.DispatchQueue?, @escaping (RF?, Error?) -> Void) -> Void)?,
-                            _ checker: inout (RF) -> Void) {
+    func generateName(_ prefix: String) -> String {
+        "\(prefix)_\(Date().timeIntervalSince1970)_TEST"
+    }
+
+    func checkGet<ResponseType: Codable>(_ request: ((String?, Dispatch.DispatchQueue?,
+                                                      @escaping (ResponseType?, Error?) -> Void) -> Void)?,
+                                         _ checker: inout (ResponseType) -> Void) {
         if request == nil {
             XCTFail("Request is not defined!")
             return
         }
 
-        let expectation = self.expectation(description: "Download apple.com home page")
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
         let check = checker
 
         if let request = request {
@@ -81,13 +88,63 @@ class APIXCTestCase: XCTestCase {
                 }
 
                 if let response = response {
-                    print("Response: \(response)")
+                    print("Response: \(dump(response))")
                     check(response)
                     expectation.fulfill()
                 }
             }
         }
 
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType, String?, Dispatch.DispatchQueue?,
+                                                                          @escaping (ResponseType?, Error?) -> Void)
+                                                                         -> Void)?,
+                                                             _ body: BodyType,
+                                                             _ checker: inout (ResponseType) -> Void) {
+        if request == nil {
+            XCTFail("Request is not defined!")
+            return
+        }
+
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let check = checker
+
+        if let request = request {
+            request(body, nil, nil) { response, error in
+                if let error = error {
+                    XCTFail("Error occurs: \(error)")
+                    return
+                }
+
+                if let response = response {
+                    print("Response: \(dump(response))")
+                    check(response)
+                    expectation.fulfill()
+                }
+            }
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    private func findMyOrg() {
+        guard Self.orgID.isEmpty else {
+            return
+        }
+        let expectation = self.expectation(description: "Cannot find my-org")
+        api?.getOrganizationsAPI().getOrgs(limit: 100) { organizations, error in
+            if let error = error {
+                XCTFail("\(error)")
+            }
+            if let organizations = organizations {
+                Self.orgID = (organizations.orgs?.first { org in
+                    org.name == "my-org"
+                }?.id)!
+                expectation.fulfill()
+            }
+        }
         waitForExpectations(timeout: 5, handler: nil)
     }
 }

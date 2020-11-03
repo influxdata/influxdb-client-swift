@@ -6,7 +6,7 @@ import InfluxDBSwift
 @testable import InfluxDBSwiftApis
 import XCTest
 
-class ReadyAPITests: APIXCTestCase {
+final class ReadyAPITests: APIXCTestCase {
     func testReady() {
         var checker: (Ready) -> Void = { response in
             XCTAssertEqual(Ready.Status.ready, response.status)
@@ -14,6 +14,6 @@ class ReadyAPITests: APIXCTestCase {
             XCTAssertNotNil(response.started)
         }
 
-        check(api?.getReadyAPI().getReady, &checker)
+        checkGet(api?.getReadyAPI().getReady, &checker)
     }
 }

@@ -50,7 +50,7 @@ public class DBRPsAPI {
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{dbrpID}", with: dbrpIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -105,7 +105,7 @@ public class DBRPsAPI {
      */
     internal func getDBRPsWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil) -> RequestBuilder<DBRPs> {
         let path = "/dbrps"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -160,7 +160,7 @@ public class DBRPsAPI {
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{dbrpID}", with: dbrpIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -212,7 +212,7 @@ public class DBRPsAPI {
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{dbrpID}", with: dbrpIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: dBRPUpdate)
 
         var url = URLComponents(string: URLString)
@@ -257,7 +257,7 @@ public class DBRPsAPI {
      */
     internal func postDBRPWithRequestBuilder(DBRP: DBRP, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
         let path = "/dbrps"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: DBRP)
 
         let url = URLComponents(string: URLString)

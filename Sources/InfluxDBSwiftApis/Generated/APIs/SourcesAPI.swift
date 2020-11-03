@@ -48,7 +48,7 @@ public class SourcesAPI {
         let sourceIDPreEscape = "\(APIHelper.mapValueToPathItem(sourceID))"
         let sourceIDPostEscape = sourceIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{sourceID}", with: sourceIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -90,7 +90,7 @@ public class SourcesAPI {
      */
     internal func getSourcesWithRequestBuilder(zapTraceSpan: String? = nil, org: String? = nil) -> RequestBuilder<Sources> {
         let path = "/sources"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -138,7 +138,7 @@ public class SourcesAPI {
         let sourceIDPreEscape = "\(APIHelper.mapValueToPathItem(sourceID))"
         let sourceIDPostEscape = sourceIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{sourceID}", with: sourceIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -185,7 +185,7 @@ public class SourcesAPI {
         let sourceIDPreEscape = "\(APIHelper.mapValueToPathItem(sourceID))"
         let sourceIDPostEscape = sourceIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{sourceID}", with: sourceIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -233,7 +233,7 @@ public class SourcesAPI {
         let sourceIDPreEscape = "\(APIHelper.mapValueToPathItem(sourceID))"
         let sourceIDPostEscape = sourceIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{sourceID}", with: sourceIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -280,7 +280,7 @@ public class SourcesAPI {
         let sourceIDPreEscape = "\(APIHelper.mapValueToPathItem(sourceID))"
         let sourceIDPostEscape = sourceIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{sourceID}", with: sourceIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: source)
 
         let url = URLComponents(string: URLString)
@@ -322,7 +322,7 @@ public class SourcesAPI {
      */
     internal func postSourcesWithRequestBuilder(source: Source, zapTraceSpan: String? = nil) -> RequestBuilder<Source> {
         let path = "/sources"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: source)
 
         let url = URLComponents(string: URLString)

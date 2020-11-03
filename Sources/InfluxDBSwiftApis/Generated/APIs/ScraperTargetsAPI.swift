@@ -48,7 +48,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -98,7 +98,7 @@ public class ScraperTargetsAPI {
         let labelIDPreEscape = "\(APIHelper.mapValueToPathItem(labelID))"
         let labelIDPostEscape = labelIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{labelID}", with: labelIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -148,7 +148,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -198,7 +198,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -246,7 +246,7 @@ public class ScraperTargetsAPI {
      */
     internal func getScrapersWithRequestBuilder(zapTraceSpan: String? = nil, name: String? = nil, id: [String]? = nil, orgID: String? = nil, org: String? = nil) -> RequestBuilder<ScraperTargetResponses> {
         let path = "/scrapers"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -297,7 +297,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -342,7 +342,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -387,7 +387,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -432,7 +432,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -479,7 +479,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: scraperTargetRequest)
 
         let url = URLComponents(string: URLString)
@@ -521,7 +521,7 @@ public class ScraperTargetsAPI {
      */
     internal func postScrapersWithRequestBuilder(scraperTargetRequest: ScraperTargetRequest, zapTraceSpan: String? = nil) -> RequestBuilder<ScraperTargetResponse> {
         let path = "/scrapers"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: scraperTargetRequest)
 
         let url = URLComponents(string: URLString)
@@ -568,7 +568,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: labelMapping)
 
         let url = URLComponents(string: URLString)
@@ -615,7 +615,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: addResourceMemberRequestBody)
 
         let url = URLComponents(string: URLString)
@@ -662,7 +662,7 @@ public class ScraperTargetsAPI {
         let scraperTargetIDPreEscape = "\(APIHelper.mapValueToPathItem(scraperTargetID))"
         let scraperTargetIDPostEscape = scraperTargetIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{scraperTargetID}", with: scraperTargetIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: addResourceMemberRequestBody)
 
         let url = URLComponents(string: URLString)

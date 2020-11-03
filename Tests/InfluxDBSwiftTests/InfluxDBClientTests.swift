@@ -67,4 +67,13 @@ final class InfluxDBClientTests: XCTestCase {
         XCTAssertEqual(100, client?.session.configuration.timeoutIntervalForRequest)
         XCTAssertEqual(5000, client?.session.configuration.timeoutIntervalForResource)
     }
+
+    func testBaseURL() {
+        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        XCTAssertEqual("http://localhost:8086", client?.url)
+        client?.close()
+        client = InfluxDBClient(url: "http://localhost:8086/", token: "my-token")
+        XCTAssertEqual("http://localhost:8086", client?.url)
+        client?.close()
+    }
 }

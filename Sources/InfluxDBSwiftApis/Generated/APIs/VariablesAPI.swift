@@ -48,7 +48,7 @@ public class VariablesAPI {
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{variableID}", with: variableIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -98,7 +98,7 @@ public class VariablesAPI {
         let labelIDPreEscape = "\(APIHelper.mapValueToPathItem(labelID))"
         let labelIDPostEscape = labelIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{labelID}", with: labelIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -142,7 +142,7 @@ public class VariablesAPI {
      */
     internal func getVariablesWithRequestBuilder(zapTraceSpan: String? = nil, org: String? = nil, orgID: String? = nil) -> RequestBuilder<Variables> {
         let path = "/variables"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
@@ -191,7 +191,7 @@ public class VariablesAPI {
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{variableID}", with: variableIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -236,7 +236,7 @@ public class VariablesAPI {
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{variableID}", with: variableIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -283,7 +283,7 @@ public class VariablesAPI {
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{variableID}", with: variableIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: variable)
 
         let url = URLComponents(string: URLString)
@@ -325,7 +325,7 @@ public class VariablesAPI {
      */
     internal func postVariablesWithRequestBuilder(variable: Variable, zapTraceSpan: String? = nil) -> RequestBuilder<Variable> {
         let path = "/variables"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: variable)
 
         let url = URLComponents(string: URLString)
@@ -372,7 +372,7 @@ public class VariablesAPI {
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{variableID}", with: variableIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: labelMapping)
 
         let url = URLComponents(string: URLString)
@@ -419,7 +419,7 @@ public class VariablesAPI {
         let variableIDPreEscape = "\(APIHelper.mapValueToPathItem(variableID))"
         let variableIDPostEscape = variableIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{variableID}", with: variableIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: variable)
 
         let url = URLComponents(string: URLString)
