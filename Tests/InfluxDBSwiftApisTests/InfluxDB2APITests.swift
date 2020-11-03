@@ -74,24 +74,12 @@ class APIXCTestCase: XCTestCase {
                                          _ checker: inout (ResponseType) -> Void) {
         if request == nil {
             XCTFail("Request is not defined!")
-            return
         }
 
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
-        let check = checker
 
         if let request = request {
-            request(nil, nil) { response, error in
-                if let error = error {
-                    XCTFail("Error occurs: \(error)")
-                    return
-                }
-
-                if let response = response {
-                    check(response)
-                    expectation.fulfill()
-                }
-            }
+            request(nil, nil, checkResponse(check: checker, expectation: expectation))
         }
 
         waitForExpectations(timeout: 5, handler: nil)
@@ -108,23 +96,29 @@ class APIXCTestCase: XCTestCase {
         }
 
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
-        let check = checker
 
         if let request = request {
-            request(body, nil, nil) { response, error in
-                if let error = error {
-                    XCTFail("Error occurs: \(error)")
-                    return
-                }
-
-                if let response = response {
-                    check(response)
-                    expectation.fulfill()
-                }
-            }
+            request(body, nil, nil, checkResponse(check: checker, expectation: expectation))
         }
 
         waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    private func checkResponse<ResponseType: Codable>(check: @escaping (ResponseType) -> Void,
+                                                      expectation: XCTestExpectation) -> (ResponseType?, Error?)
+    -> Void { {
+            response, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+                return
+            }
+
+            if let response = response {
+                //print(dump(response))
+                check(response)
+                expectation.fulfill()
+            }
+        }
     }
 
     private func findMyOrg() {
