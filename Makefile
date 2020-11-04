@@ -4,7 +4,7 @@
 help:
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36m%-46s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-.PHONY: build
+.PHONY: build test clean
 build: ## Build both source and test targets
 	swift build --target InfluxDBSwift
 	swift build --target InfluxDBSwiftApis
@@ -18,7 +18,7 @@ check-lint: ## Check that all files are formatted properly
 
 test: ## Run tests
 	$(MAKE) build
-	swift test --enable-code-coverage 2>&1 | xcpretty --report junit
+	set -o pipefail; swift test --enable-code-coverage 2>&1 | xcpretty --report junit
 
 generate-sources: ## Generate Models and APIs from swagger
 	docker run --rm -it \
