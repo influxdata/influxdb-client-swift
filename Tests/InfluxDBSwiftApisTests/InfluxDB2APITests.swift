@@ -86,6 +86,26 @@ class APIXCTestCase: XCTestCase {
     }
 
     func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
+                                                                          Dispatch.DispatchQueue?,
+                                                                          @escaping (ResponseType?, InfluxDBError?)
+                                                                          -> Void) -> Void)?,
+                                                             _ body: BodyType,
+                                                             _ checker: inout (ResponseType) -> Void) {
+        if request == nil {
+            XCTFail("Request is not defined!")
+            return
+        }
+
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+
+        if let request = request {
+            request(body, nil, checkResponse(check: checker, expectation: expectation))
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
                                                                           String?,
                                                                           Dispatch.DispatchQueue?,
                                                                           @escaping (ResponseType?, InfluxDBError?)
