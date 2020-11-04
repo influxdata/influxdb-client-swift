@@ -116,5 +116,8 @@ cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/SynchronizedDictiona
 
 # post process sources
 sed -i 's/Any]>/String]>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/UsersAPI.swift
+sed -i 's/case orgID$/case orgID = "organization_id"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
+sed -i 's/case org$/case org = "organization"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
+sed -i 's/case bucketID$/case bucketID = "bucket_id"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
 
 rm -rf "${SCRIPT_PATH}"/generated
