@@ -20,18 +20,19 @@ class DBRPsAPITests: APIXCTestCase {
     }
 
     func testCreateDBRPS() {
+        let policyName = generateName("retention_policy")
         let request = DBRP(
-                orgID: Self.orgID,
-                bucketID: "70fe9e54232f9908",
-                database: "my-database",
-                retentionPolicy: "my-retention")
+                org: "my-org",
+                bucketID: Self.bucketID,
+                database: "my-db",
+                retentionPolicy: policyName)
 
         var checker: (DBRP) -> Void = { response in
             XCTAssertNotNil(response.id)
             XCTAssertEqual(Self.orgID, response.orgID)
-            XCTAssertEqual("my-database", response.database)
-            XCTAssertEqual("my-database", response.retentionPolicy)
-            XCTAssertNotNil(response.links)
+            XCTAssertEqual(Self.bucketID, response.bucketID)
+            XCTAssertEqual("my-db", response.database)
+            XCTAssertEqual(policyName, response.retentionPolicy)
         }
 
         checkPost(api?.getDBRPsAPI().postDBRP, request, &checker)

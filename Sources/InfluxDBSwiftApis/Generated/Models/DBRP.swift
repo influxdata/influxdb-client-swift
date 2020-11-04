@@ -39,9 +39,9 @@ public struct DBRP: Codable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable { 
         case id
-        case orgID
-        case org
-        case bucketID
+        case orgID = "organization_id"
+        case org = "organization"
+        case bucketID = "bucket_id"
         case database
         case retentionPolicy = "retention_policy"
         case _default = "default"
