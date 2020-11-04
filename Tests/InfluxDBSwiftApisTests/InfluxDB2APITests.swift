@@ -52,11 +52,13 @@ class APIXCTestCase: XCTestCase {
     internal var client: InfluxDBClient?
     internal var api: InfluxDB2API?
     internal static var orgID: String = ""
+    internal static var bucketID: String = ""
 
     override func setUp() {
         client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
         api = InfluxDB2API(client: client!)
         findMyOrg()
+        findMyBucket()
     }
 
     override func tearDown() {
@@ -132,14 +134,14 @@ class APIXCTestCase: XCTestCase {
             response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
-                return
             }
 
             if let response = response {
                 //print(dump(response))
                 check(response)
-                expectation.fulfill()
             }
+
+            expectation.fulfill()
         }
     }
 
@@ -155,6 +157,25 @@ class APIXCTestCase: XCTestCase {
             if let organizations = organizations {
                 Self.orgID = (organizations.orgs?.first { org in
                     org.name == "my-org"
+                }?.id)!
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    private func findMyBucket() {
+        guard Self.bucketID.isEmpty else {
+            return
+        }
+        let expectation = self.expectation(description: "Cannot find my-bucket")
+        api?.getBucketsAPI().getBuckets(limit: 100) { response, error in
+            if let error = error {
+                XCTFail("\(error)")
+            }
+            if let response = response {
+                Self.bucketID = (response.buckets?.first { bucket in
+                    bucket.name == "my-bucket"
                 }?.id)!
                 expectation.fulfill()
             }
