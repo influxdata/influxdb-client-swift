@@ -18,7 +18,7 @@ check-lint: ## Check that all files are formatted properly
 
 test: ## Run tests
 	$(MAKE) build
-	set -o pipefail; swift test --enable-code-coverage 2>&1 | xcpretty --report junit
+	@Scripts/test.sh
 
 generate-sources: ## Generate Models and APIs from swagger
 	docker run --rm -it \
