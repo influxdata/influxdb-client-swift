@@ -6,6 +6,7 @@ extension InfluxDBClientTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__InfluxDBClientTests = [
+        ("testBaseURL", testBaseURL),
         ("testCreateInstance", testCreateInstance),
         ("testSessionHeaders", testSessionHeaders),
         ("testSessionHeadersV1", testSessionHeadersV1),
