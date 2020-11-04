@@ -70,7 +70,7 @@ class APIXCTestCase: XCTestCase {
     }
 
     func checkGet<ResponseType: Codable>(_ request: ((String?, Dispatch.DispatchQueue?,
-                                                      @escaping (ResponseType?, Error?) -> Void) -> Void)?,
+                                                      @escaping (ResponseType?, InfluxDBError?) -> Void) -> Void)?,
                                          _ checker: inout (ResponseType) -> Void) {
         if request == nil {
             XCTFail("Request is not defined!")
@@ -85,9 +85,11 @@ class APIXCTestCase: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
 
-    func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType, String?, Dispatch.DispatchQueue?,
-                                                                          @escaping (ResponseType?, Error?) -> Void)
-                                                                         -> Void)?,
+    func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
+                                                                          String?,
+                                                                          Dispatch.DispatchQueue?,
+                                                                          @escaping (ResponseType?, InfluxDBError?)
+                                                                          -> Void) -> Void)?,
                                                              _ body: BodyType,
                                                              _ checker: inout (ResponseType) -> Void) {
         if request == nil {
@@ -105,7 +107,7 @@ class APIXCTestCase: XCTestCase {
     }
 
     private func checkResponse<ResponseType: Codable>(check: @escaping (ResponseType) -> Void,
-                                                      expectation: XCTestExpectation) -> (ResponseType?, Error?)
+                                                      expectation: XCTestExpectation) -> (ResponseType?, InfluxDBError?)
     -> Void { {
             response, error in
             if let error = error {
