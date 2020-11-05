@@ -39,6 +39,15 @@ commands:
     steps:
       - checkout
       - influxdb-onboarding
+  swiftlint-install:
+    description: Download and install swiftlint
+    steps:
+      - run: |
+          apt-get update
+          apt-get install wget unzip --yes
+          wget https://github.com/realm/SwiftLint/releases/download/0.40.3/swiftlint_linux.zip
+          unzip -n swiftlint_linux.zip
+          ln -s /root/project/swiftlint /usr/bin/swiftlint
 
 jobs:
   tests-swift:
@@ -48,10 +57,10 @@ jobs:
         default: &default-swift-image "swift:5.3"
       influxdb-image:
         type: string
-        default: &default-influxdb-image "influxdb:2.0.0-rc"
+        default: &default-influxdb-image "quay.io/influxdb/influxdb:2.0.0-rc"
     docker:
       - image: << parameters.swift-image >>
-      - image: &influx-image quay.io/influxdb/<< parameters.influxdb-image >>
+      - image: << parameters.influxdb-image >>
         environment:
           INFLUXD_HTTP_BIND_ADDRESS: :8086
     steps:
@@ -59,9 +68,9 @@ jobs:
       - restore_cache:
           name: Restoring Package Cache
           keys:
-            - &cache-key package-cache-{{ checksum "Package.swift" }}-<< parameters.swift-image >>
-            - package-cache-{{ checksum "Package.swift" }}
-            - package-cache-
+            - &cache-key package-cache-v2-{{ checksum "Package.swift" }}-<< parameters.swift-image >>
+            - package-cache-v2-{{ checksum "Package.swift" }}
+            - package-cache-v2-
       - run:
           name: Install dependencies
           command: swift package update
@@ -76,7 +85,7 @@ jobs:
           key: *cache-key
           paths:
             - Package.resolved
-            - ./builde/repositories
+            - ./.build/repositories
       - store_test_results:
           path: build/
       - store_artifacts:
@@ -90,12 +99,7 @@ jobs:
       - image: *default-swift-image
     steps:
       - checkout
-      - run: |
-          apt-get update
-          apt-get install wget unzip --yes
-          wget https://github.com/realm/SwiftLint/releases/download/0.40.3/swiftlint_linux.zip
-          unzip -n swiftlint_linux.zip
-          ln -s /root/project/swiftlint /usr/bin/swiftlint
+      - swiftlint-install
       - run:
           name: Checks style consistency across sources.
           command: make check-lint
@@ -158,6 +162,34 @@ jobs:
           paths:
             - ~/.m2
 
+  check-examples:
+    docker:
+      - image: *default-swift-image
+      - image: *default-influxdb-image
+        environment:
+          INFLUXD_HTTP_BIND_ADDRESS: :8086
+    steps:
+      - prepare
+      - swiftlint-install
+      - restore_cache:
+          name: Restoring Example Cache
+          keys:
+            - &cache-example-key example-cache-v2-{{ checksum "Examples/CreateNewBucket/Package.swift" }}
+            - example-cache-v2-{{ checksum "Examples/CreateNewBucket/Package.swift" }}
+            - example-cache-v2-
+      - run:
+          name: Check CreateNewBucket
+          command: |
+            cd Examples/CreateNewBucket/
+            swiftlint
+            swift run create-new-bucket --name new-bucket --token my-token --url http://localhost:8086
+      - save_cache:
+          name: Saving Example Cache
+          key: *cache-example-key
+          paths:
+            - Examples/CreateNewBucket/Package.resolved
+            - Examples/CreateNewBucket/.build/repositories
+
 workflows:
   version: 2
   build:
@@ -165,6 +197,7 @@ workflows:
       - check-code-style
       - check-documentation
       - check-generate-sources
+      - check-examples
       - tests-swift:
           name: swift-5.3
   nightly:
