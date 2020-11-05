@@ -182,7 +182,10 @@ jobs:
           command: |
             cd Examples/CreateNewBucket/
             swiftlint --strict
-            swift package update
+            swift package resolve
+            swift build --target InfluxDBSwift
+            swift build --target InfluxDBSwiftApis
+            swift build --target ArgumentParser
             swift build
       - save_cache:
           name: Saving Example Cache

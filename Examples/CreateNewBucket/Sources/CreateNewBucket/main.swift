@@ -28,7 +28,7 @@ struct CreateNewBucket: ParsableCommand {
         let client = InfluxDBClient(url: url, token: token)
         let api = InfluxDB2API(client: client)
 
-        // New Bucket configuration
+        // Bucket configuration
         let request = PostBucketRequest(
                 orgID: self.orgId,
                 name: self.name,
@@ -41,7 +41,6 @@ struct CreateNewBucket: ParsableCommand {
                 self.atExit(client: client, error: error)
             }
 
-            // Continue with create Authorization
             if let bucket = bucket {
                 // Create Authorization with permission to read/write created bucket
                 let bucketResource = Resource(
@@ -49,7 +48,7 @@ struct CreateNewBucket: ParsableCommand {
                         id: bucket.id!,
                         orgID: self.orgId
                 )
-                // New Authorization configuration
+                // Authorization configuration
                 let request = Authorization(
                         description: "Authorization to read/write bucket: \(self.name)",
                         orgID: self.orgId,
@@ -65,7 +64,7 @@ struct CreateNewBucket: ParsableCommand {
                         atExit(client: client, error: error)
                     }
 
-                    // Print token to use with created bucket
+                    // Print token
                     if let authorization = authorization {
                         let token = authorization.token!
                         print("The token: '\(token)' is authorized to read/write from/to bucket: '\(bucket.id!)'.")
@@ -80,7 +79,7 @@ struct CreateNewBucket: ParsableCommand {
     }
 
     private func atExit(client: InfluxDBClient, error: InfluxDBError? = nil) {
-        // Dispose Client at the end of script
+        // Dispose the Client
         client.close()
         // Exit script
         Self.exit(withError: error)
