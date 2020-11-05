@@ -10,6 +10,7 @@ custom_categories:
   - name: Client
     children:
       - InfluxDBClient
+      - WriteAPI
 
   - name: APIs
     children:
@@ -87,25 +88,15 @@ custom_categories:
   - name: APIs / Supporting Files
     children:
       - APIHelper
-      - APIs
       - CodableHelper
       - DecodableRequestBuilderError
       - DownloadException
-      - ErrorResponse
-      - Extensions
       - HTTPMethod
       - JSONDataEncoding
       - JSONEncodingHelper
       - KeyedDecodingContainerProtocol
       - KeyedEncodingContainerProtocol
-      - Models
       - OpenISO8601DateFormatter
       - ParameterEncoding
-      - RequestBuilder
-      - RequestBuilderFactory
       - Response
       - String
-      - SynchronizedDictionary
-      - URLSessionImplementations
-      - URLSessionDecodableRequestBuilder
-      - URLSessionRequestBuilder

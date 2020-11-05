@@ -72,6 +72,13 @@ public class InfluxDBClient {
         self.init(url: url, token: "\(username):\(password)", options: options, protocolClasses: protocolClasses)
     }
 
+    /// Creates WriteApi with supplied default settings.
+    ///
+    /// - Returns: WriteAPI instance
+    public func getWriteAPI() -> WriteAPI {
+        WriteAPI(client: self)
+    }
+
     /// Release all allocated resources.
     public func close() {
         session.invalidateAndCancel()

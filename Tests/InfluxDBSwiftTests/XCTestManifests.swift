@@ -8,6 +8,7 @@ extension InfluxDBClientTests {
     static let __allTests__InfluxDBClientTests = [
         ("testBaseURL", testBaseURL),
         ("testCreateInstance", testCreateInstance),
+        ("testGetWriteAPI", testGetWriteAPI),
         ("testSessionHeaders", testSessionHeaders),
         ("testSessionHeadersV1", testSessionHeadersV1),
         ("testTimeoutConfigured", testTimeoutConfigured),

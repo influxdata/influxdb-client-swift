@@ -76,4 +76,9 @@ final class InfluxDBClientTests: XCTestCase {
         XCTAssertEqual("http://localhost:8086", client?.url)
         client?.close()
     }
+
+    func testGetWriteAPI() {
+        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        XCTAssertNotNil(client?.getWriteAPI())
+    }
 }
