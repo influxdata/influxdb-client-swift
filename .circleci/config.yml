@@ -182,6 +182,7 @@ jobs:
           command: |
             cd Examples/CreateNewBucket/
             swiftlint --strict
+            swift package update
             swift build
       - save_cache:
           name: Saving Example Cache
