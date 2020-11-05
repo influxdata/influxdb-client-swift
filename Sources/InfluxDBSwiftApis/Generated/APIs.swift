@@ -38,7 +38,7 @@ internal class RequestBuilder<T> {
         }
     }
 
-    internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) { }
+    internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, InfluxDBError>) -> Void) { }
 
     public func addHeader(name: String, value: String) -> Self {
         if !value.isEmpty {

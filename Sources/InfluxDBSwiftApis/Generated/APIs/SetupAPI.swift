@@ -24,7 +24,7 @@ public class SetupAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getSetup(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: IsOnboarding?,_ error: Error?) -> Void)) {
+    public func getSetup(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: IsOnboarding?,_ error: InfluxDBError?) -> Void) {
         getSetupWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -44,7 +44,7 @@ public class SetupAPI {
      */
     internal func getSetupWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<IsOnboarding> {
         let path = "/setup"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         let url = URLComponents(string: URLString)
@@ -66,7 +66,7 @@ public class SetupAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postSetup(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: OnboardingResponse?,_ error: Error?) -> Void)) {
+    public func postSetup(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: OnboardingResponse?,_ error: InfluxDBError?) -> Void) {
         postSetupWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -87,7 +87,7 @@ public class SetupAPI {
      */
     internal func postSetupWithRequestBuilder(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil) -> RequestBuilder<OnboardingResponse> {
         let path = "/setup"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: onboardingRequest)
 
         let url = URLComponents(string: URLString)
@@ -109,7 +109,7 @@ public class SetupAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postSetupUser(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: OnboardingResponse?,_ error: Error?) -> Void)) {
+    public func postSetupUser(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: OnboardingResponse?,_ error: InfluxDBError?) -> Void) {
         postSetupUserWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -130,7 +130,7 @@ public class SetupAPI {
      */
     internal func postSetupUserWithRequestBuilder(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil) -> RequestBuilder<OnboardingResponse> {
         let path = "/setup/user"
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: onboardingRequest)
 
         let url = URLComponents(string: URLString)

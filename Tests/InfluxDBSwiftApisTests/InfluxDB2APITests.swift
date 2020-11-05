@@ -33,8 +33,10 @@ final class InfluxDB2APITests: XCTestCase {
         XCTAssertNotNil(api.getLabelsAPI())
         XCTAssertNotNil(api.getOrganizationsAPI())
         XCTAssertNotNil(api.getReadyAPI())
+        XCTAssertNotNil(api.getScraperTargetsAPI())
         XCTAssertNotNil(api.getSecretsAPI())
         XCTAssertNotNil(api.getSetupAPI())
+        XCTAssertNotNil(api.getSourcesAPI())
         XCTAssertNotNil(api.getTasksAPI())
         XCTAssertNotNil(api.getUsersAPI())
         XCTAssertNotNil(api.getVariablesAPI())
@@ -43,5 +45,141 @@ final class InfluxDB2APITests: XCTestCase {
     func testURLSession() {
         let api = InfluxDB2API(client: client!)
         XCTAssertEqual(client?.session, api.getURLSession())
+    }
+}
+
+class APIXCTestCase: XCTestCase {
+    internal var client: InfluxDBClient?
+    internal var api: InfluxDB2API?
+    internal static var orgID: String = ""
+    internal static var bucketID: String = ""
+
+    override func setUp() {
+        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        api = InfluxDB2API(client: client!)
+        findMyOrg()
+        findMyBucket()
+    }
+
+    override func tearDown() {
+        if let client = client {
+            client.close()
+        }
+    }
+
+    func generateName(_ prefix: String) -> String {
+        "\(prefix)_\(Date().timeIntervalSince1970)_TEST"
+    }
+
+    func checkGet<ResponseType: Codable>(_ request: ((String?, Dispatch.DispatchQueue?,
+                                                      @escaping (ResponseType?, InfluxDBError?) -> Void) -> Void)?,
+                                         _ checker: inout (ResponseType) -> Void) {
+        if request == nil {
+            XCTFail("Request is not defined!")
+        }
+
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+
+        if let request = request {
+            request(nil, nil, checkResponse(check: checker, expectation: expectation))
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
+                                                                          Dispatch.DispatchQueue?,
+                                                                          @escaping (ResponseType?, InfluxDBError?)
+                                                                          -> Void) -> Void)?,
+                                                             _ body: BodyType,
+                                                             _ checker: inout (ResponseType) -> Void) {
+        if request == nil {
+            XCTFail("Request is not defined!")
+            return
+        }
+
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+
+        if let request = request {
+            request(body, nil, checkResponse(check: checker, expectation: expectation))
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
+                                                                          String?,
+                                                                          Dispatch.DispatchQueue?,
+                                                                          @escaping (ResponseType?, InfluxDBError?)
+                                                                          -> Void) -> Void)?,
+                                                             _ body: BodyType,
+                                                             _ checker: inout (ResponseType) -> Void) {
+        if request == nil {
+            XCTFail("Request is not defined!")
+            return
+        }
+
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+
+        if let request = request {
+            request(body, nil, nil, checkResponse(check: checker, expectation: expectation))
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    private func checkResponse<ResponseType: Codable>(check: @escaping (ResponseType) -> Void,
+                                                      expectation: XCTestExpectation) -> (ResponseType?, InfluxDBError?)
+    -> Void {
+        { response, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+
+            if let response = response {
+                //print(dump(response))
+                check(response)
+            }
+
+            expectation.fulfill()
+        }
+    }
+
+    private func findMyOrg() {
+        guard Self.orgID.isEmpty else {
+            return
+        }
+        let expectation = self.expectation(description: "Cannot find my-org")
+        api?.getOrganizationsAPI().getOrgs(limit: 100) { organizations, error in
+            if let error = error {
+                XCTFail("\(error)")
+            }
+            if let organizations = organizations {
+                Self.orgID = (organizations.orgs?.first { org in
+                    org.name == "my-org"
+                }?.id)!
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    private func findMyBucket() {
+        guard Self.bucketID.isEmpty else {
+            return
+        }
+        let expectation = self.expectation(description: "Cannot find my-bucket")
+        api?.getBucketsAPI().getBuckets(limit: 100) { response, error in
+            if let error = error {
+                XCTFail("\(error)")
+            }
+            if let response = response {
+                Self.bucketID = (response.buckets?.first { bucket in
+                    bucket.name == "my-bucket"
+                }?.id)!
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 5, handler: nil)
     }
 }

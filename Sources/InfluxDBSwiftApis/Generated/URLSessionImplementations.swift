@@ -81,7 +81,7 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
         return modifiedRequest
     }
 
-    override internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) {
+    override internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, InfluxDBError>) -> Void) {
         let urlSession = self.influxDB2API.getURLSession()
 
         let parameters: [String: Any] = self.parameters ?? [:]
@@ -146,26 +146,26 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
         } catch {
             apiResponseQueue.async {
                 cleanupRequest()
-                completion(.failure(ErrorResponse.error(415, nil, error)))
+                completion(.failure(InfluxDBError.error(415, nil, nil, error)))
             }
         }
 
     }
     
-    fileprivate func processRequestResponse(urlRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?, completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) {
+    fileprivate func processRequestResponse(urlRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?, completion: @escaping (_ result: Swift.Result<Response<T>, InfluxDBError>) -> Void) {
 
         if let error = error {
-            completion(.failure(ErrorResponse.error(-1, data, error)))
+            completion(.failure(InfluxDBError.error(-1, nil, toBody(data), error)))
             return
         }
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            completion(.failure(ErrorResponse.error(-2, data, DecodableRequestBuilderError.nilHTTPResponse)))
+            completion(.failure(InfluxDBError.error(-2, nil, toBody(data), DecodableRequestBuilderError.nilHTTPResponse)))
             return
         }
 
         guard httpResponse.isStatusCodeSuccessful else {
-            completion(.failure(ErrorResponse.error(httpResponse.statusCode, data, DecodableRequestBuilderError.unsuccessfulHTTPStatusCode)))
+            completion(.failure(InfluxDBError.error(httpResponse.statusCode, httpResponse.allHeaderFields, toBody(data), DecodableRequestBuilderError.unsuccessfulHTTPStatusCode)))
             return
         }
 
@@ -206,9 +206,9 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
                 completion(.success(Response(response: httpResponse, body: filePath as? T)))
                 
             } catch let requestParserError as DownloadException {
-                completion(.failure(ErrorResponse.error(400, data, requestParserError)))
+                completion(.failure(InfluxDBError.error(400, httpResponse.allHeaderFields, toBody(data), requestParserError)))
             } catch let error {
-                completion(.failure(ErrorResponse.error(400, data, error)))
+                completion(.failure(InfluxDBError.error(400, httpResponse.allHeaderFields, toBody(data), error)))
             }
             
         case is Void.Type:
@@ -281,23 +281,38 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
         return url
     }
 
+    fileprivate func toBody(_ data: Data?) -> [String: Any]? {
+
+        if let data = data {
+            let decodeResult = CodableHelper.decode([String: String].self, from: data)
+
+            switch decodeResult {
+            case let .success(decodeResult):
+                return decodeResult
+            case .failure(_):
+                return ["message": String(decoding: data, as: UTF8.self)]
+            }
+        }
+
+        return nil
+    }
 }
 
 internal class URLSessionDecodableRequestBuilder<T:Decodable>: URLSessionRequestBuilder<T> {
-    override fileprivate func processRequestResponse(urlRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?, completion: @escaping (_ result: Swift.Result<Response<T>, Error>) -> Void) {
+    override fileprivate func processRequestResponse(urlRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?, completion: @escaping (_ result: Swift.Result<Response<T>, InfluxDBError>) -> Void) {
 
         if let error = error {
-            completion(.failure(ErrorResponse.error(-1, data, error)))
+            completion(.failure(InfluxDBError.error(-1, nil, toBody(data), error)))
             return
         }
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            completion(.failure(ErrorResponse.error(-2, data, DecodableRequestBuilderError.nilHTTPResponse)))
+            completion(.failure(InfluxDBError.error(-2, nil, toBody(data), DecodableRequestBuilderError.nilHTTPResponse)))
             return
         }
 
         guard httpResponse.isStatusCodeSuccessful else {
-            completion(.failure(ErrorResponse.error(httpResponse.statusCode, data, DecodableRequestBuilderError.unsuccessfulHTTPStatusCode)))
+            completion(.failure(InfluxDBError.error(httpResponse.statusCode, httpResponse.allHeaderFields, toBody(data), DecodableRequestBuilderError.unsuccessfulHTTPStatusCode)))
             return
         }
 
@@ -319,7 +334,7 @@ internal class URLSessionDecodableRequestBuilder<T:Decodable>: URLSessionRequest
         default:
             
             guard let data = data, !data.isEmpty else {
-                completion(.failure(ErrorResponse.error(httpResponse.statusCode, nil, DecodableRequestBuilderError.emptyDataResponse)))
+                completion(.failure(InfluxDBError.error(httpResponse.statusCode, httpResponse.allHeaderFields, nil, DecodableRequestBuilderError.emptyDataResponse)))
                 return
             }
             
@@ -329,7 +344,7 @@ internal class URLSessionDecodableRequestBuilder<T:Decodable>: URLSessionRequest
             case let .success(decodableObj):
                 completion(.success(Response(response: httpResponse, body: decodableObj)))
             case let .failure(error):
-                completion(.failure(ErrorResponse.error(httpResponse.statusCode, data, error)))
+                completion(.failure(InfluxDBError.error(httpResponse.statusCode, httpResponse.allHeaderFields, toBody(data), error)))
             }
         }
     }

@@ -31,7 +31,7 @@ public class InfluxDBClient {
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/urls/#influxdb-oss-urls
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/security/tokens/
     public init(url: String, token: String, options: InfluxDBOptions? = nil, protocolClasses: [AnyClass]? = nil) {
-        self.url = url
+        self.url = url.hasSuffix("/") ? String(url.dropLast(1)) : url
         self.token = token
         self.options = options ?? InfluxDBClient.InfluxDBOptions()
 

@@ -54,7 +54,7 @@ extension {{projectName}}API {
     {{#isDeprecated}}
     @available(*, deprecated, message: "This operation is deprecated.")
     {{/isDeprecated}}
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{#hasParams}}, {{/hasParams}}apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ data: {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}?,_ error: Error?) -> Void)) {
+    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{#hasParams}}, {{/hasParams}}apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}?,_ error: InfluxDBError?) -> Void) {
         {{operationId}}WithRequestBuilder({{#allParams}}{{paramName}}: {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             {{#returnType}}
@@ -182,7 +182,7 @@ extension {{projectName}}API {
     {{#isDeprecated}}
     @available(*, deprecated, message: "This operation is deprecated.")
     {{/isDeprecated}}
-    public func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{#hasParams}}, {{/hasParams}}apiResponseQueue: DispatchQueue? = nil, completion: @escaping ((_ result: Swift.Result<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}, Error>) -> Void)) {
+    public func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{#hasParams}}, {{/hasParams}}apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ result: Swift.Result<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}, InfluxDBError>) -> Void) {
         {{operationId}}WithRequestBuilder({{#allParams}}{{paramName}}: {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             {{#returnType}}
@@ -232,7 +232,7 @@ extension {{projectName}}API {
         let {{paramName}}PreEscape = "\({{#isEnum}}{{paramName}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}.rawValue{{/isContainer}}{{/isEnum}}{{^isEnum}}APIHelper.mapValueToPathItem({{paramName}}){{/isEnum}})"
         let {{paramName}}PostEscape = {{paramName}}PreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{{=<% %>=}}{<%baseName%>}<%={{ }}=%>", with: {{paramName}}PostEscape, options: .literal, range: nil){{/pathParams}}
-        let URLString = influxDB2API.basePath + path
+        let URLString = influxDB2API.basePath{{^servers.0}} + "/api/v2"{{/servers.0}} + path
         {{#bodyParam}}
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: {{paramName}})
         {{/bodyParam}}
