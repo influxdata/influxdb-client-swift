@@ -181,7 +181,7 @@ jobs:
           name: Check CreateNewBucket
           command: |
             cd Examples/CreateNewBucket/
-            swiftlint
+            swiftlint --strict
             swift run create-new-bucket --name new-bucket --token my-token --url http://localhost:8086
       - save_cache:
           name: Saving Example Cache

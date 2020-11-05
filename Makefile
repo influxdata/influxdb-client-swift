@@ -14,7 +14,7 @@ lint: ## Format code
 	swiftlint autocorrect
 
 check-lint: ## Check that all files are formatted properly
-	swiftlint lint
+	swiftlint lint --strict
 
 test: ## Run tests
 	$(MAKE) build
