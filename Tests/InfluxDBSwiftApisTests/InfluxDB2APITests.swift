@@ -130,8 +130,8 @@ class APIXCTestCase: XCTestCase {
 
     private func checkResponse<ResponseType: Codable>(check: @escaping (ResponseType) -> Void,
                                                       expectation: XCTestExpectation) -> (ResponseType?, InfluxDBError?)
-    -> Void { {
-            response, error in
+    -> Void {
+        { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
