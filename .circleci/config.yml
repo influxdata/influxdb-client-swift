@@ -182,7 +182,7 @@ jobs:
           command: |
             cd Examples/CreateNewBucket/
             swiftlint --strict
-            swift run create-new-bucket --name new-bucket --token my-token --url http://localhost:8086
+            swift build
       - save_cache:
           name: Saving Example Cache
           key: *cache-example-key

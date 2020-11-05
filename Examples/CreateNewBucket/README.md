@@ -8,10 +8,10 @@ How to test:
     docker run --name influxdb_v2 -d -p "8086:8086" quay.io/influxdb/influxdb:2.0.0-rc
     ```
 1. Navigate to http://localhost:8086/ and configure InfluxDB 2.0 
-1. Find the name of your organization and your token:
+1. Find the id of your organization and your token:
     - https://docs.influxdata.com/influxdb/v2.0/organizations/view-orgs/
     - https://docs.influxdata.com/influxdb/v2.0/security/tokens/view-tokens/
 1. Create new bucket by:
 ```console
-swift run create-new-bucket --name new-bucket --token my-token --url http://localhost:8086
+swift run create-new-bucket --name new-bucket --org-id my-org-id --token my-token --url http://localhost:8086
 ```
