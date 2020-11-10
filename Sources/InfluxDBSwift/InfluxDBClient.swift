@@ -107,6 +107,7 @@ extension InfluxDBClient {
 }
 
 extension InfluxDBClient {
+    /// The general InfluxDB error.
     public enum InfluxDBError: Error, CustomStringConvertible {
         /// Error response to HTTP request.
         ///
