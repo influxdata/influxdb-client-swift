@@ -72,7 +72,8 @@ class APIXCTestCase: XCTestCase {
     }
 
     func checkGet<ResponseType: Codable>(_ request: ((String?, Dispatch.DispatchQueue?,
-                                                      @escaping (ResponseType?, InfluxDBError?) -> Void) -> Void)?,
+                                                      @escaping (ResponseType?, InfluxDBClient.InfluxDBError?) -> Void)
+                                                     -> Void)?,
                                          _ checker: inout (ResponseType) -> Void) {
         if request == nil {
             XCTFail("Request is not defined!")
@@ -89,7 +90,8 @@ class APIXCTestCase: XCTestCase {
 
     func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
                                                                           Dispatch.DispatchQueue?,
-                                                                          @escaping (ResponseType?, InfluxDBError?)
+                                                                          @escaping (ResponseType?,
+                                                                                     InfluxDBClient.InfluxDBError?)
                                                                           -> Void) -> Void)?,
                                                              _ body: BodyType,
                                                              _ checker: inout (ResponseType) -> Void) {
@@ -110,7 +112,8 @@ class APIXCTestCase: XCTestCase {
     func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
                                                                           String?,
                                                                           Dispatch.DispatchQueue?,
-                                                                          @escaping (ResponseType?, InfluxDBError?)
+                                                                          @escaping (ResponseType?,
+                                                                                     InfluxDBClient.InfluxDBError?)
                                                                           -> Void) -> Void)?,
                                                              _ body: BodyType,
                                                              _ checker: inout (ResponseType) -> Void) {
@@ -129,7 +132,8 @@ class APIXCTestCase: XCTestCase {
     }
 
     private func checkResponse<ResponseType: Codable>(check: @escaping (ResponseType) -> Void,
-                                                      expectation: XCTestExpectation) -> (ResponseType?, InfluxDBError?)
+                                                      expectation: XCTestExpectation) -> (ResponseType?,
+                                                                                          InfluxDBClient.InfluxDBError?)
     -> Void {
         { response, error in
             if let error = error {

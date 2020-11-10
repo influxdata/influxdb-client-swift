@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import InfluxDBSwift
 
 extension InfluxDB2API {
 
@@ -25,7 +26,7 @@ public class SourcesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteSourcesID(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBError?) -> Void) {
+    public func deleteSourcesID(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         deleteSourcesIDWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -70,7 +71,7 @@ public class SourcesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getSources(zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Sources?,_ error: InfluxDBError?) -> Void) {
+    public func getSources(zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Sources?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getSourcesWithRequestBuilder(zapTraceSpan: zapTraceSpan, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -115,7 +116,7 @@ public class SourcesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getSourcesID(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Source?,_ error: InfluxDBError?) -> Void) {
+    public func getSourcesID(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Source?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getSourcesIDWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -161,7 +162,7 @@ public class SourcesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getSourcesIDBuckets(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Buckets?,_ error: InfluxDBError?) -> Void) {
+    public func getSourcesIDBuckets(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Buckets?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getSourcesIDBucketsWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -210,7 +211,7 @@ public class SourcesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getSourcesIDHealth(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: HealthCheck?,_ error: InfluxDBError?) -> Void) {
+    public func getSourcesIDHealth(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: HealthCheck?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getSourcesIDHealthWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -256,7 +257,7 @@ public class SourcesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchSourcesID(sourceID: String, source: Source, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Source?,_ error: InfluxDBError?) -> Void) {
+    public func patchSourcesID(sourceID: String, source: Source, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Source?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         patchSourcesIDWithRequestBuilder(sourceID: sourceID, source: source, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -302,7 +303,7 @@ public class SourcesAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postSources(source: Source, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Source?,_ error: InfluxDBError?) -> Void) {
+    public func postSources(source: Source, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Source?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postSourcesWithRequestBuilder(source: source, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):

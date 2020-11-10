@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import InfluxDBSwift
 
 extension InfluxDB2API {
 
@@ -25,7 +26,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteScrapersID(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBError?) -> Void) {
+    public func deleteScrapersID(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         deleteScrapersIDWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -71,7 +72,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteScrapersIDLabelsID(scraperTargetID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBError?) -> Void) {
+    public func deleteScrapersIDLabelsID(scraperTargetID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         deleteScrapersIDLabelsIDWithRequestBuilder(scraperTargetID: scraperTargetID, labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -121,7 +122,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteScrapersIDMembersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBError?) -> Void) {
+    public func deleteScrapersIDMembersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         deleteScrapersIDMembersIDWithRequestBuilder(userID: userID, scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -171,7 +172,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteScrapersIDOwnersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBError?) -> Void) {
+    public func deleteScrapersIDOwnersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         deleteScrapersIDOwnersIDWithRequestBuilder(userID: userID, scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -223,7 +224,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getScrapers(zapTraceSpan: String? = nil, name: String? = nil, id: [String]? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ScraperTargetResponses?,_ error: InfluxDBError?) -> Void) {
+    public func getScrapers(zapTraceSpan: String? = nil, name: String? = nil, id: [String]? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ScraperTargetResponses?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getScrapersWithRequestBuilder(zapTraceSpan: zapTraceSpan, name: name, id: id, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -274,7 +275,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getScrapersID(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ScraperTargetResponse?,_ error: InfluxDBError?) -> Void) {
+    public func getScrapersID(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ScraperTargetResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getScrapersIDWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -319,7 +320,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getScrapersIDLabels(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: LabelsResponse?,_ error: InfluxDBError?) -> Void) {
+    public func getScrapersIDLabels(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: LabelsResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getScrapersIDLabelsWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -364,7 +365,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getScrapersIDMembers(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ResourceMembers?,_ error: InfluxDBError?) -> Void) {
+    public func getScrapersIDMembers(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ResourceMembers?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getScrapersIDMembersWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -409,7 +410,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getScrapersIDOwners(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ResourceOwners?,_ error: InfluxDBError?) -> Void) {
+    public func getScrapersIDOwners(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ResourceOwners?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getScrapersIDOwnersWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -455,7 +456,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchScrapersID(scraperTargetID: String, scraperTargetRequest: ScraperTargetRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ScraperTargetResponse?,_ error: InfluxDBError?) -> Void) {
+    public func patchScrapersID(scraperTargetID: String, scraperTargetRequest: ScraperTargetRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ScraperTargetResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         patchScrapersIDWithRequestBuilder(scraperTargetID: scraperTargetID, scraperTargetRequest: scraperTargetRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -501,7 +502,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postScrapers(scraperTargetRequest: ScraperTargetRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ScraperTargetResponse?,_ error: InfluxDBError?) -> Void) {
+    public func postScrapers(scraperTargetRequest: ScraperTargetRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ScraperTargetResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postScrapersWithRequestBuilder(scraperTargetRequest: scraperTargetRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -544,7 +545,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postScrapersIDLabels(scraperTargetID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: LabelResponse?,_ error: InfluxDBError?) -> Void) {
+    public func postScrapersIDLabels(scraperTargetID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: LabelResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postScrapersIDLabelsWithRequestBuilder(scraperTargetID: scraperTargetID, labelMapping: labelMapping, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -591,7 +592,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postScrapersIDMembers(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ResourceMember?,_ error: InfluxDBError?) -> Void) {
+    public func postScrapersIDMembers(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ResourceMember?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postScrapersIDMembersWithRequestBuilder(scraperTargetID: scraperTargetID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -638,7 +639,7 @@ public class ScraperTargetsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postScrapersIDOwners(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ResourceOwner?,_ error: InfluxDBError?) -> Void) {
+    public func postScrapersIDOwners(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: ResourceOwner?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postScrapersIDOwnersWithRequestBuilder(scraperTargetID: scraperTargetID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):

@@ -96,7 +96,7 @@ extension InfluxDBClient {
         public var org: String?
         /// Default precision for the unix timestamps within the body line-protocol.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/glossary/#precision
-        public var precision = WritePrecision.ns
+        public var precision = defaultWritePrecision
         /// The timeout interval to use when waiting for additional data. Default to 60 sec.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForRequest
         public var timeoutIntervalForRequest: TimeInterval = 60
@@ -106,8 +106,37 @@ extension InfluxDBClient {
     }
 }
 
+extension InfluxDBClient {
+    public enum InfluxDBError: Error, CustomStringConvertible {
+        /// Error response to HTTP request.
+        ///
+        /// - errorCode: HTTP status code
+        /// - headers: Response HTTP headers
+        /// - body: Response body
+        /// - cause: Cause of error
+        case error(_ statusCode: Int, _ headers: [AnyHashable: Any]?, _ body: [String: Any]?, _ cause: Error)
+
+        public var description: String {
+            switch self {
+            case let .error(statusCode, headers, body, cause):
+                var desc = "(\(statusCode)) Reason: \(cause)"
+                if let body = body {
+                    desc.append(", HTTP Body: \(body)")
+                }
+                if let headers = headers {
+                    desc.append(", HTTP Headers: \(headers.reduce(into: [:]) { $0["\($1.0)"] = "\($1.1)" })")
+                }
+                return desc
+            }
+        }
+    }
+}
+
 // swiftlint:disable identifier_name
 extension InfluxDBClient {
+    /// Default Write Precision is Nanoseconds.
+    public static let defaultWritePrecision = WritePrecision.ns
+
     /// An enum represents the precision for the unix timestamps within the body line-protocol.
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/write-data/#timestamp-precision
     public enum WritePrecision: String, Codable, CaseIterable {

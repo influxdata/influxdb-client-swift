@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import InfluxDBSwift
 
 extension InfluxDB2API {
 
@@ -24,7 +25,7 @@ public class HealthAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getHealth(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: HealthCheck?,_ error: InfluxDBError?) -> Void) {
+    public func getHealth(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: HealthCheck?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getHealthWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
