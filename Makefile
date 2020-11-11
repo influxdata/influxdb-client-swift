@@ -38,12 +38,12 @@ generate-doc: ## Generate documentation
 	jazzy --clean --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
 
 docker-cli: ## Start and connect into swift:5.3 container
-	docker run --rm --privileged --interactive --tty -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
+	docker run --rm --privileged --interactive --tty --network influx_network -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
 
 clean: ## Clean builds, generated docs, resolved dependencies, ...
-	rm -rf Packages
-	rm -rf .build
-	rm -rf build
-	rm -rf docs
-	rm -rf doc*.json
-	rm Package.resolved
+	rm -rf Packages || true
+	rm -rf .build || true
+	rm -rf build || true
+	rm -rf docs || true
+	rm -rf doc*.json || true
+	rm Package.resolved || true

@@ -53,6 +53,9 @@ private extension URLRequest {
 
     private func httpBodyStreamData() -> Data? {
         guard let bodyStream = self.httpBodyStream else {
+            if let httpBody = self.httpBody {
+                return httpBody
+            }
             return nil
         }
 

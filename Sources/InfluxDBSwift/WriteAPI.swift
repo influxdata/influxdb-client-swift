@@ -215,6 +215,10 @@ public class WriteAPI {
             request.setValue("identity", forHTTPHeaderField: "Content-Encoding")
             request.setValue(String(data.count), forHTTPHeaderField: "Content-Length")
 
+            client.session.configuration.httpAdditionalHeaders?.forEach { key, value in
+                request.setValue("\(value)", forHTTPHeaderField: "\(key)")
+            }
+
             // Body
             request.httpBody = data.data(using: .utf8)
 

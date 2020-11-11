@@ -105,6 +105,7 @@ final class WriteAPITests: XCTestCase {
             XCTAssertEqual(
                     "influxdb-client-swift/\(InfluxDBClient.self.version)",
                     request.allHTTPHeaderFields!["User-Agent"])
+            XCTAssertEqual("Token my-token", request.allHTTPHeaderFields!["Authorization"])
             XCTAssertEqual("text/plain; charset=utf-8", request.allHTTPHeaderFields!["Content-Type"])
             XCTAssertEqual("17", request.allHTTPHeaderFields!["Content-Length"])
             XCTAssertEqual("identity", request.allHTTPHeaderFields!["Content-Encoding"])
