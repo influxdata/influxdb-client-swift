@@ -117,6 +117,11 @@ extension InfluxDBClient {
         /// - cause: Cause of error
         case error(_ statusCode: Int, _ headers: [AnyHashable: Any]?, _ body: [String: Any]?, _ cause: Error)
 
+        /// Generic error.
+        ///
+        /// - message: Reason
+        case generic(_ message: String)
+
         public var description: String {
             switch self {
             case let .error(statusCode, headers, body, cause):
@@ -128,6 +133,8 @@ extension InfluxDBClient {
                     desc.append(", HTTP Headers: \(headers.reduce(into: [:]) { $0["\($1.0)"] = "\($1.1)" })")
                 }
                 return desc
+            case let .generic(message):
+                return message
             }
         }
     }

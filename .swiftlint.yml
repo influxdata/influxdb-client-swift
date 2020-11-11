@@ -38,6 +38,7 @@ excluded:
   - .build
   - Examples
   - Package.swift
+  - Sources/InfluxDBSwift/Generated
   - Sources/InfluxDBSwiftApis/Generated
   - Tests/LinuxMain.swift
   - Tests/InfluxDBSwiftTests/XCTestManifests.swift

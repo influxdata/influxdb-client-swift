@@ -6,6 +6,9 @@
 import Combine
 #endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// The asynchronous API to Write time-series data into InfluxDB 2.0.
 public class WriteAPI {
@@ -38,7 +41,7 @@ public class WriteAPI {
                             responseQueue: DispatchQueue = .main,
                             completion: @escaping (_ response: Void?,
                                                    _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postWrite(responseQueue) { result -> Void in
+        postWrite(record, responseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -94,7 +97,7 @@ public class WriteAPI {
                             responseQueue: DispatchQueue = .main,
                             completion: @escaping (
                                     _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
-        postWrite(responseQueue) { result -> Void in
+        postWrite(record, responseQueue) { result -> Void in
             switch result {
             case .success:
                 completion(.success(()))
@@ -151,7 +154,7 @@ public class WriteAPI {
                             record: String,
                             responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
         Future<Void, InfluxDBClient.InfluxDBError> { promise in
-            self.postWrite(responseQueue) { result -> Void in
+            self.postWrite(record, responseQueue) { result -> Void in
                 switch result {
                 case .success:
                     promise(.success(()))
@@ -189,8 +192,71 @@ public class WriteAPI {
     }
     #endif
 
-    internal func postWrite(_ responseQueue: DispatchQueue,
+    // swiftlint:disable function_body_length
+    internal func postWrite(_ data: String,
+                            _ responseQueue: DispatchQueue,
                             _ completion: @escaping (
                                     _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
+        do {
+            guard let url = URL(string: client.url + "/api/v2/write") else {
+                throw InfluxDBClient.InfluxDBError.error(
+                        -1,
+                        nil,
+                        nil,
+                        InfluxDBClient.InfluxDBError.generic("Invalid URL"))
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+
+            // Headers
+            request.setValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("identity", forHTTPHeaderField: "Content-Encoding")
+            request.setValue(String(data.count), forHTTPHeaderField: "Content-Length")
+
+            // Body
+            request.httpBody = data.data(using: .utf8)
+
+            let task = client.session.dataTask(with: request) { data, response, error in
+                responseQueue.async {
+                    if let error = error {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                -1,
+                                nil,
+                                CodableHelper.toErrorBody(data),
+                                error)))
+                        return
+                    }
+
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                -2,
+                                nil,
+                                CodableHelper.toErrorBody(data),
+                                InfluxDBClient.InfluxDBError.generic("Missing data"))))
+                        return
+                    }
+
+                    guard Array(200..<300).contains(httpResponse.statusCode) else {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                httpResponse.statusCode,
+                                httpResponse.allHeaderFields,
+                                CodableHelper.toErrorBody(data),
+                                InfluxDBClient.InfluxDBError.generic("Unsuccessful HTTP StatusCode"))))
+                        return
+                    }
+
+                    completion(.success(Void()))
+                }
+            }
+
+            task.resume()
+        } catch {
+            responseQueue.async {
+                completion(.failure(InfluxDBClient.InfluxDBError.error(415, nil, nil, error)))
+            }
+        }
     }
+    // swiftlint:enable function_body_length
 }
