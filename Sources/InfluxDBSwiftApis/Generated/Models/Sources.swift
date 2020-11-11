@@ -10,10 +10,10 @@ import Foundation
 
 public struct Sources: Codable {
 
-    public var links: InvitesLinks?
+    public var links: UsersLinks?
     public var sources: [Source]?
 
-    public init(links: InvitesLinks? = nil, sources: [Source]? = nil) {
+    public init(links: UsersLinks? = nil, sources: [Source]? = nil) {
         self.links = links
         self.sources = sources
     }
