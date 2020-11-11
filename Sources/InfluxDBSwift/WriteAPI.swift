@@ -41,14 +41,13 @@ public class WriteAPI {
                             responseQueue: DispatchQueue = .main,
                             completion: @escaping (_ response: Void?,
                                                    _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postWrite(record, responseQueue) { result -> Void in
-            switch result {
-            case .success:
-                completion((), nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+        self.writeRecords(
+                bucket: bucket,
+                org: org,
+                precision: precision,
+                records: [record],
+                responseQueue: responseQueue,
+                completion: completion)
     }
 
     /// Write lines of Line Protocol.
@@ -69,13 +68,14 @@ public class WriteAPI {
                              responseQueue: DispatchQueue = .main,
                              completion: @escaping (_ response: Void?,
                                                     _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        self.writeRecord(
-                bucket: bucket,
-                org: org,
-                precision: precision,
-                record: records.joined(separator: "\n"),
-                responseQueue: responseQueue,
-                completion: completion)
+        postWrite(records, responseQueue) { result -> Void in
+            switch result {
+            case .success:
+                completion((), nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
     }
 
     /// Write a line of Line Protocol.
@@ -97,14 +97,13 @@ public class WriteAPI {
                             responseQueue: DispatchQueue = .main,
                             completion: @escaping (
                                     _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
-        postWrite(record, responseQueue) { result -> Void in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        }
+        self.writeRecords(
+                bucket: bucket,
+                org: org,
+                precision: precision,
+                records: [record],
+                responseQueue: responseQueue,
+                completion: completion)
     }
 
     /// Write lines of Line Protocol.
@@ -126,13 +125,14 @@ public class WriteAPI {
                              responseQueue: DispatchQueue = .main,
                              completion: @escaping (
                                      _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
-        self.writeRecord(
-                bucket: bucket,
-                org: org,
-                precision: precision,
-                record: records.joined(separator: "\n"),
-                responseQueue: responseQueue,
-                completion: completion)
+        postWrite(records, responseQueue) { result -> Void in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
     }
 
     #if canImport(Combine)
@@ -153,16 +153,12 @@ public class WriteAPI {
                             precision: InfluxDBClient.WritePrecision = InfluxDBClient.defaultWritePrecision,
                             record: String,
                             responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
-        Future<Void, InfluxDBClient.InfluxDBError> { promise in
-            self.postWrite(record, responseQueue) { result -> Void in
-                switch result {
-                case .success:
-                    promise(.success(()))
-                case let .failure(error):
-                    promise(.failure(error))
-                }
-            }
-        }.eraseToAnyPublisher()
+        self.writeRecords(
+                bucket: bucket,
+                org: org,
+                precision: precision,
+                records: [record],
+                responseQueue: responseQueue)
     }
 
     /// Write lines of Line Protocol.
@@ -183,17 +179,21 @@ public class WriteAPI {
                              records: [String],
                              responseQueue: DispatchQueue = .main)
                     -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
-        self.writeRecord(
-                bucket: bucket,
-                org: org,
-                precision: precision,
-                record: records.joined(separator: "\n"),
-                responseQueue: responseQueue)
+        Future<Void, InfluxDBClient.InfluxDBError> { promise in
+            self.postWrite(records, responseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    promise(.success(()))
+                case let .failure(error):
+                    promise(.failure(error))
+                }
+            }
+        }.eraseToAnyPublisher()
     }
     #endif
 
     // swiftlint:disable function_body_length
-    internal func postWrite(_ data: String,
+    internal func postWrite(_ records: [String],
                             _ responseQueue: DispatchQueue,
                             _ completion: @escaping (
                                     _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
@@ -205,6 +205,10 @@ public class WriteAPI {
                         nil,
                         InfluxDBClient.InfluxDBError.generic("Invalid URL"))
             }
+
+            let data = records
+                    .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+                    .joined(separator: "\\n")
 
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
