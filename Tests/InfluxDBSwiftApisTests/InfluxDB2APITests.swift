@@ -49,8 +49,8 @@ final class InfluxDB2APITests: XCTestCase {
 }
 
 class APIXCTestCase: XCTestCase {
-    internal var client: InfluxDBClient?
-    internal var api: InfluxDB2API?
+    internal var client: InfluxDBClient!
+    internal var api: InfluxDB2API!
     internal static var orgID: String = ""
     internal static var bucketID: String = ""
 
@@ -154,7 +154,7 @@ class APIXCTestCase: XCTestCase {
             return
         }
         let expectation = self.expectation(description: "Cannot find my-org")
-        api?.getOrganizationsAPI().getOrgs(limit: 100) { organizations, error in
+        api.getOrganizationsAPI().getOrgs(limit: 100) { organizations, error in
             if let error = error {
                 XCTFail("\(error)")
             }
@@ -173,7 +173,7 @@ class APIXCTestCase: XCTestCase {
             return
         }
         let expectation = self.expectation(description: "Cannot find my-bucket")
-        api?.getBucketsAPI().getBuckets(limit: 100) { response, error in
+        api.getBucketsAPI().getBuckets(limit: 100) { response, error in
             if let error = error {
                 XCTFail("\(error)")
             }

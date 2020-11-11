@@ -9,13 +9,13 @@ import XCTest
 class UsersAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api?.getUsersAPI().getUsers { users, _ in
+        api.getUsersAPI().getUsers { users, _ in
             users?
                     .users?
                     .filter { user in
                         user.name.hasSuffix("_TEST")
                     }.forEach { user in
-                        self.api?.getUsersAPI().deleteUsersID(userID: user.id!) { _, _ in
+                        self.api.getUsersAPI().deleteUsersID(userID: user.id!) { _, _ in
                         }
                     }
         }
@@ -32,6 +32,6 @@ class UsersAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api?.getUsersAPI().postUsers, request, &checker)
+        checkPost(api.getUsersAPI().postUsers, request, &checker)
     }
 }

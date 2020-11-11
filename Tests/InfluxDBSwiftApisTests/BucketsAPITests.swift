@@ -9,13 +9,13 @@ import XCTest
 class BucketsAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api?.getBucketsAPI().getBuckets(limit: 100) { buckets, _ in
+        api.getBucketsAPI().getBuckets(limit: 100) { buckets, _ in
             buckets?
                     .buckets?
                     .filter { bucket in
                         bucket.name.hasSuffix("_TEST")
                     }.forEach { bucket in
-                        self.api?.getBucketsAPI().deleteBucketsID(bucketID: bucket.id!) { _, _ in
+                        self.api.getBucketsAPI().deleteBucketsID(bucketID: bucket.id!) { _, _ in
                         }
                     }
         }
@@ -33,6 +33,6 @@ class BucketsAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api?.getBucketsAPI().postBuckets, request, &checker)
+        checkPost(api.getBucketsAPI().postBuckets, request, &checker)
     }
 }

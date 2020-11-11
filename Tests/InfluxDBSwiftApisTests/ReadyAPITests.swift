@@ -14,6 +14,6 @@ final class ReadyAPITests: APIXCTestCase {
             XCTAssertNotNil(response.started)
         }
 
-        checkGet(api?.getReadyAPI().getReady, &checker)
+        checkGet(api.getReadyAPI().getReady, &checker)
     }
 }

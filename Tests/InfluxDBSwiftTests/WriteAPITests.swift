@@ -11,26 +11,24 @@ import FoundationNetworking
 import XCTest
 
 final class WriteAPITests: XCTestCase {
-    private var client: InfluxDBClient?
+    private var client: InfluxDBClient!
 
     override func setUp() {
         client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
     }
 
     override func tearDown() {
-        if let client = client {
-            client.close()
-        }
+        client.close()
     }
 
     func testGetWriteAPI() {
-        XCTAssertNotNil(client?.getWriteAPI())
+        XCTAssertNotNil(client.getWriteAPI())
     }
 
     func testWriteRecord() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
 
-        client?.getWriteAPI().writeRecord(record: "mem,tag=a value=1") { response, error in
+        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1") { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -48,7 +46,7 @@ final class WriteAPITests: XCTestCase {
     func testWriteRecordResult() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
 
-        client?.getWriteAPI().writeRecord(record: "mem,tag=a value=1") { result in
+        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1") { result in
             switch result {
             case let .success(response):
                 XCTAssertNil(response)
@@ -66,7 +64,7 @@ final class WriteAPITests: XCTestCase {
         #if canImport(Combine)
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
 
-        _ = client?.getWriteAPI()
+        _ = client.getWriteAPI()
                 .writeRecord(record: "mem,tag=a value=1")
                 .sink(receiveCompletion: { completion in
                     if case .failure(let error) = completion {

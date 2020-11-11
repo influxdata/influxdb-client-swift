@@ -11,12 +11,10 @@ import FoundationNetworking
 import XCTest
 
 final class InfluxDBClientTests: XCTestCase {
-    private var client: InfluxDBClient?
+    private var client: InfluxDBClient!
 
     override func tearDown() {
-        if let client = client {
-            client.close()
-        }
+        client.close()
     }
 
     func testCreateInstance() {
@@ -32,7 +30,7 @@ final class InfluxDBClientTests: XCTestCase {
     func testSessionHeaders() {
         client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
 
-        let headers: [String: String] = client?.session.configuration.httpAdditionalHeaders as? [String: String] ?? [:]
+        let headers: [String: String] = client.session.configuration.httpAdditionalHeaders as? [String: String] ?? [:]
         XCTAssertEqual("Token my-token", headers["Authorization"])
         XCTAssertEqual("influxdb-client-swift/\(InfluxDBClient.version)", headers["User-Agent"])
     }
@@ -45,17 +43,17 @@ final class InfluxDBClientTests: XCTestCase {
                 database: "my-db",
                 retentionPolicy: "autogen")
 
-        let headers: [String: String] = client?.session.configuration.httpAdditionalHeaders as? [String: String] ?? [:]
+        let headers: [String: String] = client.session.configuration.httpAdditionalHeaders as? [String: String] ?? [:]
         XCTAssertEqual("Token user:pass", headers["Authorization"])
         XCTAssertEqual("influxdb-client-swift/\(InfluxDBClient.version)", headers["User-Agent"])
 
-        XCTAssertEqual("my-db/autogen", client?.options.bucket)
+        XCTAssertEqual("my-db/autogen", client.options.bucket)
     }
 
     func testTimeoutDefault() {
         client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
-        XCTAssertEqual(60, client?.session.configuration.timeoutIntervalForRequest)
-        XCTAssertEqual(300, client?.session.configuration.timeoutIntervalForResource)
+        XCTAssertEqual(60, client.session.configuration.timeoutIntervalForRequest)
+        XCTAssertEqual(300, client.session.configuration.timeoutIntervalForResource)
     }
 
     func testTimeoutConfigured() {
@@ -64,16 +62,16 @@ final class InfluxDBClientTests: XCTestCase {
                 timeoutIntervalForResource: 5000)
 
         client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
-        XCTAssertEqual(100, client?.session.configuration.timeoutIntervalForRequest)
-        XCTAssertEqual(5000, client?.session.configuration.timeoutIntervalForResource)
+        XCTAssertEqual(100, client.session.configuration.timeoutIntervalForRequest)
+        XCTAssertEqual(5000, client.session.configuration.timeoutIntervalForResource)
     }
 
     func testBaseURL() {
         client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
-        XCTAssertEqual("http://localhost:8086", client?.url)
-        client?.close()
+        XCTAssertEqual("http://localhost:8086", client.url)
+        client.close()
         client = InfluxDBClient(url: "http://localhost:8086/", token: "my-token")
-        XCTAssertEqual("http://localhost:8086", client?.url)
-        client?.close()
+        XCTAssertEqual("http://localhost:8086", client.url)
+        client.close()
     }
 }

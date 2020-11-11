@@ -9,7 +9,7 @@ import XCTest
 class AuthorizationsAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api?.getAuthorizationsAPI().getAuthorizations { authorizations, _ in
+        api.getAuthorizationsAPI().getAuthorizations { authorizations, _ in
             authorizations?
                     .authorizations?
                     .filter { authorization in
@@ -18,7 +18,7 @@ class AuthorizationsAPITests: APIXCTestCase {
                         }
                         return false
                     }.forEach { authorization in
-                        self.api?.getAuthorizationsAPI().deleteAuthorizationsID(authID: authorization.id!) { _, _ in
+                        self.api.getAuthorizationsAPI().deleteAuthorizationsID(authID: authorization.id!) { _, _ in
                         }
                     }
         }
@@ -50,6 +50,6 @@ class AuthorizationsAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api?.getAuthorizationsAPI().postAuthorizations, request, &checker)
+        checkPost(api.getAuthorizationsAPI().postAuthorizations, request, &checker)
     }
 }
