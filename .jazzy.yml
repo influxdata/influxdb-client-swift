@@ -30,7 +30,6 @@ custom_categories:
       - DBRPUpdate
       - DBRPs
       - HealthCheck
-      - InvitesLinks
       - IsOnboarding
       - Label
       - LabelCreateRequest
@@ -80,6 +79,7 @@ custom_categories:
       - User
       - Users
       - UserLinks
+      - UsersLinks
       - Variable
       - VariableLinks
       - VariableProperties

@@ -31,7 +31,7 @@ generate-sources: ## Generate Models and APIs from swagger
 generate-test: ## Generate LinuxMain.swift entries for the package
 	swift test --generate-linuxmain
 
-doc: ## Generate documentation
+generate-doc: ## Generate documentation
 	$(MAKE) build
 	sourcekitten doc --spm --module-name InfluxDBSwift > doc_swift.json
 	sourcekitten doc --spm --module-name InfluxDBSwiftApis > doc_swift_apis.json
