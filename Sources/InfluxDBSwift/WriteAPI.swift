@@ -214,8 +214,16 @@ public class WriteAPI {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
 
+            // Body
+            var body: Data! = lineProtocol.data(using: .utf8)
+            if let data = body, client.options.enableGzip {
+                body = try data.gzipped()
+            }
+            request.httpBody = body
+
             // Headers
             request.setValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
+            request.setValue(String(body.count), forHTTPHeaderField: "Content-Length")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("identity", forHTTPHeaderField: "Accept-Encoding")
             request.setValue(client.options.enableGzip ? "gzip" : "identity", forHTTPHeaderField: "Content-Encoding")
@@ -223,13 +231,6 @@ public class WriteAPI {
             client.session.configuration.httpAdditionalHeaders?.forEach { key, value in
                 request.setValue("\(value)", forHTTPHeaderField: "\(key)")
             }
-
-            // Body
-            var body = lineProtocol.data(using: .utf8)
-            if let data = body, client.options.enableGzip {
-                body = try data.gzipped()
-            }
-            request.httpBody = body
 
             let task = client.session.dataTask(with: request) { data, response, error in
                 responseQueue.async {
