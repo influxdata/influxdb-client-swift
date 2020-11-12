@@ -103,6 +103,11 @@ extension InfluxDBClient {
         /// The maximum amount of time that a resource request should be allowed to take. Default to 5 min.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForResource
         public var timeoutIntervalForResource: TimeInterval = 60 * 5
+        /// Enable Gzip compression for HTTP requests.
+        /// Currently only the `Write` and `Query` endpoints supports the Gzip compression.
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostWrite
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostQuery
+        public var enableGzip = false
     }
 }
 

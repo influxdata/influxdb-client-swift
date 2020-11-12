@@ -9,6 +9,7 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import Gzip
 
 /// The asynchronous API to Write time-series data into InfluxDB 2.0.
 public class WriteAPI {
@@ -206,7 +207,7 @@ public class WriteAPI {
                         InfluxDBClient.InfluxDBError.generic("Invalid URL"))
             }
 
-            let data = records
+            let lineProtocol = records
                     .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
                     .joined(separator: "\\n")
 
@@ -216,15 +217,19 @@ public class WriteAPI {
             // Headers
             request.setValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.setValue("identity", forHTTPHeaderField: "Content-Encoding")
-            request.setValue(String(data.count), forHTTPHeaderField: "Content-Length")
+            request.setValue("identity", forHTTPHeaderField: "Accept-Encoding")
+            request.setValue(client.options.enableGzip ? "gzip" : "identity", forHTTPHeaderField: "Content-Encoding")
 
             client.session.configuration.httpAdditionalHeaders?.forEach { key, value in
                 request.setValue("\(value)", forHTTPHeaderField: "\(key)")
             }
 
             // Body
-            request.httpBody = data.data(using: .utf8)
+            var body = lineProtocol.data(using: .utf8)
+            if let data = body, client.options.enableGzip {
+                body = try data.gzipped()
+            }
+            request.httpBody = body
 
             let task = client.session.dataTask(with: request) { data, response, error in
                 responseQueue.async {

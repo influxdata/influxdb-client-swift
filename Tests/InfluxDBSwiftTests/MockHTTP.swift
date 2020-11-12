@@ -13,7 +13,7 @@ extension HTTPURLResponse {
 class MockURLProtocol: URLProtocol {
     static let url = URL(string: "http://localhost:8086")!
 
-    static var handler: ((URLRequest, String?) throws -> (HTTPURLResponse, Data))?
+    static var handler: ((URLRequest, Data?) throws -> (HTTPURLResponse, Data))?
 
     override class func canInit(with request: URLRequest) -> Bool {
         true
@@ -44,11 +44,11 @@ class MockURLProtocol: URLProtocol {
 }
 
 private extension URLRequest {
-    var bodyValue: String? {
+    var bodyValue: Data? {
         guard let httpBody = httpBodyStreamData() else {
             return nil
         }
-        return String(decoding: httpBody, as: UTF8.self)
+        return httpBody
     }
 
     private func httpBodyStreamData() -> Data? {

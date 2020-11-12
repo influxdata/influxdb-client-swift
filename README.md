@@ -109,6 +109,7 @@ client.close()
 | precision | Default precision for the unix timestamps within the body line-protocol | WritePrecision | ns |
 | timeoutIntervalForRequest | The timeout interval to use when waiting for additional data. | TimeInterval | 60 sec |
 | timeoutIntervalForResource | The maximum amount of time that a resource request should be allowed to take. | TimeInterval | 5 min |
+| enableGzip | Enable Gzip compression for HTTP requests. | Bool | false |
 
 ##### Configure default `Bucket`, `Organization` and `Precision`
 

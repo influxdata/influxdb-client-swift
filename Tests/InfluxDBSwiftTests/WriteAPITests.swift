@@ -56,12 +56,46 @@ final class WriteAPITests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
+    func testWriteRecordGzip() {
+        client.close()
+
+        client = InfluxDBClient(
+                url: "http://localhost:8086",
+                token: "my-token",
+                options: InfluxDBClient.InfluxDBOptions(enableGzip: true),
+                protocolClasses: [MockURLProtocol.self])
+
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        expectation.expectedFulfillmentCount = 2
+
+        MockURLProtocol.handler = { request, bodyData in
+            XCTAssertEqual("37", request.allHTTPHeaderFields!["Content-Length"])
+            XCTAssertEqual("gzip", request.allHTTPHeaderFields!["Content-Encoding"])
+            XCTAssertNotNil(bodyData)
+
+            XCTAssertEqual("mem,tag=a value=1", try String(decoding: bodyData!.gunzipped(), as: UTF8.self))
+
+            expectation.fulfill()
+
+            let response = HTTPURLResponse(statusCode: 204)
+            return (response, Data())
+        }
+
+        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1") { _, _ in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     func testWriteRecords() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyValue in
-            XCTAssertEqual("mem,tag=a value=1\\nmem,tag=a value=2\\nmem,tag=a value=3\\nmem,tag=a value=4", bodyValue)
+        MockURLProtocol.handler = { request, bodyData in
+            XCTAssertEqual(
+                    "mem,tag=a value=1\\nmem,tag=a value=2\\nmem,tag=a value=3\\nmem,tag=a value=4",
+                    String(decoding: bodyData!, as: UTF8.self))
 
             expectation.fulfill()
 
@@ -121,8 +155,8 @@ final class WriteAPITests: XCTestCase {
         #endif
     }
 
-    private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, String?)
-    -> (HTTPURLResponse, Data) { { request, bodyValue in
+    private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
+    -> (HTTPURLResponse, Data) { { request, bodyData in
             XCTAssertEqual(
                     "influxdb-client-swift/\(InfluxDBClient.self.version)",
                     request.allHTTPHeaderFields!["User-Agent"])
@@ -130,9 +164,10 @@ final class WriteAPITests: XCTestCase {
             XCTAssertEqual("text/plain; charset=utf-8", request.allHTTPHeaderFields!["Content-Type"])
             XCTAssertEqual("17", request.allHTTPHeaderFields!["Content-Length"])
             XCTAssertEqual("identity", request.allHTTPHeaderFields!["Content-Encoding"])
+            XCTAssertEqual("identity", request.allHTTPHeaderFields!["Accept-Encoding"])
             XCTAssertEqual("http://localhost:8086/api/v2/write", request.url?.description)
 
-            XCTAssertEqual("mem,tag=a value=1", bodyValue)
+            XCTAssertEqual("mem,tag=a value=1", String(decoding: bodyData!, as: UTF8.self))
 
             expectation.fulfill()
 
