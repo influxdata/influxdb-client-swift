@@ -11,7 +11,7 @@ extension HTTPURLResponse {
 }
 
 class MockURLProtocol: URLProtocol {
-    static let url = URL(string: "http://localhost:8086")!
+    static let url = URL(string: InfluxDBClientTests.dbURL())!
 
     static var handler: ((URLRequest, Data?) throws -> (HTTPURLResponse, Data))?
 

@@ -10,7 +10,7 @@ final class InfluxDB2APITests: XCTestCase {
     private var client: InfluxDBClient?
 
     override func setUp() {
-        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        client = InfluxDBClient(url: Self.dbURL(), token: "my-token")
     }
 
     override func tearDown() {
@@ -55,7 +55,7 @@ class APIXCTestCase: XCTestCase {
     internal static var bucketID: String = ""
 
     override func setUp() {
-        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        client = InfluxDBClient(url: Self.dbURL(), token: "my-token")
         api = InfluxDB2API(client: client!)
         findMyOrg()
         findMyBucket()
@@ -185,5 +185,14 @@ class APIXCTestCase: XCTestCase {
             }
         }
         waitForExpectations(timeout: 5, handler: nil)
+    }
+}
+
+extension XCTestCase {
+    internal static func dbURL() -> String {
+        if let url = ProcessInfo.processInfo.environment["INFLUXDB_URL"] {
+            return url
+        }
+        return "http://localhost:8086"
     }
 }

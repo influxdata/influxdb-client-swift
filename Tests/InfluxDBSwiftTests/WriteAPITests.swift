@@ -22,7 +22,7 @@ final class WriteAPITests: XCTestCase {
 
     override func setUp() {
         client = InfluxDBClient(
-                url: "http://localhost:8086",
+                url: Self.dbURL(),
                 token: "my-token",
                 protocolClasses: [MockURLProtocol.self])
     }
@@ -60,7 +60,7 @@ final class WriteAPITests: XCTestCase {
         client.close()
 
         client = InfluxDBClient(
-                url: "http://localhost:8086",
+                url: Self.dbURL(),
                 token: "my-token",
                 options: InfluxDBClient.InfluxDBOptions(enableGzip: true),
                 protocolClasses: [MockURLProtocol.self])
@@ -165,7 +165,7 @@ final class WriteAPITests: XCTestCase {
             XCTAssertEqual("17", request.allHTTPHeaderFields!["Content-Length"])
             XCTAssertEqual("identity", request.allHTTPHeaderFields!["Content-Encoding"])
             XCTAssertEqual("identity", request.allHTTPHeaderFields!["Accept-Encoding"])
-            XCTAssertEqual("http://localhost:8086/api/v2/write", request.url?.description)
+            XCTAssertEqual("\(Self.dbURL())/api/v2/write", request.url?.description)
 
             XCTAssertEqual("mem,tag=a value=1", String(decoding: bodyData!, as: UTF8.self))
 

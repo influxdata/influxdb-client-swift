@@ -38,7 +38,7 @@ generate-doc: ## Generate documentation
 	jazzy --clean --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
 
 docker-cli: ## Start and connect into swift:5.3 container
-	docker run --rm --privileged --interactive --tty --network influx_network -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
+	docker run --rm --privileged --interactive --tty --network influx_network --env INFLUXDB_URL=http://influxdb_v2:8086 -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
 
 clean: ## Clean builds, generated docs, resolved dependencies, ...
 	rm -rf Packages || true
