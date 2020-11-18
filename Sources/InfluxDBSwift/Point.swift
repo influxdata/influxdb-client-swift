@@ -54,8 +54,7 @@ extension InfluxDBClient {
                 _ = point.addField(key: field.0, value: field.1)
             }
             if let time = tuple.time {
-                _ = 
-                        point.time(time: time, precision: precision ?? defaultWritePrecision)
+                _ = point.time(time: time, precision: precision ?? defaultWritePrecision)
             }
             return point
         }
