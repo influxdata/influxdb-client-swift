@@ -202,7 +202,10 @@ final class WriteAPITests: XCTestCase {
         }
 
         let records = ["mem,tag=a value=1", "mem,tag=a value=2", " ", "mem,tag=a value=3", "", "mem,tag=a value=4"]
-        client.getWriteAPI().writeRecords(records: records) { _, _ in
+        client.getWriteAPI().writeRecords(records: records) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
             expectation.fulfill()
         }
 

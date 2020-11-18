@@ -193,7 +193,7 @@ public class WriteAPI {
     }
     #endif
 
-    // swiftlint:disable function_body_length function_parameter_count
+    // swiftlint:disable function_body_length function_parameter_count cyclomatic_complexity
     internal func postWrite(_ bucket: String?,
                             _ org: String?,
                             _ precision: InfluxDBClient.WritePrecision?,
@@ -307,10 +307,14 @@ public class WriteAPI {
                                 batches: inout [InfluxDBClient.WritePrecision: (Int, [String])]) throws {
         switch record {
         case let string as String:
-            let batch: (Int, [String])? = batches[precision] as (Int, [String])?
-            if var batch = batch ?? (batches.count, []), !string.trimmingCharacters(in: .whitespaces).isEmpty {
+            guard !string.trimmingCharacters(in: .whitespaces).isEmpty else {
+                return
+            }
+            if var batch = batches[precision] {
                 batch.1.append(string)
                 batches[precision] = batch
+            } else {
+                batches[precision] = (batches.count, [string])
             }
         case let point as InfluxDBClient.Point:
             if let lineProtocol = try point.toLineProtocol() {
@@ -355,5 +359,5 @@ public class WriteAPI {
         }
     }
 
-    // swiftlint:enable function_body_length function_parameter_count
+    // swiftlint:enable function_body_length function_parameter_count cyclomatic_complexity
 }
