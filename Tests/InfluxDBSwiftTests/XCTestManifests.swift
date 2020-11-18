@@ -25,6 +25,7 @@ extension PointTests {
         ("testFieldEscape", testFieldEscape),
         ("testFieldNullValue", testFieldNullValue),
         ("testFieldTypes", testFieldTypes),
+        ("testFromTuple", testFromTuple),
         ("testInfinityValues", testInfinityValues),
         ("testMeasurementEscape", testMeasurementEscape),
         ("testOnlyInfinityValues", testOnlyInfinityValues),
@@ -46,6 +47,9 @@ extension WriteAPITests {
     // to regenerate.
     static let __allTests__WriteAPITests = [
         ("testGetWriteAPI", testGetWriteAPI),
+        ("testWriteArrayOfArray", testWriteArrayOfArray),
+        ("testWritePoint", testWritePoint),
+        ("testWritePointsDifferentPrecision", testWritePointsDifferentPrecision),
         ("testWriteRecord", testWriteRecord),
         ("testWriteRecordCombine", testWriteRecordCombine),
         ("testWriteRecordGzip", testWriteRecordGzip),

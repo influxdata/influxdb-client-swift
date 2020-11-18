@@ -30,7 +30,7 @@ public class WriteAPI {
     ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - precision: The precision for the unix timestamps within the body line-protocol.
-    ///   - record: The record to write. It can be `String` or `Point`.
+    ///   - record: The record to write. It can be `String`,  `Point` or `Tuple`.
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: completion handler to receive the data and the error objects
     ///
@@ -57,7 +57,7 @@ public class WriteAPI {
     ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - precision: The precision for the unix timestamps within the body line-protocol.
-    ///   - records: The records to write. It can be `String` or `Point`.
+    ///   - records: The records to write. It can be `String`,  `Point` or `Tuple`.
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion handler to receive the data and the error objects
     ///
@@ -85,7 +85,7 @@ public class WriteAPI {
     ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - precision: The precision for the unix timestamps within the body line-protocol.
-    ///   - record: The record to write. It can be `String` or `Point`.
+    ///   - record: The record to write. It can be `String`,  `Point` or `Tuple`.
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: completion handler to receive the `Swift.Result`
     ///
@@ -113,7 +113,7 @@ public class WriteAPI {
     ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - precision: The precision for the unix timestamps within the body line-protocol.
-    ///   - records: The records to write. It can be `String` or `Point`.
+    ///   - records: The records to write. It can be `String`,  `Point` or `Tuple`.
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: completion handler to receive the `Swift.Result`
     ///
@@ -143,7 +143,7 @@ public class WriteAPI {
     ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - precision: The precision for the unix timestamps within the body line-protocol.
-    ///   - record: The record to write. It can be `String` or `Point`.
+    ///   - record: The record to write. It can be `String`,  `Point` or `Tuple`.
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     ///
@@ -168,7 +168,7 @@ public class WriteAPI {
     ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
     ///   - precision: The precision for the unix timestamps within the body line-protocol.
-    ///   - records: The records to write. It can be `String` or `Point`.
+    ///   - records: The records to write. It can be `String`,  `Point` or `Tuple`.
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     ///
@@ -219,7 +219,7 @@ public class WriteAPI {
                         .generic("The precision destination should be specified.")
             }
 
-            // we need sorted batch by insertion time (for LP without timestamp)
+            // we need sort batches by insertion time (for LP without timestamp)
             var batches: [InfluxDBClient.WritePrecision: (Int, [String])] = [:]
             try toLineProtocol(precision: precision, record: records, batches: &batches)
 
@@ -305,8 +305,6 @@ public class WriteAPI {
         }
     }
 
-// swiftlint:enable function_body_length function_parameter_count
-
     private func toLineProtocol(precision: InfluxDBClient.WritePrecision,
                                 record: Any,
                                 batches: inout [InfluxDBClient.WritePrecision: (Int, [String])]) throws {
@@ -321,6 +319,35 @@ public class WriteAPI {
             if let lineProtocol = try point.toLineProtocol() {
                 try toLineProtocol(precision: point.precision, record: lineProtocol, batches: &batches)
             }
+        case let tuple as (measurement: String, fields: [String?: Any?]):
+            let point = InfluxDBClient.Point.fromTuple(
+                    (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: nil),
+                    precision: precision)
+            try toLineProtocol(
+                precision: precision,
+                record: point,
+                batches: &batches)
+        case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?):
+            try toLineProtocol(
+                precision: precision,
+                record: InfluxDBClient.Point.fromTuple(tuple, precision: precision),
+                batches: &batches)
+        case let tuple as (measurement: String, fields: [String?: Any?], time: Any?):
+            let point = InfluxDBClient.Point.fromTuple(
+                    (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: tuple.time),
+                    precision: precision)
+            try toLineProtocol(
+                precision: precision,
+                record: point,
+                batches: &batches)
+        case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?]):
+            let point = InfluxDBClient.Point.fromTuple(
+                    (measurement: tuple.measurement, tags: tuple.tags, fields: tuple.fields, time: nil),
+                    precision: precision)
+            try toLineProtocol(
+                precision: precision,
+                record: point,
+                batches: &batches)
         case let array as [Any]:
             try array.forEach { item in
                 try toLineProtocol(precision: precision, record: item, batches: &batches)
@@ -330,4 +357,6 @@ public class WriteAPI {
                     .generic("Record type is not supported: \(record) with type: \(type(of: record))")
         }
     }
+
+    // swiftlint:enable function_body_length function_parameter_count
 }

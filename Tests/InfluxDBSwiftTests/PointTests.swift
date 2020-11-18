@@ -259,6 +259,72 @@ final class PointTests: XCTestCase {
                 .toLineProtocol()
         XCTAssertEqual(pointUTC, pointHK)
     }
+
+    func testFromTuple() throws {
+        let tuples: [
+        (
+                (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?),
+                InfluxDBClient.WritePrecision?,
+                String
+        )] = [
+            (
+                    (
+                            measurement: "h2o_feet",
+                            tags: ["location": "coyote_creek"],
+                            fields: ["water_level": 1.0],
+                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                    ),
+                    nil,
+                    "h2o_feet,location=coyote_creek water_level=1.0 1602374400000000000"
+            ),
+            (
+                    (
+                            measurement: "h2o_feet",
+                            tags: ["location": "coyote_creek"],
+                            fields: ["water_level": 1.0],
+                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                    ),
+                    InfluxDBClient.WritePrecision.s,
+                    "h2o_feet,location=coyote_creek water_level=1.0 1602374400"
+            ),
+            (
+                    (
+                            measurement: "h2o_feet",
+                            tags: nil,
+                            fields: ["water_level": 1.0],
+                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                    ),
+                    nil,
+                    "h2o_feet water_level=1.0 1602374400000000000"
+            ),
+            (
+                    (
+                            measurement: "h2o_feet",
+                            tags: ["location": nil],
+                            fields: ["water_level": 1.0],
+                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                    ),
+                    nil,
+                    "h2o_feet water_level=1.0 1602374400000000000"
+            ),
+            (
+                    (
+                            measurement: "h2o_feet",
+                            tags: ["location": nil],
+                            fields: ["water_level": 1.0],
+                            time: nil
+                    ),
+                    nil,
+                    "h2o_feet water_level=1.0"
+            )
+        ]
+
+        for tuple in tuples {
+            XCTAssertEqual(
+                tuple.2,
+                try InfluxDBClient.Point.fromTuple(tuple.0, precision: tuple.1).toLineProtocol())
+        }
+    }
 }
 
 private extension Date {

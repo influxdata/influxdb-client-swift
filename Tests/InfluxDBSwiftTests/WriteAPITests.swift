@@ -209,6 +209,43 @@ final class WriteAPITests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
+    func testWriteRecordTypes() {
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        expectation.expectedFulfillmentCount = 2
+
+        let required = "mem,tag=a value=1\\nmem,tag=a value=2i\\nmem,tag=a value=3i"
+                + "\\nmem value=4i\\nmem,tag=a value=5i 5\\nmem value=6i 6"
+
+        MockURLProtocol.handler = { request, bodyData in
+            XCTAssertEqual(
+                    required,
+                    String(decoding: bodyData!, as: UTF8.self))
+
+            expectation.fulfill()
+
+            let response = HTTPURLResponse(statusCode: 204)
+            return (response, Data())
+        }
+
+        let records: [Any] = [
+            "mem,tag=a value=1",
+            InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 2),
+            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 3]),
+            (measurement: "mem", fields: ["value": 4]),
+            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 5], time: 5),
+            (measurement: "mem", fields: ["value": 6], time: 6)
+        ]
+
+        client.getWriteAPI().writeRecords(records: records) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     func testWriteRecordResult() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2

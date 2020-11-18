@@ -8,7 +8,7 @@ extension InfluxDBClient {
     /// Point defines the values that will be written to the database.
     ///
     /// - SeeAlso: http://bit.ly/influxdata-point
-    public class Point {
+    public class Point: NSObject {
         /// The measurement name.
         private let measurement: String
         // The measurement tags.
@@ -29,6 +29,38 @@ extension InfluxDBClient {
             self.measurement = measurement
             self.precision = precision
         }
+
+        // swiftlint:disable large_tuple
+
+        /// Create a new Point from Tuple.
+        ///
+        /// - Parameters:
+        ///   - tuple: the tuple with keys: `measurement`, `tags`, `fields` and `time`
+        ///   - precision: the data point precision
+        /// - Returns: created Point
+        public class func fromTuple(
+                _ tuple: (
+                        measurement: String,
+                        tags: [String?: String?]?,
+                        fields: [String?: Any?], time: Any?),
+                precision: WritePrecision? = nil) -> Point {
+            let point = InfluxDBClient.Point(tuple.measurement, precision: precision ?? defaultWritePrecision)
+            if let tags = tuple.tags {
+                for tag in tags {
+                    _ = point.addTag(key: tag.0, value: tag.1)
+                }
+            }
+            for field in tuple.fields {
+                _ = point.addField(key: field.0, value: field.1)
+            }
+            if let time = tuple.time {
+                _ = 
+                        point.time(time: time, precision: precision ?? defaultWritePrecision)
+            }
+            return point
+        }
+
+        // swiftlint:enable large_tuple
 
         /// Adds or replaces a tag value for this point.
         ///

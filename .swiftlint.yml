@@ -43,3 +43,6 @@ excluded:
   - Tests/LinuxMain.swift
   - Tests/InfluxDBSwiftTests/XCTestManifests.swift
   - Tests/InfluxDBSwiftApisTests/XCTestManifests.swift
+
+type_body_length:
+  warning: 250
