@@ -310,7 +310,7 @@ public class WriteAPI {
                                 batches: inout [InfluxDBClient.WritePrecision: (Int, [String])]) throws {
         switch record {
         case let string as String:
-            let batch: (Int, [String])? = batches[precision]
+            let batch: (Int, [String])? = batches[precision] as (Int, [String])?
             if var batch = batch ?? (batches.count, []), !string.trimmingCharacters(in: .whitespaces).isEmpty {
                 batch.1.append(string)
                 batches[precision] = batch
