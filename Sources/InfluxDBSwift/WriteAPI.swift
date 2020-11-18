@@ -214,10 +214,7 @@ public class WriteAPI {
                         .generic("The org destination should be specified.")
             }
 
-            guard let precision = precision ?? client.options.precision else {
-                throw InfluxDBClient.InfluxDBError
-                        .generic("The precision destination should be specified.")
-            }
+            let precision = precision ?? client.options.precision
 
             // we need sort batches by insertion time (for LP without timestamp)
             var batches: [InfluxDBClient.WritePrecision: (Int, [String])] = [:]
