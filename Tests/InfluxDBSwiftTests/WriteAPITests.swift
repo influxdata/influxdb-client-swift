@@ -293,6 +293,46 @@ final class WriteAPITests: XCTestCase {
         #endif
     }
 
+    func testBucketAndOrgAreRequired() {
+        client.close()
+        client = InfluxDBClient(
+                url: Self.dbURL(),
+                token: "my-token",
+                protocolClasses: [MockURLProtocol.self])
+
+        let expectation = self.expectation(description: "Check requirements from API")
+        expectation.expectedFulfillmentCount = 2
+
+        MockURLProtocol.handler = { request, bodyData in
+            let response = HTTPURLResponse(statusCode: 422)
+            return (response, Data())
+        }
+
+        client.getWriteAPI().writeRecord(org: "my-org", record: "mem,tag=a value=1i") { response, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(response)
+
+            if let error = error {
+                XCTAssertEqual("(415) Reason: The bucket destination should be specified.", error.description)
+            }
+
+            expectation.fulfill()
+        }
+
+        client.getWriteAPI().writeRecord(bucket: "my-bucket", record: "mem,tag=a value=1i") { response, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(response)
+
+            if let error = error {
+                XCTAssertEqual("(415) Reason: The org destination should be specified.", error.description)
+            }
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
     -> (HTTPURLResponse, Data) { { request, bodyData in
             XCTAssertEqual(

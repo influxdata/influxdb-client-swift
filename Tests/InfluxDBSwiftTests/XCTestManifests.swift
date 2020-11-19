@@ -56,6 +56,7 @@ extension WriteAPITests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__WriteAPITests = [
+        ("testBucketAndOrgAreRequired", testBucketAndOrgAreRequired),
         ("testGetWriteAPI", testGetWriteAPI),
         ("testWriteArrayOfArray", testWriteArrayOfArray),
         ("testWritePoint", testWritePoint),
