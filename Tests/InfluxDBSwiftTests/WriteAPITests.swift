@@ -333,6 +333,32 @@ final class WriteAPITests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
+    func testUnsuccessfulResponse() {
+        let expectation = self.expectation(description: "Check requirements from API")
+        expectation.expectedFulfillmentCount = 1
+
+        MockURLProtocol.handler = { request, bodyData in
+            let response = HTTPURLResponse(statusCode: 422)
+            return (response, Data())
+        }
+
+        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1i") { response, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(response)
+
+            if let error = error {
+                XCTAssertTrue(
+                        error.description.starts(with: "(422) Reason: Unsuccessful HTTP StatusCode"),
+                        error.description
+                )
+            }
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
     -> (HTTPURLResponse, Data) { { request, bodyData in
             XCTAssertEqual(

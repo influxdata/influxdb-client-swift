@@ -58,6 +58,7 @@ extension WriteAPITests {
     static let __allTests__WriteAPITests = [
         ("testBucketAndOrgAreRequired", testBucketAndOrgAreRequired),
         ("testGetWriteAPI", testGetWriteAPI),
+        ("testUnsuccessfulResponse", testUnsuccessfulResponse),
         ("testWriteArrayOfArray", testWriteArrayOfArray),
         ("testWritePoint", testWritePoint),
         ("testWritePointsDifferentPrecision", testWritePointsDifferentPrecision),
