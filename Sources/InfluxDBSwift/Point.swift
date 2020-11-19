@@ -116,7 +116,7 @@ extension InfluxDBClient {
 
         /// Line Protocol from Data Point.
         override public var description: String {
-            "Point: (\(measurement),\(tags) \(fields) \(time ?? ""))"
+            "Point: measurement:\(measurement), tags:\(tags), fields:\(fields), time:\(time ?? "nil")"
         }
 
         private func escapeKey(_ key: String, _ escapeEqual: Bool = true) -> String {

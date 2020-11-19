@@ -325,6 +325,16 @@ final class PointTests: XCTestCase {
                 try InfluxDBClient.Point.fromTuple(tuple.0, precision: tuple.1).toLineProtocol())
         }
     }
+
+    func testDescription() throws {
+        let point = InfluxDBClient.Point("h2o")
+                .addTag(key: "loc", value: "us")
+                .addField(key: "value", value: 100)
+
+        XCTAssertEqual(
+                "Point: measurement:h2o, tags:[\"loc\": Optional(\"us\")], fields:[\"value\": Optional(100)], time:nil",
+                point.description)
+    }
 }
 
 private extension Date {

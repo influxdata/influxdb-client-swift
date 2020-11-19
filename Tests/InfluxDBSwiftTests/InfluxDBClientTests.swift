@@ -76,6 +76,20 @@ final class InfluxDBClientTests: XCTestCase {
     }
 }
 
+final class InfluxDBErrorTests: XCTestCase {
+    func testDescription() {
+        XCTAssertEqual(
+                "(123) Reason: generic reason, HTTP Body: [\"message\": \"fail\"], HTTP Headers: [\"key\": \"value\"]",
+                InfluxDBClient.InfluxDBError.error(
+                        123,
+                        ["key": "value"],
+                        ["message": "fail"],
+                        InfluxDBClient.InfluxDBError.generic("generic reason")
+                ).description)
+        XCTAssertEqual("generic message", InfluxDBClient.InfluxDBError.generic("generic message").description)
+    }
+}
+
 extension XCTestCase {
     internal static func dbURL() -> String {
         if let url = ProcessInfo.processInfo.environment["INFLUXDB_URL"] {
