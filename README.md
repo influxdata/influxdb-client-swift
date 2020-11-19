@@ -144,13 +144,13 @@ client.close()
 ### Writes
 
 The WriteApi supports asynchronous writes into InfluxDB 2.0. 
-The results of writes could be handled by `(response, error) - completion`, `Swift.Result` or `Combine`.
+The results of writes could be handled by `(response, error)`, `Swift.Result` or `Combine`.
 
-The data could be written as
+The data could be written as:
 
 1. `String` that is formatted as a InfluxDB's Line Protocol
 1. [Data Point](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Sources/InfluxDBSwift/Point.swift#L11) structure
-1. Tuple style mapping with keys: measurement, tags, fields and time
+1. Tuple style mapping with keys: `measurement`, `tags`, `fields` and `time`
 1. List of above items
 
 The following example demonstrates how to write data with different type of records. For further information see docs and [examples](/Examples).
