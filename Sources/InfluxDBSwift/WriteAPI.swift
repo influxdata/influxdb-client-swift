@@ -241,7 +241,7 @@ public class WriteAPI {
                 request.httpMethod = "POST"
 
                 // Body
-                var body: Data! = values.1.joined(separator: "\\n").data(using: .utf8)
+                var body: Data! = values.1.joined(separator: "\n").data(using: .utf8)
                 if let data = body, client.options.enableGzip {
                     body = try data.gzipped()
                 }

@@ -128,7 +128,7 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = { request, bodyData in
             XCTAssertEqual(
-                    "mem,tag=a value=1i\\nmem,tag=b value=2i",
+                    "mem,tag=a value=1i\nmem,tag=b value=2i",
                     String(decoding: bodyData!, as: UTF8.self))
 
             expectation.fulfill()
@@ -192,7 +192,7 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = { request, bodyData in
             XCTAssertEqual(
-                    "mem,tag=a value=1\\nmem,tag=a value=2\\nmem,tag=a value=3\\nmem,tag=a value=4",
+                    "mem,tag=a value=1\nmem,tag=a value=2\nmem,tag=a value=3\nmem,tag=a value=4",
                     String(decoding: bodyData!, as: UTF8.self))
 
             expectation.fulfill()
@@ -216,8 +216,8 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        let required = "mem,tag=a value=1\\nmem,tag=a value=2i\\nmem,tag=a value=3i"
-                + "\\nmem value=4i\\nmem,tag=a value=5i 5\\nmem value=6i 6"
+        let required = "mem,tag=a value=1\nmem,tag=a value=2i\nmem,tag=a value=3i"
+                + "\nmem value=4i\nmem,tag=a value=5i 5\nmem value=6i 6"
 
         MockURLProtocol.handler = { request, bodyData in
             XCTAssertEqual(

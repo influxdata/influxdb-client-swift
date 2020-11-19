@@ -114,6 +114,11 @@ extension InfluxDBClient {
             return "\(meas)\(tags) \(fields)\(time)"
         }
 
+        /// Line Protocol from Data Point.
+        override public var description: String {
+            "Point: (\(measurement),\(tags) \(fields) \(time ?? ""))"
+        }
+
         private func escapeKey(_ key: String, _ escapeEqual: Bool = true) -> String {
             key.reduce(into: "") { result, character in
                 switch character {
