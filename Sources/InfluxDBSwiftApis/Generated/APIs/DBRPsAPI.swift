@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import InfluxDBSwift
 
 extension InfluxDB2API {
 
@@ -26,7 +27,7 @@ public class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteDBRPID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBError?) -> Void) {
+    public func deleteDBRPID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         deleteDBRPIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -80,7 +81,7 @@ public class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getDBRPs(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRPs?,_ error: InfluxDBError?) -> Void) {
+    public func getDBRPs(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRPs?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getDBRPsWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan, id: id, bucketID: bucketID, _default: _default, db: db, rp: rp).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -136,7 +137,7 @@ public class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getDBRPsID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBError?) -> Void) {
+    public func getDBRPsID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getDBRPsIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -187,7 +188,7 @@ public class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchDBRPID(orgID: String, dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBError?) -> Void) {
+    public func patchDBRPID(orgID: String, dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         patchDBRPIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, dBRPUpdate: dBRPUpdate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -237,7 +238,7 @@ public class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postDBRP(DBRP: DBRP, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBError?) -> Void) {
+    public func postDBRP(DBRP: DBRP, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postDBRPWithRequestBuilder(DBRP: DBRP, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):

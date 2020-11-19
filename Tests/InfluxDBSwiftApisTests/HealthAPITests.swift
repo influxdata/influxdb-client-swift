@@ -16,6 +16,6 @@ final class HealthAPITests: APIXCTestCase {
             XCTAssertNotNil(response.commit)
         }
 
-        checkGet(api?.getHealthAPI().getHealth, &checker)
+        checkGet(api.getHealthAPI().getHealth, &checker)
     }
 }

@@ -7,12 +7,10 @@ opt_in_rules:
   - conditional_returns_on_newline
   - empty_count
   - empty_string
-  - explicit_acl
   - explicit_init
   - explicit_self
   - fatal_error_message
   - first_where
-  - force_unwrapping
   - implicit_return
   - missing_docs
   - modifier_order
@@ -34,15 +32,5 @@ opt_in_rules:
   - vertical_whitespace_opening_braces
 
 excluded:
-  - build
-  - .build
-  - Examples
   - Package.swift
-  - Sources/InfluxDBSwift/Generated
-  - Sources/InfluxDBSwiftApis/Generated
-  - Tests/LinuxMain.swift
-  - Tests/InfluxDBSwiftTests/XCTestManifests.swift
-  - Tests/InfluxDBSwiftApisTests/XCTestManifests.swift
-
-type_body_length:
-  warning: 250
+  - .build/

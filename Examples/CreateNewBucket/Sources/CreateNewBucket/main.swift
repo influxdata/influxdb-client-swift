@@ -78,7 +78,7 @@ struct CreateNewBucket: ParsableCommand {
         RunLoop.current.run()
     }
 
-    private func atExit(client: InfluxDBClient, error: InfluxDBError? = nil) {
+    private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
         // Dispose the Client
         client.close()
         // Exit script

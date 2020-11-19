@@ -9,13 +9,13 @@ import XCTest
 class TasksAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api?.getTasksAPI().getTasks(limit: 100) { tasks, _ in
+        api.getTasksAPI().getTasks(limit: 100) { tasks, _ in
             tasks?
                     .tasks?
                     .filter { task in
                         task.name.hasSuffix("_TEST")
                     }.forEach { task in
-                        self.api?.getTasksAPI().deleteTasksID(taskID: task.id) { _, _ in
+                        self.api.getTasksAPI().deleteTasksID(taskID: task.id) { _, _ in
                         }
                     }
         }
@@ -42,6 +42,6 @@ class TasksAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api?.getTasksAPI().postTasks, request, &checker)
+        checkPost(api.getTasksAPI().postTasks, request, &checker)
     }
 }

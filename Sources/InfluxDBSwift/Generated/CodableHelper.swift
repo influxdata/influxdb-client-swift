@@ -45,4 +45,20 @@ open class CodableHelper {
     open class func encode<T>(_ value: T) -> Swift.Result<Data, Error> where T: Encodable {
         return Swift.Result { try self.jsonEncoder.encode(value) }
     }
+
+    open class func toErrorBody(_ data: Data?) -> [String: Any]? {
+
+        if let data = data {
+            let decodeResult = self.decode([String: String].self, from: data)
+
+            switch decodeResult {
+            case let .success(decodeResult):
+                return decodeResult
+            case .failure(_):
+                return ["message": String(decoding: data, as: UTF8.self)]
+            }
+        }
+
+        return nil
+    }
 }

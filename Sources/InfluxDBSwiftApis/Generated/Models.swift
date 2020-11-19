@@ -13,30 +13,6 @@ protocol JSONEncodable {
     func encodeToJSON() -> Any
 }
 
-public enum InfluxDBError : Error, CustomStringConvertible {
-    /// Error response to HTTP request.
-    ///
-    /// - errorCode: HTTP status code
-    /// - headers: Response HTTP headers
-    /// - body: Response body
-    /// - cause: Cause of error
-    case error(_ statusCode: Int, _ headers: [AnyHashable: Any]?, _ body: [String: Any]?, _ cause: Error)
-
-    public var description: String {
-        switch self {
-        case .error(let statusCode, let headers, let body, let cause):
-            var desc = "(\(statusCode)) Reason: \(cause)"
-            if let body = body {
-                desc.append(", HTTP Body: \(body)")
-            }
-            if let headers = headers {
-                desc.append(", HTTP Headers: \(headers.reduce(into: [:]) {$0["\($1.0)"] = "\($1.1)"})")
-            }
-            return desc
-        }
-    }
-}
-
 public enum DownloadException : Error {
     case responseDataMissing
     case responseFailed

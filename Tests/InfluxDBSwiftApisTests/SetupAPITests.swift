@@ -12,6 +12,6 @@ class SetupAPITests: APIXCTestCase {
             XCTAssertEqual(false, response.allowed)
         }
 
-        checkGet(api?.getSetupAPI().getSetup, &checker)
+        checkGet(api.getSetupAPI().getSetup, &checker)
     }
 }

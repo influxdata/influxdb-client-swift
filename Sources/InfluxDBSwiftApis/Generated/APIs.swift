@@ -8,6 +8,7 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import InfluxDBSwift
 
 internal class RequestBuilder<T> {
     var credential: URLCredential?
@@ -38,7 +39,7 @@ internal class RequestBuilder<T> {
         }
     }
 
-    internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, InfluxDBError>) -> Void) { }
+    internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, InfluxDBClient.InfluxDBError>) -> Void) { }
 
     public func addHeader(name: String, value: String) -> Self {
         if !value.isEmpty {

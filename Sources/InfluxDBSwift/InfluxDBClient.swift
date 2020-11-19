@@ -72,6 +72,13 @@ public class InfluxDBClient {
         self.init(url: url, token: "\(username):\(password)", options: options, protocolClasses: protocolClasses)
     }
 
+    /// Creates WriteApi with supplied default settings.
+    ///
+    /// - Returns: WriteAPI instance
+    public func getWriteAPI() -> WriteAPI {
+        WriteAPI(client: self)
+    }
+
     /// Release all allocated resources.
     public func close() {
         session.invalidateAndCancel()
@@ -83,24 +90,89 @@ extension InfluxDBClient {
     public struct InfluxDBOptions {
         /// Default organization bucket for writes.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/organizations/buckets/view-buckets/
-        public var bucket: String?
+        public let bucket: String?
         /// Default destination bucket for writes.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/organizations/view-orgs/
-        public var org: String?
+        public let org: String?
         /// Default precision for the unix timestamps within the body line-protocol.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/glossary/#precision
-        public var precision = WritePrecision.ns
+        public let precision: InfluxDBClient.WritePrecision
         /// The timeout interval to use when waiting for additional data. Default to 60 sec.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForRequest
-        public var timeoutIntervalForRequest: TimeInterval = 60
+        public let timeoutIntervalForRequest: TimeInterval
         /// The maximum amount of time that a resource request should be allowed to take. Default to 5 min.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForResource
-        public var timeoutIntervalForResource: TimeInterval = 60 * 5
+        public let timeoutIntervalForResource: TimeInterval
+        /// Enable Gzip compression for HTTP requests.
+        /// Currently only the `Write` and `Query` endpoints supports the Gzip compression.
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostWrite
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostQuery
+        public let enableGzip: Bool
+
+        /// Create a new options for client.
+        ///
+        /// - Parameters:
+        ///   - bucket: Default destination bucket for writes.
+        ///   - org: Default organization bucket for writes.
+        ///   - precision: Default precision for the unix timestamps within the body line-protocol.
+        ///   - timeoutIntervalForRequest: Timeout interval to use when waiting for additional data.
+        ///   - timeoutIntervalForResource: Maximum amount of time that a resource request should be allowed to take.
+        ///   - enableGzip: Enable Gzip compression for HTTP requests.
+        public init(bucket: String? = nil,
+                    org: String? = nil,
+                    precision: WritePrecision = defaultWritePrecision,
+                    timeoutIntervalForRequest: TimeInterval = 60,
+                    timeoutIntervalForResource: TimeInterval = 60 * 5,
+                    enableGzip: Bool = false) {
+            self.bucket = bucket
+            self.org = org
+            self.precision = precision
+            self.timeoutIntervalForRequest = timeoutIntervalForRequest
+            self.timeoutIntervalForResource = timeoutIntervalForResource
+            self.enableGzip = enableGzip
+        }
+    }
+}
+
+extension InfluxDBClient {
+    /// The general InfluxDB error.
+    public enum InfluxDBError: Error, CustomStringConvertible {
+        /// Error response to HTTP request.
+        ///
+        /// - errorCode: HTTP status code
+        /// - headers: Response HTTP headers
+        /// - body: Response body
+        /// - cause: Cause of error
+        case error(_ statusCode: Int, _ headers: [AnyHashable: Any]?, _ body: [String: Any]?, _ cause: Error)
+
+        /// Generic error.
+        ///
+        /// - message: Reason
+        case generic(_ message: String)
+
+        public var description: String {
+            switch self {
+            case let .error(statusCode, headers, body, cause):
+                var desc = "(\(statusCode)) Reason: \(cause)"
+                if let body = body {
+                    desc.append(", HTTP Body: \(body)")
+                }
+                if let headers = headers {
+                    desc.append(", HTTP Headers: \(headers.reduce(into: [:]) { $0["\($1.0)"] = "\($1.1)" })")
+                }
+                return desc
+            case let .generic(message):
+                return message
+            }
+        }
     }
 }
 
 // swiftlint:disable identifier_name
 extension InfluxDBClient {
+    /// Default Write Precision is Nanoseconds.
+    public static let defaultWritePrecision = WritePrecision.ns
+
     /// An enum represents the precision for the unix timestamps within the body line-protocol.
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/write-data/#timestamp-precision
     public enum WritePrecision: String, Codable, CaseIterable {

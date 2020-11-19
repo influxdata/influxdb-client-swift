@@ -9,13 +9,13 @@ import XCTest
 class OrganizationsAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api?.getOrganizationsAPI().getOrgs(limit: 100) { orgs, _ in
+        api.getOrganizationsAPI().getOrgs(limit: 100) { orgs, _ in
             orgs?
                     .orgs?
                     .filter { org in
                         org.name.hasSuffix("_TEST")
                     }.forEach { org in
-                        self.api?.getOrganizationsAPI().deleteOrgsID(orgID: org.id!) { _, _ in
+                        self.api.getOrganizationsAPI().deleteOrgsID(orgID: org.id!) { _, _ in
                         }
                     }
         }
@@ -31,6 +31,6 @@ class OrganizationsAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api?.getOrganizationsAPI().postOrgs, request, &checker)
+        checkPost(api.getOrganizationsAPI().postOrgs, request, &checker)
     }
 }

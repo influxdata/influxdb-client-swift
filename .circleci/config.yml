@@ -130,7 +130,7 @@ jobs:
       - run:
           name: Checks generating docs
           command: |
-            make doc
+            make generate-doc
       - save_cache:
           name: Saving Cache
           key: *documentation-cache-key

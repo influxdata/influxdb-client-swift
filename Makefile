@@ -31,19 +31,19 @@ generate-sources: ## Generate Models and APIs from swagger
 generate-test: ## Generate LinuxMain.swift entries for the package
 	swift test --generate-linuxmain
 
-doc: ## Generate documentation
+generate-doc: ## Generate documentation
 	$(MAKE) build
 	sourcekitten doc --spm --module-name InfluxDBSwift > doc_swift.json
 	sourcekitten doc --spm --module-name InfluxDBSwiftApis > doc_swift_apis.json
 	jazzy --clean --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
 
 docker-cli: ## Start and connect into swift:5.3 container
-	docker run --rm --privileged --interactive --tty -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
+	docker run --rm --privileged --interactive --tty --network influx_network --env INFLUXDB_URL=http://influxdb_v2:8086 -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
 
 clean: ## Clean builds, generated docs, resolved dependencies, ...
-	rm -rf Packages
-	rm -rf .build
-	rm -rf build
-	rm -rf docs
-	rm -rf doc*.json
-	rm Package.resolved
+	rm -rf Packages || true
+	rm -rf .build || true
+	rm -rf build || true
+	rm -rf docs || true
+	rm -rf doc*.json || true
+	rm Package.resolved || true

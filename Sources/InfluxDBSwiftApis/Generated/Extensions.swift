@@ -8,6 +8,7 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import InfluxDBSwift
 
 extension Bool: JSONEncodable {
     func encodeToJSON() -> Any { return self as Any }

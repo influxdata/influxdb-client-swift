@@ -10,7 +10,7 @@ final class InfluxDB2APITests: XCTestCase {
     private var client: InfluxDBClient?
 
     override func setUp() {
-        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        client = InfluxDBClient(url: Self.dbURL(), token: "my-token")
     }
 
     override func tearDown() {
@@ -49,13 +49,13 @@ final class InfluxDB2APITests: XCTestCase {
 }
 
 class APIXCTestCase: XCTestCase {
-    internal var client: InfluxDBClient?
-    internal var api: InfluxDB2API?
+    internal var client: InfluxDBClient!
+    internal var api: InfluxDB2API!
     internal static var orgID: String = ""
     internal static var bucketID: String = ""
 
     override func setUp() {
-        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
+        client = InfluxDBClient(url: Self.dbURL(), token: "my-token")
         api = InfluxDB2API(client: client!)
         findMyOrg()
         findMyBucket()
@@ -72,7 +72,8 @@ class APIXCTestCase: XCTestCase {
     }
 
     func checkGet<ResponseType: Codable>(_ request: ((String?, Dispatch.DispatchQueue?,
-                                                      @escaping (ResponseType?, InfluxDBError?) -> Void) -> Void)?,
+                                                      @escaping (ResponseType?, InfluxDBClient.InfluxDBError?) -> Void)
+                                                     -> Void)?,
                                          _ checker: inout (ResponseType) -> Void) {
         if request == nil {
             XCTFail("Request is not defined!")
@@ -89,7 +90,8 @@ class APIXCTestCase: XCTestCase {
 
     func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
                                                                           Dispatch.DispatchQueue?,
-                                                                          @escaping (ResponseType?, InfluxDBError?)
+                                                                          @escaping (ResponseType?,
+                                                                                     InfluxDBClient.InfluxDBError?)
                                                                           -> Void) -> Void)?,
                                                              _ body: BodyType,
                                                              _ checker: inout (ResponseType) -> Void) {
@@ -110,7 +112,8 @@ class APIXCTestCase: XCTestCase {
     func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
                                                                           String?,
                                                                           Dispatch.DispatchQueue?,
-                                                                          @escaping (ResponseType?, InfluxDBError?)
+                                                                          @escaping (ResponseType?,
+                                                                                     InfluxDBClient.InfluxDBError?)
                                                                           -> Void) -> Void)?,
                                                              _ body: BodyType,
                                                              _ checker: inout (ResponseType) -> Void) {
@@ -129,7 +132,8 @@ class APIXCTestCase: XCTestCase {
     }
 
     private func checkResponse<ResponseType: Codable>(check: @escaping (ResponseType) -> Void,
-                                                      expectation: XCTestExpectation) -> (ResponseType?, InfluxDBError?)
+                                                      expectation: XCTestExpectation) -> (ResponseType?,
+                                                                                          InfluxDBClient.InfluxDBError?)
     -> Void {
         { response, error in
             if let error = error {
@@ -150,7 +154,7 @@ class APIXCTestCase: XCTestCase {
             return
         }
         let expectation = self.expectation(description: "Cannot find my-org")
-        api?.getOrganizationsAPI().getOrgs(limit: 100) { organizations, error in
+        api.getOrganizationsAPI().getOrgs(limit: 100) { organizations, error in
             if let error = error {
                 XCTFail("\(error)")
             }
@@ -169,7 +173,7 @@ class APIXCTestCase: XCTestCase {
             return
         }
         let expectation = self.expectation(description: "Cannot find my-bucket")
-        api?.getBucketsAPI().getBuckets(limit: 100) { response, error in
+        api.getBucketsAPI().getBuckets(limit: 100) { response, error in
             if let error = error {
                 XCTFail("\(error)")
             }
@@ -181,5 +185,14 @@ class APIXCTestCase: XCTestCase {
             }
         }
         waitForExpectations(timeout: 5, handler: nil)
+    }
+}
+
+extension XCTestCase {
+    internal static func dbURL() -> String {
+        if let url = ProcessInfo.processInfo.environment["INFLUXDB_URL"] {
+            return url
+        }
+        return "http://localhost:8086"
     }
 }

@@ -9,7 +9,7 @@ import XCTest
 class SourcesAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api?.getSourcesAPI().getSources { sources, _ in
+        api.getSourcesAPI().getSources { sources, _ in
             sources?
                     .sources?
                     .filter { source in
@@ -18,7 +18,7 @@ class SourcesAPITests: APIXCTestCase {
                         }
                         return false
                     }.forEach { source in
-                        self.api?.getSourcesAPI().deleteSourcesID(sourceID: source.id!) { _, _ in
+                        self.api.getSourcesAPI().deleteSourcesID(sourceID: source.id!) { _, _ in
                         }
                     }
         }
@@ -41,6 +41,6 @@ class SourcesAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api?.getSourcesAPI().postSources, request, &checker)
+        checkPost(api.getSourcesAPI().postSources, request, &checker)
     }
 }

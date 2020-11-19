@@ -8,9 +8,9 @@
 import Foundation
 import InfluxDBSwift
 
-open class JSONEncodingHelper {
+{{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}open{{/nonPublicApi}} class JSONEncodingHelper {
 
-    open class func encodingParameters<T:Encodable>(forEncodableObject encodableObj: T?) -> [String: Any]? {
+    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}open{{/nonPublicApi}} class func encodingParameters<T:Encodable>(forEncodableObject encodableObj: T?) -> [String: Any]? {
         var params: [String: Any]? = nil
 
         // Encode the Encodable object
@@ -27,7 +27,7 @@ open class JSONEncodingHelper {
         return params
     }
 
-    open class func encodingParameters(forEncodableObject encodableObj: Any?) -> [String: Any]? {
+    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}open{{/nonPublicApi}} class func encodingParameters(forEncodableObject encodableObj: Any?) -> [String: Any]? {
         var params: [String: Any]? = nil
 
         if let encodableObj = encodableObj {

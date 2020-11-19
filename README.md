@@ -109,6 +109,7 @@ client.close()
 | precision | Default precision for the unix timestamps within the body line-protocol | WritePrecision | ns |
 | timeoutIntervalForRequest | The timeout interval to use when waiting for additional data. | TimeInterval | 60 sec |
 | timeoutIntervalForResource | The maximum amount of time that a resource request should be allowed to take. | TimeInterval | 5 min |
+| enableGzip | Enable Gzip compression for HTTP requests. | Bool | false |
 
 ##### Configure default `Bucket`, `Organization` and `Precision`
 
@@ -142,7 +143,99 @@ client.close()
 
 ### Writes
 
-TBP
+The WriteApi supports asynchronous writes into InfluxDB 2.0. 
+The results of writes could be handled by `(response, error)`, `Swift.Result` or `Combine`.
+
+The data could be written as:
+
+1. `String` that is formatted as a InfluxDB's Line Protocol
+1. [Data Point](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Sources/InfluxDBSwift/Point.swift#L11) structure
+1. Tuple style mapping with keys: `measurement`, `tags`, `fields` and `time`
+1. List of above items
+
+The following example demonstrates how to write data with different type of records. For further information see docs and [examples](/Examples).
+
+```swift
+import ArgumentParser
+import Foundation
+import InfluxDBSwift
+
+struct WriteData: ParsableCommand {
+    @Option(name: .shortAndLong, help: "The name or id of the bucket destination.")
+    private var bucket: String
+
+    @Option(name: .shortAndLong, help: "The name or id of the organization destination.")
+    private var org: String
+
+    @Option(name: .shortAndLong, help: "Authentication token.")
+    private var token: String
+
+    @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
+    private var url: String
+
+    public func run() {
+        // Initialize Client with default Bucket and Organization
+        let client = InfluxDBClient(
+                url: url,
+                token: token,
+                options: InfluxDBClient.InfluxDBOptions(bucket: self.bucket, org: self.org))
+
+        //
+        // Record defined as String
+        //
+        let recordString = "demo,type=string value=1i"
+        //
+        // Record defined as Data Point
+        //
+        let recordPoint = InfluxDBClient
+                .Point("demo")
+                .addTag(key: "type", value: "point")
+                .addField(key: "value", value: 2)
+        //
+        // Record defined as Data Point with Timestamp
+        //
+        let recordPointDate = InfluxDBClient
+                .Point("demo")
+                .addTag(key: "type", value: "point-timestamp")
+                .addField(key: "value", value: 2)
+                .time(time: Date())
+        //
+        // Record defined as Tuple
+        //
+        let recordTuple = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": 3])
+
+        let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
+
+        client.getWriteAPI().writeRecords(records: records) { result, error in
+            // For handle error
+            if let error = error {
+                self.atExit(client: client, error: error)
+            }
+
+            // For Success write
+            if result != nil {
+                print("Successfully written data:\n\n\(records)")
+            }
+
+            self.atExit(client: client)
+        }
+
+        // Wait to end of script
+        RunLoop.current.run()
+    }
+
+    private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
+        // Dispose the Client
+        client.close()
+        // Exit script
+        Self.exit(withError: error)
+    }
+}
+
+WriteData.main()
+
+```
+- sources - [WriteData/main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/WriteData/Sources/WriteData/main.swift)
 
 ### Queries
 
@@ -260,6 +353,7 @@ struct CreateNewBucket: ParsableCommand {
 CreateNewBucket.main()
 
 ```
+- sources - [CreateNewBucket/main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
 
 ## Contributing
 
@@ -285,6 +379,13 @@ Check code coverage:
 
 ```bash
 $ swift test --enable-code-coverage
+```
+
+You could also use a `docker-cli` without installing the Swift SDK:
+
+```bash
+make docker-cli
+swift build
 ```
 
 ## License
