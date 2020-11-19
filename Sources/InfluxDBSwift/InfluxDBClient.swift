@@ -107,7 +107,7 @@ extension InfluxDBClient {
         /// Currently only the `Write` and `Query` endpoints supports the Gzip compression.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostWrite
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostQuery
-        public var enableGzip: Bool
+        public let enableGzip: Bool
 
         /// Create a new options for client.
         ///
