@@ -46,3 +46,6 @@ excluded:
 
 type_body_length:
   warning: 250
+
+file_length:
+  warning: 500
