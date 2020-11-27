@@ -23,6 +23,8 @@ public struct ScraperTargetResponse: Codable {
     public var orgID: String?
     /** The ID of the bucket to write to. */
     public var bucketID: String?
+    /** Skip TLS verification on endpoint. */
+    public var allowInsecure: Bool? = false
     public var id: String?
     /** The organization name. */
     public var org: String?
@@ -30,12 +32,13 @@ public struct ScraperTargetResponse: Codable {
     public var bucket: String?
     public var links: ScraperTargetResponseAllOfLinks?
 
-    public init(name: String? = nil, type: ModelType? = nil, url: String? = nil, orgID: String? = nil, bucketID: String? = nil, id: String? = nil, org: String? = nil, bucket: String? = nil, links: ScraperTargetResponseAllOfLinks? = nil) {
+    public init(name: String? = nil, type: ModelType? = nil, url: String? = nil, orgID: String? = nil, bucketID: String? = nil, allowInsecure: Bool? = nil, id: String? = nil, org: String? = nil, bucket: String? = nil, links: ScraperTargetResponseAllOfLinks? = nil) {
         self.name = name
         self.type = type
         self.url = url
         self.orgID = orgID
         self.bucketID = bucketID
+        self.allowInsecure = allowInsecure
         self.id = id
         self.org = org
         self.bucket = bucket
