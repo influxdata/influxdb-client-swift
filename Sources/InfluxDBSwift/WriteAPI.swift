@@ -16,7 +16,7 @@ public class WriteAPI {
     /// Shared client.
     private let client: InfluxDBClient
 
-    /// Create a new WriteAPI for a InfluxDB.as
+    /// Create a new WriteAPI for a InfluxDB
     ///
     /// - Parameters
     ///   - client: Client with shared configuration and http library.

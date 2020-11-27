@@ -79,6 +79,13 @@ public class InfluxDBClient {
         WriteAPI(client: self)
     }
 
+    /// Creates QueryAPI with supplied default settings.
+    ///
+    /// - Returns: QueryAPI instance
+    public func getQueryAPI() -> QueryAPI {
+        QueryAPI(client: self)
+    }
+
     /// Release all allocated resources.
     public func close() {
         session.invalidateAndCancel()
