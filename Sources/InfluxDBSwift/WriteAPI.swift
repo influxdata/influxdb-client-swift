@@ -12,6 +12,47 @@ import FoundationNetworking
 import Gzip
 
 /// The asynchronous API to Write time-series data into InfluxDB 2.0.
+///
+/// ### Example: ###
+/// ````
+/// //
+/// // Record defined as String
+/// //
+/// let recordString = "demo,type=string value=1i"
+/// //
+/// // Record defined as Data Point
+/// //
+/// let recordPoint = InfluxDBClient
+///         .Point("demo")
+///         .addTag(key: "type", value: "point")
+///         .addField(key: "value", value: 2)
+/// //
+/// // Record defined as Data Point with Timestamp
+/// //
+/// let recordPointDate = InfluxDBClient
+///         .Point("demo")
+///         .addTag(key: "type", value: "point-timestamp")
+///         .addField(key: "value", value: 2)
+///         .time(time: Date())
+/// //
+/// // Record defined as Tuple
+/// //
+/// let recordTuple = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": 3])
+///
+/// let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
+///
+/// client.getWriteAPI().writeRecords(records: records) { result, error in
+///     // For handle error
+///     if let error = error {
+///         print("Error:\n\n\(records)")
+///     }
+///
+///     // For Success write
+///     if result != nil {
+///         print("Successfully written data:\n\n\(records)")
+///     }
+/// }
+/// ````
 public class WriteAPI {
     /// Shared client.
     private let client: InfluxDBClient

@@ -8,6 +8,20 @@ import FoundationNetworking
 #endif
 
 /// A InfluxDB Client providing a support for APIs to write and query data.
+///
+/// ### Example: ###
+/// ````
+/// let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+///        bucket: "my-bucket",
+///        org: "my-org",
+///        precision: InfluxDBClient.WritePrecision.ns)
+///
+/// let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+///
+/// ...
+///
+/// client.close()
+/// ````
 public class InfluxDBClient {
     /// Version of client.
     public static var version: String = "0.0.1"
