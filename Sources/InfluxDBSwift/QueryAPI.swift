@@ -5,12 +5,12 @@
 #if canImport(Combine)
 import Combine
 #endif
+import CSV
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
 import Gzip
-import CSV
 
 /// The asynchronous API to Query InfluxDB 2.0.
 public class QueryAPI {
