@@ -57,6 +57,7 @@ extension QueryAPITests {
     // to regenerate.
     static let __allTests__QueryAPITests = [
         ("testGetQueryAPI", testGetQueryAPI),
+        ("testQuery", testQuery),
     ]
 }
 

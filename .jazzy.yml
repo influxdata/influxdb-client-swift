@@ -12,6 +12,8 @@ custom_categories:
       - InfluxDBClient
       - WriteAPI
       - QueryAPI
+      - Query
+      - Dialect
 
   - name: APIs
     children:

@@ -100,7 +100,7 @@ public class WriteAPI {
     ///   - precision: The precision for the unix timestamps within the body line-protocol.
     ///   - records: The records to write. It can be `String`,  `Point` or `Tuple`.
     ///   - responseQueue: The queue on which api response is dispatched.
-    ///   - completion handler to receive the data and the error objects
+    ///   - completion: handler to receive the data and the error objects
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     public func writeRecords(bucket: String? = nil,
@@ -235,13 +235,13 @@ public class WriteAPI {
     #endif
 
     // swiftlint:disable function_body_length function_parameter_count cyclomatic_complexity
-    internal func postWrite(_ bucket: String?,
-                            _ org: String?,
-                            _ precision: InfluxDBClient.WritePrecision?,
-                            _ records: [Any],
-                            _ responseQueue: DispatchQueue,
-                            _ completion: @escaping (
-                                    _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
+    private func postWrite(_ bucket: String?,
+                           _ org: String?,
+                           _ precision: InfluxDBClient.WritePrecision?,
+                           _ records: [Any],
+                           _ responseQueue: DispatchQueue,
+                           _ completion: @escaping (
+                                   _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
         do {
             var components = URLComponents(string: client.url + "/api/v2/write")
 
@@ -261,7 +261,7 @@ public class WriteAPI {
             var batches: [InfluxDBClient.WritePrecision: (Int, [String])] = [:]
             try toLineProtocol(precision: precision, record: records, batches: &batches)
 
-            try batches.sorted {
+            batches.sorted {
                 $0.value.0 < $1.value.0
             }.forEach { key, values in
                 components?.queryItems = [
@@ -270,71 +270,23 @@ public class WriteAPI {
                     URLQueryItem(name: "precision", value: key.rawValue)
                 ]
 
-                guard let url = components?.url else {
-                    throw InfluxDBClient.InfluxDBError.error(
-                            -1,
-                            nil,
-                            nil,
-                            InfluxDBClient.InfluxDBError.generic("Invalid URL"))
-                }
-
-                var request = URLRequest(url: url)
-                request.httpMethod = "POST"
-
                 // Body
-                var body: Data! = values.1.joined(separator: "\n").data(using: .utf8)
-                if let data = body, client.options.enableGzip {
-                    body = try data.gzipped()
-                }
-                request.httpBody = body
+                let body: Data! = values.1.joined(separator: "\n").data(using: .utf8)
 
-                // Headers
-                request.setValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
-                request.setValue(String(body.count), forHTTPHeaderField: "Content-Length")
-                request.setValue("application/json", forHTTPHeaderField: "Accept")
-                request.setValue("identity", forHTTPHeaderField: "Accept-Encoding")
-                request.setValue(
-                        client.options.enableGzip ? "gzip" : "identity",
-                        forHTTPHeaderField: "Content-Encoding")
-
-                client.session.configuration.httpAdditionalHeaders?.forEach { key, value in
-                    request.setValue("\(value)", forHTTPHeaderField: "\(key)")
-                }
-
-                let task = client.session.dataTask(with: request) { data, response, error in
-                    responseQueue.async {
-                        if let error = error {
-                            completion(.failure(InfluxDBClient.InfluxDBError.error(
-                                    -1,
-                                    nil,
-                                    CodableHelper.toErrorBody(data),
-                                    error)))
-                            return
-                        }
-
-                        guard let httpResponse = response as? HTTPURLResponse else {
-                            completion(.failure(InfluxDBClient.InfluxDBError.error(
-                                    -2,
-                                    nil,
-                                    CodableHelper.toErrorBody(data),
-                                    InfluxDBClient.InfluxDBError.generic("Missing data"))))
-                            return
-                        }
-
-                        guard Array(200..<300).contains(httpResponse.statusCode) else {
-                            completion(.failure(InfluxDBClient.InfluxDBError.error(
-                                    httpResponse.statusCode,
-                                    httpResponse.allHeaderFields,
-                                    CodableHelper.toErrorBody(data),
-                                    InfluxDBClient.InfluxDBError.generic("Unsuccessful HTTP StatusCode"))))
-                            return
-                        }
-
-                        completion(.success(Void()))
+                client.httpPost(
+                        components,
+                        "text/plain; charset=utf-8",
+                        "application/json",
+                        InfluxDBClient.GZIPMode.request,
+                        body,
+                        responseQueue) { result -> Void in
+                    switch result {
+                    case .success:
+                        completion(.success(()))
+                    case let .failure(error):
+                        completion(.failure(error))
                     }
                 }
-
-                task.resume()
             }
         } catch {
             responseQueue.async {
@@ -366,30 +318,30 @@ public class WriteAPI {
                     (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: nil),
                     precision: precision)
             try toLineProtocol(
-                precision: precision,
-                record: point,
-                batches: &batches)
+                    precision: precision,
+                    record: point,
+                    batches: &batches)
         case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?):
             try toLineProtocol(
-                precision: precision,
-                record: InfluxDBClient.Point.fromTuple(tuple, precision: precision),
-                batches: &batches)
+                    precision: precision,
+                    record: InfluxDBClient.Point.fromTuple(tuple, precision: precision),
+                    batches: &batches)
         case let tuple as (measurement: String, fields: [String?: Any?], time: Any?):
             let point = InfluxDBClient.Point.fromTuple(
                     (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: tuple.time),
                     precision: precision)
             try toLineProtocol(
-                precision: precision,
-                record: point,
-                batches: &batches)
+                    precision: precision,
+                    record: point,
+                    batches: &batches)
         case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?]):
             let point = InfluxDBClient.Point.fromTuple(
                     (measurement: tuple.measurement, tags: tuple.tags, fields: tuple.fields, time: nil),
                     precision: precision)
             try toLineProtocol(
-                precision: precision,
-                record: point,
-                batches: &batches)
+                    precision: precision,
+                    record: point,
+                    batches: &batches)
         case let array as [Any]:
             try array.forEach { item in
                 try toLineProtocol(precision: precision, record: item, batches: &batches)

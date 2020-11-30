@@ -209,3 +209,94 @@ extension InfluxDBClient {
 }
 
 // swiftlint:enable identifier_name
+
+extension InfluxDBClient {
+    internal enum GZIPMode: String, Codable, CaseIterable {
+        /// Request could be encoded by GZIP.
+        case request
+        /// Response could be encoded by GZIP.
+        case response
+    }
+    // swiftlint:disable function_body_length function_parameter_count
+    internal func httpPost(_ urlComponents: URLComponents?,
+                           _ contentTypeHeader: String,
+                           _ acceptHeader: String,
+                           _ gzipMode: InfluxDBClient.GZIPMode,
+                           _ content: Data,
+                           _ responseQueue: DispatchQueue,
+                           _ completion: @escaping (
+                                   _ result: Swift.Result<Data?, InfluxDBClient.InfluxDBError>) -> Void) {
+        do {
+            guard let url = urlComponents?.url else {
+                throw InfluxDBClient.InfluxDBError.error(
+                        -1,
+                        nil,
+                        nil,
+                        InfluxDBClient.InfluxDBError.generic("Invalid URL"))
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+
+            // Body
+            var body: Data! = content
+            if self.options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode {
+                body = try content.gzipped()
+            }
+            request.httpBody = body
+
+            // Headers
+            request.setValue(contentTypeHeader, forHTTPHeaderField: "Content-Type")
+            request.setValue(String(body.count), forHTTPHeaderField: "Content-Length")
+            request.setValue(acceptHeader, forHTTPHeaderField: "Accept")
+            request.setValue("identity", forHTTPHeaderField: "Accept-Encoding")
+            request.setValue(
+                    self.options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode ? "gzip" : "identity",
+                    forHTTPHeaderField: "Content-Encoding")
+
+            self.session.configuration.httpAdditionalHeaders?.forEach { key, value in
+                request.setValue("\(value)", forHTTPHeaderField: "\(key)")
+            }
+
+            let task = self.session.dataTask(with: request) { data, response, error in
+                responseQueue.async {
+                    if let error = error {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                -1,
+                                nil,
+                                CodableHelper.toErrorBody(data),
+                                error)))
+                        return
+                    }
+
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                -2,
+                                nil,
+                                CodableHelper.toErrorBody(data),
+                                InfluxDBClient.InfluxDBError.generic("Missing data"))))
+                        return
+                    }
+
+                    guard Array(200..<300).contains(httpResponse.statusCode) else {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                httpResponse.statusCode,
+                                httpResponse.allHeaderFields,
+                                CodableHelper.toErrorBody(data),
+                                InfluxDBClient.InfluxDBError.generic("Unsuccessful HTTP StatusCode"))))
+                        return
+                    }
+
+                    completion(.success(data))
+                }
+            }
+
+            task.resume()
+        } catch {
+            responseQueue.async {
+                completion(.failure(InfluxDBClient.InfluxDBError.error(415, nil, nil, error)))
+            }
+        }
+    }
+    // swiftlint:enable function_body_length function_parameter_count
+}
