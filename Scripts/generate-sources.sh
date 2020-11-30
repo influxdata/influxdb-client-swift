@@ -10,12 +10,14 @@ mvn org.openapitools:openapi-generator-maven-plugin:generate
 
 #### sync generated swift files to src
 mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/ || true
+mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/ || true
 mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/ || true
 mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/ || true
 mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/ || true
 
 ## delete old sources
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/*.swift
+rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/*.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/*.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/*.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/*.swift
@@ -103,6 +105,8 @@ cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/ScraperTarget
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Source.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Sources.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/SourceLinks.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Query.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Dialect.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
 
 # copy supporting files
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/CodableHelper.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/
@@ -121,5 +125,8 @@ sed -i 's/Any]>/String]>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generat
 sed -i 's/case orgID$/case orgID = "organization_id"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
 sed -i 's/case org$/case org = "organization"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
 sed -i 's/case bucketID$/case bucketID = "bucket_id"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
+sed -i 's/extern: File? = nil, //' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
+sed -i '/self.extern = extern/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
+sed -i '/public var extern: File?/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 
 rm -rf "${SCRIPT_PATH}"/generated
