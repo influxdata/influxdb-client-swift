@@ -337,7 +337,7 @@ final class PointTests: XCTestCase {
     }
 }
 
-private extension Date {
+internal extension Date {
     init(_ year: Int,
          _ month: Int,
          _ day: Int,

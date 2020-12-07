@@ -234,7 +234,7 @@ public class WriteAPI {
     }
     #endif
 
-    // swiftlint:disable function_body_length function_parameter_count cyclomatic_complexity
+    // swiftlint:disable function_body_length function_parameter_count
     private func postWrite(_ bucket: String?,
                            _ org: String?,
                            _ precision: InfluxDBClient.WritePrecision?,
@@ -352,5 +352,5 @@ public class WriteAPI {
         }
     }
 
-    // swiftlint:enable function_body_length function_parameter_count cyclomatic_complexity
+    // swiftlint:enable function_body_length function_parameter_count
 }

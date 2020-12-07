@@ -5,7 +5,6 @@
 #if canImport(Combine)
 import Combine
 #endif
-import CSV
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
@@ -97,7 +96,54 @@ public class QueryAPI {
         }.eraseToAnyPublisher()
     }
     #endif
+}
 
+extension QueryAPI {
+    /// FluxTable holds flux query result table information represented by collection of columns.
+    public class FluxTable {
+        /// The list of columns in Table.
+        public var columns: [FluxColumn] = []
+    }
+
+    /// FluxColumn holds flux query table column properties
+    public class FluxColumn {
+        /// The index of column.
+        public let index: Int
+        /// The name of column.
+        public var name: String = ""
+        /// Description of the type of data contained within the column.
+        public let dataType: String
+        /// Boolean flag indicating if the column is part of the table's group key
+        public var group: Bool = false
+        /// Default value to be used for rows whose string value is the empty string.
+        public var defaultValue: String = ""
+
+        /// Initialize FluxColumn structure
+        ///
+        /// - Parameters:
+        ///   - index: index in table
+        ///   - dataType: type of column
+        public init(index: Int, dataType: String) {
+            self.index = index
+            self.dataType = dataType
+        }
+    }
+
+    /// FluxRecord represents row in the flux query result table
+    public class FluxRecord {
+        /// The list of values in Record
+        public let values: [String: Any]
+
+        /// Initialize records with values.
+        ///
+        /// - Parameter values: record values
+        public init(values: [String: Any]) {
+            self.values = values
+        }
+    }
+}
+
+extension QueryAPI {
     private func postQuery(_ query: String,
                            _ org: String?,
                            _ dialect: Dialect = defaultDialect,

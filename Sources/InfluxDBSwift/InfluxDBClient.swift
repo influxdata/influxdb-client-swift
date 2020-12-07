@@ -59,7 +59,7 @@ public class InfluxDBClient {
         configuration.timeoutIntervalForResource = self.options.timeoutIntervalForResource
         configuration.protocolClasses = protocolClasses
 
-        self.session = URLSession(configuration: configuration)
+        session = URLSession(configuration: configuration)
     }
 
     /// Create a new client for InfluxDB 1.8 compatibility API.
@@ -171,6 +171,12 @@ extension InfluxDBClient {
         /// - message: Reason
         case generic(_ message: String)
 
+        /// The error that occurs during execution Flux query.
+        ///
+        /// - reference: Reference code
+        /// - message: Reason
+        case queryException(_ reference: Int, _ message: String)
+
         public var description: String {
             switch self {
             case let .error(statusCode, headers, body, cause):
@@ -184,6 +190,8 @@ extension InfluxDBClient {
                 return desc
             case let .generic(message):
                 return message
+            case let .queryException(reference, message):
+                return "(\(reference)) Reason: \(message)"
             }
         }
     }
@@ -240,7 +248,7 @@ extension InfluxDBClient {
 
             // Body
             var body: Data! = content
-            if self.options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode {
+            if options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode {
                 body = try content.gzipped()
             }
             request.httpBody = body
@@ -251,14 +259,14 @@ extension InfluxDBClient {
             request.setValue(acceptHeader, forHTTPHeaderField: "Accept")
             request.setValue("identity", forHTTPHeaderField: "Accept-Encoding")
             request.setValue(
-                    self.options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode ? "gzip" : "identity",
+                    options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode ? "gzip" : "identity",
                     forHTTPHeaderField: "Content-Encoding")
 
-            self.session.configuration.httpAdditionalHeaders?.forEach { key, value in
+            session.configuration.httpAdditionalHeaders?.forEach { key, value in
                 request.setValue("\(value)", forHTTPHeaderField: "\(key)")
             }
 
-            let task = self.session.dataTask(with: request) { data, response, error in
+            let task = session.dataTask(with: request) { data, response, error in
                 responseQueue.async {
                     if let error = error {
                         completion(.failure(InfluxDBClient.InfluxDBError.error(
