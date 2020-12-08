@@ -24,13 +24,13 @@ public struct Dialect: Codable {
     /** Separator between cells; the default is , */
     public var delimiter: String? = ","
     /** https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#columns */
-    public var annotations: Set<Annotations>?
+    public var annotations: Array<Annotations>?
     /** Character prefixed to comment strings */
     public var commentPrefix: String? = "#"
     /** Format of timestamps */
     public var dateTimeFormat: DateTimeFormat? = .rfc3339
 
-    public init(header: Bool? = nil, delimiter: String? = nil, annotations: Set<Annotations>? = nil, commentPrefix: String? = nil, dateTimeFormat: DateTimeFormat? = nil) {
+    public init(header: Bool? = nil, delimiter: String? = nil, annotations: Array<Annotations>? = nil, commentPrefix: String? = nil, dateTimeFormat: DateTimeFormat? = nil) {
         self.header = header
         self.delimiter = delimiter
         self.annotations = annotations

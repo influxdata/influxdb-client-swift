@@ -128,6 +128,7 @@ sed -i 's/case bucketID$/case bucketID = "bucket_id"/' "${SCRIPT_PATH}"/../Sourc
 sed -i 's/extern: File? = nil, //' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/self.extern = extern/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/public var extern: File?/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
+sed -i 's/Set<Annotations>/Array<Annotations>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Dialect.swift
 
 # Download Cursor implementation
 curl -s -o "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift https://raw.githubusercontent.com/groue/GRDB.swift/master/GRDB/Core/Cursor.swift
