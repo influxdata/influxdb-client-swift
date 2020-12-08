@@ -31,6 +31,80 @@ public class QueryAPI {
         self.client = client
     }
 
+    /// Query executes a query and returns the response as a `Cursor<FluxRecord>`.
+    ///
+    /// - Parameters:
+    ///   - query: The Flux query to execute.
+    ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///   - completion: The handler to receive the data and the error objects.
+    public func query(query: String,
+                      org: String? = nil,
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (_ response: AnyCursor<FluxRecord>?,
+                                             _ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        self.query(query: query, org: org, responseQueue: responseQueue) { result -> Void in
+            switch result {
+            case let .success(cursor):
+                completion(cursor, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /// Query executes a query and returns the response as a `Cursor<FluxRecord>`.
+    ///
+    /// - Parameters:
+    ///   - query: The Flux query to execute.
+    ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///   - completion: completion handler to receive the `Swift.Result`
+    public func query(query: String,
+                      org: String? = nil,
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (
+                              _ result: Swift.Result<AnyCursor<FluxRecord>, InfluxDBClient.InfluxDBError>) -> Void) {
+        self.queryRaw(
+                query: query,
+                org: org,
+                dialect: QueryAPI.defaultDialect,
+                responseQueue: responseQueue) { result -> Void in
+            switch result {
+            case .success:
+                completion(.success(AnyCursor([])))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    #if canImport(Combine)
+    /// Query executes a query and returns the response as a `Cursor<FluxRecord>`.
+    ///
+    /// - Parameters:
+    ///   - query: The Flux query to execute.
+    ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    /// - Returns: Publisher to attach a subscriber
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public func query(query: String,
+                      org: String? = nil,
+                      responseQueue: DispatchQueue = .main)
+                    -> AnyPublisher<AnyCursor<FluxRecord>, InfluxDBClient.InfluxDBError> {
+        Future<AnyCursor<FluxRecord>, InfluxDBClient.InfluxDBError> { promise in
+            self.query(query: query, org: org, responseQueue: responseQueue) { result -> Void in
+                switch result {
+                case let .success(data):
+                    promise(.success(data))
+                case let .failure(error):
+                    promise(.failure(error))
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
+    #endif
+
     /// QueryRaw executes a query and returns the response as a `Data`.
     ///
     /// - Parameters:

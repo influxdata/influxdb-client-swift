@@ -88,10 +88,12 @@ custom_categories:
       - VariableProperties
       - Variables
 
-  - name: APIs / Supporting Files
+  - name: Supporting Files
     children:
+      - AnyCursor
       - APIHelper
       - CodableHelper
+      - Cursor
       - DecodableRequestBuilderError
       - DownloadException
       - HTTPMethod
