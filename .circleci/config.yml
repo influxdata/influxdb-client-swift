@@ -151,7 +151,7 @@ jobs:
           name: Install Maven
           command: |
             apt-get update
-            apt-get install maven --yes
+            apt-get install maven curl --yes
       - run:
           name: Checks generating sources from swagger
           command: |
