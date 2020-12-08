@@ -129,4 +129,13 @@ sed -i 's/extern: File? = nil, //' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Gen
 sed -i '/self.extern = extern/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/public var extern: File?/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 
+# Download Cursor implementation
+curl -s -o "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift https://raw.githubusercontent.com/groue/GRDB.swift/master/GRDB/Core/Cursor.swift
+printf '\n@inlinable\nfunc GRDBPrecondition(_ condition: @autoclosure () -> Bool,\n                        _ message: @autoclosure () -> String = "",\n                        file: StaticString = #file,\n                        line: UInt = #line) {\n    if !condition() {\n        fatalError(message(), file: file, line: line)\n    }\n}\n' >> "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
+sed -i 's/GRDBPrecondition/CursorPrecondition/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
+sed -i 's/try ! predicate/try !predicate/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
+sed -i '/fetchCursor/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
+sed -i '/foo/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
+sed -i '/bar/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
+
 rm -rf "${SCRIPT_PATH}"/generated
