@@ -84,6 +84,7 @@ extension QueryAPITests {
     static let __allTests__QueryAPITests = [
         ("testGetQueryAPI", testGetQueryAPI),
         ("testQuery", testQuery),
+        ("testQueryRaw", testQueryRaw),
     ]
 }
 

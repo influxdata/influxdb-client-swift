@@ -208,7 +208,7 @@ extension QueryAPI {
     }
 
     /// FluxRecord represents row in the flux query result table
-    public class FluxRecord {
+    public class FluxRecord: Equatable {
         /// The list of values in Record
         public let values: [String: Any]
 
@@ -217,6 +217,10 @@ extension QueryAPI {
         /// - Parameter values: record values
         public init(values: [String: Any]) {
             self.values = values
+        }
+
+        public static func == (lhs: FluxRecord, rhs: FluxRecord) -> Bool {
+            NSDictionary(dictionary: lhs.values).isEqual(rhs.values)
         }
     }
 }
