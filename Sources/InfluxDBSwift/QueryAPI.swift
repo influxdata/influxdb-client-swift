@@ -41,7 +41,7 @@ public class QueryAPI {
     public func query(query: String,
                       org: String? = nil,
                       responseQueue: DispatchQueue = .main,
-                      completion: @escaping (_ response: AnyCursor<FluxRecord>?,
+                      completion: @escaping (_ response: FluxRecordCursor?,
                                              _ error: InfluxDBClient.InfluxDBError?) -> Void) {
         self.query(query: query, org: org, responseQueue: responseQueue) { result -> Void in
             switch result {
@@ -64,15 +64,19 @@ public class QueryAPI {
                       org: String? = nil,
                       responseQueue: DispatchQueue = .main,
                       completion: @escaping (
-                              _ result: Swift.Result<AnyCursor<FluxRecord>, InfluxDBClient.InfluxDBError>) -> Void) {
+                              _ result: Swift.Result<FluxRecordCursor, InfluxDBClient.InfluxDBError>) -> Void) {
         self.queryRaw(
                 query: query,
                 org: org,
                 dialect: QueryAPI.defaultDialect,
                 responseQueue: responseQueue) { result -> Void in
             switch result {
-            case .success:
-                completion(.success(AnyCursor([])))
+            case let .success(data):
+                do {
+                    try completion(.success(FluxRecordCursor(data: data)))
+                } catch {
+                    completion(.failure(InfluxDBClient.InfluxDBError.cause(error)))
+                }
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -91,8 +95,8 @@ public class QueryAPI {
     public func query(query: String,
                       org: String? = nil,
                       responseQueue: DispatchQueue = .main)
-                    -> AnyPublisher<AnyCursor<FluxRecord>, InfluxDBClient.InfluxDBError> {
-        Future<AnyCursor<FluxRecord>, InfluxDBClient.InfluxDBError> { promise in
+                    -> AnyPublisher<FluxRecordCursor, InfluxDBClient.InfluxDBError> {
+        Future<FluxRecordCursor, InfluxDBClient.InfluxDBError> { promise in
             self.query(query: query, org: org, responseQueue: responseQueue) { result -> Void in
                 switch result {
                 case let .success(data):
@@ -256,6 +260,22 @@ extension QueryAPI {
             responseQueue.async {
                 completion(.failure(InfluxDBClient.InfluxDBError.error(415, nil, nil, error)))
             }
+        }
+    }
+}
+
+extension QueryAPI {
+    /// Cursor for `FluxRecord`.
+    public final class FluxRecordCursor: Cursor {
+        private let _parser: FluxCSVParser
+
+        fileprivate init(data: Data) throws {
+            _parser = try FluxCSVParser(data: data)
+        }
+
+        /// Get next element and returns it, or nil if no next element exists.
+        public func next() throws -> FluxRecord? {
+            try _parser.next()?.record
         }
     }
 }

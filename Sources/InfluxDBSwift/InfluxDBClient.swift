@@ -171,6 +171,11 @@ extension InfluxDBClient {
         /// - message: Reason
         case generic(_ message: String)
 
+        /// Wrapped generic error into InfluxDBError.
+        ///
+        /// - cause: Cause of error
+        case cause(_ cause: Error)
+
         /// The error that occurs during execution Flux query.
         ///
         /// - reference: Reference code
@@ -192,6 +197,8 @@ extension InfluxDBClient {
                 return message
             case let .queryException(reference, message):
                 return "(\(reference)) Reason: \(message)"
+            case let .cause(cause):
+                return "Reason: \(cause)"
             }
         }
     }
