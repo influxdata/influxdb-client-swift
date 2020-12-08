@@ -45,7 +45,6 @@ final class QueryWriteAPITests: XCTestCase {
                     .time(time: Date(2020, 7, $0))
         }
 
-
         client.getWriteAPI().writeRecords(records: points) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
@@ -57,7 +56,7 @@ final class QueryWriteAPITests: XCTestCase {
         expectation = self.expectation(description: "Success response from API doesn't arrive")
 
         let query = """
-                    from(bucket: "my-bucket") 
+                    from(bucket: "my-bucket")
                         |> range(start: 2020)
                         |> filter(fn: (r) => r._measurement == "\(measurement)")
                     """
