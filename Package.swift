@@ -5,12 +5,6 @@ import PackageDescription
 
 let package = Package(
     name: "influxdb-client-swift",
-    platforms: [
-        .macOS(.v11),
-        .iOS(.v14),
-        .watchOS(.v7),
-        .tvOS(.v14)
-    ],
     products: [
         .library(name: "InfluxDBSwift", targets: ["InfluxDBSwift"]),
         .library(name: "InfluxDBSwiftApis", targets: ["InfluxDBSwiftApis"])

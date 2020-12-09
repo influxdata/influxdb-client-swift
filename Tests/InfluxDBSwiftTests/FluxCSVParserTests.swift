@@ -188,20 +188,22 @@ final class FluxCSVParserTests: XCTestCase {
 
         let records = try parse_to_records(data: data)
 
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone(abbreviation: "UTC")!
+        let calendar = OpenISO8601DateFormatter.withoutSeconds.calendar!
 
-        var dateComponents = DateComponents()
-        dateComponents.year = 1970
-        dateComponents.month = 01
-        dateComponents.day = 1
-        dateComponents.hour = 0
-        dateComponents.minute = 0
-        dateComponents.second = 10
-        dateComponents.nanosecond = 999999999
-        dateComponents.timeZone = TimeZone(abbreviation: "UTC")!
+        guard let date = records[0].values["value"] as? Date else {
+            XCTFail("Date is not specified for: \(records[0])")
+            return
+        }
 
-        XCTAssertEqual(calendar.date(from: dateComponents)!, records[0].values["value"] as? Date)
+        let components: DateComponents = calendar.dateComponents(in: OpenISO8601DateFormatter.utcTimeZone, from: date)
+        XCTAssertEqual(1970, components.year)
+        XCTAssertEqual(1, components.month)
+        XCTAssertEqual(1, components.day)
+        XCTAssertEqual(0, components.hour)
+        XCTAssertEqual(0, components.minute)
+        XCTAssertEqual(10, components.second)
+        XCTAssertNotNil(components.nanosecond)
+        XCTAssertGreaterThan(components.nanosecond!, 990_000_000)
         XCTAssertNil(records[1].values["value"])
     }
 

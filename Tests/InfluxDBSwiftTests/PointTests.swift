@@ -354,7 +354,7 @@ internal extension Date {
         dateComponents.minute = minute
         dateComponents.second = second
         dateComponents.nanosecond = microsecond * 1000
-        dateComponents.timeZone = timeZone ?? TimeZone(abbreviation: "UTC")
+        dateComponents.timeZone = timeZone ?? OpenISO8601DateFormatter.utcTimeZone
 
         var utcCalendar = Calendar.current
         let zone: TimeZone = dateComponents.timeZone!

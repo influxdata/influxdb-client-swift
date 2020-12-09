@@ -9,11 +9,12 @@ import Foundation
 
 // https://stackoverflow.com/a/50281094/976628
 public class OpenISO8601DateFormatter: DateFormatter {
+    static let utcTimeZone = TimeZone(abbreviation: "UTC")!
     static let withoutSeconds: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.timeZone = OpenISO8601DateFormatter.utcTimeZone
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         return formatter
     }()
@@ -21,8 +22,8 @@ public class OpenISO8601DateFormatter: DateFormatter {
     private func setup() {
         calendar = Calendar(identifier: .iso8601)
         locale = Locale(identifier: "en_US_POSIX")
-        timeZone = TimeZone(secondsFromGMT: 0)
-        dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        timeZone = OpenISO8601DateFormatter.utcTimeZone
+        dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSZZZZZ"
     }
 
     override init() {

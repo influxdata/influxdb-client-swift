@@ -2,9 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-client-swift.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-client-swift)
 [![codecov](https://codecov.io/gh/bonitoo-io/influxdb-client-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-client-swift)
+[![Platforms](https://img.shields.io/badge/platform-macOS%20|%20iOS%20|%20watchOS%20|%20tvOS%20|%20Linux-blue.svg)]()
 [![License](https://img.shields.io/github/license/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/LICENSE)
-[![Latest Version](https://img.shields.io/cocoapods/v/InfluxDBSwift.svg)](https://cocoapods.org/pods/InfluxDBSwift)
-[![Cocoapods platforms](https://img.shields.io/cocoapods/p/InfluxDBSwift.svg)](https://cocoapods.org/pods/InfluxDBSwift)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://bonitoo-io.github.io/influxdb-client-swift/)
 [![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/pulls)
@@ -62,27 +61,18 @@ This package requires Swift 5 and Xcode 12.
 Add this line to your `Package.swift` :
 
 ~~~swift
-.Package(url: "https://github.com/bonitoo-io/influxdb-client-swift", from: "0.0.1")
 // swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(url: "https://github.com/bonitoo-io/influxdb-client-swift", from: "0.0.1"),
+        .package(url: "https://github.com/bonitoo-io/influxdb-client-swift", .branch("master")),
     ],
     targets: [
         .target(name: "MyModule", dependencies: ["InfluxDBSwift"])
     ]
 )
-~~~
-
-### CocoaPods
-
-Add this line to your `Podfile`:
-
-~~~ruby
-pod 'InfluxDBSwift', '~> 0.0.1'
 ~~~
 
 ## Usage
