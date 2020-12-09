@@ -8,7 +8,7 @@
 import Foundation
 
 // https://stackoverflow.com/a/50281094/976628
-public class OpenISO8601DateFormatter: DateFormatter {
+{{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} class OpenISO8601DateFormatter: DateFormatter {
     static let utcTimeZone = TimeZone(abbreviation: "UTC")!
     static let withoutSeconds: DateFormatter = {
         let formatter = DateFormatter()
@@ -36,7 +36,7 @@ public class OpenISO8601DateFormatter: DateFormatter {
         setup()
     }
 
-    override public func date(from string: String) -> Date? {
+    override {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} func date(from string: String) -> Date? {
         if let result = super.date(from: string) {
             return result
         }

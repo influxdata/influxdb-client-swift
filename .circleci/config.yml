@@ -148,10 +148,10 @@ jobs:
           keys:
             - &generate-sources-cache-key gs-cache-v1-swift:5.3
       - run:
-          name: Install Maven
+          name: Install Maven & Curl
           command: |
             apt-get update
-            apt-get install maven --yes
+            apt-get install maven curl --yes
       - run:
           name: Checks generating sources from swagger
           command: |

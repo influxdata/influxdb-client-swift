@@ -226,27 +226,16 @@ extension InfluxDBClient {
             case is Int:
                 return " \(time)"
             case let date as Date:
-                var utcCalendar = Calendar.current
-                if let utcTimeZone = TimeZone(abbreviation: "UTC") {
-                    utcCalendar.timeZone = utcTimeZone
-                }
-
-                let components: DateComponents = utcCalendar.dateComponents(in: utcCalendar.timeZone, from: date)
-
-                guard let since1970 = utcCalendar.date(from: components)?.timeIntervalSince1970 else {
-                    throw InfluxDBError.generic("Time cannot be converted to nanoseconds: \(time)")
-                }
-
-                let nanoseconds = Int64((since1970) * 1000000000)
+                let since1970 = date.timeIntervalSince1970
                 switch precision {
                 case WritePrecision.s:
-                    return " \(nanoseconds / 1000000000)"
+                    return " \(UInt64(since1970))"
                 case WritePrecision.ms:
-                    return " \(nanoseconds / 1000000)"
+                    return " \(UInt64(since1970 * 1_000))"
                 case WritePrecision.us:
-                    return " \(nanoseconds / 1000)"
+                    return " \(UInt64(since1970 * 1_000_000))"
                 default:
-                    return " \(nanoseconds)"
+                    return " \(UInt64(since1970 * 1_000_000_000))"
                 }
             default:
                 throw InfluxDBError.generic("Time value is not supported: \(time) with type: \(type(of: time))")

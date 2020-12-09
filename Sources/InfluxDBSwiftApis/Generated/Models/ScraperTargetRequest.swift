@@ -23,13 +23,16 @@ public struct ScraperTargetRequest: Codable {
     public var orgID: String?
     /** The ID of the bucket to write to. */
     public var bucketID: String?
+    /** Skip TLS verification on endpoint. */
+    public var allowInsecure: Bool? = false
 
-    public init(name: String? = nil, type: ModelType? = nil, url: String? = nil, orgID: String? = nil, bucketID: String? = nil) {
+    public init(name: String? = nil, type: ModelType? = nil, url: String? = nil, orgID: String? = nil, bucketID: String? = nil, allowInsecure: Bool? = nil) {
         self.name = name
         self.type = type
         self.url = url
         self.orgID = orgID
         self.bucketID = bucketID
+        self.allowInsecure = allowInsecure
     }
 
 }

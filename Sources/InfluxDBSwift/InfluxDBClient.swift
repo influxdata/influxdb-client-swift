@@ -8,6 +8,20 @@ import FoundationNetworking
 #endif
 
 /// A InfluxDB Client providing a support for APIs to write and query data.
+///
+/// ### Example: ###
+/// ````
+/// let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+///        bucket: "my-bucket",
+///        org: "my-org",
+///        precision: InfluxDBClient.WritePrecision.ns)
+///
+/// let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+///
+/// ...
+///
+/// client.close()
+/// ````
 public class InfluxDBClient {
     /// Version of client.
     public static var version: String = "0.0.1"
@@ -45,7 +59,7 @@ public class InfluxDBClient {
         configuration.timeoutIntervalForResource = self.options.timeoutIntervalForResource
         configuration.protocolClasses = protocolClasses
 
-        self.session = URLSession(configuration: configuration)
+        session = URLSession(configuration: configuration)
     }
 
     /// Create a new client for InfluxDB 1.8 compatibility API.
@@ -77,6 +91,13 @@ public class InfluxDBClient {
     /// - Returns: WriteAPI instance
     public func getWriteAPI() -> WriteAPI {
         WriteAPI(client: self)
+    }
+
+    /// Creates QueryAPI with supplied default settings.
+    ///
+    /// - Returns: QueryAPI instance
+    public func getQueryAPI() -> QueryAPI {
+        QueryAPI(client: self)
     }
 
     /// Release all allocated resources.
@@ -150,6 +171,17 @@ extension InfluxDBClient {
         /// - message: Reason
         case generic(_ message: String)
 
+        /// Wrapped generic error into InfluxDBError.
+        ///
+        /// - cause: Cause of error
+        case cause(_ cause: Error)
+
+        /// The error that occurs during execution Flux query.
+        ///
+        /// - reference: Reference code
+        /// - message: Reason
+        case queryException(_ reference: Int, _ message: String)
+
         public var description: String {
             switch self {
             case let .error(statusCode, headers, body, cause):
@@ -163,6 +195,10 @@ extension InfluxDBClient {
                 return desc
             case let .generic(message):
                 return message
+            case let .queryException(reference, message):
+                return "(\(reference)) Reason: \(message)"
+            case let .cause(cause):
+                return "Reason: \(cause)"
             }
         }
     }
@@ -188,3 +224,94 @@ extension InfluxDBClient {
 }
 
 // swiftlint:enable identifier_name
+
+extension InfluxDBClient {
+    internal enum GZIPMode: String, Codable, CaseIterable {
+        /// Request could be encoded by GZIP.
+        case request
+        /// Response could be encoded by GZIP.
+        case response
+    }
+    // swiftlint:disable function_body_length function_parameter_count
+    internal func httpPost(_ urlComponents: URLComponents?,
+                           _ contentTypeHeader: String,
+                           _ acceptHeader: String,
+                           _ gzipMode: InfluxDBClient.GZIPMode,
+                           _ content: Data,
+                           _ responseQueue: DispatchQueue,
+                           _ completion: @escaping (
+                                   _ result: Swift.Result<Data?, InfluxDBClient.InfluxDBError>) -> Void) {
+        do {
+            guard let url = urlComponents?.url else {
+                throw InfluxDBClient.InfluxDBError.error(
+                        -1,
+                        nil,
+                        nil,
+                        InfluxDBClient.InfluxDBError.generic("Invalid URL"))
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+
+            // Body
+            var body: Data! = content
+            if options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode {
+                body = try content.gzipped()
+            }
+            request.httpBody = body
+
+            // Headers
+            request.setValue(contentTypeHeader, forHTTPHeaderField: "Content-Type")
+            request.setValue(String(body.count), forHTTPHeaderField: "Content-Length")
+            request.setValue(acceptHeader, forHTTPHeaderField: "Accept")
+            request.setValue("identity", forHTTPHeaderField: "Accept-Encoding")
+            request.setValue(
+                    options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode ? "gzip" : "identity",
+                    forHTTPHeaderField: "Content-Encoding")
+
+            session.configuration.httpAdditionalHeaders?.forEach { key, value in
+                request.setValue("\(value)", forHTTPHeaderField: "\(key)")
+            }
+
+            let task = session.dataTask(with: request) { data, response, error in
+                responseQueue.async {
+                    if let error = error {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                -1,
+                                nil,
+                                CodableHelper.toErrorBody(data),
+                                error)))
+                        return
+                    }
+
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                -2,
+                                nil,
+                                CodableHelper.toErrorBody(data),
+                                InfluxDBClient.InfluxDBError.generic("Missing data"))))
+                        return
+                    }
+
+                    guard Array(200..<300).contains(httpResponse.statusCode) else {
+                        completion(.failure(InfluxDBClient.InfluxDBError.error(
+                                httpResponse.statusCode,
+                                httpResponse.allHeaderFields,
+                                CodableHelper.toErrorBody(data),
+                                InfluxDBClient.InfluxDBError.generic("Unsuccessful HTTP StatusCode"))))
+                        return
+                    }
+
+                    completion(.success(data))
+                }
+            }
+
+            task.resume()
+        } catch {
+            responseQueue.async {
+                completion(.failure(InfluxDBClient.InfluxDBError.error(415, nil, nil, error)))
+            }
+        }
+    }
+    // swiftlint:enable function_body_length function_parameter_count
+}
