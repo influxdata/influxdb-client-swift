@@ -1,5 +1,14 @@
 //===----------------------------------------------------------------------===//
 //
+// This file are derived from the GRDB.swift open source project: https://github.com/groue/GRDB.swift
+//
+// Copyright (C) 2015-2020 Gwendal Roué
+//
+// See https://github.com/groue/GRDB.swift/blob/master/LICENSE for license information
+//
+//===----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
+//
 // Parts of this file are derived from the Swift.org open source project:
 //
 // Copyright (c) 2014 - 2018 Apple Inc. and the Swift project authors

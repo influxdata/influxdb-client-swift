@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-client-swift.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-client-swift)
 [![codecov](https://codecov.io/gh/bonitoo-io/influxdb-client-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-client-swift)
-[![Platforms](https://img.shields.io/badge/platform-macOS%20|%20iOS%20|%20watchOS%20|%20tvOS%20|%20Linux-blue.svg)]()
+[![Platforms](https://img.shields.io/badge/platform-macOS%20|%20iOS%20|%20watchOS%20|%20tvOS%20|%20Linux-blue.svg)](https://github.com/bonitoo-io/influxdb-client-swift/)
 [![License](https://img.shields.io/github/license/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://bonitoo-io.github.io/influxdb-client-swift/)
 [![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/issues)
@@ -229,7 +229,22 @@ WriteData.main()
 
 ### Queries
 
-TBP
+The result retrieved by [QueryApi](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Sources/InfluxDBSwift/QueryAPI.swift#L15) could be formatted as a:
+
+1. Lazy sequence of [FluxRecord](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Sources/InfluxDBSwift/QueryAPI.swift#L211)
+1. Raw query response as a `Data`.
+
+#### Query to FluxRecord
+
+```swift
+TBD
+```
+
+#### Query to Data
+
+```swift
+TBD
+```
 
 ### Management API
 
