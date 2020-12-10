@@ -11,8 +11,8 @@ This is an example how to write data with different type of records.
    ```
 
 ## Sources:
-- [Package.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/WriteData/Sources/WriteData/Package.swift)
-- [main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/WriteData/Sources/WriteData/main.swift)
+- [Package.swift](/Examples/WriteData/Sources/WriteData/Package.swift)
+- [main.swift](/Examples/WriteData/Sources/WriteData/main.swift)
 
 ## How to test:
 1. Start InfluxDB:

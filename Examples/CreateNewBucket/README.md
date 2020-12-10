@@ -11,8 +11,8 @@ This is an example how to create new bucket with permission to write.
    ```
 
 ## Sources:
-- [Package.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/CreateNewBucket/Sources/CreateNewBucket/Package.swift)
-- [main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
+- [Package.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/Package.swift)
+- [main.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
 
 
 ## How to test:

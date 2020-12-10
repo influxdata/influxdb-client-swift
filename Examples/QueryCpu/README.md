@@ -12,8 +12,8 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
    ```
 
 ## Sources:
-- [Package.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/Package.swift)
-- [main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/main.swift)
+- [Package.swift](/Examples/QueryCpu/Sources/QueryCpu/Package.swift)
+- [main.swift](/Examples/QueryCpu/Sources/QueryCpu/main.swift)
 
 ## How to test:
 1. Start InfluxDB:

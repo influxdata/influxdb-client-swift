@@ -138,7 +138,7 @@ The results of writes could be handled by `(response, error)`, `Swift.Result` or
 The data could be written as:
 
 1. `String` that is formatted as a InfluxDB's Line Protocol
-1. [Data Point](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Sources/InfluxDBSwift/Point.swift#L11) structure
+1. [Data Point](/Sources/InfluxDBSwift/Point.swift#L11) structure
 1. Tuple style mapping with keys: `measurement`, `tags`, `fields` and `time`
 1. List of above items
 
@@ -224,13 +224,13 @@ struct WriteData: ParsableCommand {
 WriteData.main()
 
 ```
-- sources - [WriteData/main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/WriteData/Sources/WriteData/main.swift)
+- sources - [WriteData/main.swift](/Examples/WriteData/Sources/WriteData/main.swift)
 
 ### Queries
 
-The result retrieved by [QueryApi](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Sources/InfluxDBSwift/QueryAPI.swift#L15) could be formatted as a:
+The result retrieved by [QueryApi](/Sources/InfluxDBSwift/QueryAPI.swift#L15) could be formatted as a:
 
-1. Lazy sequence of [FluxRecord](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Sources/InfluxDBSwift/QueryAPI.swift#L211)
+1. Lazy sequence of [FluxRecord](/Sources/InfluxDBSwift/QueryAPI.swift#L211)
 1. Raw query response as a `Data`.
 
 #### Query to FluxRecord
@@ -311,6 +311,7 @@ struct QueryCpu: ParsableCommand {
 QueryCpu.main()
 
 ```
+- sources - [QueryCpu/main.swift](/Examples/QueryCpu/Sources/QueryCpu/main.swift)
 
 #### Query to Data
 
@@ -493,7 +494,7 @@ struct CreateNewBucket: ParsableCommand {
 CreateNewBucket.main()
 
 ```
-- sources - [CreateNewBucket/main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
+- sources - [CreateNewBucket/main.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
 
 ## Contributing
 
