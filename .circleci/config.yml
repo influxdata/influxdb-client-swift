@@ -204,7 +204,7 @@ workflows:
       - check-generate-sources
       - check-examples
       - tests-swift:
-          name: swift-5.3
+          name: test-docker
   nightly:
     triggers:
       - schedule:

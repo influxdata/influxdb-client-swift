@@ -1,18 +1,22 @@
 # QueryCpu
 
 This is an example how to to query data into sequence of `FluxRecord`. 
-The Telegraf send data from [CPU Input Plugin](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/cpu/README.md) into InfluxDB 2.0
+The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/cpu/README.md) into InfluxDB 2.0.
 
 ## Prerequisites:
    - Docker
-
+   - Cloned examples:
+      ```bash
+      git clone git@github.com:bonitoo-io/influxdb-client-swift.git
+      cd Examples/QueryCpu
+      ```
 ## Sources:
    - [Package.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/Package.swift)
    - [main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/main.swift)
 
 ## How to test:
 1. Start InfluxDB:
-    ```console
+    ```bash
     docker run --rm \
       --name influxdb_v2 \
       --detach \
@@ -20,7 +24,7 @@ The Telegraf send data from [CPU Input Plugin](https://github.com/influxdata/tel
       quay.io/influxdb/influxdb:v2.0.2
     ```
 1. Configure your username, password, organization, bucket and token:
-   ```console
+   ```bash
    docker run --rm \
       --link influxdb_v2 \
       curlimages/curl -s -i -X POST http://influxdb_v2:8086/api/v2/setup \
@@ -28,7 +32,7 @@ The Telegraf send data from [CPU Input Plugin](https://github.com/influxdata/tel
          -d '{"username": "my-user", "password": "my-password", "org": "my-org", "bucket": "my-bucket", "token": "my-token"}'
    ```
 1. Start Telegraf as a source of data:
-   ```console
+   ```bash
    docker run --rm \
       --name telegraf \
       --link influxdb_v2 \
@@ -44,7 +48,7 @@ The Telegraf send data from [CPU Input Plugin](https://github.com/influxdata/tel
       telegraf
    ```
 1. Start SwiftCLI by:
-   ```console
+   ```bash
     docker run --rm \
       --link influxdb_v2 \
       --privileged \
@@ -55,6 +59,25 @@ The Telegraf send data from [CPU Input Plugin](https://github.com/influxdata/tel
       swift:5.3 /bin/bash
    ```
 1. Execute Query by:
-   ```console
+   ```bash
    swift run query-cpu --org my-org --bucket my-bucket --token my-token --url http://influxdb_v2:8086
    ```
+   
+## Expected output
+
+```bash
+Query to execute:
+
+from(bucket: "my-bucket")
+    |> range(start: -10m)
+    |> filter(fn: (r) => r["_measurement"] == "cpu")
+    |> filter(fn: (r) => r["cpu"] == "cpu-total")
+    |> filter(fn: (r) => r["_field"] == "usage_user" or r["_field"] == "usage_system")
+    |> last()
+
+Success response...
+
+CPU usage:
+        usage_system: 22.717622080683473
+        usage_user: 61.46496815287725
+```

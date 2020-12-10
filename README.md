@@ -17,7 +17,6 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
 - [Supported Platforms](#supported-platforms)
 - [Installation](#installation)
     - [Swift Package Manager](#swift-package-manager)
-    - [CocoaPods](#cocoapods)
 - [Usage](#usage)
     - [Creating a client](#creating-a-client)
     - [Writing data](#writes)

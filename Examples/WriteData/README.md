@@ -4,7 +4,7 @@ This is an example how to write data with different type of records.
 
 How to test:
 1. Start InfluxDB 2.0 by Docker:
-    ```console
+    ```bash
     docker run --name influxdb_v2 -d -p "8086:8086" quay.io/influxdb/influxdb:v2.0.2
     ```
 1. Navigate to http://localhost:8086/ and configure InfluxDB 2.0 
@@ -13,6 +13,6 @@ How to test:
     - https://docs.influxdata.com/influxdb/v2.0/organizations/buckets/view-buckets/
     - https://docs.influxdata.com/influxdb/v2.0/security/tokens/view-tokens/
 1. Write data by:
-```console
+```bash
 swift run write-data --bucket my-bucket --org my-org --token my-token --url http://localhost:8086
 ```
