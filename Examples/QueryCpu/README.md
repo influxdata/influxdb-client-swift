@@ -12,7 +12,7 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
    ```
 
 ## Sources:
-- [Package.swift](/Examples/QueryCpu/Sources/QueryCpu/Package.swift)
+- [Package.swift](/Examples/QueryCpu/Package.swift)
 - [main.swift](/Examples/QueryCpu/Sources/QueryCpu/main.swift)
 
 ## How to test:

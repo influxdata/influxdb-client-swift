@@ -11,7 +11,7 @@ This is an example how to write data with different type of records.
    ```
 
 ## Sources:
-- [Package.swift](/Examples/WriteData/Sources/WriteData/Package.swift)
+- [Package.swift](/Examples/WriteData/Package.swift)
 - [main.swift](/Examples/WriteData/Sources/WriteData/main.swift)
 
 ## How to test:
