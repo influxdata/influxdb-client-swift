@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-client-swift.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-client-swift)
 [![codecov](https://codecov.io/gh/bonitoo-io/influxdb-client-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-client-swift)
-[![Platforms](https://img.shields.io/badge/platform-macOS%20|%20iOS%20|%20watchOS%20|%20tvOS%20|%20Linux-blue.svg)]()
+[![Platforms](https://img.shields.io/badge/platform-macOS%20|%20iOS%20|%20watchOS%20|%20tvOS%20|%20Linux-blue.svg)](https://github.com/bonitoo-io/influxdb-client-swift/)
 [![License](https://img.shields.io/github/license/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://bonitoo-io.github.io/influxdb-client-swift/)
 [![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/issues)
@@ -17,7 +17,6 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
 - [Supported Platforms](#supported-platforms)
 - [Installation](#installation)
     - [Swift Package Manager](#swift-package-manager)
-    - [CocoaPods](#cocoapods)
 - [Usage](#usage)
     - [Creating a client](#creating-a-client)
     - [Writing data](#writes)
@@ -139,7 +138,7 @@ The results of writes could be handled by `(response, error)`, `Swift.Result` or
 The data could be written as:
 
 1. `String` that is formatted as a InfluxDB's Line Protocol
-1. [Data Point](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Sources/InfluxDBSwift/Point.swift#L11) structure
+1. [Data Point](/Sources/InfluxDBSwift/Point.swift#L11) structure
 1. Tuple style mapping with keys: `measurement`, `tags`, `fields` and `time`
 1. List of above items
 
@@ -225,11 +224,163 @@ struct WriteData: ParsableCommand {
 WriteData.main()
 
 ```
-- sources - [WriteData/main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/WriteData/Sources/WriteData/main.swift)
+- sources - [WriteData/main.swift](/Examples/WriteData/Sources/WriteData/main.swift)
 
 ### Queries
 
-TBP
+The result retrieved by [QueryApi](/Sources/InfluxDBSwift/QueryAPI.swift#L15) could be formatted as a:
+
+1. Lazy sequence of [FluxRecord](/Sources/InfluxDBSwift/QueryAPI.swift#L211)
+1. Raw query response as a `Data`.
+
+#### Query to FluxRecord
+
+```swift
+import ArgumentParser
+import Foundation
+import InfluxDBSwift
+
+struct QueryCpu: ParsableCommand {
+  @Option(name: .shortAndLong, help: "The bucket to query. The name or id of the bucket destination.")
+  private var bucket: String
+
+  @Option(name: .shortAndLong,
+          help: "The organization executing the query. Takes either the `ID` or `Name` interchangeably.")
+  private var org: String
+
+  @Option(name: .shortAndLong, help: "Authentication token.")
+  private var token: String
+
+  @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
+  private var url: String
+
+  public func run() {
+    // Initialize Client with default Organization
+    let client = InfluxDBClient(
+            url: url,
+            token: token,
+            options: InfluxDBClient.InfluxDBOptions(org: self.org))
+
+    // Flux query
+    let query = """
+                from(bucket: "\(self.bucket)")
+                    |> range(start: -10m)
+                    |> filter(fn: (r) => r["_measurement"] == "cpu")
+                    |> filter(fn: (r) => r["cpu"] == "cpu-total")
+                    |> filter(fn: (r) => r["_field"] == "usage_user" or r["_field"] == "usage_system")
+                    |> last()
+                """
+
+    print("\nQuery to execute:\n\n\(query)")
+
+    client.getQueryAPI().query(query: query) { response, error in
+      // For handle error
+      if let error = error {
+        self.atExit(client: client, error: error)
+      }
+
+      // For Success response
+      if let response = response {
+
+        print("\nSuccess response...\n")
+        print("CPU usage:")
+        do {
+          try response.forEach { record in
+            print("\t\(record.values["_field"]!): \(record.values["_value"]!)")
+          }
+        } catch {
+          self.atExit(client: client, error: InfluxDBClient.InfluxDBError.cause(error))
+        }
+      }
+
+      self.atExit(client: client)
+    }
+
+    // Wait to end of script
+    RunLoop.current.run()
+  }
+
+  private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
+    // Dispose the Client
+    client.close()
+    // Exit script
+    Self.exit(withError: error)
+  }
+}
+
+QueryCpu.main()
+
+```
+- sources - [QueryCpu/main.swift](/Examples/QueryCpu/Sources/QueryCpu/main.swift)
+
+#### Query to Data
+
+```swift
+import ArgumentParser
+import Foundation
+import InfluxDBSwift
+
+struct QueryCpuData: ParsableCommand {
+  @Option(name: .shortAndLong, help: "The bucket to query. The name or id of the bucket destination.")
+  private var bucket: String
+
+  @Option(name: .shortAndLong,
+          help: "The organization executing the query. Takes either the `ID` or `Name` interchangeably.")
+  private var org: String
+
+  @Option(name: .shortAndLong, help: "Authentication token.")
+  private var token: String
+
+  @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
+  private var url: String
+
+  public func run() {
+    // Initialize Client with default Organization
+    let client = InfluxDBClient(
+            url: url,
+            token: token,
+            options: InfluxDBClient.InfluxDBOptions(org: self.org))
+
+    // Flux query
+    let query = """
+                from(bucket: "\(self.bucket)")
+                    |> range(start: -10m)
+                    |> filter(fn: (r) => r["_measurement"] == "cpu")
+                    |> filter(fn: (r) => r["cpu"] == "cpu-total")
+                    |> filter(fn: (r) => r["_field"] == "usage_user" or r["_field"] == "usage_system")
+                    |> last()
+                """
+
+    client.getQueryAPI().queryRaw(query: query) { response, error in
+      // For handle error
+      if let error = error {
+        self.atExit(client: client, error: error)
+      }
+
+      // For Success response
+      if let response = response {
+        let csv = String(decoding: response, as: UTF8.self)
+        print("InfluxDB response: \(csv)")
+      }
+
+      self.atExit(client: client)
+    }
+
+    // Wait to end of script
+    RunLoop.current.run()
+  }
+
+  private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
+    // Dispose the Client
+    client.close()
+    // Exit script
+    Self.exit(withError: error)
+  }
+}
+
+QueryCpuData.main()
+
+```
 
 ### Management API
 
@@ -343,7 +494,7 @@ struct CreateNewBucket: ParsableCommand {
 CreateNewBucket.main()
 
 ```
-- sources - [CreateNewBucket/main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
+- sources - [CreateNewBucket/main.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
 
 ## Contributing
 

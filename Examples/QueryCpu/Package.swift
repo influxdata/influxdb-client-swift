@@ -3,17 +3,17 @@
 import PackageDescription
 
 let package = Package(
-        name: "WriteData",
+        name: "QueryCpu",
         products: [
-            .executable(name: "write-data", targets: ["WriteData"])
+            .executable(name: "query-cpu", targets: ["QueryCpu"])
         ],
         dependencies: [
             .package(name: "influxdb-client-swift", path: "../../"),
             .package(url: "https://github.com/apple/swift-argument-parser", from: "0.3.0")
         ],
         targets: [
-            .target(name: "WriteData", dependencies: [
-                .product(name: "InfluxDBSwift", package: "influxdb-client-swift"),
+            .target(name: "QueryCpu", dependencies: [
+                .product(name: "InfluxDBSwiftApis", package: "influxdb-client-swift"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ])
         ]

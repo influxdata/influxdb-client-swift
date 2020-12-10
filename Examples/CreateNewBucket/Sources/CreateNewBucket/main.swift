@@ -67,7 +67,9 @@ struct CreateNewBucket: ParsableCommand {
                     // Print token
                     if let authorization = authorization {
                         let token = authorization.token!
-                        print("The token: '\(token)' is authorized to read/write from/to bucket: '\(bucket.id!)'.")
+                        print("The bucket: '\(bucket.name)' is successfully created.")
+                        print("The following token could be use to read/write:")
+                        print("\t\(token)")
                         atExit(client: client)
                     }
                 }

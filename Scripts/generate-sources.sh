@@ -122,9 +122,6 @@ cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/SynchronizedDictiona
 
 # post process sources
 sed -i 's/Any]>/String]>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/UsersAPI.swift
-sed -i 's/case orgID$/case orgID = "organization_id"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
-sed -i 's/case org$/case org = "organization"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
-sed -i 's/case bucketID$/case bucketID = "bucket_id"/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/DBRP.swift
 sed -i 's/extern: File? = nil, //' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/self.extern = extern/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/public var extern: File?/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
@@ -138,5 +135,6 @@ sed -i 's/try ! predicate/try !predicate/' "${SCRIPT_PATH}"/../Sources/InfluxDBS
 sed -i '/fetchCursor/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 sed -i '/foo/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 sed -i '/bar/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
+sed -i '1i//===----------------------------------------------------------------------===//\n//\n// This file are derived from the GRDB.swift open source project: https://github.com/groue/GRDB.swift\n//\n// Copyright (C) 2015-2020 Gwendal Roué\n//\n// See https://github.com/groue/GRDB.swift/blob/master/LICENSE for license information\n//\n//===----------------------------------------------------------------------===//' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 
 rm -rf "${SCRIPT_PATH}"/generated

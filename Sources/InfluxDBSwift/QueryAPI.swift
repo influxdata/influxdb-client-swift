@@ -12,6 +12,53 @@ import FoundationNetworking
 import Gzip
 
 /// The asynchronous API to Query InfluxDB 2.0.
+///
+/// ### Example: ###
+/// #### Query into sequence of `FluxRecord` ####
+/// ````
+/// let query = """
+///             from(bucket: "my-bucket")
+///                 |> range(start: -10m)
+///                 |> filter(fn: (r) => r["_measurement"] == "cpu")
+///                 |> filter(fn: (r) => r["cpu"] == "cpu-total")
+///                 |> filter(fn: (r) => r["_field"] == "usage_user" or r["_field"] == "usage_system")
+///                 |> last()
+///             """
+///
+/// client.getQueryAPI().query(query: query) { response, error in
+///     // For handle error
+///     if let error = error {
+///         print("Error:\n\n\(error)")
+///     }
+///
+///     // For Success response
+///     if let response = response {
+///
+///         do {
+///             try response.forEach { record in
+///                 print("\t\(record.values["_field"]!): \(record.values["_value"]!)")
+///             }
+///         } catch {
+///             print("Error:\n\n\(error)")
+///         }
+///     }
+/// }
+/// ````
+/// #### Query into `Data` ####
+/// ````
+/// client.getQueryAPI().queryRaw(query: query) { response, error in
+///     // For handle error
+///     if let error = error {
+///         print("Error:\n\n\(error)")
+///     }
+///
+///     // For Success response
+///     if let response = response {
+///         let csv = String(decoding: response, as: UTF8.self)
+///         print("InfluxDB response: \(csv)")
+///     }
+/// }
+/// ````
 public class QueryAPI {
     /// The default Query Dialect with annotation = ["datatype", "group", "default"]
     public static let defaultDialect = Dialect(annotations:
@@ -210,12 +257,12 @@ extension QueryAPI {
     /// FluxRecord represents row in the flux query result table
     public class FluxRecord: Equatable {
         /// The list of values in Record
-        public let values: [String: Any]
+        public let values: [String: Decodable]
 
         /// Initialize records with values.
         ///
         /// - Parameter values: record values
-        public init(values: [String: Any]) {
+        public init(values: [String: Decodable]) {
             self.values = values
         }
 

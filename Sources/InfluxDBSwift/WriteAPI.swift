@@ -44,7 +44,7 @@ import Gzip
 /// client.getWriteAPI().writeRecords(records: records) { result, error in
 ///     // For handle error
 ///     if let error = error {
-///         print("Error:\n\n\(records)")
+///         print("Error:\n\n\(error)")
 ///     }
 ///
 ///     // For Success write

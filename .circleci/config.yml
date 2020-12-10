@@ -57,7 +57,7 @@ jobs:
         default: &default-swift-image "swift:5.3"
       influxdb-image:
         type: string
-        default: &default-influxdb-image "quay.io/influxdb/influxdb:2.0.0-rc"
+        default: &default-influxdb-image "quay.io/influxdb/influxdb:v2.0.2"
     docker:
       - image: << parameters.swift-image >>
       - image: << parameters.influxdb-image >>
@@ -204,7 +204,7 @@ workflows:
       - check-generate-sources
       - check-examples
       - tests-swift:
-          name: swift-5.3
+          name: test-docker
   nightly:
     triggers:
       - schedule:
