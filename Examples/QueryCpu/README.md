@@ -4,15 +4,16 @@ This is an example how to to query data into sequence of `FluxRecord`.
 The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/cpu/README.md) into InfluxDB 2.0.
 
 ## Prerequisites:
-   - Docker
-   - Cloned examples:
-      ```bash
-      git clone git@github.com:bonitoo-io/influxdb-client-swift.git
-      cd Examples/QueryCpu
-      ```
+- Docker
+- Cloned examples:
+   ```bash
+   git clone git@github.com:bonitoo-io/influxdb-client-swift.git
+   cd Examples/QueryCpu
+   ```
+
 ## Sources:
-   - [Package.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/Package.swift)
-   - [main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/main.swift)
+- [Package.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/Package.swift)
+- [main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/main.swift)
 
 ## How to test:
 1. Start InfluxDB:
