@@ -37,6 +37,17 @@ generate-doc: ## Generate documentation
 	sourcekitten doc --spm --module-name InfluxDBSwiftApis > doc_swift_apis.json
 	jazzy --clean --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
 
+publish-doc: ## Publish documentation as GH-Pages
+	$(MAKE) generate-doc
+	docker run --rm -it \
+	    -v "${PWD}/docs":/code/docs \
+	    -v "${PWD}/Scripts":/code/Scripts \
+	    -v "${PWD}/.circleci":/code/.circleci \
+	    -v ~/.ssh:/root/.ssh \
+	    -v ~/.gitconfig:/root/.gitconfig \
+	    -w /code \
+	    ubuntu /code/Scripts/publish-site.sh
+
 docker-cli: ## Start and connect into swift:5.3 container
 	docker run --rm --privileged --interactive --tty --network influx_network --env INFLUXDB_URL=http://influxdb_v2:8086 -v "${PWD}":/project -w /project -it swift:5.3 /bin/bash
 
