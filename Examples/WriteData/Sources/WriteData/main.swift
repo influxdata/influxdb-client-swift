@@ -60,7 +60,8 @@ struct WriteData: ParsableCommand {
 
             // For Success write
             if result != nil {
-                print("Successfully written data:\n\n\(records)")
+                print("Written data:\n\n\(records.map { "\t- \($0)" }.joined(separator: "\n"))")
+                print("\nSuccess!")
             }
 
             self.atExit(client: client)

@@ -138,7 +138,6 @@ sed -i 's/try ! predicate/try !predicate/' "${SCRIPT_PATH}"/../Sources/InfluxDBS
 sed -i '/fetchCursor/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 sed -i '/foo/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 sed -i '/bar/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
-header='1itask goes here'
 sed -i '1i//===----------------------------------------------------------------------===//\n//\n// This file are derived from the GRDB.swift open source project: https://github.com/groue/GRDB.swift\n//\n// Copyright (C) 2015-2020 Gwendal Roué\n//\n// See https://github.com/groue/GRDB.swift/blob/master/LICENSE for license information\n//\n//===----------------------------------------------------------------------===//' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 
 rm -rf "${SCRIPT_PATH}"/generated
