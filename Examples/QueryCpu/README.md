@@ -1,0 +1,60 @@
+# QueryCpu
+
+This is an example how to to query data into sequence of `FluxRecord`. 
+The Telegraf send data from [CPU Input Plugin](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/cpu/README.md) into InfluxDB 2.0
+
+## Prerequisites:
+   - Docker
+
+## Sources:
+   - [Package.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/Package.swift)
+   - [main.swift](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/Examples/QueryCpu/Sources/QueryCpu/main.swift)
+
+## How to test:
+1. Start InfluxDB:
+    ```console
+    docker run --rm \
+      --name influxdb_v2 \
+      --detach \
+      --publish 8086:8086 \
+      quay.io/influxdb/influxdb:v2.0.2
+    ```
+1. Configure your username, password, organization, bucket and token:
+   ```console
+   docker run --rm \
+      --link influxdb_v2 \
+      curlimages/curl -s -i -X POST http://influxdb_v2:8086/api/v2/setup \
+         -H 'accept: application/json' \
+         -d '{"username": "my-user", "password": "my-password", "org": "my-org", "bucket": "my-bucket", "token": "my-token"}'
+   ```
+1. Start Telegraf as a source of data:
+   ```console
+   docker run --rm \
+      --name telegraf \
+      --link influxdb_v2 \
+      --detach \
+      --env HOST_ETC=/hostfs/etc \
+      --env HOST_PROC=/hostfs/proc \
+      --env HOST_SYS=/hostfs/sys \
+      --env HOST_VAR=/hostfs/var \
+      --env HOST_RUN=/hostfs/run \
+      --env HOST_MOUNT_PREFIX=/hostfs \
+      --volume /:/hostfs:ro \
+      --volume $PWD/telegraf.conf:/etc/telegraf/telegraf.conf:ro \
+      telegraf
+   ```
+1. Start SwiftCLI by:
+   ```console
+    docker run --rm \
+      --link influxdb_v2 \
+      --privileged \
+      --interactive \
+      --tty \
+      --volume $PWD/../..:/client \
+      --workdir /client/Examples/QueryCpu \
+      swift:5.3 /bin/bash
+   ```
+1. Execute Query by:
+   ```console
+   swift run query-cpu --org my-org --bucket my-bucket --token my-token --url http://influxdb_v2:8086
+   ```

@@ -210,12 +210,12 @@ extension QueryAPI {
     /// FluxRecord represents row in the flux query result table
     public class FluxRecord: Equatable {
         /// The list of values in Record
-        public let values: [String: Any]
+        public let values: [String: Decodable]
 
         /// Initialize records with values.
         ///
         /// - Parameter values: record values
-        public init(values: [String: Any]) {
+        public init(values: [String: Decodable]) {
             self.values = values
         }
 
