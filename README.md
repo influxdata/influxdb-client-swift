@@ -507,19 +507,21 @@ Build Requirements:
 Build source and test targets:
 
 ```bash
-$ swift build --build-tests
+swift build --build-tests
 ```
 
 Run tests:
 
 ```bash
-$ swift test
+./Scripts/influxdb-restart.sh
+swift test
 ```
 
 Check code coverage:
 
 ```bash
-$ swift test --enable-code-coverage
+./Scripts/influxdb-restart.sh
+swift test --enable-code-coverage
 ```
 
 You could also use a `docker-cli` without installing the Swift SDK:
