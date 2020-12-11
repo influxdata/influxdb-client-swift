@@ -140,7 +140,7 @@ The data could be written as:
 1. `String` that is formatted as a InfluxDB's Line Protocol
 1. [Data Point](/Sources/InfluxDBSwift/Point.swift#L11) structure
 1. Tuple style mapping with keys: `measurement`, `tags`, `fields` and `time`
-1. List of above items
+1. Array of above items
 
 The following example demonstrates how to write data with different type of records. For further information see docs and [examples](/Examples).
 
