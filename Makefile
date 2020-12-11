@@ -18,7 +18,7 @@ check-lint: ## Check that all files are formatted properly
 
 test: ## Run tests
 	$(MAKE) build
-	@Scripts/test.sh
+	swift test
 
 generate-sources: ## Generate Models and APIs from swagger
 	docker run --rm -it \
