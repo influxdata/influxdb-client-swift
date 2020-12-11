@@ -99,3 +99,7 @@ SourceKitten/
 
 # Swagger
 .m2/
+
+# Junit
+junit.xml
+tests.xml

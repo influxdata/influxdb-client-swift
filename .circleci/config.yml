@@ -59,6 +59,8 @@ jobs:
         default: &default-influxdb-image "quay.io/influxdb/influxdb:v2.0.2"
     docker:
       - image: << parameters.swift-image >>
+        environment:
+          SWIFT_JUNIT_RESULT_PATH: junit.xml
       - image: << parameters.influxdb-image >>
         environment:
           INFLUXD_HTTP_BIND_ADDRESS: :8086
@@ -89,9 +91,9 @@ jobs:
             - Package.resolved
             - ./.build/repositories
       - store_test_results:
-          path: build/
+          path: ./
       - store_artifacts:
-          path: build/reports/junit.xml
+          path: ./junit.xml
       - run:
           name: Collecting coverage reports
           command: bash <(curl -s https://codecov.io/bash) -f ./info.lcov || echo "Codecov did not collect coverage reports"
