@@ -228,9 +228,9 @@ WriteData.main()
 
 ### Queries
 
-The result retrieved by [QueryApi](/Sources/InfluxDBSwift/QueryAPI.swift#L15) could be formatted as a:
+The result retrieved by [QueryApi](/Sources/InfluxDBSwift/QueryAPI.swift#L62) could be formatted as a:
 
-1. Lazy sequence of [FluxRecord](/Sources/InfluxDBSwift/QueryAPI.swift#L211)
+1. Lazy sequence of [FluxRecord](/Sources/InfluxDBSwift/QueryAPI.swift#L258)
 1. Raw query response as a `Data`.
 
 #### Query to FluxRecord
