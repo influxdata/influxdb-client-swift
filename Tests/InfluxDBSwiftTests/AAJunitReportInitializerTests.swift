@@ -5,8 +5,8 @@
 import Foundation
 
 @testable import InfluxDBSwift
-import XCTest
 import SwiftTestReporter
+import XCTest
 
 class AAJunitReportInitializerTest: XCTestCase {
     override class func setUp() {
