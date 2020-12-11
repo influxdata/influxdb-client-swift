@@ -30,7 +30,6 @@ commands:
           command: |
             apt-get update
             apt-get install wget curl ruby --yes
-            gem install --no-ri --no-rdoc xcpretty
       - run:
           name: Post onBoarding request to InfluxDB 2
           command: ./Scripts/influxdb-onboarding.sh
@@ -77,7 +76,10 @@ jobs:
       - run:
           name: Run tests
           command: |
-            make test
+            swift test --enable-code-coverage
+      - run:
+          name: Code Coverage
+          command: |
             llvm-cov report .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata -use-color
             llvm-cov export -format="lcov" .build/debug/influxdb-client-swiftPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
       - save_cache:
