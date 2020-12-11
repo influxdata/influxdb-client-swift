@@ -47,7 +47,6 @@ struct QueryCpu: ParsableCommand {
 
             // For Success response
             if let response = response {
-
                 print("\nSuccess response...\n")
                 print("CPU usage:")
                 do {

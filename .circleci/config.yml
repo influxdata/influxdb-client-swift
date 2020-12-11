@@ -47,6 +47,20 @@ commands:
           wget https://github.com/realm/SwiftLint/releases/download/0.40.3/swiftlint_linux.zip
           unzip -n swiftlint_linux.zip
           ln -s /root/project/swiftlint /usr/bin/swiftlint
+  check-example:
+    description: Check << parameters.directory >> example
+    parameters:
+      directory:
+        type: string
+    steps:
+      - run: |
+          cd Examples/<< parameters.directory >>/
+          swiftlint --strict
+          swift package resolve
+          swift build --target InfluxDBSwift
+          swift build --target InfluxDBSwiftApis
+          swift build --target ArgumentParser
+          swift build
 
 jobs:
   tests-swift:
@@ -179,25 +193,20 @@ jobs:
       - restore_cache:
           name: Restoring Example Cache
           keys:
-            - &cache-example-key example-cache-v2-{{ checksum "Examples/CreateNewBucket/Package.swift" }}
-            - example-cache-v2-{{ checksum "Examples/CreateNewBucket/Package.swift" }}
+            - &cache-example-key example-cache-v2-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}
             - example-cache-v2-
-      - run:
-          name: Check CreateNewBucket
-          command: |
-            cd Examples/CreateNewBucket/
-            swiftlint --strict
-            swift package resolve
-            swift build --target InfluxDBSwift
-            swift build --target InfluxDBSwiftApis
-            swift build --target ArgumentParser
-            swift build
+      - check-example:
+          directory: CreateNewBucket
+      - check-example:
+          directory: WriteData
+      - check-example:
+          directory: QueryCpu
       - save_cache:
           name: Saving Example Cache
           key: *cache-example-key
           paths:
-            - Examples/CreateNewBucket/Package.resolved
-            - Examples/CreateNewBucket/.build/repositories
+            - Examples/**/Package.resolved
+            - Examples/**/.build/repositories
 
 workflows:
   version: 2
