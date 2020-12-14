@@ -69,7 +69,7 @@ extension InfluxDBClient {
         /// - Returns: self
         public func addTag(key: String?, value: String?) -> Point {
             if let key = key {
-                self.tags[key] = value
+                tags[key] = value
             }
             return self
         }
@@ -82,7 +82,7 @@ extension InfluxDBClient {
         /// - Returns: self
         public func addField(key: String?, value: Any?) -> Point {
             if let key = key {
-                self.fields[key] = value
+                fields[key] = value
             }
             return self
         }
@@ -118,128 +118,172 @@ extension InfluxDBClient {
         override public var description: String {
             "Point: measurement:\(measurement), tags:\(tags), fields:\(fields), time:\(time ?? "nil")"
         }
+    }
 
-        private func escapeKey(_ key: String, _ escapeEqual: Bool = true) -> String {
-            key.reduce(into: "") { result, character in
+    /// Settings to store default tags.
+    ///
+    /// ### Example: ###
+    /// ````
+    /// let defaultTags = InfluxDBClient.PointSettings()
+    ///         .addDefaultTag(key: "id", value: "132-987-655")
+    ///         .addDefaultTag(key: "customer", value: "California Miner")
+    ///         .addDefaultTag(key: "data_center", value: "${env.DATA_CENTER_LOCATION}")
+    /// ````
+    public class PointSettings {
+        // Default tags which will be added to each point written by api.
+        internal var tags: [String: String?] = [:]
+
+        /// Add new default tag with key and value.
+        ///
+        /// - Parameters:
+        ///   - key: the tag name
+        ///   - value: the tag value. Could be static value or env property.
+        /// - Returns: Self
+        public func addDefaultTag(key: String?, value: String?) -> PointSettings {
+            if let key = key {
+                tags[key] = value
+            }
+            return self
+        }
+
+        internal func evaluate() -> [String: String?] {
+            let map: [String: String?] = tags.mapValues { value in
+                if let value = value, value.starts(with: "${env.") {
+                    let start = value.index(value.startIndex, offsetBy: 6)
+                    let end = value.index(value.endIndex, offsetBy: -1)
+                    let name = String(value[start..<end])
+                    return ProcessInfo.processInfo.environment[name]
+                }
+                return value
+            }
+            return map
+        }
+    }
+}
+
+extension InfluxDBClient.Point {
+    private func escapeKey(_ key: String, _ escapeEqual: Bool = true) -> String {
+        key.reduce(into: "") { result, character in
+            switch character {
+            case "\n":
+                result.append("\\n")
+            case "\r":
+                result.append("\\r")
+            case "\t":
+                result.append("\\t")
+            case ",", " ":
+                result.append("\\\(character)")
+            case "=":
+                if escapeEqual {
+                    result.append("\\")
+                }
+                result.append(character)
+            default:
+                result.append(character)
+            }
+        }
+    }
+
+    private func escapeTags() -> String {
+        tags.sorted {
+            $0.key < $1.key
+        }.reduce(into: "") { result, keyValue in
+            guard !keyValue.key.isEmpty else {
+                return
+            }
+            if let value = keyValue.value, !value.isEmpty {
+                result.append(",")
+                result.append(escapeKey(keyValue.key))
+                result.append("=")
+                result.append(escapeKey(value))
+            }
+        }
+    }
+
+    private func escapeFields() throws -> String {
+        var mappedFields = try fields.sorted {
+            $0.key < $1.key
+        }.reduce(into: "") { result, keyValue in
+            if keyValue.key.isEmpty {
+                return
+            }
+            guard let value = keyValue.value else {
+                return
+            }
+            if let escaped = try escapeValue(value) {
+                // key
+                result.append(escapeKey(keyValue.key))
+                // key=
+                result.append("=")
+                // key=value
+                result.append(escaped)
+                // key=value,
+                result.append(",")
+            }
+        }
+
+        if !mappedFields.isEmpty {
+            _ = mappedFields.removeLast()
+        }
+        return mappedFields
+    }
+
+    private func escapeValue(_ value: Any) throws -> String? {
+        switch value {
+        case is Int:
+            return "\(value)i"
+        case let floatValue as Float:
+            if floatValue.isInfinite || floatValue.isNaN {
+                return nil
+            }
+            return "\(value)"
+        case let doubleValue as Double:
+            if doubleValue.isInfinite || doubleValue.isNaN {
+                return nil
+            }
+            return "\(value)"
+        case let boolValue as Bool:
+            return "\(boolValue ? "true" : "false")"
+        case let stringValue as String:
+            let escaped = stringValue.reduce(into: "") { result, character in
                 switch character {
-                case "\n":
-                    result.append("\\n")
-                case "\r":
-                    result.append("\\r")
-                case "\t":
-                    result.append("\\t")
-                case ",", " ":
-                    result.append("\\\(character)")
-                case "=":
-                    if escapeEqual {
-                        result.append("\\")
-                    }
+                case "\\", "\"":
+                    result.append("\\")
                     result.append(character)
                 default:
                     result.append(character)
                 }
             }
+            return "\"\(escaped)\""
+        default:
+            throw InfluxDBClient.InfluxDBError
+                    .generic("Field value is not supported: \(value) with type: \(type(of: value))")
+        }
+    }
+
+    private func escapeTime() throws -> String {
+        guard let time = time else {
+            return ""
         }
 
-        private func escapeTags() -> String {
-            tags.sorted {
-                $0.key < $1.key
-            }.reduce(into: "") { result, keyValue in
-                guard !keyValue.key.isEmpty else {
-                    return
-                }
-                if let value = keyValue.value, !value.isEmpty {
-                    result.append(",")
-                    result.append(escapeKey(keyValue.key))
-                    result.append("=")
-                    result.append(escapeKey(value))
-                }
-            }
-        }
-
-        private func escapeFields() throws -> String {
-            var mappedFields = try fields.sorted {
-                $0.key < $1.key
-            }.reduce(into: "") { result, keyValue in
-                if keyValue.key.isEmpty {
-                    return
-                }
-                guard let value = keyValue.value else {
-                    return
-                }
-                if let escaped = try escapeValue(value) {
-                    // key
-                    result.append(escapeKey(keyValue.key))
-                    // key=
-                    result.append("=")
-                    // key=value
-                    result.append(escaped)
-                    // key=value,
-                    result.append(",")
-                }
-            }
-
-            if !mappedFields.isEmpty {
-                _ = mappedFields.removeLast()
-            }
-            return mappedFields
-        }
-
-        private func escapeValue(_ value: Any) throws -> String? {
-            switch value {
-            case is Int:
-                return "\(value)i"
-            case let floatValue as Float:
-                if floatValue.isInfinite || floatValue.isNaN {
-                    return nil
-                }
-                return "\(value)"
-            case let doubleValue as Double:
-                if doubleValue.isInfinite || doubleValue.isNaN {
-                    return nil
-                }
-                return "\(value)"
-            case let boolValue as Bool:
-                return "\(boolValue ? "true" : "false")"
-            case let stringValue as String:
-                let escaped = stringValue.reduce(into: "") { result, character in
-                    switch character {
-                    case "\\", "\"":
-                        result.append("\\")
-                        result.append(character)
-                    default:
-                        result.append(character)
-                    }
-                }
-                return "\"\(escaped)\""
+        switch time {
+        case is Int:
+            return " \(time)"
+        case let date as Date:
+            let since1970 = date.timeIntervalSince1970
+            switch precision {
+            case InfluxDBClient.WritePrecision.s:
+                return " \(UInt64(since1970))"
+            case InfluxDBClient.WritePrecision.ms:
+                return " \(UInt64(since1970 * 1_000))"
+            case InfluxDBClient.WritePrecision.us:
+                return " \(UInt64(since1970 * 1_000_000))"
             default:
-                throw InfluxDBError.generic("Field value is not supported: \(value) with type: \(type(of: value))")
+                return " \(UInt64(since1970 * 1_000_000_000))"
             }
-        }
-
-        private func escapeTime() throws -> String {
-            guard let time = time else {
-                return ""
-            }
-
-            switch time {
-            case is Int:
-                return " \(time)"
-            case let date as Date:
-                let since1970 = date.timeIntervalSince1970
-                switch precision {
-                case WritePrecision.s:
-                    return " \(UInt64(since1970))"
-                case WritePrecision.ms:
-                    return " \(UInt64(since1970 * 1_000))"
-                case WritePrecision.us:
-                    return " \(UInt64(since1970 * 1_000_000))"
-                default:
-                    return " \(UInt64(since1970 * 1_000_000_000))"
-                }
-            default:
-                throw InfluxDBError.generic("Time value is not supported: \(time) with type: \(type(of: time))")
-            }
+        default:
+            throw InfluxDBClient.InfluxDBError
+                    .generic("Time value is not supported: \(time) with type: \(type(of: time))")
         }
     }
 }
