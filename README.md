@@ -22,6 +22,8 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
     - [Writing data](#writes)
     - [Querying data](#queries)
     - [Management API](#management-api)
+- [Advanced Usage](#advanced-usage)
+    - 
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -495,6 +497,52 @@ CreateNewBucket.main()
 
 ```
 - sources - [CreateNewBucket/main.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
+
+## Advanced Usage
+
+### Default Tags
+
+Sometimes is useful to store same information in every measurement e.g. `hostname`, `location`, `customer`.
+The client is able to use static value or env variable as a tag value.
+
+The expressions:
+- `California Miner` - static value
+- `${env.HOST_NAME}` - environment property
+
+#### Example
+
+```swift
+client = InfluxDBClient(
+        url: "http://localhost:8086",
+        token: "my-token",
+        options: InfluxDBClient.InfluxDBOptions(bucket: "my-bucket", org: "my-org"))
+
+let records: [Any] = [
+        InfluxDBClient.Point("mining").addTag(key: "sensor_state", value: "normal").addField(key: "depth", value: 2),
+        (measurement: "mining", tags: ["sensor_state": "normal"], fields: ["pressure": 3])
+]
+
+let defaultTags = InfluxDBClient.PointSettings()
+        .addDefaultTag(key: "customer", value: "California Miner")
+        .addDefaultTag(key: "sensor_id", value: "${env.SENSOR_ID}")
+
+let writeAPI = client.getWriteAPI(pointSettings: defaultTags)
+writeAPI.writeRecords(records: records) { _, error in
+        if let error = error {
+          print("Error: \(error)")
+          return
+        }
+
+        print("Successfully written default tags")
+}
+```
+
+##### Example Output
+
+```bash
+mining,customer=California\ Miner,sensor_id=123-456-789,sensor_state=normal depth=2i
+mining,customer=California\ Miner,sensor_id=123-456-789,sensor_state=normal pressure=3i
+```
 
 ## Contributing
 
