@@ -23,7 +23,7 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
     - [Querying data](#queries)
     - [Management API](#management-api)
 - [Advanced Usage](#advanced-usage)
-    - 
+    - [Default Tags](#default-tags)
 - [Contributing](#contributing)
 - [License](#license)
 

@@ -22,7 +22,7 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
       --name influxdb_v2 \
       --detach \
       --publish 8086:8086 \
-      quay.io/influxdb/influxdb:v2.0.2
+      quay.io/influxdb/influxdb:v2.0.3
     ```
 1. Configure your username, password, organization, bucket and token:
    ```bash
