@@ -359,6 +359,43 @@ final class WriteAPITests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
+    func testDefaultTags() {
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        expectation.expectedFulfillmentCount = 2
+
+        let required = "mem,tag=a value=1\nmem,tag=a,tag_a=tag_a_value value=2i\nmem,tag=a,tag_a=tag_a_value value=3i"
+
+        MockURLProtocol.handler = { request, bodyData in
+            XCTAssertEqual(
+                    required,
+                    String(decoding: bodyData!, as: UTF8.self))
+
+            expectation.fulfill()
+
+            let response = HTTPURLResponse(statusCode: 204)
+            return (response, Data())
+        }
+
+        let records: [Any] = [
+            "mem,tag=a value=1",
+            InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 2),
+            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 3])
+        ]
+
+        let defaultTags = InfluxDBClient.PointSettings()
+                .addDefaultTag(key: "tag_a", value: "tag_a_value")
+                .addDefaultTag(key: "tag_nil", value: nil)
+
+        client.getWriteAPI(pointSettings: defaultTags).writeRecords(records: records) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
     -> (HTTPURLResponse, Data) { { request, bodyData in
             XCTAssertEqual(

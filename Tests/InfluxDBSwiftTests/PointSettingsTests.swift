@@ -43,4 +43,15 @@ final class PointSettingsTests: XCTestCase {
             "not_exist": nil
         ], defaultTags.evaluate())
     }
+
+    func testNilValue() {
+        let defaultTags = InfluxDBClient.PointSettings()
+                .addDefaultTag(key: "id", value: "132-987-655")
+                .addDefaultTag(key: "nil", value: nil)
+
+        XCTAssertEqual([
+            "id": "132-987-655",
+            "nil": nil
+        ], defaultTags.evaluate())
+    }
 }

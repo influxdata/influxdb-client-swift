@@ -101,10 +101,12 @@ extension InfluxDBClient {
 
         /// Creates Line Protocol from Data Point.
         ///
+        /// - Parameters:
+        ///   - defaultTags: default tags for Point.
         /// - Returns: Line Protocol
-        public func toLineProtocol() throws -> String? {
+        public func toLineProtocol(defaultTags: [String: String?]? = nil) throws -> String? {
             let meas = escapeKey(measurement, false)
-            let tags = escapeTags()
+            let tags = escapeTags(defaultTags)
             let fields = try escapeFields()
             guard !fields.isEmpty else {
                 return nil
@@ -184,20 +186,24 @@ extension InfluxDBClient.Point {
         }
     }
 
-    private func escapeTags() -> String {
-        tags.sorted {
-            $0.key < $1.key
-        }.reduce(into: "") { result, keyValue in
-            guard !keyValue.key.isEmpty else {
-                return
-            }
-            if let value = keyValue.value, !value.isEmpty {
-                result.append(",")
-                result.append(escapeKey(keyValue.key))
-                result.append("=")
-                result.append(escapeKey(value))
-            }
-        }
+    private func escapeTags(_ defaultTags: [String: String?]?) -> String {
+        tags
+                .merging(defaultTags ?? [:]) { current, _ in
+                    current
+                }
+                .sorted {
+                    $0.key < $1.key
+                }.reduce(into: "") { result, keyValue in
+                    guard !keyValue.key.isEmpty else {
+                        return
+                    }
+                    if let value = keyValue.value, !value.isEmpty {
+                        result.append(",")
+                        result.append(escapeKey(keyValue.key))
+                        result.append("=")
+                        result.append(escapeKey(value))
+                    }
+                }
     }
 
     private func escapeFields() throws -> String {
