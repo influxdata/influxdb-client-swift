@@ -335,6 +335,19 @@ final class PointTests: XCTestCase {
                 "Point: measurement:h2o, tags:[\"loc\": Optional(\"us\")], fields:[\"value\": Optional(100)], time:nil",
                 point.description)
     }
+
+    func testDefaultTags() throws {
+        let point = InfluxDBClient.Point("h2o")
+                .addTag(key: "loc", value: "us")
+                .addTag(key: "in_default_tags", value: "use_this")
+                .addField(key: "value", value: 100)
+
+        let defaultTags = ["tag_a_key": "tag_a_value", "in_default_tags": "not_use_this", "a_tag": "a_tag_value"]
+
+        XCTAssertEqual(
+                "h2o,a_tag=a_tag_value,in_default_tags=use_this,loc=us,tag_a_key=tag_a_value value=100i",
+                try point.toLineProtocol(defaultTags: defaultTags))
+    }
 }
 
 internal extension Date {

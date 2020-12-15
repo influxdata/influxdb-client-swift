@@ -56,13 +56,17 @@ import Gzip
 public class WriteAPI {
     /// Shared client.
     private let client: InfluxDBClient
+    /// Settings for DataPoint.
+    private let pointSettings: InfluxDBClient.PointSettings?
 
     /// Create a new WriteAPI for a InfluxDB
     ///
     /// - Parameters
     ///   - client: Client with shared configuration and http library.
-    public init(client: InfluxDBClient) {
+    ///   - pointSettings: Default settings for DataPoint, useful for default tags.
+    public init(client: InfluxDBClient, pointSettings: InfluxDBClient.PointSettings? = nil) {
         self.client = client
+        self.pointSettings = pointSettings
     }
 
     /// Write time-series data into InfluxDB.
@@ -259,7 +263,8 @@ public class WriteAPI {
 
             // we need sort batches by insertion time (for LP without timestamp)
             var batches: [InfluxDBClient.WritePrecision: (Int, [String])] = [:]
-            try toLineProtocol(precision: precision, record: records, batches: &batches)
+            let defaultTags = pointSettings?.evaluate()
+            try toLineProtocol(precision: precision, record: records, defaultTags: defaultTags, batches: &batches)
 
             batches.sorted {
                 $0.value.0 < $1.value.0
@@ -297,6 +302,7 @@ public class WriteAPI {
 
     private func toLineProtocol(precision: InfluxDBClient.WritePrecision,
                                 record: Any,
+                                defaultTags: [String: String?]?,
                                 batches: inout [InfluxDBClient.WritePrecision: (Int, [String])]) throws {
         switch record {
         case let string as String:
@@ -310,8 +316,12 @@ public class WriteAPI {
                 batches[precision] = (batches.count, [string])
             }
         case let point as InfluxDBClient.Point:
-            if let lineProtocol = try point.toLineProtocol() {
-                try toLineProtocol(precision: point.precision, record: lineProtocol, batches: &batches)
+            if let lineProtocol = try point.toLineProtocol(defaultTags: defaultTags) {
+                try toLineProtocol(
+                        precision: point.precision,
+                        record: lineProtocol,
+                        defaultTags: defaultTags,
+                        batches: &batches)
             }
         case let tuple as (measurement: String, fields: [String?: Any?]):
             let point = InfluxDBClient.Point.fromTuple(
@@ -320,11 +330,13 @@ public class WriteAPI {
             try toLineProtocol(
                     precision: precision,
                     record: point,
+                    defaultTags: defaultTags,
                     batches: &batches)
         case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?):
             try toLineProtocol(
                     precision: precision,
                     record: InfluxDBClient.Point.fromTuple(tuple, precision: precision),
+                    defaultTags: defaultTags,
                     batches: &batches)
         case let tuple as (measurement: String, fields: [String?: Any?], time: Any?):
             let point = InfluxDBClient.Point.fromTuple(
@@ -333,6 +345,7 @@ public class WriteAPI {
             try toLineProtocol(
                     precision: precision,
                     record: point,
+                    defaultTags: defaultTags,
                     batches: &batches)
         case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?]):
             let point = InfluxDBClient.Point.fromTuple(
@@ -341,10 +354,11 @@ public class WriteAPI {
             try toLineProtocol(
                     precision: precision,
                     record: point,
+                    defaultTags: defaultTags,
                     batches: &batches)
         case let array as [Any]:
             try array.forEach { item in
-                try toLineProtocol(precision: precision, record: item, batches: &batches)
+                try toLineProtocol(precision: precision, record: item, defaultTags: defaultTags, batches: &batches)
             }
         default:
             throw InfluxDBClient.InfluxDBError

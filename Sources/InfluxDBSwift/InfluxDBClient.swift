@@ -88,9 +88,11 @@ public class InfluxDBClient {
 
     /// Creates WriteApi with supplied default settings.
     ///
+    /// - Parameters:
+    ///   - pointSettings: default settings for DataPoint, useful for default tags
     /// - Returns: WriteAPI instance
-    public func getWriteAPI() -> WriteAPI {
-        WriteAPI(client: self)
+    public func getWriteAPI(pointSettings: PointSettings? = nil) -> WriteAPI {
+        WriteAPI(client: self, pointSettings: pointSettings)
     }
 
     /// Creates QueryAPI with supplied default settings.
