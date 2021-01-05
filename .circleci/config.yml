@@ -175,6 +175,9 @@ jobs:
           command: |
             ./Scripts/generate-sources.sh
             make build
+      - run:
+          name: Checks that there are not changes sources from swagger
+          command: git diff --exit-code
       - save_cache:
           name: Saving Cache
           key: *generate-sources-cache-key
@@ -218,7 +221,6 @@ workflows:
     jobs:
       - check-code-style
       - check-documentation
-      - check-generate-sources
       - check-examples
       - tests-swift:
           name: test-docker
@@ -232,3 +234,4 @@ workflows:
                 - master
     jobs:
       - tests-swift
+      - check-generate-sources
