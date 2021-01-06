@@ -240,6 +240,8 @@ extension InfluxDBClient {
         case request
         /// Response could be encoded by GZIP.
         case response
+        /// Request or response not using GZIP.
+        case none
     }
     // swiftlint:disable function_body_length function_parameter_count
     internal func httpPost(_ urlComponents: URLComponents?,

@@ -15,7 +15,11 @@ extension DeleteAPITests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__DeleteAPITests = [
+        ("testBucketIDOrgIDParameters", testBucketIDOrgIDParameters),
+        ("testBucketOrgParameters", testBucketOrgParameters),
         ("testGetDeleteAPI", testGetDeleteAPI),
+        ("testPredicateRequestSerialization", testPredicateRequestSerialization),
+        ("testWithoutBucketOrgParameters", testWithoutBucketOrgParameters),
     ]
 }
 
