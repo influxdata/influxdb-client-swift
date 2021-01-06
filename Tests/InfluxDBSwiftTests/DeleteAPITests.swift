@@ -113,11 +113,11 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = {request, bodyData in
+        MockURLProtocol.handler = { request, bodyData in
             let predicate = try CodableHelper.decode(DeletePredicateRequest.self, from: bodyData!).get()
             XCTAssertEqual(Date(2010, 10, 5), predicate.start)
             XCTAssertEqual(Date(2010, 10, 7), predicate.stop)
-            XCTAssertEqual("_measurement='sensorData'", predicate.predicate)
+            XCTAssertEqual("_measurement=\"sensorData\"", predicate.predicate)
 
             expectation.fulfill()
 
@@ -128,8 +128,8 @@ final class DeleteAPITests: XCTestCase {
         let predicate = DeletePredicateRequest(
                 start: Date(2010, 10, 5),
                 stop: Date(2010, 10, 7),
-                predicate: "_measurement='sensorData'")
-        client.getDeleteAPI().delete(predicate: predicate) {result in
+                predicate: "_measurement=\"sensorData\"")
+        client.getDeleteAPI().delete(predicate: predicate) { result in
             switch result {
             case let .success(response):
                 XCTAssertTrue(response == Void())
