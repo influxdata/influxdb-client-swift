@@ -102,6 +102,13 @@ public class InfluxDBClient {
         QueryAPI(client: self)
     }
 
+    /// Creates DeleteAPI to delete time series data from InfluxDB.
+    ///
+    /// - Returns: DeleteAPI instance
+    public func getDeleteAPI() -> DeleteAPI {
+        DeleteAPI(client: self)
+    }
+
     /// Release all allocated resources.
     public func close() {
         session.invalidateAndCancel()

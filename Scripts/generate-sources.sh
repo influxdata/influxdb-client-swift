@@ -26,7 +26,6 @@ rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/*.swift
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/AuthorizationsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/BucketsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/DBRPsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/DefaultAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/HealthAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/LabelsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/OrganizationsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
@@ -108,11 +107,7 @@ cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Sources.swift
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/SourceLinks.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Query.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Dialect.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/DeletePredicateRequest.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Routes.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/RoutesExternal.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/RoutesQuery.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/RoutesSystem.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/DeletePredicateRequest.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
 
 # copy supporting files
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/CodableHelper.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/
@@ -142,8 +137,5 @@ sed -i '/fetchCursor/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Curs
 sed -i '/foo/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 sed -i '/bar/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 sed -i '1i//===----------------------------------------------------------------------===//\n//\n// This file are derived from the GRDB.swift open source project: https://github.com/groue/GRDB.swift\n//\n// Copyright (C) 2015-2020 Gwendal Roué\n//\n// See https://github.com/groue/GRDB.swift/blob/master/LICENSE for license information\n//\n//===----------------------------------------------------------------------===//' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
-
-# Remove unsupported TelegrafPlugins
-sed '61,103d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/DefaultAPI.swift > tmpfile && mv tmpfile "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/DefaultAPI.swift
 
 rm -rf "${SCRIPT_PATH}"/generated
