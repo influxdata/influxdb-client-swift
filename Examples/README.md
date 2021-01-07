@@ -10,5 +10,5 @@
 - [CreateNewBucket](CreateNewBucket#createnewbucket) - How to create new bucket with permission to write
 
 ## Others
-- [DeleteData](DeleteData#deletedata) - How to delete data with specified predicate.
+- [DeleteData](DeleteData#deletedata) - How to delete data with specified predicate
   
