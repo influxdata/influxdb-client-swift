@@ -63,7 +63,13 @@ public class DeleteAPI {
                        responseQueue: DispatchQueue = .main,
                        completion: @escaping (_ response: Void?,
                                               _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postDelete(predicate, bucket, bucketID, org, orgID, responseQueue) { result -> Void in
+        delete(
+                predicate: predicate,
+                bucket: bucket,
+                bucketID: bucketID,
+                org: org,
+                orgID: orgID,
+                responseQueue: responseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)

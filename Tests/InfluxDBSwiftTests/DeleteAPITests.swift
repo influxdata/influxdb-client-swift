@@ -142,6 +142,31 @@ final class DeleteAPITests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
     }
+
+    func testErrorResponse() {
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        expectation.expectedFulfillmentCount = 2
+
+        MockURLProtocol.handler = { request, bodyData in
+            XCTAssertEqual("my-bucket", request.url?.queryParamValue("bucket"))
+            XCTAssertEqual("my-org", request.url?.queryParamValue("org"))
+
+            expectation.fulfill()
+
+            let response = HTTPURLResponse(statusCode: 400)
+            return (response, Data())
+        }
+
+        client.getDeleteAPI().delete(
+                predicate: DeletePredicateRequest(start: Date(), stop: Date()),
+                bucket: "my-bucket",
+                org: "my-org") { _, error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
 }
 
 extension URL {
