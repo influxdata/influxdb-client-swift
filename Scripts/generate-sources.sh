@@ -107,12 +107,13 @@ cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Sources.swift
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/SourceLinks.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Query.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Dialect.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/DeletePredicateRequest.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
 
 # copy supporting files
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/CodableHelper.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/OpenISO8601DateFormatter.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIHelper.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIHelper.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/JSONEncodingHelper.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/JSONDataEncoding.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/URLSessionImplementations.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/

@@ -175,6 +175,9 @@ jobs:
           command: |
             ./Scripts/generate-sources.sh
             make build
+      - run:
+          name: Checks that there are not changes sources from swagger
+          command: git diff --exit-code
       - save_cache:
           name: Saving Cache
           key: *generate-sources-cache-key
@@ -193,7 +196,7 @@ jobs:
       - restore_cache:
           name: Restoring Example Cache
           keys:
-            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}
+            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }}
             - example-cache-v3-
       - check-example:
           directory: CreateNewBucket
@@ -201,6 +204,8 @@ jobs:
           directory: WriteData
       - check-example:
           directory: QueryCpu
+      - check-example:
+          directory: DeleteData
       - save_cache:
           name: Saving Example Cache
           key: *cache-example-key
@@ -211,6 +216,8 @@ jobs:
             - Examples/WriteData/.build/repositories
             - Examples/QueryCpu/Package.resolved
             - Examples/QueryCpu/.build/repositories
+            - Examples/DeleteData/Package.resolved
+            - Examples/DeleteData/.build/repositories
 
 workflows:
   version: 2
@@ -218,7 +225,6 @@ workflows:
     jobs:
       - check-code-style
       - check-documentation
-      - check-generate-sources
       - check-examples
       - tests-swift:
           name: test-docker
@@ -232,3 +238,4 @@ workflows:
                 - master
     jobs:
       - tests-swift
+      - check-generate-sources

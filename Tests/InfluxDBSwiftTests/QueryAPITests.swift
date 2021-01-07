@@ -7,19 +7,11 @@ import Foundation
 import FoundationNetworking
 #endif
 
-//#if canImport(Combine)
-//import Combine
-//#endif
-
 @testable import InfluxDBSwift
 import XCTest
 
 final class QueryAPITests: XCTestCase {
     private var client: InfluxDBClient!
-
-//    #if canImport(Combine)
-//    var bag = Set<AnyCancellable>()
-//    #endif
 
     override func setUp() {
         client = InfluxDBClient(
