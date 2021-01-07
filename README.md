@@ -21,6 +21,7 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
     - [Creating a client](#creating-a-client)
     - [Writing data](#writes)
     - [Querying data](#queries)
+    - [Delete data](#delete-data)
     - [Management API](#management-api)
 - [Advanced Usage](#advanced-usage)
     - [Default Tags](#default-tags)
@@ -383,6 +384,12 @@ struct QueryCpuData: ParsableCommand {
 QueryCpuData.main()
 
 ```
+
+### Delete data
+
+The [DeleteAPI](https://bonitoo-io.github.io/influxdb-client-swift/Classes/DeleteAPI.html) supports deletes 
+[points](https://v2.docs.influxdata.com/v2.0/reference/glossary/#point) from an InfluxDB bucket. 
+Use the [DeletePredicateRequest](https://bonitoo-io.github.io/influxdb-client-swift/Structs/DeletePredicateRequest.html) identifies which points to delete.
 
 ### Management API
 

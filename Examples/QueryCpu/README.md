@@ -1,6 +1,6 @@
 # QueryCpu
 
-This is an example how to to query data into sequence of `FluxRecord`. 
+This is an example how to query data into sequence of `FluxRecord`. 
 The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/cpu/README.md) into InfluxDB 2.0.
 
 ## Prerequisites:
