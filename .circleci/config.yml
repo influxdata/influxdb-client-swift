@@ -143,8 +143,8 @@ jobs:
               mkdir influxdb
               curl https://dl.influxdata.com/influxdb/releases/influxdb2-<< parameters.influxdb-package-version >>_darwin_amd64.tar.gz -o influxdb.tar.gz
               tar zxvf influxdb.tar.gz -C influxdb --strip-components=1
-              ./influxdb/influxd
             fi
+            ./influxdb/influxd
       - run:
           name: Post onBoarding request to InfluxDB 2
           command: |
@@ -156,7 +156,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            swift test --enable-code-coverage
+            swift test
       - save_cache:
           name: Saving Package Cache
           key: *cache-key-macOS
