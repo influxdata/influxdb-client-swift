@@ -112,6 +112,13 @@ jobs:
           name: Collecting coverage reports
           command: bash <(curl -s https://codecov.io/bash) -f ./info.lcov || echo "Codecov did not collect coverage reports"
 
+  tests-macOS:
+    macos:
+      xcode: 11.3.0
+    steps:
+      - checkout
+      - run: swift --version
+
   check-code-style:
     docker:
       - image: *default-swift-image
@@ -228,6 +235,7 @@ workflows:
       - check-examples
       - tests-swift:
           name: test-docker
+      - tests-macOS
   nightly:
     triggers:
       - schedule:
