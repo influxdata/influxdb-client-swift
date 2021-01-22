@@ -8,7 +8,7 @@ about: Opening a feature request kicks off a discussion
 Thank you for suggesting an idea to improve this client. 
 
 * Please add a :+1: or comment on a similar existing feature request instead of opening a new one.
-https://github.com/bonitoo-io/influxdb-client-swift/issues?q=is%3Aissue+is%3Aopen+is%3Aclosed+sort%3Aupdated-desc
+https://github.com/influxdata/influxdb-client-swift/issues?q=is%3Aissue+is%3Aopen+is%3Aclosed+sort%3Aupdated-desc
 
 -->
 

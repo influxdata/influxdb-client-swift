@@ -1,12 +1,12 @@
 # influxdb-client-swift
 
-[![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-client-swift.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-client-swift)
-[![codecov](https://codecov.io/gh/bonitoo-io/influxdb-client-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-client-swift)
-[![Platforms](https://img.shields.io/badge/platform-macOS%20|%20iOS%20|%20watchOS%20|%20tvOS%20|%20Linux-blue.svg)](https://github.com/bonitoo-io/influxdb-client-swift/)
-[![License](https://img.shields.io/github/license/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/blob/master/LICENSE)
-[![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://bonitoo-io.github.io/influxdb-client-swift/)
-[![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-client-swift.svg)](https://github.com/bonitoo-io/influxdb-client-swift/pulls)
+[![CircleCI](https://circleci.com/gh/influxdata/influxdb-client-swift.svg?style=svg)](https://circleci.com/gh/influxdata/influxdb-client-swift)
+[![codecov](https://codecov.io/gh/influxdata/influxdb-client-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/influxdata/influxdb-client-swift)
+[![Platforms](https://img.shields.io/badge/platform-macOS%20|%20iOS%20|%20watchOS%20|%20tvOS%20|%20Linux-blue.svg)](https://github.com/influxdata/influxdb-client-swift/)
+[![License](https://img.shields.io/github/license/influxdata/influxdb-client-swift.svg)](https://github.com/influxdata/influxdb-client-swift/blob/master/LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://influxdata.github.io/influxdb-client-swift/)
+[![GitHub issues](https://img.shields.io/github/issues-raw/influxdata/influxdb-client-swift.svg)](https://github.com/influxdata/influxdb-client-swift/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/influxdata/influxdb-client-swift.svg)](https://github.com/influxdata/influxdb-client-swift/pulls)
 [![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://www.influxdata.com/slack)
 
 This repository contains the reference Swift client for the InfluxDB 2.0.
@@ -69,7 +69,7 @@ import PackageDescription
 let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(url: "https://github.com/bonitoo-io/influxdb-client-swift", .branch("master")),
+        .package(url: "https://github.com/influxdata/influxdb-client-swift", .branch("master")),
     ],
     targets: [
         .target(name: "MyModule", dependencies: ["InfluxDBSwift"])
@@ -387,9 +387,9 @@ QueryCpuData.main()
 
 ### Delete data
 
-The [DeleteAPI](https://bonitoo-io.github.io/influxdb-client-swift/Classes/DeleteAPI.html) supports deletes 
+The [DeleteAPI](https://influxdata.github.io/influxdb-client-swift/Classes/DeleteAPI.html) supports deletes 
 [points](https://v2.docs.influxdata.com/v2.0/reference/glossary/#point) from an InfluxDB bucket. 
-Use the [DeletePredicateRequest](https://bonitoo-io.github.io/influxdb-client-swift/Structs/DeletePredicateRequest.html) identifies which points to delete.
+Use the [DeletePredicateRequest](https://influxdata.github.io/influxdb-client-swift/Structs/DeletePredicateRequest.html) identifies which points to delete.
 
 ```swift
 import ArgumentParser
@@ -497,20 +497,20 @@ The client supports following management API:
 
 |  | API docs |
 | --- | --- |
-| [**AuthorizationsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/AuthorizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Authorizations |
-| [**BucketsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
-| [**DBRPsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/DBRPs |
-| [**HealthAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Health |
-| [**LabelsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
-| [**OrganizationsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
-| [**ReadyAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Ready |
-| [**ScraperTargetsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/ScraperTargetsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/ScraperTargets |
-| [**SecretsAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/SecretsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Secrets|
-| [**SetupAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/SetupAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Tasks |
-| [**SourcesAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/SourcesAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Sources |
-| [**TasksAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/TasksAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Tasks |
-| [**UsersAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/UsersAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Users |
-| [**VariablesAPI**](https://bonitoo-io.github.io/influxdb-client-swift/Classes/InfluxDB2API/VariablesAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Variables |
+| [**AuthorizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/AuthorizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Authorizations |
+| [**BucketsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
+| [**DBRPsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/DBRPs |
+| [**HealthAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Health |
+| [**LabelsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
+| [**OrganizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
+| [**ReadyAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Ready |
+| [**ScraperTargetsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ScraperTargetsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/ScraperTargets |
+| [**SecretsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SecretsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Secrets|
+| [**SetupAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SetupAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Tasks |
+| [**SourcesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SourcesAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Sources |
+| [**TasksAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/TasksAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Tasks |
+| [**UsersAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/UsersAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Users |
+| [**VariablesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/VariablesAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Variables |
 
 
 The following example demonstrates how to use a InfluxDB 2.0 Management API to create new bucket. For further information see docs and [examples](/Examples).

@@ -6,7 +6,7 @@ This is an example how to write data with different type of records.
 - Docker
 - Cloned examples:
    ```bash
-   git clone git@github.com:bonitoo-io/influxdb-client-swift.git
+   git clone git@github.com:influxdata/influxdb-client-swift.git
    cd Examples/WriteData
    ```
 

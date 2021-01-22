@@ -6,7 +6,7 @@ This is an example how to create new bucket with permission to write.
 - Docker
 - Cloned examples:
    ```bash
-   git clone git@github.com:bonitoo-io/influxdb-client-swift.git
+   git clone git@github.com:influxdata/influxdb-client-swift.git
    cd Examples/CreateNewBucket
    ```
 

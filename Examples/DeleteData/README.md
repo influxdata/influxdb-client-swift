@@ -7,7 +7,7 @@ See delete predicate syntax in InfluxDB docs - [delete-predicate](https://docs.i
 - Docker
 - Cloned examples:
    ```bash
-   git clone git@github.com:bonitoo-io/influxdb-client-swift.git
+   git clone git@github.com:influxdata/influxdb-client-swift.git
    cd Examples/DeleteData
    ```
 

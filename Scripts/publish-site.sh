@@ -10,7 +10,7 @@ apt-get update \
   && apt-get install git --yes \
 
 echo "# Clone client and switch to branch for GH-Pages"
-git clone git@github.com:bonitoo-io/influxdb-client-swift.git \
+git clone git@github.com:influxdata/influxdb-client-swift.git \
   && cd influxdb-client-swift \
   && git checkout -B gh-pages
 

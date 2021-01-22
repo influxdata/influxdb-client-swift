@@ -7,7 +7,7 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
 - Docker
 - Cloned examples:
    ```bash
-   git clone git@github.com:bonitoo-io/influxdb-client-swift.git
+   git clone git@github.com:influxdata/influxdb-client-swift.git
    cd Examples/QueryCpu
    ```
 
