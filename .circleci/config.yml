@@ -132,9 +132,9 @@ jobs:
       - restore_cache:
           name: Restoring Package Cache
           keys:
-            - &cache-key-macOS macOS-package-cache-v1-{{ checksum "Package.swift" }}-<< parameters.xcode-version >>-<< parameters.influxdb-package-version >>
-            - macOS-package-cache-v1-{{ checksum "Package.swift" }}-<< parameters.influxdb-package-version >>
-            - macOS-package-cache-v1-<< parameters.influxdb-package-version >>
+            - &cache-key-macOS macOS-package-cache-v2-{{ checksum "Package.swift" }}-<< parameters.xcode-version >>-<< parameters.influxdb-package-version >>
+            - macOS-package-cache-v2-{{ checksum "Package.swift" }}-<< parameters.influxdb-package-version >>
+            - macOS-package-cache-v2-<< parameters.influxdb-package-version >>
       - run:
           name: Download and Start InfluxDB
           background: true
@@ -164,7 +164,6 @@ jobs:
             - Package.resolved
             - ./.build/repositories
             - /Users/distiller/Library/Caches/Homebrew
-            - /usr/local/Homebrew
             - ./influxdb/
       - store_test_results:
           path: ./
