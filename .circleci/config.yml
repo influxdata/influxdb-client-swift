@@ -114,10 +114,24 @@ jobs:
 
   tests-macOS:
     macos:
-      xcode: 12.3.0
+      xcode: << parameters.xcode-version >>
+    parameters:
+      xcode-version:
+        type: string
+        default: &default-xcode-version "12.3.0"
+      influxdb-image:
+        type: string
+        default: *default-influxdb-image
     steps:
       - checkout
-      - run: swift --version
+      - run:
+          name: Download and Start InfluxDB
+          command: |
+            if [ ! -f ./influxdb2-2.0.3_darwin_amd64/influxd ]; then
+              wget https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3_darwin_amd64.tar.gz
+              tar zxvf influxdb2-2.0.3_darwin_amd64.tar.gz
+              ./influxdb2-2.0.3_darwin_amd64/influxd --help
+            fi
       - run:
           name: Install dependencies
           command: swift package update
