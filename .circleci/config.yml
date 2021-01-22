@@ -114,10 +114,13 @@ jobs:
 
   tests-macOS:
     macos:
-      xcode: 11.3.0
+      xcode: 12.3.0
     steps:
       - checkout
       - run: swift --version
+      - run:
+          name: Install dependencies
+          command: swift package update
 
   check-code-style:
     docker:
