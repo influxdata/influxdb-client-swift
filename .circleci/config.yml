@@ -127,10 +127,11 @@ jobs:
       - run:
           name: Download and Start InfluxDB
           command: |
-            if [ ! -f ./influxdb2-2.0.3_darwin_amd64/influxd ]; then
-              wget https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3_darwin_amd64.tar.gz
-              tar zxvf influxdb2-2.0.3_darwin_amd64.tar.gz
-              ./influxdb2-2.0.3_darwin_amd64/influxd --help
+            if [ ! -f ./influxdb/influxd ]; then
+              mkdir influxdb
+              curl https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3_darwin_amd64.tar.gz -o influxdb.tar.gz
+              tar zxvf influxdb.tar.gz -C influxdb --strip-components=1
+              ./influxdb/influxd --help
             fi
       - run:
           name: Install dependencies
