@@ -123,16 +123,22 @@ jobs:
         type: string
         default: *default-influxdb-image
     steps:
-      - checkout
       - run:
           name: Download and Start InfluxDB
+          background: true
           command: |
             if [ ! -f ./influxdb/influxd ]; then
               mkdir influxdb
               curl https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3_darwin_amd64.tar.gz -o influxdb.tar.gz
               tar zxvf influxdb.tar.gz -C influxdb --strip-components=1
-              ./influxdb/influxd --help
+              ./influxdb/influxd
             fi
+      - run:
+          name: Post onBoarding request to InfluxDB 2
+          command: |
+            brew install wget
+            ./Scripts/influxdb-onboarding.sh
+      - checkout
       - run:
           name: Install dependencies
           command: swift package update
