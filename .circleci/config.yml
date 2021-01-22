@@ -63,7 +63,7 @@ commands:
           swift build
 
 jobs:
-  tests-swift:
+  tests-linux:
     parameters:
       swift-image:
         type: string
@@ -118,18 +118,30 @@ jobs:
     parameters:
       xcode-version:
         type: string
-        default: &default-xcode-version "12.3.0"
+        default: "12.3.0"
+      influxdb-package-version:
+        type: string
+        default: "2.0.3"
       influxdb-image:
         type: string
         default: *default-influxdb-image
+    environment:
+      SWIFT_JUNIT_RESULT_PATH: junit.xml
     steps:
+      - checkout
+      - restore_cache:
+          name: Restoring Package Cache
+          keys:
+            - &cache-key-macOS macOS-package-cache-v0-{{ checksum "Package.swift" }}-<< parameters.xcode-version >>-<< parameters.influxdb-package-version >>
+            - macOS-package-cache-v0-{{ checksum "Package.swift" }}-<< parameters.influxdb-package-version >>
+            - macOS-package-cache-v0-<< parameters.influxdb-package-version >>
       - run:
           name: Download and Start InfluxDB
           background: true
           command: |
             if [ ! -f ./influxdb/influxd ]; then
               mkdir influxdb
-              curl https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3_darwin_amd64.tar.gz -o influxdb.tar.gz
+              curl https://dl.influxdata.com/influxdb/releases/influxdb2-<< parameters.influxdb-package-version >>_darwin_amd64.tar.gz -o influxdb.tar.gz
               tar zxvf influxdb.tar.gz -C influxdb --strip-components=1
               ./influxdb/influxd
             fi
@@ -138,10 +150,25 @@ jobs:
           command: |
             brew install wget
             ./Scripts/influxdb-onboarding.sh
-      - checkout
       - run:
           name: Install dependencies
           command: swift package update
+      - run:
+          name: Run tests
+          command: |
+            swift test --enable-code-coverage
+      - save_cache:
+          name: Saving Package Cache
+          key: *cache-key-macOS
+          paths:
+            - Package.resolved
+            - ./.build/repositories
+            - $HOME/Library/Caches/Homebrew
+            - /usr/local/Homebrew
+      - store_test_results:
+          path: ./
+      - store_artifacts:
+          path: ./junit.xml
 
   check-code-style:
     docker:
@@ -257,8 +284,7 @@ workflows:
       - check-code-style
       - check-documentation
       - check-examples
-      - tests-swift:
-          name: test-docker
+      - tests-linux
       - tests-macOS
   nightly:
     triggers:
@@ -269,5 +295,5 @@ workflows:
               only:
                 - master
     jobs:
-      - tests-swift
+      - tests-linux
       - check-generate-sources
