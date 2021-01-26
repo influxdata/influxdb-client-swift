@@ -236,8 +236,10 @@ extension InfluxDBClient.Point {
 
     private func escapeValue(_ value: Any) throws -> String? {
         switch value {
-        case is Int:
+        case is Int, is Int8, is Int16, is Int32, is Int64:
             return "\(value)i"
+        case is UInt, is UInt8, is UInt16, is UInt32, is UInt64:
+            return "\(value)u"
         case let floatValue as Float:
             if floatValue.isInfinite || floatValue.isNaN {
                 return nil

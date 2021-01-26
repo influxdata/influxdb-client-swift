@@ -84,6 +84,40 @@ final class PointTests: XCTestCase {
         XCTAssertEqual(expected, try point.toLineProtocol())
     }
 
+    func testInt() {
+        let aNumber: Int = 3
+        let bNumber: Int8 = 6
+        let cNumber: Int16 = 9
+        let dNumber: Int32 = 12
+        let eNumber: Int64 = 15
+
+        let point = InfluxDBClient.Point("h2o")
+                .addField(key: "a", value: aNumber)
+                .addField(key: "b", value: bNumber)
+                .addField(key: "c", value: cNumber)
+                .addField(key: "d", value: dNumber)
+                .addField(key: "e", value: eNumber)
+
+        XCTAssertEqual("h2o a=3i,b=6i,c=9i,d=12i,e=15i", try point.toLineProtocol())
+    }
+
+    func testUnsignedInt() {
+        let aNumber: UInt = 3
+        let bNumber: UInt8 = 6
+        let cNumber: UInt16 = 9
+        let dNumber: UInt32 = 12
+        let eNumber: UInt64 = 15
+
+        let point = InfluxDBClient.Point("h2o")
+                .addField(key: "a", value: aNumber)
+                .addField(key: "b", value: bNumber)
+                .addField(key: "c", value: cNumber)
+                .addField(key: "d", value: dNumber)
+                .addField(key: "e", value: eNumber)
+
+        XCTAssertEqual("h2o a=3u,b=6u,c=9u,d=12u,e=15u", try point.toLineProtocol())
+    }
+
     func testFieldNullValue() {
         let point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
