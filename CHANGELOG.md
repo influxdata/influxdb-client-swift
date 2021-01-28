@@ -1,4 +1,4 @@
-## 1.0.0 [unreleased]
+## 0.1.0 [unreleased]
 
 ### InfluxDBSwift
 initial release of new client
