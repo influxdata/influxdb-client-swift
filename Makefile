@@ -35,7 +35,7 @@ generate-doc: ## Generate documentation
 	$(MAKE) build
 	sourcekitten doc --spm --module-name InfluxDBSwift > doc_swift.json
 	sourcekitten doc --spm --module-name InfluxDBSwiftApis > doc_swift_apis.json
-	jazzy --clean --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
+	jazzy --clean --hide-documentation-coverage --sourcekitten-sourcefile doc_swift.json,doc_swift_apis.json --config .jazzy.yml
 
 publish-doc: ## Publish documentation as GH-Pages
 	$(MAKE) generate-doc
