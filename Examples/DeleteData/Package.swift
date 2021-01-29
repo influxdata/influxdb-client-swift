@@ -13,7 +13,7 @@ let package = Package(
         ],
         targets: [
             .target(name: "DeleteData", dependencies: [
-                .product(name: "InfluxDBSwiftApis", package: "influxdb-client-swift"),
+                .product(name: "InfluxDBSwift", package: "influxdb-client-swift"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ])
         ]
