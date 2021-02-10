@@ -70,7 +70,7 @@ jobs:
         default: &default-swift-image "swift:5.3"
       influxdb-image:
         type: string
-        default: &default-influxdb-image "quay.io/influxdb/influxdb:v2.0.3"
+        default: &default-influxdb-image "quay.io/influxdb/influxdb:v2.0.4"
     docker:
       - image: << parameters.swift-image >>
         environment:
@@ -121,7 +121,7 @@ jobs:
         default: "12.3.0"
       influxdb-package-version:
         type: string
-        default: "2.0.3"
+        default: "2.0.4"
       influxdb-image:
         type: string
         default: *default-influxdb-image
@@ -141,7 +141,7 @@ jobs:
           command: |
             if [ ! -f ./influxdb/influxd ]; then
               mkdir influxdb
-              curl https://dl.influxdata.com/influxdb/releases/influxdb2-<< parameters.influxdb-package-version >>_darwin_amd64.tar.gz -o influxdb.tar.gz
+              curl https://dl.influxdata.com/influxdb/releases/influxdb2-<< parameters.influxdb-package-version >>-darwin-amd64.tar.gz -o influxdb.tar.gz
               tar zxvf influxdb.tar.gz -C influxdb --strip-components=1
             fi
             ./influxdb/influxd
