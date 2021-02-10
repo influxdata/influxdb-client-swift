@@ -182,27 +182,13 @@ jobs:
 
   check-documentation:
     docker:
-      - image: *default-swift-image
+      - image: norionomura/jazzy:0.13.6_swift-5.3.0
     steps:
       - checkout
       - restore_cache:
           name: Restoring Cache
           keys:
-            - &documentation-cache-key sc-cache-v3-swift:5.3
-      - run:
-          name: Build SourceKitten and jazzy
-          command: |
-            apt-get update
-            apt-get install ruby-dev libsqlite3-dev --yes
-            gem install --no-ri --no-rdoc jazzy
-            if [ ! -f ./SourceKitten/.build/release/sourcekitten ]; then
-              git clone https://github.com/jpsim/SourceKitten.git
-              cd SourceKitten
-              swift package resolve
-              swift build --configuration release
-              cd ../
-            fi
-            ln -s /root/project/SourceKitten/.build/release/sourcekitten /usr/bin/sourcekitten
+            - &documentation-cache-key sc-cache-v4-swift:5.3
       - run:
           name: Checks generating docs
           command: |
@@ -211,8 +197,8 @@ jobs:
           name: Saving Cache
           key: *documentation-cache-key
           paths:
-            - ./SourceKitten/.build/release/sourcekitten
-            - /var/lib/gems/
+            - Package.resolved
+            - ./.build/repositories
 
   check-generate-sources:
     docker:
