@@ -70,7 +70,7 @@ jobs:
         default: &default-swift-image "swift:5.3"
       influxdb-image:
         type: string
-        default: &default-influxdb-image "quay.io/influxdb/influxdb:v2.0.3"
+        default: &default-influxdb-image "quay.io/influxdb/influxdb:v2.0.4"
     docker:
       - image: << parameters.swift-image >>
         environment:
@@ -121,7 +121,7 @@ jobs:
         default: "12.3.0"
       influxdb-package-version:
         type: string
-        default: "2.0.3"
+        default: "2.0.4"
       influxdb-image:
         type: string
         default: *default-influxdb-image
@@ -141,7 +141,7 @@ jobs:
           command: |
             if [ ! -f ./influxdb/influxd ]; then
               mkdir influxdb
-              curl https://dl.influxdata.com/influxdb/releases/influxdb2-<< parameters.influxdb-package-version >>_darwin_amd64.tar.gz -o influxdb.tar.gz
+              curl https://dl.influxdata.com/influxdb/releases/influxdb2-<< parameters.influxdb-package-version >>-darwin-amd64.tar.gz -o influxdb.tar.gz
               tar zxvf influxdb.tar.gz -C influxdb --strip-components=1
             fi
             ./influxdb/influxd
@@ -182,27 +182,13 @@ jobs:
 
   check-documentation:
     docker:
-      - image: *default-swift-image
+      - image: norionomura/jazzy:0.13.6_swift-5.3.0
     steps:
       - checkout
       - restore_cache:
           name: Restoring Cache
           keys:
-            - &documentation-cache-key sc-cache-v3-swift:5.3
-      - run:
-          name: Build SourceKitten and jazzy
-          command: |
-            apt-get update
-            apt-get install ruby-dev libsqlite3-dev --yes
-            gem install --no-ri --no-rdoc jazzy
-            if [ ! -f ./SourceKitten/.build/release/sourcekitten ]; then
-              git clone https://github.com/jpsim/SourceKitten.git
-              cd SourceKitten
-              swift package resolve
-              swift build --configuration release
-              cd ../
-            fi
-            ln -s /root/project/SourceKitten/.build/release/sourcekitten /usr/bin/sourcekitten
+            - &documentation-cache-key sc-cache-v4-swift:5.3
       - run:
           name: Checks generating docs
           command: |
@@ -211,8 +197,8 @@ jobs:
           name: Saving Cache
           key: *documentation-cache-key
           paths:
-            - ./SourceKitten/.build/release/sourcekitten
-            - /var/lib/gems/
+            - Package.resolved
+            - ./.build/repositories
 
   check-generate-sources:
     docker:

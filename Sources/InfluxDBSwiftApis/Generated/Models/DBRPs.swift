@@ -10,12 +10,10 @@ import Foundation
 
 public struct DBRPs: Codable {
 
-    public var notificationEndpoints: [DBRP]?
-    public var links: Links?
+    public var content: [DBRP]?
 
-    public init(notificationEndpoints: [DBRP]? = nil, links: Links? = nil) {
-        self.notificationEndpoints = notificationEndpoints
-        self.links = links
+    public init(content: [DBRP]? = nil) {
+        self.content = content
     }
 
 }

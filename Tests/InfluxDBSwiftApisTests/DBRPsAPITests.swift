@@ -11,7 +11,7 @@ class DBRPsAPITests: APIXCTestCase {
         super.setUp()
         api.getDBRPsAPI().getDBRPs(orgID: Self.orgID) { dbrps, _ in
             dbrps?
-                    .notificationEndpoints?
+                    .content?
                     .forEach { dbrp in
                         self.api.getDBRPsAPI().deleteDBRPID(orgID: Self.orgID, dbrpID: dbrp.id!) { _, _ in
                         }
