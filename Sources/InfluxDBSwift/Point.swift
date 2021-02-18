@@ -8,7 +8,7 @@ extension InfluxDBClient {
     /// Point defines the values that will be written to the database.
     ///
     /// - SeeAlso: http://bit.ly/influxdata-point
-    public class Point: NSObject {
+    public class Point {
         /// The measurement name.
         private let measurement: String
         // The measurement tags.
@@ -118,11 +118,6 @@ extension InfluxDBClient {
 
             return "\(meas)\(tags) \(fields)\(time)"
         }
-
-        /// Line Protocol from Data Point.
-        override public var description: String {
-            "Point: measurement:\(measurement), tags:\(tags), fields:\(fields), time:\(time ?? "nil")"
-        }
     }
 
     /// Settings to store default tags.
@@ -163,6 +158,13 @@ extension InfluxDBClient {
             }
             return map
         }
+    }
+}
+
+extension InfluxDBClient.Point: CustomStringConvertible {
+    /// Line Protocol from Data Point.
+    public var description: String {
+        "Point: measurement:\(measurement), tags:\(tags), fields:\(fields), time:\(time ?? "nil")"
     }
 }
 
