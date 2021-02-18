@@ -98,11 +98,11 @@ final class WriteAPITests: XCTestCase {
         let record1 = InfluxDBClient.Point("mem")
                 .addTag(key: "tag", value: "a")
                 .addField(key: "value", value: 1)
-                .time(time: 1, precision: InfluxDBClient.WritePrecision.s)
+                .time(time: 1, precision: .s)
         let record2 = InfluxDBClient.Point("mem")
                 .addTag(key: "tag", value: "b")
                 .addField(key: "value", value: 2)
-                .time(time: 2, precision: InfluxDBClient.WritePrecision.ns)
+                .time(time: 2, precision: .ns)
 
         client.createWriteAPI().writeRecords(records: [record1, [record2]]) { _, _ in
             expectation.fulfill()

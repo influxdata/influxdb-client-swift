@@ -21,7 +21,7 @@ final class InfluxDBClientTests: XCTestCase {
         let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
                 bucket: "my-bucket",
                 org: "my-org",
-                precision: InfluxDBClient.WritePrecision.ns)
+                precision: .ns)
 
         client = InfluxDBClient(url: Self.dbURL(), token: "my-token", options: options)
         XCTAssertNotNil(client)

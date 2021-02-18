@@ -14,7 +14,7 @@ import FoundationNetworking
 /// let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
 ///        bucket: "my-bucket",
 ///        org: "my-org",
-///        precision: InfluxDBClient.WritePrecision.ns)
+///        precision: .ns)
 ///
 /// let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
 ///

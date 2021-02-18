@@ -145,7 +145,7 @@ final class PointTests: XCTestCase {
         let point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: 2)
-                .time(time: 123, precision: InfluxDBClient.WritePrecision.s)
+                .time(time: 123, precision: .s)
 
         XCTAssertEqual("h2o,location=europe level=2i 123", try point.toLineProtocol())
     }
@@ -155,7 +155,7 @@ final class PointTests: XCTestCase {
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: 2)
 
-        XCTAssertEqual(InfluxDBClient.WritePrecision.ns, point.precision)
+        XCTAssertEqual(.ns, point.precision)
     }
 
     func testDateTimeFormatting() {
@@ -164,7 +164,7 @@ final class PointTests: XCTestCase {
         var point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: 2)
-                .time(time: date, precision: InfluxDBClient.WritePrecision.ms)
+                .time(time: date, precision: .ms)
 
         XCTAssertEqual("h2o,location=europe level=2i 1444897215000", try point.toLineProtocol())
 
@@ -173,7 +173,7 @@ final class PointTests: XCTestCase {
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: 2)
-                .time(time: date, precision: InfluxDBClient.WritePrecision.ms)
+                .time(time: date, precision: .ms)
 
         XCTAssertEqual("h2o,location=europe level=2i 1444864815000", try point.toLineProtocol())
 
@@ -182,35 +182,35 @@ final class PointTests: XCTestCase {
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: false)
-                .time(time: date, precision: InfluxDBClient.WritePrecision.s)
+                .time(time: date, precision: .s)
 
         XCTAssertEqual("h2o,location=europe level=false 1444897215", try point.toLineProtocol())
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: false)
-                .time(time: date, precision: InfluxDBClient.WritePrecision.ms)
+                .time(time: date, precision: .ms)
 
         XCTAssertEqual("h2o,location=europe level=false 1444897215000", try point.toLineProtocol())
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: false)
-                .time(time: date, precision: InfluxDBClient.WritePrecision.us)
+                .time(time: date, precision: .us)
 
         XCTAssertEqual("h2o,location=europe level=false 1444897215000750", try point.toLineProtocol())
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: false)
-                .time(time: date, precision: InfluxDBClient.WritePrecision.ns)
+                .time(time: date, precision: .ns)
 
         XCTAssertEqual("h2o,location=europe level=false 1444897215000750080", try point.toLineProtocol())
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: true)
-                .time(time: Date(), precision: InfluxDBClient.WritePrecision.s)
+                .time(time: Date(), precision: .s)
 
         XCTAssertFalse(try point.toLineProtocol()!.contains("."))
     }
@@ -219,7 +219,7 @@ final class PointTests: XCTestCase {
         let date = Date(2009, 11, 10, 23, 0, 0)
 
         var point = InfluxDBClient.Point("weather")
-                .time(time: date, precision: InfluxDBClient.WritePrecision.ms)
+                .time(time: date, precision: .ms)
                 .addTag(key: "location", value: "Přerov")
                 .addTag(key: "sid", value: "12345")
                 .addField(key: "temperature", value: 30.1)
@@ -231,7 +231,7 @@ final class PointTests: XCTestCase {
                 try point.toLineProtocol())
 
         point = InfluxDBClient.Point("weather")
-                .time(time: date, precision: InfluxDBClient.WritePrecision.ms)
+                .time(time: date, precision: .ms)
                 .addField(key: "temperature", value: 30.1)
                 .addField(key: "float_field", value: 0)
 
@@ -318,7 +318,7 @@ final class PointTests: XCTestCase {
                             fields: ["water_level": 1.0],
                             time: Date(2020, 10, 11, 0, 0, 0, 0)
                     ),
-                    InfluxDBClient.WritePrecision.s,
+                    .s,
                     "h2o_feet,location=coyote_creek water_level=1.0 1602374400"
             ),
             (
