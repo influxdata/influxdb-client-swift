@@ -26,7 +26,7 @@ final class DeleteAPITests: XCTestCase {
     }
 
     func testGetDeleteAPI() {
-        XCTAssertNotNil(client.getDeleteAPI())
+        XCTAssertNotNil(client.deleteAPI)
     }
 
     func testBucketOrgParameters() {
@@ -43,7 +43,7 @@ final class DeleteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getDeleteAPI().delete(
+        client.deleteAPI.delete(
                 predicate: DeletePredicateRequest(start: Date(), stop: Date()),
                 bucket: "my-bucket",
                 org: "my-org") { _, error in
@@ -70,7 +70,7 @@ final class DeleteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getDeleteAPI().delete(
+        client.deleteAPI.delete(
                 predicate: DeletePredicateRequest(start: Date(), stop: Date()),
                 bucketID: "bucket-id",
                 orgID: "org-id") { _, error in
@@ -99,7 +99,7 @@ final class DeleteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getDeleteAPI().delete(predicate: DeletePredicateRequest(start: Date(), stop: Date())) { _, error in
+        client.deleteAPI.delete(predicate: DeletePredicateRequest(start: Date(), stop: Date())) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -129,7 +129,7 @@ final class DeleteAPITests: XCTestCase {
                 start: Date(2010, 10, 5),
                 stop: Date(2010, 10, 7),
                 predicate: "_measurement=\"sensorData\"")
-        client.getDeleteAPI().delete(predicate: predicate) { result in
+        client.deleteAPI.delete(predicate: predicate) { result in
             switch result {
             case let .success(response):
                 XCTAssertTrue(response == Void())
@@ -157,7 +157,7 @@ final class DeleteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getDeleteAPI().delete(
+        client.deleteAPI.delete(
                 predicate: DeletePredicateRequest(start: Date(), stop: Date()),
                 bucket: "my-bucket",
                 org: "my-org") { _, error in

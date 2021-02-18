@@ -61,7 +61,7 @@ final class IntegrationTests: XCTestCase {
                         |> filter(fn: (r) => r._measurement == "\(measurement)")
                     """
 
-        client.getQueryAPI().query(query: query) { response, error in
+        client.queryAPI.query(query: query) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -126,7 +126,7 @@ final class IntegrationTests: XCTestCase {
                         |> filter(fn: (r) => r._measurement == "\(measurement)")
                     """
 
-        client.getQueryAPI().query(query: query) { response, error in
+        client.queryAPI.query(query: query) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -155,7 +155,7 @@ final class IntegrationTests: XCTestCase {
                 stop: Date(2021, 10, 7),
                 predicate: "_measurement=\"\(measurement)\" AND host=\"azure\"")
 
-        client.getDeleteAPI().delete(predicate: predicate, bucket: "my-bucket", org: "my-org") { _, error in
+        client.deleteAPI.delete(predicate: predicate, bucket: "my-bucket", org: "my-org") { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -166,7 +166,7 @@ final class IntegrationTests: XCTestCase {
 
         expectation = self.expectation(description: "Success response from Query API doesn't arrive")
 
-        client.getQueryAPI().query(query: query) { response, error in
+        client.queryAPI.query(query: query) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }

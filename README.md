@@ -280,7 +280,7 @@ struct QueryCpu: ParsableCommand {
 
     print("\nQuery to execute:\n\n\(query)")
 
-    client.getQueryAPI().query(query: query) { response, error in
+    client.queryAPI.query(query: query) { response, error in
       // For handle error
       if let error = error {
         self.atExit(client: client, error: error)
@@ -358,7 +358,7 @@ struct QueryCpuData: ParsableCommand {
                     |> last()
                 """
 
-    client.getQueryAPI().queryRaw(query: query) { response, error in
+    client.queryAPI.queryRaw(query: query) { response, error in
       // For handle error
       if let error = error {
         self.atExit(client: client, error: error)
@@ -430,7 +430,7 @@ struct DeleteData: ParsableCommand {
             stop: Date(),
             predicate: predicate)
 
-    client.getDeleteAPI().delete(predicate: predicateRequest, bucket: bucket, org: org) { result, error in
+    client.deleteAPI.delete(predicate: predicateRequest, bucket: bucket, org: org) { result, error in
       // For handle error
       if let error = error {
         self.atExit(client: client, error: error)
@@ -457,7 +457,7 @@ struct DeleteData: ParsableCommand {
                     |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
                 """
 
-    client.getQueryAPI().query(query: query) { response, error in
+    client.queryAPI.query(query: query) { response, error in
       // For handle error
       if let error = error {
         self.atExit(client: client, error: error)

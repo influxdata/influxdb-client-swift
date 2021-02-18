@@ -34,6 +34,12 @@ public class InfluxDBClient {
     /// Shared URLSession across the client.
     public let session: URLSession
 
+    /// Lazy initialized `QueryAPI`.
+    public lazy var queryAPI: QueryAPI = { QueryAPI(client: self) }()
+
+    /// Lazy initialized `DeleteAPI`.
+    public lazy var deleteAPI: DeleteAPI = { DeleteAPI(client: self) }()
+
     /// Create a new client for a InfluxDB.
     ///
     /// - Parameters:
@@ -93,20 +99,6 @@ public class InfluxDBClient {
     /// - Returns: WriteAPI instance
     public func getWriteAPI(pointSettings: PointSettings? = nil) -> WriteAPI {
         WriteAPI(client: self, pointSettings: pointSettings)
-    }
-
-    /// Creates QueryAPI with supplied default settings.
-    ///
-    /// - Returns: QueryAPI instance
-    public func getQueryAPI() -> QueryAPI {
-        QueryAPI(client: self)
-    }
-
-    /// Creates DeleteAPI to delete time series data from InfluxDB.
-    ///
-    /// - Returns: DeleteAPI instance
-    public func getDeleteAPI() -> DeleteAPI {
-        DeleteAPI(client: self)
     }
 
     /// Release all allocated resources.

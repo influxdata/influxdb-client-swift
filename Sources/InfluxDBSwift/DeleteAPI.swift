@@ -19,7 +19,7 @@ import FoundationNetworking
 ///         stop: Date(),
 ///         predicate: "_measurement=\"server\" AND production=\"no\"")
 ///
-/// client.getDeleteAPI().delete(predicate: predicateRequest, bucket: "my-bucket", org: "my-org") { result, error in
+/// client.deleteAPI.delete(predicate: predicateRequest, bucket: "my-bucket", org: "my-org") { result, error in
 ///     // For handle error
 ///     if let error = error {
 ///         print("Error:\n\n\(error)")

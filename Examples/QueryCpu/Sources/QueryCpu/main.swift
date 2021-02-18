@@ -39,7 +39,7 @@ struct QueryCpu: ParsableCommand {
 
         print("\nQuery to execute:\n\n\(query)")
 
-        client.getQueryAPI().query(query: query) { response, error in
+        client.queryAPI.query(query: query) { response, error in
             // For handle error
             if let error = error {
                 self.atExit(client: client, error: error)
