@@ -18,11 +18,11 @@ internal class FluxCSVParser {
     private var startNewTable = true
     private var groups: ArraySlice<String> = []
 
-    internal init(data: Data) throws {
+    init(data: Data) throws {
         csv = try CSVReader(stream: InputStream(data: data))
     }
 
-    internal func next() throws -> (table: QueryAPI.FluxTable, record: QueryAPI.FluxRecord)? {
+    func next() throws -> (table: QueryAPI.FluxTable, record: QueryAPI.FluxRecord)? {
         while let row = csv.next() {
             if row.count <= 1 {
                 continue

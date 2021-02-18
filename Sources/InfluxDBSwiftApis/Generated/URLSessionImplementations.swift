@@ -83,7 +83,7 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
     }
 
     override internal func execute(_ apiResponseQueue: DispatchQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, InfluxDBClient.InfluxDBError>) -> Void) {
-        let urlSession = self.influxDB2API.getURLSession()
+        let urlSession = self.influxDB2API.urlSession
 
         let parameters: [String: Any] = self.parameters ?? [:]
         

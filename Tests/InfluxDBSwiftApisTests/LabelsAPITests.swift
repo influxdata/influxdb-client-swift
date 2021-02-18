@@ -9,7 +9,7 @@ import XCTest
 class LabelsAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api.getLabelsAPI().getLabels { labels, _ in
+        api.labelsAPI.getLabels { labels, _ in
             labels?
                     .labels?
                     .filter {label in
@@ -19,7 +19,7 @@ class LabelsAPITests: APIXCTestCase {
                         return false
                     }
                     .forEach { label in
-                        self.api.getLabelsAPI().deleteLabelsID(labelID: label.id!) { _, _ in
+                        self.api.labelsAPI.deleteLabelsID(labelID: label.id!) { _, _ in
                         }
                     }
         }
@@ -37,6 +37,6 @@ class LabelsAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api.getLabelsAPI().postLabels, request, &checker)
+        checkPost(api.labelsAPI.postLabels, request, &checker)
     }
 }

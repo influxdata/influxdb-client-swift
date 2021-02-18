@@ -9,13 +9,13 @@ import XCTest
 class VariablesAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api.getVariablesAPI().getVariables { variables, _ in
+        api.variablesAPI.getVariables { variables, _ in
             variables?
                     .variables?
                     .filter { variable in
                         variable.name.hasSuffix("_TEST")
                     }.forEach { variable in
-                        self.api.getVariablesAPI().deleteVariablesID(variableID: variable.id!) { _, _ in
+                        self.api.variablesAPI.deleteVariablesID(variableID: variable.id!) { _, _ in
                         }
                     }
         }
@@ -38,6 +38,6 @@ class VariablesAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api.getVariablesAPI().postVariables, request, &checker)
+        checkPost(api.variablesAPI.postVariables, request, &checker)
     }
 }
