@@ -17,6 +17,7 @@ extension DeleteAPITests {
     static let __allTests__DeleteAPITests = [
         ("testBucketIDOrgIDParameters", testBucketIDOrgIDParameters),
         ("testBucketOrgParameters", testBucketOrgParameters),
+        ("testErrorResponse", testErrorResponse),
         ("testGetDeleteAPI", testGetDeleteAPI),
         ("testPredicateRequestSerialization", testPredicateRequestSerialization),
         ("testWithoutBucketOrgParameters", testWithoutBucketOrgParameters),
@@ -108,6 +109,7 @@ extension PointTests {
         ("testFieldTypes", testFieldTypes),
         ("testFromTuple", testFromTuple),
         ("testInfinityValues", testInfinityValues),
+        ("testInt", testInt),
         ("testMeasurementEscape", testMeasurementEscape),
         ("testOnlyInfinityValues", testOnlyInfinityValues),
         ("testOverrideTagField", testOverrideTagField),
@@ -119,6 +121,7 @@ extension PointTests {
         ("testTime", testTime),
         ("testTimePrecisionDefault", testTimePrecisionDefault),
         ("testTimestamp", testTimestamp),
+        ("testUnsignedInt", testUnsignedInt),
     ]
 }
 

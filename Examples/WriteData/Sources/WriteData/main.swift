@@ -52,7 +52,7 @@ struct WriteData: ParsableCommand {
 
         let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
 
-        client.getWriteAPI().writeRecords(records: records) { result, error in
+        client.createWriteAPI().writeRecords(records: records) { result, error in
             // For handle error
             if let error = error {
                 self.atExit(client: client, error: error)

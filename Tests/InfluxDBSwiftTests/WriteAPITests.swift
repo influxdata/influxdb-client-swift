@@ -33,7 +33,7 @@ final class WriteAPITests: XCTestCase {
     }
 
     func testGetWriteAPI() {
-        XCTAssertNotNil(client.getWriteAPI())
+        XCTAssertNotNil(client.createWriteAPI())
     }
 
     func testWriteRecord() {
@@ -42,7 +42,7 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
-        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1i") { response, error in
+        client.createWriteAPI().writeRecord(record: "mem,tag=a value=1i") { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -64,7 +64,7 @@ final class WriteAPITests: XCTestCase {
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
         let record = InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 1)
-        client.getWriteAPI().writeRecord(record: record) { response, error in
+        client.createWriteAPI().writeRecord(record: record) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -104,7 +104,7 @@ final class WriteAPITests: XCTestCase {
                 .addField(key: "value", value: 2)
                 .time(time: 2, precision: InfluxDBClient.WritePrecision.ns)
 
-        client.getWriteAPI().writeRecords(records: [record1, [record2]]) { _, _ in
+        client.createWriteAPI().writeRecords(records: [record1, [record2]]) { _, _ in
             expectation.fulfill()
         }
 
@@ -139,7 +139,7 @@ final class WriteAPITests: XCTestCase {
 
         let record1 = InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 1)
         let record2 = InfluxDBClient.Point("mem").addTag(key: "tag", value: "b").addField(key: "value", value: 2)
-        client.getWriteAPI().writeRecords(records: [record1, [record2]]) { response, error in
+        client.createWriteAPI().writeRecords(records: [record1, [record2]]) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -179,7 +179,7 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1") { _, _ in
+        client.createWriteAPI().writeRecord(record: "mem,tag=a value=1") { _, _ in
             expectation.fulfill()
         }
 
@@ -202,7 +202,7 @@ final class WriteAPITests: XCTestCase {
         }
 
         let records = ["mem,tag=a value=1", "mem,tag=a value=2", " ", "mem,tag=a value=3", "", "mem,tag=a value=4"]
-        client.getWriteAPI().writeRecords(records: records) { _, error in
+        client.createWriteAPI().writeRecords(records: records) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -239,7 +239,7 @@ final class WriteAPITests: XCTestCase {
             (measurement: "mem", fields: ["value": 6], time: 6)
         ]
 
-        client.getWriteAPI().writeRecords(records: records) { _, error in
+        client.createWriteAPI().writeRecords(records: records) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -255,7 +255,7 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
-        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1i") { result in
+        client.createWriteAPI().writeRecord(record: "mem,tag=a value=1i") { result in
             switch result {
             case let .success(response):
                 XCTAssertTrue(response == Void())
@@ -276,7 +276,7 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
-        client.getWriteAPI()
+        client.createWriteAPI()
                 .writeRecord(record: "mem,tag=a value=1i")
                 .sink(receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -308,7 +308,7 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getWriteAPI().writeRecord(org: "my-org", record: "mem,tag=a value=1i") { response, error in
+        client.createWriteAPI().writeRecord(org: "my-org", record: "mem,tag=a value=1i") { response, error in
             XCTAssertNotNil(error)
             XCTAssertNil(response)
 
@@ -319,7 +319,7 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        client.getWriteAPI().writeRecord(bucket: "my-bucket", record: "mem,tag=a value=1i") { response, error in
+        client.createWriteAPI().writeRecord(bucket: "my-bucket", record: "mem,tag=a value=1i") { response, error in
             XCTAssertNotNil(error)
             XCTAssertNil(response)
 
@@ -342,7 +342,7 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1i") { response, error in
+        client.createWriteAPI().writeRecord(record: "mem,tag=a value=1i") { response, error in
             XCTAssertNotNil(error)
             XCTAssertNil(response)
 
@@ -386,7 +386,7 @@ final class WriteAPITests: XCTestCase {
                 .addDefaultTag(key: "tag_a", value: "tag_a_value")
                 .addDefaultTag(key: "tag_nil", value: nil)
 
-        client.getWriteAPI(pointSettings: defaultTags).writeRecords(records: records) { _, error in
+        client.createWriteAPI(pointSettings: defaultTags).writeRecords(records: records) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
