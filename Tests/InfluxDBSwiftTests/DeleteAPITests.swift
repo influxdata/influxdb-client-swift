@@ -33,7 +33,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { request, _ in
             XCTAssertEqual("my-bucket", request.url?.queryParamValue("bucket"))
             XCTAssertEqual("my-org", request.url?.queryParamValue("org"))
 
@@ -60,7 +60,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { request, _ in
             XCTAssertEqual("org-id", request.url?.queryParamValue("orgID"))
             XCTAssertEqual("bucket-id", request.url?.queryParamValue("bucketID"))
 
@@ -87,7 +87,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { request, _ in
             XCTAssertNil(request.url?.queryParamValue("bucket"))
             XCTAssertNil(request.url?.queryParamValue("bucketID"))
             XCTAssertNil(request.url?.queryParamValue("org"))
@@ -113,7 +113,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, bodyData in
             let predicate = try CodableHelper.decode(DeletePredicateRequest.self, from: bodyData!).get()
             XCTAssertEqual(Date(2010, 10, 5), predicate.start)
             XCTAssertEqual(Date(2010, 10, 7), predicate.stop)
@@ -147,7 +147,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { request, _ in
             XCTAssertEqual("my-bucket", request.url?.queryParamValue("bucket"))
             XCTAssertEqual("my-org", request.url?.queryParamValue("org"))
 

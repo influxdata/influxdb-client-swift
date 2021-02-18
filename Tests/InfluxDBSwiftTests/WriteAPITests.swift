@@ -126,7 +126,7 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, bodyData in
             XCTAssertEqual(
                     "mem,tag=a value=1i\nmem,tag=b value=2i",
                     String(decoding: bodyData!, as: UTF8.self))
@@ -190,7 +190,7 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, bodyData in
             XCTAssertEqual(
                     "mem,tag=a value=1\nmem,tag=a value=2\nmem,tag=a value=3\nmem,tag=a value=4",
                     String(decoding: bodyData!, as: UTF8.self))
@@ -219,7 +219,7 @@ final class WriteAPITests: XCTestCase {
         let required = "mem,tag=a value=1\nmem,tag=a value=2i\nmem,tag=a value=3i"
                 + "\nmem value=4i\nmem,tag=a value=5i 5\nmem value=6i 6"
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, bodyData in
             XCTAssertEqual(
                     required,
                     String(decoding: bodyData!, as: UTF8.self))
@@ -303,7 +303,7 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Check requirements from API")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, _ in
             let response = HTTPURLResponse(statusCode: 422)
             return (response, Data())
         }
@@ -337,7 +337,7 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Check requirements from API")
         expectation.expectedFulfillmentCount = 1
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, _ in
             let response = HTTPURLResponse(statusCode: 422)
             return (response, Data())
         }
@@ -365,7 +365,7 @@ final class WriteAPITests: XCTestCase {
 
         let required = "mem,tag=a value=1\nmem,tag=a,tag_a=tag_a_value value=2i\nmem,tag=a,tag_a=tag_a_value value=3i"
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, bodyData in
             XCTAssertEqual(
                     required,
                     String(decoding: bodyData!, as: UTF8.self))

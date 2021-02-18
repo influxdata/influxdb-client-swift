@@ -64,7 +64,7 @@ public class WriteAPI {
     /// - Parameters
     ///   - client: Client with shared configuration and http library.
     ///   - pointSettings: Default settings for DataPoint, useful for default tags.
-    public init(client: InfluxDBClient, pointSettings: InfluxDBClient.PointSettings? = nil) {
+    init(client: InfluxDBClient, pointSettings: InfluxDBClient.PointSettings? = nil) {
         self.client = client
         self.pointSettings = pointSettings
     }

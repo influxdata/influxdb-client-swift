@@ -22,7 +22,7 @@ internal class FluxCSVParser {
         csv = try CSVReader(stream: InputStream(data: data))
     }
 
-    func next() throws -> (table: QueryAPI.FluxTable, record: QueryAPI.FluxRecord)? {
+    internal func next() throws -> (table: QueryAPI.FluxTable, record: QueryAPI.FluxRecord)? {
         while let row = csv.next() {
             if row.count <= 1 {
                 continue

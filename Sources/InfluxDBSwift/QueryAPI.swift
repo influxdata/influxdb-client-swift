@@ -74,7 +74,7 @@ public class QueryAPI {
     ///
     /// - Parameters
     ///   - client: Client with shared configuration and http library.
-    public init(client: InfluxDBClient) {
+    init(client: InfluxDBClient) {
         self.client = client
     }
 

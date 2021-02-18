@@ -16,9 +16,9 @@ extension InfluxDBClient {
         // The measurement fields.
         private var fields: [String: Any?] = [:]
         /// The data point time.
-        internal var time: Any?
+        var time: Any?
         /// The data point precision.
-        internal var precision: InfluxDBClient.WritePrecision
+        var precision: InfluxDBClient.WritePrecision
 
         /// Create a new Point with specified a measurement name and precision.
         ///
@@ -133,7 +133,7 @@ extension InfluxDBClient {
     /// ````
     public class PointSettings {
         // Default tags which will be added to each point written by api.
-        internal var tags: [String: String?] = [:]
+        var tags: [String: String?] = [:]
 
         /// Add new default tag with key and value.
         ///

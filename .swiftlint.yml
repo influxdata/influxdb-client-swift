@@ -7,7 +7,6 @@ opt_in_rules:
   - conditional_returns_on_newline
   - empty_count
   - empty_string
-  - explicit_acl
   - explicit_init
   - explicit_self
   - fatal_error_message

@@ -235,7 +235,7 @@ extension InfluxDBClient {
 // swiftlint:enable identifier_name
 
 extension InfluxDBClient {
-    internal enum GZIPMode: String, Codable, CaseIterable {
+    enum GZIPMode: String, Codable, CaseIterable {
         /// Request could be encoded by GZIP.
         case request
         /// Response could be encoded by GZIP.
@@ -244,14 +244,14 @@ extension InfluxDBClient {
         case none
     }
     // swiftlint:disable function_body_length function_parameter_count
-    internal func httpPost(_ urlComponents: URLComponents?,
-                           _ contentTypeHeader: String,
-                           _ acceptHeader: String,
-                           _ gzipMode: InfluxDBClient.GZIPMode,
-                           _ content: Data,
-                           _ responseQueue: DispatchQueue,
-                           _ completion: @escaping (
-                                   _ result: Swift.Result<Data?, InfluxDBClient.InfluxDBError>) -> Void) {
+    func httpPost(_ urlComponents: URLComponents?,
+                  _ contentTypeHeader: String,
+                  _ acceptHeader: String,
+                  _ gzipMode: InfluxDBClient.GZIPMode,
+                  _ content: Data,
+                  _ responseQueue: DispatchQueue,
+                  _ completion: @escaping (
+                          _ result: Swift.Result<Data?, InfluxDBClient.InfluxDBError>) -> Void) {
         do {
             guard let url = urlComponents?.url else {
                 throw InfluxDBClient.InfluxDBError.error(

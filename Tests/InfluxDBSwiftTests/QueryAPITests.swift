@@ -42,7 +42,7 @@ final class QueryAPITests: XCTestCase {
 
                   """
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, _ in
             expectation.fulfill()
 
             let response = HTTPURLResponse(statusCode: 200)
