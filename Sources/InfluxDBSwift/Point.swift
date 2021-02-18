@@ -283,11 +283,11 @@ extension InfluxDBClient.Point {
         case let date as Date:
             let since1970 = date.timeIntervalSince1970
             switch precision {
-            case InfluxDBClient.WritePrecision.s:
+            case .s:
                 return " \(UInt64(since1970))"
-            case InfluxDBClient.WritePrecision.ms:
+            case .ms:
                 return " \(UInt64(since1970 * 1_000))"
-            case InfluxDBClient.WritePrecision.us:
+            case .us:
                 return " \(UInt64(since1970 * 1_000_000))"
             default:
                 return " \(UInt64(since1970 * 1_000_000_000))"
