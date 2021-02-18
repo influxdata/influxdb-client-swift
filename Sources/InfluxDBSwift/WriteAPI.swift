@@ -82,7 +82,7 @@ public class WriteAPI {
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     public func writeRecord(bucket: String? = nil,
                             org: String? = nil,
-                            precision: InfluxDBClient.WritePrecision? = nil,
+                            precision: InfluxDBClient.TimestampPrecision? = nil,
                             record: Any,
                             responseQueue: DispatchQueue = .main,
                             completion: @escaping (_ response: Void?,
@@ -109,7 +109,7 @@ public class WriteAPI {
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     public func writeRecords(bucket: String? = nil,
                              org: String? = nil,
-                             precision: InfluxDBClient.WritePrecision? = nil,
+                             precision: InfluxDBClient.TimestampPrecision? = nil,
                              records: [Any],
                              responseQueue: DispatchQueue = .main,
                              completion: @escaping (_ response: Void?,
@@ -138,7 +138,7 @@ public class WriteAPI {
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     public func writeRecord(bucket: String? = nil,
                             org: String? = nil,
-                            precision: InfluxDBClient.WritePrecision? = nil,
+                            precision: InfluxDBClient.TimestampPrecision? = nil,
                             record: Any,
                             responseQueue: DispatchQueue = .main,
                             completion: @escaping (
@@ -166,7 +166,7 @@ public class WriteAPI {
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     public func writeRecords(bucket: String? = nil,
                              org: String? = nil,
-                             precision: InfluxDBClient.WritePrecision? = nil,
+                             precision: InfluxDBClient.TimestampPrecision? = nil,
                              records: [Any],
                              responseQueue: DispatchQueue = .main,
                              completion: @escaping (
@@ -196,7 +196,7 @@ public class WriteAPI {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func writeRecord(bucket: String? = nil,
                             org: String? = nil,
-                            precision: InfluxDBClient.WritePrecision? = nil,
+                            precision: InfluxDBClient.TimestampPrecision? = nil,
                             record: Any,
                             responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
         self.writeRecords(
@@ -221,7 +221,7 @@ public class WriteAPI {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func writeRecords(bucket: String? = nil,
                              org: String? = nil,
-                             precision: InfluxDBClient.WritePrecision? = nil,
+                             precision: InfluxDBClient.TimestampPrecision? = nil,
                              records: [Any],
                              responseQueue: DispatchQueue = .main)
                     -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
@@ -241,7 +241,7 @@ public class WriteAPI {
     // swiftlint:disable function_body_length function_parameter_count
     private func postWrite(_ bucket: String?,
                            _ org: String?,
-                           _ precision: InfluxDBClient.WritePrecision?,
+                           _ precision: InfluxDBClient.TimestampPrecision?,
                            _ records: [Any],
                            _ responseQueue: DispatchQueue,
                            _ completion: @escaping (
@@ -262,7 +262,7 @@ public class WriteAPI {
             let precision = precision ?? client.options.precision
 
             // we need sort batches by insertion time (for LP without timestamp)
-            var batches: [InfluxDBClient.WritePrecision: (Int, [String])] = [:]
+            var batches: [InfluxDBClient.TimestampPrecision: (Int, [String])] = [:]
             let defaultTags = pointSettings?.evaluate()
             try toLineProtocol(precision: precision, record: records, defaultTags: defaultTags, batches: &batches)
 
@@ -300,10 +300,10 @@ public class WriteAPI {
         }
     }
 
-    private func toLineProtocol(precision: InfluxDBClient.WritePrecision,
+    private func toLineProtocol(precision: InfluxDBClient.TimestampPrecision,
                                 record: Any,
                                 defaultTags: [String: String?]?,
-                                batches: inout [InfluxDBClient.WritePrecision: (Int, [String])]) throws {
+                                batches: inout [InfluxDBClient.TimestampPrecision: (Int, [String])]) throws {
         // To avoid: "Could not cast value of type 'InfluxDBSwift.InfluxDBClient.Point' to 'Foundation.NSObject'."
         // on Linux - see:
         // https://app.circleci.com/pipelines/github/influxdata

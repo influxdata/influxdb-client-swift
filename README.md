@@ -102,7 +102,7 @@ client.close()
 |---|---|---|---|
 | bucket | Default destination bucket for writes | String | none |
 | org | Default organization bucket for writes | String | none |
-| precision | Default precision for the unix timestamps within the body line-protocol | WritePrecision | ns |
+| precision | Default precision for the unix timestamps within the body line-protocol | TimestampPrecision | ns |
 | timeoutIntervalForRequest | The timeout interval to use when waiting for additional data. | TimeInterval | 60 sec |
 | timeoutIntervalForResource | The maximum amount of time that a resource request should be allowed to take. | TimeInterval | 5 min |
 | enableGzip | Enable Gzip compression for HTTP requests. | Bool | false |

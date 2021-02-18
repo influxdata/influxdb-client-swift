@@ -85,7 +85,7 @@ public class InfluxDBClient {
                             password: String,
                             database: String,
                             retentionPolicy: String,
-                            precision: WritePrecision = WritePrecision.ns,
+                            precision: TimestampPrecision = TimestampPrecision.ns,
                             protocolClasses: [AnyClass]? = nil) {
         let options = InfluxDBOptions(bucket: "\(database)/\(retentionPolicy)", precision: precision)
 
@@ -118,7 +118,7 @@ extension InfluxDBClient {
         public let org: String?
         /// Default precision for the unix timestamps within the body line-protocol.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/glossary/#precision
-        public let precision: InfluxDBClient.WritePrecision
+        public let precision: InfluxDBClient.TimestampPrecision
         /// The timeout interval to use when waiting for additional data. Default to 60 sec.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForRequest
         public let timeoutIntervalForRequest: TimeInterval
@@ -142,7 +142,7 @@ extension InfluxDBClient {
         ///   - enableGzip: Enable Gzip compression for HTTP requests.
         public init(bucket: String? = nil,
                     org: String? = nil,
-                    precision: WritePrecision = defaultWritePrecision,
+                    precision: TimestampPrecision = defaultTimestampPrecision,
                     timeoutIntervalForRequest: TimeInterval = 60,
                     timeoutIntervalForResource: TimeInterval = 60 * 5,
                     enableGzip: Bool = false) {
@@ -208,11 +208,11 @@ extension InfluxDBClient {
 // swiftlint:disable identifier_name
 extension InfluxDBClient {
     /// Default Write Precision is Nanoseconds.
-    public static let defaultWritePrecision = WritePrecision.ns
+    public static let defaultTimestampPrecision = TimestampPrecision.ns
 
     /// An enum represents the precision for the unix timestamps within the body line-protocol.
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/write-data/#timestamp-precision
-    public enum WritePrecision: String, Codable, CaseIterable {
+    public enum TimestampPrecision: String, Codable, CaseIterable {
         /// Milliseconds
         case ms
         /// Seconds

@@ -298,7 +298,7 @@ final class PointTests: XCTestCase {
         let tuples: [
         (
                 (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?),
-                InfluxDBClient.WritePrecision?,
+                InfluxDBClient.TimestampPrecision?,
                 String
         )] = [
             (

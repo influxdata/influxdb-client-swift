@@ -18,14 +18,14 @@ extension InfluxDBClient {
         /// The data point time.
         var time: Any?
         /// The data point precision.
-        var precision: InfluxDBClient.WritePrecision
+        var precision: InfluxDBClient.TimestampPrecision
 
         /// Create a new Point with specified a measurement name and precision.
         ///
         /// - Parameters:
         ///   - measurement: the measurement name
         ///   - precision: the data point precision
-        public init(_ measurement: String, precision: WritePrecision = InfluxDBClient.defaultWritePrecision) {
+        public init(_ measurement: String, precision: TimestampPrecision = InfluxDBClient.defaultTimestampPrecision) {
             self.measurement = measurement
             self.precision = precision
         }
@@ -43,8 +43,8 @@ extension InfluxDBClient {
                         measurement: String,
                         tags: [String?: String?]?,
                         fields: [String?: Any?], time: Any?),
-                precision: WritePrecision? = nil) -> Point {
-            let point = InfluxDBClient.Point(tuple.measurement, precision: precision ?? defaultWritePrecision)
+                precision: TimestampPrecision? = nil) -> Point {
+            let point = InfluxDBClient.Point(tuple.measurement, precision: precision ?? defaultTimestampPrecision)
             if let tags = tuple.tags {
                 for tag in tags {
                     point.addTag(key: tag.0, value: tag.1)
@@ -54,7 +54,7 @@ extension InfluxDBClient {
                 point.addField(key: field.0, value: field.1)
             }
             if let time = tuple.time {
-                point.time(time: time, precision: precision ?? defaultWritePrecision)
+                point.time(time: time, precision: precision ?? defaultTimestampPrecision)
             }
             return point
         }
@@ -96,7 +96,7 @@ extension InfluxDBClient {
         ///   - precision: the timestamp precision
         /// - Returns: self
         @discardableResult
-        public func time(time: Any, precision: WritePrecision = defaultWritePrecision) -> Point {
+        public func time(time: Any, precision: TimestampPrecision = defaultTimestampPrecision) -> Point {
             self.precision = precision
             self.time = time
             return self
