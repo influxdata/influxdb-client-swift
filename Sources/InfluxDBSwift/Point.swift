@@ -47,14 +47,14 @@ extension InfluxDBClient {
             let point = InfluxDBClient.Point(tuple.measurement, precision: precision ?? defaultWritePrecision)
             if let tags = tuple.tags {
                 for tag in tags {
-                    _ = point.addTag(key: tag.0, value: tag.1)
+                    point.addTag(key: tag.0, value: tag.1)
                 }
             }
             for field in tuple.fields {
-                _ = point.addField(key: field.0, value: field.1)
+                point.addField(key: field.0, value: field.1)
             }
             if let time = tuple.time {
-                _ = point.time(time: time, precision: precision ?? defaultWritePrecision)
+                point.time(time: time, precision: precision ?? defaultWritePrecision)
             }
             return point
         }
@@ -67,6 +67,7 @@ extension InfluxDBClient {
         ///   - key: the tag name
         ///   - value: the tag value
         /// - Returns: self
+        @discardableResult
         public func addTag(key: String?, value: String?) -> Point {
             if let key = key {
                 tags[key] = value
@@ -80,6 +81,7 @@ extension InfluxDBClient {
         ///   - key: the field name
         ///   - value: the field value. It can be `Int`, `Float`, `Double`, `Bool` or `String`
         /// - Returns: self
+        @discardableResult
         public func addField(key: String?, value: Any?) -> Point {
             if let key = key {
                 fields[key] = value
@@ -93,6 +95,7 @@ extension InfluxDBClient {
         ///   - time: the timestamp. It can be `Int` or `Date`.
         ///   - precision: the timestamp precision
         /// - Returns: self
+        @discardableResult
         public func time(time: Any, precision: WritePrecision = defaultWritePrecision) -> Point {
             self.precision = precision
             self.time = time
