@@ -304,65 +304,73 @@ public class WriteAPI {
                                 record: Any,
                                 defaultTags: [String: String?]?,
                                 batches: inout [InfluxDBClient.WritePrecision: (Int, [String])]) throws {
-        switch record {
-        case let string as String:
-            guard !string.trimmingCharacters(in: .whitespaces).isEmpty else {
-                return
+        // To avoid: "Could not cast value of type 'InfluxDBSwift.InfluxDBClient.Point' to 'Foundation.NSObject'."
+        // on Linux - see:
+        // https://app.circleci.com/pipelines/github/influxdata
+        // /influxdb-client-swift/315/workflows/8467a324-6bbf-47ca-a2cf-6ff9d820385d/jobs/1042
+        if type(of: record) == InfluxDBClient.Point.self {
+            if let point = record as? InfluxDBClient.Point {
+                if let lineProtocol = try point.toLineProtocol(defaultTags: defaultTags) {
+                    return try toLineProtocol(
+                            precision: point.precision,
+                            record: lineProtocol,
+                            defaultTags: defaultTags,
+                            batches: &batches)
+                }
             }
-            if var batch = batches[precision] {
-                batch.1.append(string)
-                batches[precision] = batch
-            } else {
-                batches[precision] = (batches.count, [string])
-            }
-        case let point as InfluxDBClient.Point:
-            if let lineProtocol = try point.toLineProtocol(defaultTags: defaultTags) {
+        } else {
+            switch record {
+            case let string as String:
+                guard !string.trimmingCharacters(in: .whitespaces).isEmpty else {
+                    return
+                }
+                if var batch = batches[precision] {
+                    batch.1.append(string)
+                    batches[precision] = batch
+                } else {
+                    batches[precision] = (batches.count, [string])
+                }
+            case let tuple as (measurement: String, fields: [String?: Any?]):
+                let point = InfluxDBClient.Point.fromTuple(
+                        (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: nil),
+                        precision: precision)
                 try toLineProtocol(
-                        precision: point.precision,
-                        record: lineProtocol,
+                        precision: precision,
+                        record: point,
                         defaultTags: defaultTags,
                         batches: &batches)
+            case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?):
+                try toLineProtocol(
+                        precision: precision,
+                        record: InfluxDBClient.Point.fromTuple(tuple, precision: precision),
+                        defaultTags: defaultTags,
+                        batches: &batches)
+            case let tuple as (measurement: String, fields: [String?: Any?], time: Any?):
+                let point = InfluxDBClient.Point.fromTuple(
+                        (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: tuple.time),
+                        precision: precision)
+                try toLineProtocol(
+                        precision: precision,
+                        record: point,
+                        defaultTags: defaultTags,
+                        batches: &batches)
+            case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?]):
+                let point = InfluxDBClient.Point.fromTuple(
+                        (measurement: tuple.measurement, tags: tuple.tags, fields: tuple.fields, time: nil),
+                        precision: precision)
+                try toLineProtocol(
+                        precision: precision,
+                        record: point,
+                        defaultTags: defaultTags,
+                        batches: &batches)
+            case let array as [Any]:
+                try array.forEach { item in
+                    try toLineProtocol(precision: precision, record: item, defaultTags: defaultTags, batches: &batches)
+                }
+            default:
+                throw InfluxDBClient.InfluxDBError
+                        .generic("Record type is not supported: \(record) with type: \(type(of: record))")
             }
-        case let tuple as (measurement: String, fields: [String?: Any?]):
-            let point = InfluxDBClient.Point.fromTuple(
-                    (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: nil),
-                    precision: precision)
-            try toLineProtocol(
-                    precision: precision,
-                    record: point,
-                    defaultTags: defaultTags,
-                    batches: &batches)
-        case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?):
-            try toLineProtocol(
-                    precision: precision,
-                    record: InfluxDBClient.Point.fromTuple(tuple, precision: precision),
-                    defaultTags: defaultTags,
-                    batches: &batches)
-        case let tuple as (measurement: String, fields: [String?: Any?], time: Any?):
-            let point = InfluxDBClient.Point.fromTuple(
-                    (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: tuple.time),
-                    precision: precision)
-            try toLineProtocol(
-                    precision: precision,
-                    record: point,
-                    defaultTags: defaultTags,
-                    batches: &batches)
-        case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?]):
-            let point = InfluxDBClient.Point.fromTuple(
-                    (measurement: tuple.measurement, tags: tuple.tags, fields: tuple.fields, time: nil),
-                    precision: precision)
-            try toLineProtocol(
-                    precision: precision,
-                    record: point,
-                    defaultTags: defaultTags,
-                    batches: &batches)
-        case let array as [Any]:
-            try array.forEach { item in
-                try toLineProtocol(precision: precision, record: item, defaultTags: defaultTags, batches: &batches)
-            }
-        default:
-            throw InfluxDBClient.InfluxDBError
-                    .generic("Record type is not supported: \(record) with type: \(type(of: record))")
         }
     }
 
