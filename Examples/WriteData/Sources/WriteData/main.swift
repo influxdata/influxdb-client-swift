@@ -43,7 +43,7 @@ struct WriteData: ParsableCommand {
         let recordPointDate = InfluxDBClient
                 .Point("demo")
                 .addTag(key: "type", value: "point-timestamp")
-                .addField(key: "value", value: int(2))
+                .addField(key: "value", value: .int(2))
                 .time(time: Date())
         //
         // Record defined as Tuple
