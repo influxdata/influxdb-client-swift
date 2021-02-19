@@ -63,7 +63,9 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
-        let record = InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 1)
+        let record = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "a")
+                .addField(key: "value", value: .int(1))
         client.createWriteAPI().writeRecord(record: record) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
@@ -97,11 +99,11 @@ final class WriteAPITests: XCTestCase {
 
         let record1 = InfluxDBClient.Point("mem")
                 .addTag(key: "tag", value: "a")
-                .addField(key: "value", value: 1)
+                .addField(key: "value", value: .int(1))
                 .time(time: 1, precision: .s)
         let record2 = InfluxDBClient.Point("mem")
                 .addTag(key: "tag", value: "b")
-                .addField(key: "value", value: 2)
+                .addField(key: "value", value: .int(2))
                 .time(time: 2, precision: .ns)
 
         client.createWriteAPI().writeRecords(records: [record1, [record2]]) { _, _ in
@@ -137,8 +139,12 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        let record1 = InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 1)
-        let record2 = InfluxDBClient.Point("mem").addTag(key: "tag", value: "b").addField(key: "value", value: 2)
+        let record1 = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "a")
+                .addField(key: "value", value: .int(1))
+        let record2 = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "b")
+                .addField(key: "value", value: .int(2))
         client.createWriteAPI().writeRecords(records: [record1, [record2]]) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
@@ -232,7 +238,9 @@ final class WriteAPITests: XCTestCase {
 
         let records: [Any] = [
             "mem,tag=a value=1",
-            InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 2),
+            InfluxDBClient.Point("mem")
+                    .addTag(key: "tag", value: "a")
+                    .addField(key: "value", value: .int(2)),
             (measurement: "mem", tags: ["tag": "a"], fields: ["value": 3]),
             (measurement: "mem", fields: ["value": 4]),
             (measurement: "mem", tags: ["tag": "a"], fields: ["value": 5], time: 5),
@@ -378,7 +386,9 @@ final class WriteAPITests: XCTestCase {
 
         let records: [Any] = [
             "mem,tag=a value=1",
-            InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 2),
+            InfluxDBClient.Point("mem")
+                    .addTag(key: "tag", value: "a")
+                    .addField(key: "value", value: .int(2)),
             (measurement: "mem", tags: ["tag": "a"], fields: ["value": 3])
         ]
 

@@ -14,7 +14,7 @@ extension InfluxDBClient {
         // The measurement tags.
         private var tags: [String: String?] = [:]
         // The measurement fields.
-        private var fields: [String: Any?] = [:]
+        private var fields: [String: FieldValue?] = [:]
         /// The data point time.
         var time: Any?
         /// The data point precision.
@@ -29,37 +29,6 @@ extension InfluxDBClient {
             self.measurement = measurement
             self.precision = precision
         }
-
-        // swiftlint:disable large_tuple
-
-        /// Create a new Point from Tuple.
-        ///
-        /// - Parameters:
-        ///   - tuple: the tuple with keys: `measurement`, `tags`, `fields` and `time`
-        ///   - precision: the data point precision
-        /// - Returns: created Point
-        public class func fromTuple(
-                _ tuple: (
-                        measurement: String,
-                        tags: [String?: String?]?,
-                        fields: [String?: Any?], time: Any?),
-                precision: TimestampPrecision? = nil) -> Point {
-            let point = InfluxDBClient.Point(tuple.measurement, precision: precision ?? defaultTimestampPrecision)
-            if let tags = tuple.tags {
-                for tag in tags {
-                    point.addTag(key: tag.0, value: tag.1)
-                }
-            }
-            for field in tuple.fields {
-                point.addField(key: field.0, value: field.1)
-            }
-            if let time = tuple.time {
-                point.time(time: time, precision: precision ?? defaultTimestampPrecision)
-            }
-            return point
-        }
-
-        // swiftlint:enable large_tuple
 
         /// Adds or replaces a tag value for this point.
         ///
@@ -79,10 +48,10 @@ extension InfluxDBClient {
         ///
         /// - Parameters:
         ///   - key: the field name
-        ///   - value: the field value. It can be `Int`, `Float`, `Double`, `Bool` or `String`
+        ///   - value: the field value
         /// - Returns: self
         @discardableResult
-        public func addField(key: String?, value: Any?) -> Point {
+        public func addField(key: String?, value: FieldValue?) -> Point {
             if let key = key {
                 fields[key] = value
             }
@@ -159,6 +128,127 @@ extension InfluxDBClient {
             return map
         }
     }
+}
+
+extension InfluxDBClient.Point {
+    ///  Possible value types of Field
+    public enum FieldValue {
+        /// Support for Int8
+        init(_ value: Int8) {
+            self = .int(Int(value))
+        }
+        /// Support for Int16
+        init(_ value: Int16) {
+            self = .int(Int(value))
+        }
+        /// Support for Int32
+        init(_ value: Int32) {
+            self = .int(Int(value))
+        }
+        /// Support for Int64
+        init(_ value: Int64) {
+            self = .int(Int(value))
+        }
+        /// Support for UInt8
+        init(_ value: UInt8) {
+            self = .uint(UInt(value))
+        }
+        /// Support for UInt16
+        init(_ value: UInt16) {
+            self = .uint(UInt(value))
+        }
+        /// Support for UInt32
+        init(_ value: UInt32) {
+            self = .uint(UInt(value))
+        }
+        /// Support for UInt64
+        init(_ value: UInt64) {
+            self = .uint(UInt(value))
+        }
+        /// Support for Float
+        init(_ value: Float) {
+            self = .double(Double(value))
+        }
+
+        /// signed integer number
+        case int(Int)
+        /// unsigned integer number
+        case uint(UInt)
+        /// floating number
+        case double(Double)
+        /// true or false value
+        case boolean(Bool)
+        /// string value
+        case string(String)
+    }
+}
+
+extension InfluxDBClient.Point {
+    // swiftlint:disable large_tuple cyclomatic_complexity function_body_length
+
+    /// Create a new Point from Tuple.
+    ///
+    /// - Parameters:
+    ///   - tuple: the tuple with keys: `measurement`, `tags`, `fields` and `time`
+    ///   - precision: the data point precision
+    /// - Returns: created Point
+    public class func fromTuple(
+            _ tuple: (
+                    measurement: String,
+                    tags: [String?: String?]?,
+                    fields: [String?: Any?], time: Any?),
+            precision: InfluxDBClient.TimestampPrecision? = nil) -> InfluxDBClient.Point {
+        let timestampPrecision = precision ?? InfluxDBClient.defaultTimestampPrecision
+        let point = InfluxDBClient.Point(tuple.measurement, precision: timestampPrecision)
+        if let tags = tuple.tags {
+            for tag in tags {
+                point.addTag(key: tag.0, value: tag.1)
+            }
+        }
+        for field in tuple.fields {
+            if let value = field.1 {
+                let key = field.0
+                var fieldValue: FieldValue
+
+                switch value {
+                case let intValue as Int:
+                    fieldValue = .int(intValue)
+                case let intValue as Int8:
+                    fieldValue = FieldValue(intValue)
+                case let intValue as Int16:
+                    fieldValue = FieldValue(intValue)
+                case let intValue as Int32:
+                    fieldValue = FieldValue(intValue)
+                case let intValue as Int64:
+                    fieldValue = FieldValue(intValue)
+                case let uintValue as UInt:
+                    fieldValue = .uint(uintValue)
+                case let uintValue as UInt8:
+                    fieldValue = FieldValue(uintValue)
+                case let uintValue as UInt16:
+                    fieldValue = FieldValue(uintValue)
+                case let uintValue as UInt32:
+                    fieldValue = FieldValue(uintValue)
+                case let uintValue as UInt64:
+                    fieldValue = FieldValue(uintValue)
+                case let floatValue as Float:
+                    fieldValue = FieldValue(floatValue)
+                case let doubleValue as Double:
+                    fieldValue = .double(doubleValue)
+                case let boolValue as Bool:
+                    fieldValue = .boolean(boolValue)
+                default:
+                    fieldValue = .string(String(describing: value))
+                }
+                point.addField(key: key, value: fieldValue)
+            }
+        }
+        if let time = tuple.time {
+            point.time(time: time, precision: timestampPrecision)
+        }
+        return point
+    }
+    // swiftlint:enable large_tuple cyclomatic_complexity function_body_length
 }
 
 extension InfluxDBClient.Point: CustomStringConvertible {
@@ -239,26 +329,21 @@ extension InfluxDBClient.Point {
         return mappedFields
     }
 
-    private func escapeValue(_ value: Any) throws -> String? {
+    private func escapeValue(_ value: FieldValue) throws -> String? {
         switch value {
-        case is Int, is Int8, is Int16, is Int32, is Int64:
+        case .int(let value):
             return "\(value)i"
-        case is UInt, is UInt8, is UInt16, is UInt32, is UInt64:
+        case .uint(let value):
             return "\(value)u"
-        case let floatValue as Float:
-            if floatValue.isInfinite || floatValue.isNaN {
+        case .double(let value):
+            if value.isInfinite || value.isNaN {
                 return nil
             }
             return "\(value)"
-        case let doubleValue as Double:
-            if doubleValue.isInfinite || doubleValue.isNaN {
-                return nil
-            }
-            return "\(value)"
-        case let boolValue as Bool:
-            return "\(boolValue ? "true" : "false")"
-        case let stringValue as String:
-            let escaped = stringValue.reduce(into: "") { result, character in
+        case .boolean(let value):
+            return "\(value ? "true" : "false")"
+        case .string(let value):
+            let escaped = value.reduce(into: "") { result, character in
                 switch character {
                 case "\\", "\"":
                     result.append("\\")
@@ -268,9 +353,6 @@ extension InfluxDBClient.Point {
                 }
             }
             return "\"\(escaped)\""
-        default:
-            throw InfluxDBClient.InfluxDBError
-                    .generic("Field value is not supported: \(value) with type: \(type(of: value))")
         }
     }
 

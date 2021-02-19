@@ -186,14 +186,14 @@ struct WriteData: ParsableCommand {
         let recordPoint = InfluxDBClient
                 .Point("demo")
                 .addTag(key: "type", value: "point")
-                .addField(key: "value", value: 2)
+                .addField(key: "value", value: .int(2))
         //
         // Record defined as Data Point with Timestamp
         //
         let recordPointDate = InfluxDBClient
                 .Point("demo")
                 .addTag(key: "type", value: "point-timestamp")
-                .addField(key: "value", value: 2)
+                .addField(key: "value", value: .int(2))
                 .time(time: Date())
         //
         // Record defined as Tuple
@@ -629,7 +629,9 @@ client = InfluxDBClient(
         options: InfluxDBClient.InfluxDBOptions(bucket: "my-bucket", org: "my-org"))
 
 let records: [Any] = [
-        InfluxDBClient.Point("mining").addTag(key: "sensor_state", value: "normal").addField(key: "depth", value: 2),
+        InfluxDBClient.Point("mining")
+                .addTag(key: "sensor_state", value: "normal")
+                .addField(key: "depth", value: .int(2)),
         (measurement: "mining", tags: ["sensor_state": "normal"], fields: ["pressure": 3])
 ]
 
