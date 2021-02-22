@@ -119,7 +119,6 @@ extension PointTests {
         ("testTagEmptyValue", testTagEmptyValue),
         ("testTagEscapingKeyAndValue", testTagEscapingKeyAndValue),
         ("testTime", testTime),
-        ("testTimePrecisionDefault", testTimePrecisionDefault),
         ("testTimestamp", testTimestamp),
         ("testUnsignedInt", testUnsignedInt),
     ]
