@@ -16,18 +16,15 @@ extension InfluxDBClient {
         // The measurement fields.
         private var fields: [String: FieldValue?] = [:]
         /// The data point time.
-        var time: Any?
-        /// The data point precision.
-        var precision: InfluxDBClient.TimestampPrecision
+        var time: TimestampValue?
 
         /// Create a new Point with specified a measurement name and precision.
         ///
         /// - Parameters:
         ///   - measurement: the measurement name
         ///   - precision: the data point precision
-        public init(_ measurement: String, precision: TimestampPrecision = InfluxDBClient.defaultTimestampPrecision) {
+        public init(_ measurement: String) {
             self.measurement = measurement
-            self.precision = precision
         }
 
         /// Adds or replaces a tag value for this point.
@@ -62,11 +59,9 @@ extension InfluxDBClient {
         ///
         /// - Parameters:
         ///   - time: the timestamp. It can be `Int` or `Date`.
-        ///   - precision: the timestamp precision
         /// - Returns: self
         @discardableResult
-        public func time(time: Any, precision: TimestampPrecision = defaultTimestampPrecision) -> Point {
-            self.precision = precision
+        public func time(time: TimestampValue) -> Point {
             self.time = time
             return self
         }
@@ -83,7 +78,7 @@ extension InfluxDBClient {
             guard !fields.isEmpty else {
                 return nil
             }
-            let time = try escapeTime()
+            let time = escapeTime()
 
             return "\(meas)\(tags) \(fields)\(time)"
         }
@@ -131,7 +126,7 @@ extension InfluxDBClient {
 }
 
 extension InfluxDBClient.Point {
-    ///  Possible value types of Field
+    /// Possible value types of Field
     public enum FieldValue {
         /// Support for Int8
         init(_ value: Int8) {
@@ -181,6 +176,32 @@ extension InfluxDBClient.Point {
         /// string value
         case string(String)
     }
+
+    /// Possible value types of Field
+    public enum TimestampValue: CustomStringConvertible {
+        // The number of ticks since the UNIX epoch. The value has to be specified with correct precision.
+        case interval(Int, InfluxDBClient.TimestampPrecision = InfluxDBClient.defaultTimestampPrecision)
+        // The date timestamp.
+        case date(Date, InfluxDBClient.TimestampPrecision = InfluxDBClient.defaultTimestampPrecision)
+
+        public var description: String {
+            switch self {
+            case let .interval(ticks, precision):
+                return "\(ticks) [\(precision)]"
+            case let .date(date, precision):
+                return "\(date) [\(precision)]"
+            }
+        }
+
+        public var precision: InfluxDBClient.TimestampPrecision {
+            switch self {
+            case let .interval(_, precision):
+                return precision
+            case let .date(_, precision):
+                return precision
+            }
+        }
+    }
 }
 
 extension InfluxDBClient.Point {
@@ -198,8 +219,7 @@ extension InfluxDBClient.Point {
                     tags: [String?: String?]?,
                     fields: [String?: Any?], time: Any?),
             precision: InfluxDBClient.TimestampPrecision? = nil) -> InfluxDBClient.Point {
-        let timestampPrecision = precision ?? InfluxDBClient.defaultTimestampPrecision
-        let point = InfluxDBClient.Point(tuple.measurement, precision: timestampPrecision)
+        let point = InfluxDBClient.Point(tuple.measurement)
         if let tags = tuple.tags {
             for tag in tags {
                 point.addTag(key: tag.0, value: tag.1)
@@ -244,7 +264,17 @@ extension InfluxDBClient.Point {
             }
         }
         if let time = tuple.time {
-            point.time(time: time, precision: timestampPrecision)
+            let timestampPrecision = precision ?? InfluxDBClient.defaultTimestampPrecision
+            switch time {
+            case let dateValue as Date:
+                point.time(time: TimestampValue.date(dateValue, timestampPrecision))
+            default:
+                if let intValue = time as? Int {
+                    point.time(time: TimestampValue.interval(intValue, timestampPrecision))
+                } else {
+                    print("The \(time) is not supported as a timestamp value.")
+                }
+            }
         }
         return point
     }
@@ -254,7 +284,7 @@ extension InfluxDBClient.Point {
 extension InfluxDBClient.Point: CustomStringConvertible {
     /// Line Protocol from Data Point.
     public var description: String {
-        "Point: measurement:\(measurement), tags:\(tags), fields:\(fields), time:\(time ?? "nil")"
+        "Point: measurement:\(measurement), tags:\(tags), fields:\(fields), time:\(time?.description ?? "nil")"
     }
 }
 
@@ -356,15 +386,15 @@ extension InfluxDBClient.Point {
         }
     }
 
-    private func escapeTime() throws -> String {
+    private func escapeTime() -> String {
         guard let time = time else {
             return ""
         }
 
         switch time {
-        case is Int:
-            return " \(time)"
-        case let date as Date:
+        case let .interval(ticks, _):
+            return " \(ticks)"
+        case let .date(date, precision):
             let since1970 = date.timeIntervalSince1970
             switch precision {
             case .s:
@@ -376,9 +406,6 @@ extension InfluxDBClient.Point {
             default:
                 return " \(UInt64(since1970 * 1_000_000_000))"
             }
-        default:
-            throw InfluxDBClient.InfluxDBError
-                    .generic("Time value is not supported: \(time) with type: \(type(of: time))")
         }
     }
 }

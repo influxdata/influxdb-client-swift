@@ -44,7 +44,7 @@ struct WriteData: ParsableCommand {
                 .Point("demo")
                 .addTag(key: "type", value: "point-timestamp")
                 .addField(key: "value", value: .int(2))
-                .time(time: Date())
+                .time(time: .date(Date()))
         //
         // Record defined as Tuple
         //

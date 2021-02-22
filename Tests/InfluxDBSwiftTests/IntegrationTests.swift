@@ -42,7 +42,7 @@ final class IntegrationTests: XCTestCase {
                     .addTag(key: "host", value: "aws")
                     .addTag(key: "location", value: "west")
                     .addField(key: "value", value: .int($0))
-                    .time(time: Date(2020, 7, $0))
+                    .time(time: .date(Date(2020, 7, $0)))
         }
 
         client.createWriteAPI().writeRecords(records: points) { _, error in
@@ -96,19 +96,19 @@ final class IntegrationTests: XCTestCase {
                 .addTag(key: "host", value: "aws")
                 .addTag(key: "location", value: "west")
                 .addField(key: "value", value: .int(1))
-                .time(time: Date(2020, 7, 1))
+                .time(time: .date(Date(2020, 7, 1)))
 
         let point2 = InfluxDBClient.Point(measurement)
                 .addTag(key: "host", value: "azure")
                 .addTag(key: "location", value: "west")
                 .addField(key: "value", value: .int(2))
-                .time(time: Date(2020, 7, 2))
+                .time(time: .date(Date(2020, 7, 2)))
 
         let point3 = InfluxDBClient.Point(measurement)
                 .addTag(key: "host", value: "gc")
                 .addTag(key: "location", value: "west")
                 .addField(key: "value", value: .int(3))
-                .time(time: Date(2020, 7, 3))
+                .time(time: .date(Date(2020, 7, 3)))
 
         client.createWriteAPI().writeRecords(records: [point1, point2, point3]) { _, error in
             if let error = error {

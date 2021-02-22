@@ -33,7 +33,7 @@ import Gzip
 ///         .Point("demo")
 ///         .addTag(key: "type", value: "point-timestamp")
 ///         .addField(key: "value", value: .int(2))
-///         .time(time: Date())
+///         .time(time: .date(Date()))
 /// //
 /// // Record defined as Tuple
 /// //
@@ -311,8 +311,9 @@ public class WriteAPI {
         if type(of: record) == InfluxDBClient.Point.self {
             if let point = record as? InfluxDBClient.Point {
                 if let lineProtocol = try point.toLineProtocol(defaultTags: defaultTags) {
+                    let pointPrecision = point.time?.precision ?? InfluxDBClient.defaultTimestampPrecision
                     return try toLineProtocol(
-                            precision: point.precision,
+                            precision: pointPrecision,
                             record: lineProtocol,
                             defaultTags: defaultTags,
                             batches: &batches)
