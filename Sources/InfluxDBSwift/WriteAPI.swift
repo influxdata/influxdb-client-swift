@@ -37,7 +37,8 @@ import Gzip
 /// //
 /// // Record defined as Tuple
 /// //
-/// let recordTuple = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": 3])
+/// let recordTuple: InfluxDBClient.Point.Tuple
+///     = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": .int(3)], time: nil)
 ///
 /// let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
 ///
@@ -238,7 +239,7 @@ public class WriteAPI {
     }
     #endif
 
-    // swiftlint:disable function_body_length function_parameter_count
+    // swiftlint:disable function_parameter_count
     private func postWrite(_ bucket: String?,
                            _ org: String?,
                            _ precision: InfluxDBClient.TimestampPrecision?,
@@ -331,34 +332,8 @@ public class WriteAPI {
                 } else {
                     batches[precision] = (batches.count, [string])
                 }
-            case let tuple as (measurement: String, fields: [String?: Any?]):
-                let point = InfluxDBClient.Point.fromTuple(
-                        (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: nil),
-                        precision: precision)
-                try toLineProtocol(
-                        precision: precision,
-                        record: point,
-                        defaultTags: defaultTags,
-                        batches: &batches)
-            case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?):
-                try toLineProtocol(
-                        precision: precision,
-                        record: InfluxDBClient.Point.fromTuple(tuple, precision: precision),
-                        defaultTags: defaultTags,
-                        batches: &batches)
-            case let tuple as (measurement: String, fields: [String?: Any?], time: Any?):
-                let point = InfluxDBClient.Point.fromTuple(
-                        (measurement: tuple.measurement, tags: nil, fields: tuple.fields, time: tuple.time),
-                        precision: precision)
-                try toLineProtocol(
-                        precision: precision,
-                        record: point,
-                        defaultTags: defaultTags,
-                        batches: &batches)
-            case let tuple as (measurement: String, tags: [String?: String?]?, fields: [String?: Any?]):
-                let point = InfluxDBClient.Point.fromTuple(
-                        (measurement: tuple.measurement, tags: tuple.tags, fields: tuple.fields, time: nil),
-                        precision: precision)
+            case let tuple as InfluxDBClient.Point.Tuple:
+                let point = InfluxDBClient.Point.fromTuple(tuple)
                 try toLineProtocol(
                         precision: precision,
                         record: point,
@@ -375,5 +350,5 @@ public class WriteAPI {
         }
     }
 
-    // swiftlint:enable function_body_length function_parameter_count
+    // swiftlint:enable function_parameter_count
 }

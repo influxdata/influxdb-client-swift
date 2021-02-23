@@ -48,7 +48,8 @@ struct WriteData: ParsableCommand {
         //
         // Record defined as Tuple
         //
-        let recordTuple = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": 3])
+        let recordTuple: InfluxDBClient.Point.Tuple
+                = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": .int(3)], time: nil)
 
         let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
 

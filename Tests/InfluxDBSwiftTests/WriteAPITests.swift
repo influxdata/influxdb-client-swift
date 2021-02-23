@@ -222,8 +222,7 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        let required = "mem,tag=a value=1\nmem,tag=a value=2i\nmem,tag=a value=3i"
-                + "\nmem value=4i\nmem,tag=a value=5i 5\nmem value=6i 6"
+        let required = "mem,tag=a value=1\nmem,tag=a value=2i\nmem,tag=a value=3i 3"
 
         MockURLProtocol.handler = { _, bodyData in
             XCTAssertEqual(
@@ -236,15 +235,18 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
+        let tuple: InfluxDBClient.Point.Tuple = (
+                measurement: "mem",
+                tags: ["tag": "a"],
+                fields: ["value": .int(3)],
+                time: .interval(3)
+        )
         let records: [Any] = [
             "mem,tag=a value=1",
             InfluxDBClient.Point("mem")
                     .addTag(key: "tag", value: "a")
                     .addField(key: "value", value: .int(2)),
-            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 3]),
-            (measurement: "mem", fields: ["value": 4]),
-            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 5], time: 5),
-            (measurement: "mem", fields: ["value": 6], time: 6)
+            tuple
         ]
 
         client.makeWriteAPI().writeRecords(records: records) { _, error in
@@ -384,12 +386,14 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
+        let tuple: InfluxDBClient.Point.Tuple
+                = (measurement: "mem", tags: ["tag": "a"], fields: ["value": .int(3)], time: nil)
         let records: [Any] = [
             "mem,tag=a value=1",
             InfluxDBClient.Point("mem")
                     .addTag(key: "tag", value: "a")
                     .addField(key: "value", value: .int(2)),
-            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 3])
+            tuple
         ]
 
         let defaultTags = InfluxDBClient.PointSettings()

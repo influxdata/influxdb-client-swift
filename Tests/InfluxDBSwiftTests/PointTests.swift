@@ -301,99 +301,85 @@ final class PointTests: XCTestCase {
         let dUIntNumber: UInt32 = 12
         let eUIntNumber: UInt64 = 15
 
-        let tuples: [
-        (
-                (measurement: String, tags: [String?: String?]?, fields: [String?: Any?], time: Any?),
-                InfluxDBClient.TimestampPrecision?,
-                String
-        )] = [
+        let tuples: [(InfluxDBClient.Point.Tuple, String)] = [
             (
                     (
                             measurement: "h2o_feet",
                             tags: ["location": "coyote_creek"],
-                            fields: ["water_level": 1.0],
-                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                            fields: ["water_level": .double(1.0)],
+                            time: .date(Date(2020, 10, 11, 0, 0, 0, 0))
                     ),
-                    nil,
                     "h2o_feet,location=coyote_creek water_level=1.0 1602374400000000000"
             ),
             (
                     (
                             measurement: "h2o_feet",
                             tags: ["location": "coyote_creek"],
-                            fields: ["water_level": true],
-                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                            fields: ["water_level": .boolean(true)],
+                            time: .date(Date(2020, 10, 11, 0, 0, 0, 0))
                     ),
-                    nil,
                     "h2o_feet,location=coyote_creek water_level=true 1602374400000000000"
             ),
             (
                     (
                             measurement: "h2o_feet",
                             tags: ["location": "coyote_creek"],
-                            fields: ["water_level": "good"],
-                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                            fields: ["water_level": .string("good")],
+                            time: .date(Date(2020, 10, 11, 0, 0, 0, 0))
                     ),
-                    nil,
                     "h2o_feet,location=coyote_creek water_level=\"good\" 1602374400000000000"
             ),
             (
                     (
                             measurement: "h2o_feet",
                             tags: ["location": "coyote_creek"],
-                            fields: ["water_level": 1.0],
-                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                            fields: ["water_level": .double(1.0)],
+                            time: .date(Date(2020, 10, 11, 0, 0, 0, 0), .s)
                     ),
-                    .s,
                     "h2o_feet,location=coyote_creek water_level=1.0 1602374400"
             ),
             (
                     (
                             measurement: "h2o_feet",
                             tags: nil,
-                            fields: ["water_level": 1.0],
-                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                            fields: ["water_level": .double(1.0)],
+                            time: .date(Date(2020, 10, 11, 0, 0, 0, 0))
                     ),
-                    nil,
                     "h2o_feet water_level=1.0 1602374400000000000"
             ),
             (
                     (
                             measurement: "h2o_feet",
                             tags: ["location": nil],
-                            fields: ["water_level": 1.0],
-                            time: Date(2020, 10, 11, 0, 0, 0, 0)
+                            fields: ["water_level": .double(1.0)],
+                            time: .date(Date(2020, 10, 11, 0, 0, 0, 0))
                     ),
-                    nil,
                     "h2o_feet water_level=1.0 1602374400000000000"
             ),
             (
                     (
                             measurement: "h2o_feet",
                             tags: ["location": nil],
-                            fields: ["water_level": 1.0],
+                            fields: ["water_level": .double(1.0)],
                             time: nil
                     ),
-                    nil,
                     "h2o_feet water_level=1.0"
             )
         ]
 
         for tuple in tuples {
-            XCTAssertEqual(
-                    tuple.2,
-                    try InfluxDBClient.Point.fromTuple(tuple.0, precision: tuple.1).toLineProtocol())
+            XCTAssertEqual(tuple.1, try InfluxDBClient.Point.fromTuple(tuple.0).toLineProtocol())
         }
 
-        let intTuple: (measurement: String, tags: [String? : String?]?, fields: [String? : Any?], time: Any?) = (
+        let intTuple: InfluxDBClient.Point.Tuple = (
                 measurement: "h2o_feet",
                 tags: nil,
                 fields: [
-                    "aIntNumber": aIntNumber,
-                    "bIntNumber": bIntNumber,
-                    "cIntNumber": cIntNumber,
-                    "dIntNumber": dIntNumber,
-                    "eIntNumber": eIntNumber
+                    "aIntNumber": .int(aIntNumber),
+                    "bIntNumber": InfluxDBClient.Point.FieldValue(bIntNumber),
+                    "cIntNumber": InfluxDBClient.Point.FieldValue(cIntNumber),
+                    "dIntNumber": InfluxDBClient.Point.FieldValue(dIntNumber),
+                    "eIntNumber": InfluxDBClient.Point.FieldValue(eIntNumber)
                 ],
                 time: nil
         )
@@ -402,15 +388,15 @@ final class PointTests: XCTestCase {
                 "h2o_feet aIntNumber=3i,bIntNumber=6i,cIntNumber=9i,dIntNumber=12i,eIntNumber=15i",
                 try InfluxDBClient.Point.fromTuple(intTuple).toLineProtocol())
 
-        let uIntTuple: (measurement: String, tags: [String? : String?]?, fields: [String? : Any?], time: Any?) = (
+        let uIntTuple: InfluxDBClient.Point.Tuple = (
                 measurement: "h2o_feet",
                 tags: nil,
                 fields: [
-                    "aUIntNumber": aUIntNumber,
-                    "bUIntNumber": bUIntNumber,
-                    "cUIntNumber": cUIntNumber,
-                    "dUIntNumber": dUIntNumber,
-                    "eUIntNumber": eUIntNumber
+                    "aUIntNumber": .uint(aUIntNumber),
+                    "bUIntNumber": InfluxDBClient.Point.FieldValue(bUIntNumber),
+                    "cUIntNumber": InfluxDBClient.Point.FieldValue(cUIntNumber),
+                    "dUIntNumber": InfluxDBClient.Point.FieldValue(dUIntNumber),
+                    "eUIntNumber": InfluxDBClient.Point.FieldValue(eUIntNumber)
                 ],
                 time: nil
         )

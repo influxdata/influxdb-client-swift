@@ -55,7 +55,7 @@ Written data:
         - demo,type=string value=1i
         - Point: measurement:demo, tags:["type": Optional("point")], fields:["value": Optional(2)], time:nil
         - Point: measurement:demo, tags:["type": Optional("point-timestamp")], fields:["value": Optional(2)], time:2020-12-10 11:16:29 +0000
-        - (measurement: "demo", tags: ["type": "tuple"], fields: ["value": 3])
+        - (measurement: "demo", tags: ["type": "tuple"], fields: ["value": .int(3)])
 
 Success!
 ```

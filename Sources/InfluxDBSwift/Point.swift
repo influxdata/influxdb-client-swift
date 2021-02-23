@@ -205,20 +205,18 @@ extension InfluxDBClient.Point {
 }
 
 extension InfluxDBClient.Point {
-    // swiftlint:disable large_tuple cyclomatic_complexity function_body_length
-
+    /// Tuple definition for construct `Point`.
+    public typealias Tuple = (measurement: String,
+                              tags: [String?: String?]?,
+                              fields: [String?: InfluxDBClient.Point.FieldValue?],
+                              time: InfluxDBClient.Point.TimestampValue?)
     /// Create a new Point from Tuple.
     ///
     /// - Parameters:
     ///   - tuple: the tuple with keys: `measurement`, `tags`, `fields` and `time`
     ///   - precision: the data point precision
     /// - Returns: created Point
-    public class func fromTuple(
-            _ tuple: (
-                    measurement: String,
-                    tags: [String?: String?]?,
-                    fields: [String?: Any?], time: Any?),
-            precision: InfluxDBClient.TimestampPrecision? = nil) -> InfluxDBClient.Point {
+    public class func fromTuple(_ tuple: Tuple) -> InfluxDBClient.Point {
         let point = InfluxDBClient.Point(tuple.measurement)
         if let tags = tuple.tags {
             for tag in tags {
@@ -226,59 +224,13 @@ extension InfluxDBClient.Point {
             }
         }
         for field in tuple.fields {
-            if let value = field.1 {
-                let key = field.0
-                var fieldValue: FieldValue
-
-                switch value {
-                case let intValue as Int:
-                    fieldValue = .int(intValue)
-                case let intValue as Int8:
-                    fieldValue = FieldValue(intValue)
-                case let intValue as Int16:
-                    fieldValue = FieldValue(intValue)
-                case let intValue as Int32:
-                    fieldValue = FieldValue(intValue)
-                case let intValue as Int64:
-                    fieldValue = FieldValue(intValue)
-                case let uintValue as UInt:
-                    fieldValue = .uint(uintValue)
-                case let uintValue as UInt8:
-                    fieldValue = FieldValue(uintValue)
-                case let uintValue as UInt16:
-                    fieldValue = FieldValue(uintValue)
-                case let uintValue as UInt32:
-                    fieldValue = FieldValue(uintValue)
-                case let uintValue as UInt64:
-                    fieldValue = FieldValue(uintValue)
-                case let floatValue as Float:
-                    fieldValue = FieldValue(floatValue)
-                case let doubleValue as Double:
-                    fieldValue = .double(doubleValue)
-                case let boolValue as Bool:
-                    fieldValue = .boolean(boolValue)
-                default:
-                    fieldValue = .string(String(describing: value))
-                }
-                point.addField(key: key, value: fieldValue)
-            }
+            point.addField(key: field.0, value: field.1)
         }
         if let time = tuple.time {
-            let timestampPrecision = precision ?? InfluxDBClient.defaultTimestampPrecision
-            switch time {
-            case let dateValue as Date:
-                point.time(time: TimestampValue.date(dateValue, timestampPrecision))
-            default:
-                if let intValue = time as? Int {
-                    point.time(time: TimestampValue.interval(intValue, timestampPrecision))
-                } else {
-                    print("The \(time) is not supported as a timestamp value.")
-                }
-            }
+            point.time(time: time)
         }
         return point
     }
-    // swiftlint:enable large_tuple cyclomatic_complexity function_body_length
 }
 
 extension InfluxDBClient.Point: CustomStringConvertible {
