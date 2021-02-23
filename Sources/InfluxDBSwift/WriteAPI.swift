@@ -41,7 +41,7 @@ import Gzip
 ///
 /// let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
 ///
-/// client.createWriteAPI().writeRecords(records: records) { result, error in
+/// client.makeWriteAPI().writeRecords(records: records) { result, error in
 ///     // For handle error
 ///     if let error = error {
 ///         print("Error:\n\n\(error)")

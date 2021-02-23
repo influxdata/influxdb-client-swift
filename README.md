@@ -202,7 +202,7 @@ struct WriteData: ParsableCommand {
 
         let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
 
-        client.createWriteAPI().writeRecords(records: records) { result, error in
+        client.makeWriteAPI().writeRecords(records: records) { result, error in
             // For handle error
             if let error = error {
                 self.atExit(client: client, error: error)
@@ -639,7 +639,7 @@ let defaultTags = InfluxDBClient.PointSettings()
         .addDefaultTag(key: "customer", value: "California Miner")
         .addDefaultTag(key: "sensor_id", value: "${env.SENSOR_ID}")
 
-let writeAPI = client.createWriteAPI(pointSettings: defaultTags)
+let writeAPI = client.makeWriteAPI(pointSettings: defaultTags)
 writeAPI.writeRecords(records: records) { _, error in
         if let error = error {
           print("Error: \(error)")
