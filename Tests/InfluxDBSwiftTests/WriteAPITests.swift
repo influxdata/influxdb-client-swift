@@ -32,7 +32,7 @@ final class WriteAPITests: XCTestCase {
         client.close()
     }
 
-    func testGetWriteAPI() {
+    func testMakeWriteAPI() {
         XCTAssertNotNil(client.makeWriteAPI())
     }
 
