@@ -70,7 +70,7 @@ jobs:
         default: &default-swift-image "swift:5.3"
       influxdb-image:
         type: string
-        default: &default-influxdb-image "quay.io/influxdb/influxdb:v2.0.4"
+        default: &default-influxdb-image "influxdb:latest"
     docker:
       - image: << parameters.swift-image >>
         environment:
