@@ -149,7 +149,7 @@ The data could be written as:
 1. Tuple style mapping with keys: `measurement`, `tags`, `fields` and `time`
 1. Array of above items
 
-The following example demonstrates how to write data with different type of records. For further information see docs and [examples](/Examples).
+The following example demonstrates how to write data with Data Point structure. For further information see docs and [examples](/Examples).
 
 ```swift
 import ArgumentParser
@@ -177,10 +177,6 @@ struct WriteData: ParsableCommand {
                 options: InfluxDBClient.InfluxDBOptions(bucket: self.bucket, org: self.org))
 
         //
-        // Record defined as String
-        //
-        let recordString = "demo,type=string value=1i"
-        //
         // Record defined as Data Point
         //
         let recordPoint = InfluxDBClient
@@ -195,15 +191,8 @@ struct WriteData: ParsableCommand {
                 .addTag(key: "type", value: "point-timestamp")
                 .addField(key: "value", value: .int(2))
                 .time(time: .date(Date()))
-        //
-        // Record defined as Tuple
-        //
-        let recordTuple: InfluxDBClient.Point.Tuple
-                = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": .int(3)], time: nil)
 
-        let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
-
-        client.makeWriteAPI().writeRecords(records: records) { result, error in
+        client.makeWriteAPI().writePoints(points: [recordPoint, recordPointDate]) { result, error in
             // For handle error
             if let error = error {
                 self.atExit(client: client, error: error)
@@ -211,7 +200,8 @@ struct WriteData: ParsableCommand {
 
             // For Success write
             if result != nil {
-                print("Successfully written data:\n\n\(records)")
+                print("Written data:\n\n\([recordPoint, recordPointDate].map { "\t- \($0)" }.joined(separator: "\n"))")
+                print("\nSuccess!")
             }
 
             self.atExit(client: client)

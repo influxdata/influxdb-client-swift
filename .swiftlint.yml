@@ -44,10 +44,10 @@ excluded:
   - Tests/InfluxDBSwiftApisTests/XCTestManifests.swift
 
 type_body_length:
-  warning: 250
+  warning: 500
 
 file_length:
-  warning: 500
+  warning: 1000
 
 cyclomatic_complexity:
   warning: 15
