@@ -192,7 +192,7 @@ struct WriteData: ParsableCommand {
                 .addField(key: "value", value: .int(2))
                 .time(time: .date(Date()))
 
-        client.makeWriteAPI().writePoints(points: [recordPoint, recordPointDate]) { result, error in
+        client.makeWriteAPI().write(points: [recordPoint, recordPointDate]) { result, error in
             // For handle error
             if let error = error {
                 self.atExit(client: client, error: error)

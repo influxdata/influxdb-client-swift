@@ -20,7 +20,7 @@ import Gzip
 /// //
 /// let recordString = "demo,type=string value=1i"
 ///
-/// client.makeWriteAPI().writeRecord(record: recordString) { result, error in
+/// client.makeWriteAPI().write(record: recordString) { result, error in
 ///     // For handle error
 ///     if let error = error {
 ///         print("Error:\n\n\(error)")
@@ -48,7 +48,7 @@ import Gzip
 ///         .addField(key: "value", value: .int(2))
 ///         .time(time: .date(Date()))
 ///
-/// client.makeWriteAPI().writePoints(points: [recordPoint, recordPointDate]) { result, error in
+/// client.makeWriteAPI().write(points: [recordPoint, recordPointDate]) { result, error in
 ///     // For handle error
 ///     if let error = error {
 ///         print("Error:\n\n\(error)")
@@ -66,7 +66,7 @@ import Gzip
 /// let recordTuple: InfluxDBClient.Point.Tuple
 ///     = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": .int(3)], time: nil)
 ///
-/// client.makeWriteAPI().writeTuple(tuple: recordTuple) { result, error in
+/// client.makeWriteAPI().write(tuple: recordTuple) { result, error in
 ///     // For handle error
 ///     if let error = error {
 ///         print("Error:\n\n\(error)")
@@ -105,14 +105,14 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the data and the error objects
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writeRecord(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            record: String,
-                            responseQueue: DispatchQueue = .main,
-                            completion: @escaping (_ response: Void?,
-                                                   _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        self.writeRecords(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      record: String,
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (_ response: Void?,
+                                             _ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -132,13 +132,13 @@ public class WriteAPI {
     ///   - completion: handler to receive the data and the error objects
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writeRecords(bucket: String? = nil,
-                             org: String? = nil,
-                             precision: InfluxDBClient.TimestampPrecision? = nil,
-                             records: [String],
-                             responseQueue: DispatchQueue = .main,
-                             completion: @escaping (_ response: Void?,
-                                                    _ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      records: [String],
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (_ response: Void?,
+                                             _ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postWrite(bucket, org, precision, records, responseQueue) { result -> Void in
             switch result {
             case .success:
@@ -160,14 +160,14 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the data and the error objects
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writePoint(bucket: String? = nil,
-                           org: String? = nil,
-                           precision: InfluxDBClient.TimestampPrecision? = nil,
-                           point: InfluxDBClient.Point,
-                           responseQueue: DispatchQueue = .main,
-                           completion: @escaping (_ response: Void?,
-                                                  _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        self.writePoints(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      point: InfluxDBClient.Point,
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (_ response: Void?,
+                                             _ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -187,13 +187,13 @@ public class WriteAPI {
     ///   - completion: handler to receive the data and the error objects
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writePoints(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            points: [InfluxDBClient.Point],
-                            responseQueue: DispatchQueue = .main,
-                            completion: @escaping (_ response: Void?,
-                                                   _ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      points: [InfluxDBClient.Point],
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (_ response: Void?,
+                                             _ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postWrite(bucket, org, precision, points, responseQueue) { result -> Void in
             switch result {
             case .success:
@@ -215,14 +215,14 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the data and the error objects
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writeTuple(bucket: String? = nil,
-                           org: String? = nil,
-                           precision: InfluxDBClient.TimestampPrecision? = nil,
-                           tuple: InfluxDBClient.Point.Tuple,
-                           responseQueue: DispatchQueue = .main,
-                           completion: @escaping (_ response: Void?,
-                                                  _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        self.writeTuples(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      tuple: InfluxDBClient.Point.Tuple,
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (_ response: Void?,
+                                             _ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -242,13 +242,13 @@ public class WriteAPI {
     ///   - completion: handler to receive the data and the error objects
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writeTuples(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            tuples: [InfluxDBClient.Point.Tuple],
-                            responseQueue: DispatchQueue = .main,
-                            completion: @escaping (_ response: Void?,
-                                                   _ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      tuples: [InfluxDBClient.Point.Tuple],
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (_ response: Void?,
+                                             _ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postWrite(bucket, org, precision, tuples, responseQueue) { result -> Void in
             switch result {
             case .success:
@@ -271,14 +271,14 @@ public class WriteAPI {
     ///
     /// - SeeAlso: `Swift.Result`
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writeRecord(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            record: String,
-                            responseQueue: DispatchQueue = .main,
-                            completion: @escaping (
-                                    _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
-        self.writeRecords(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      record: String,
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (
+                              _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -299,13 +299,13 @@ public class WriteAPI {
     ///
     /// - SeeAlso: `Swift.Result`
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writeRecords(bucket: String? = nil,
-                             org: String? = nil,
-                             precision: InfluxDBClient.TimestampPrecision? = nil,
-                             records: [String],
-                             responseQueue: DispatchQueue = .main,
-                             completion: @escaping (
-                                     _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      records: [String],
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (
+                              _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
         postWrite(bucket, org, precision, records, responseQueue) { result -> Void in
             switch result {
             case .success:
@@ -328,14 +328,14 @@ public class WriteAPI {
     ///
     /// - SeeAlso: `Swift.Result`
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writePoint(bucket: String? = nil,
-                           org: String? = nil,
-                           precision: InfluxDBClient.TimestampPrecision? = nil,
-                           point: InfluxDBClient.Point,
-                           responseQueue: DispatchQueue = .main,
-                           completion: @escaping (
-                                   _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
-        self.writePoints(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      point: InfluxDBClient.Point,
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (
+                              _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -356,13 +356,13 @@ public class WriteAPI {
     ///
     /// - SeeAlso: `Swift.Result`
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writePoints(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            points: [InfluxDBClient.Point],
-                            responseQueue: DispatchQueue = .main,
-                            completion: @escaping (
-                                    _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      points: [InfluxDBClient.Point],
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (
+                              _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
         postWrite(bucket, org, precision, points, responseQueue) { result -> Void in
             switch result {
             case .success:
@@ -385,14 +385,14 @@ public class WriteAPI {
     ///
     /// - SeeAlso: `Swift.Result`
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writeTuple(bucket: String? = nil,
-                           org: String? = nil,
-                           precision: InfluxDBClient.TimestampPrecision? = nil,
-                           tuple: InfluxDBClient.Point.Tuple,
-                           responseQueue: DispatchQueue = .main,
-                           completion: @escaping (
-                                   _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
-        self.writeTuples(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      tuple: InfluxDBClient.Point.Tuple,
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (
+                              _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -413,13 +413,13 @@ public class WriteAPI {
     ///
     /// - SeeAlso: `Swift.Result`
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
-    public func writeTuples(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            tuples: [InfluxDBClient.Point.Tuple],
-                            responseQueue: DispatchQueue = .main,
-                            completion: @escaping (
-                                    _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      tuples: [InfluxDBClient.Point.Tuple],
+                      responseQueue: DispatchQueue = .main,
+                      completion: @escaping (
+                              _ result: Swift.Result<Void, InfluxDBClient.InfluxDBError>) -> Void) {
         postWrite(bucket, org, precision, tuples, responseQueue) { result -> Void in
             switch result {
             case .success:
@@ -443,12 +443,12 @@ public class WriteAPI {
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func writeRecord(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            record: String,
-                            responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
-        self.writeRecords(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      record: String,
+                      responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -468,11 +468,11 @@ public class WriteAPI {
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func writeRecords(bucket: String? = nil,
-                             org: String? = nil,
-                             precision: InfluxDBClient.TimestampPrecision? = nil,
-                             records: [String],
-                             responseQueue: DispatchQueue = .main)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      records: [String],
+                      responseQueue: DispatchQueue = .main)
                     -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
         Future<Void, InfluxDBClient.InfluxDBError> { promise in
             self.postWrite(bucket, org, precision, records, responseQueue) { result -> Void in
@@ -498,12 +498,12 @@ public class WriteAPI {
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func writePoint(bucket: String? = nil,
-                           org: String? = nil,
-                           precision: InfluxDBClient.TimestampPrecision? = nil,
-                           point: InfluxDBClient.Point,
-                           responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
-        self.writePoints(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      point: InfluxDBClient.Point,
+                      responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -523,11 +523,11 @@ public class WriteAPI {
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func writePoints(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            points: [InfluxDBClient.Point],
-                            responseQueue: DispatchQueue = .main)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      points: [InfluxDBClient.Point],
+                      responseQueue: DispatchQueue = .main)
                     -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
         Future<Void, InfluxDBClient.InfluxDBError> { promise in
             self.postWrite(bucket, org, precision, points, responseQueue) { result -> Void in
@@ -553,12 +553,12 @@ public class WriteAPI {
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func writeTuple(bucket: String? = nil,
-                           org: String? = nil,
-                           precision: InfluxDBClient.TimestampPrecision? = nil,
-                           tuple: InfluxDBClient.Point.Tuple,
-                           responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
-        self.writeTuples(
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      tuple: InfluxDBClient.Point.Tuple,
+                      responseQueue: DispatchQueue = .main) -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
+        self.write(
                 bucket: bucket,
                 org: org,
                 precision: precision,
@@ -578,11 +578,11 @@ public class WriteAPI {
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func writeTuples(bucket: String? = nil,
-                            org: String? = nil,
-                            precision: InfluxDBClient.TimestampPrecision? = nil,
-                            tuples: [InfluxDBClient.Point.Tuple],
-                            responseQueue: DispatchQueue = .main)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      tuples: [InfluxDBClient.Point.Tuple],
+                      responseQueue: DispatchQueue = .main)
                     -> AnyPublisher<Void, InfluxDBClient.InfluxDBError> {
         Future<Void, InfluxDBClient.InfluxDBError> { promise in
             self.postWrite(bucket, org, precision, tuples, responseQueue) { result -> Void in

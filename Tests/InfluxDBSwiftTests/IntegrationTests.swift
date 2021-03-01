@@ -45,7 +45,7 @@ final class IntegrationTests: XCTestCase {
                     .time(time: .date(Date(2020, 7, $0)))
         }
 
-        client.makeWriteAPI().writePoints(points: points) { _, error in
+        client.makeWriteAPI().write(points: points) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -110,7 +110,7 @@ final class IntegrationTests: XCTestCase {
                 .addField(key: "value", value: .int(3))
                 .time(time: .date(Date(2020, 7, 3)))
 
-        client.makeWriteAPI().writePoints(points: [point1, point2, point3]) { _, error in
+        client.makeWriteAPI().write(points: [point1, point2, point3]) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
