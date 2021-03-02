@@ -26,25 +26,25 @@ final class InfluxDB2APITests: XCTestCase {
 
     func testCreateApis() {
         let api = InfluxDB2API(client: client!)
-        XCTAssertNotNil(api.getAuthorizationsAPI())
-        XCTAssertNotNil(api.getBucketsAPI())
-        XCTAssertNotNil(api.getDBRPsAPI())
-        XCTAssertNotNil(api.getHealthAPI())
-        XCTAssertNotNil(api.getLabelsAPI())
-        XCTAssertNotNil(api.getOrganizationsAPI())
-        XCTAssertNotNil(api.getReadyAPI())
-        XCTAssertNotNil(api.getScraperTargetsAPI())
-        XCTAssertNotNil(api.getSecretsAPI())
-        XCTAssertNotNil(api.getSetupAPI())
-        XCTAssertNotNil(api.getSourcesAPI())
-        XCTAssertNotNil(api.getTasksAPI())
-        XCTAssertNotNil(api.getUsersAPI())
-        XCTAssertNotNil(api.getVariablesAPI())
+        XCTAssertNotNil(api.authorizationsAPI)
+        XCTAssertNotNil(api.bucketsAPI)
+        XCTAssertNotNil(api.dbrpsAPI)
+        XCTAssertNotNil(api.healthAPI)
+        XCTAssertNotNil(api.labelsAPI)
+        XCTAssertNotNil(api.organizationsAPI)
+        XCTAssertNotNil(api.readyAPI)
+        XCTAssertNotNil(api.scraperTargetsAPI)
+        XCTAssertNotNil(api.secretsAPI)
+        XCTAssertNotNil(api.setupAPI)
+        XCTAssertNotNil(api.sourcesAPI)
+        XCTAssertNotNil(api.tasksAPI)
+        XCTAssertNotNil(api.usersAPI)
+        XCTAssertNotNil(api.variablesAPI)
     }
 
     func testURLSession() {
         let api = InfluxDB2API(client: client!)
-        XCTAssertEqual(client?.session, api.getURLSession())
+        XCTAssertEqual(client?.session, api.urlSession)
     }
 }
 
@@ -141,7 +141,7 @@ class APIXCTestCase: XCTestCase {
             }
 
             if let response = response {
-                //print(dump(response))
+                // print(dump(response))
                 check(response)
             }
 
@@ -154,7 +154,7 @@ class APIXCTestCase: XCTestCase {
             return
         }
         let expectation = self.expectation(description: "Cannot find my-org")
-        api.getOrganizationsAPI().getOrgs(limit: 100) { organizations, error in
+        api.organizationsAPI.getOrgs(limit: 100) { organizations, error in
             if let error = error {
                 XCTFail("\(error)")
             }
@@ -173,7 +173,7 @@ class APIXCTestCase: XCTestCase {
             return
         }
         let expectation = self.expectation(description: "Cannot find my-bucket")
-        api.getBucketsAPI().getBuckets(limit: 100) { response, error in
+        api.bucketsAPI.getBuckets(limit: 100) { response, error in
             if let error = error {
                 XCTFail("\(error)")
             }

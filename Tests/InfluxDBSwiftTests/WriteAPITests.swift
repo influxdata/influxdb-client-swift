@@ -32,8 +32,8 @@ final class WriteAPITests: XCTestCase {
         client.close()
     }
 
-    func testGetWriteAPI() {
-        XCTAssertNotNil(client.getWriteAPI())
+    func testMakeWriteAPI() {
+        XCTAssertNotNil(client.makeWriteAPI())
     }
 
     func testWriteRecord() {
@@ -42,7 +42,7 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
-        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1i") { response, error in
+        client.makeWriteAPI().write(record: "mem,tag=a value=1i") { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -63,8 +63,10 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
-        let record = InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 1)
-        client.getWriteAPI().writeRecord(record: record) { response, error in
+        let point = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "a")
+                .addField(key: "value", value: .int(1))
+        client.makeWriteAPI().write(point: point) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -95,16 +97,16 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        let record1 = InfluxDBClient.Point("mem")
+        let point1 = InfluxDBClient.Point("mem")
                 .addTag(key: "tag", value: "a")
-                .addField(key: "value", value: 1)
-                .time(time: 1, precision: InfluxDBClient.WritePrecision.s)
-        let record2 = InfluxDBClient.Point("mem")
+                .addField(key: "value", value: .int(1))
+                .time(time: .interval(1, .s))
+        let point2 = InfluxDBClient.Point("mem")
                 .addTag(key: "tag", value: "b")
-                .addField(key: "value", value: 2)
-                .time(time: 2, precision: InfluxDBClient.WritePrecision.ns)
+                .addField(key: "value", value: .int(2))
+                .time(time: .interval(2, .ns))
 
-        client.getWriteAPI().writeRecords(records: [record1, [record2]]) { _, _ in
+        client.makeWriteAPI().write(points: [point1, point2]) { _, _ in
             expectation.fulfill()
         }
 
@@ -126,7 +128,7 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, bodyData in
             XCTAssertEqual(
                     "mem,tag=a value=1i\nmem,tag=b value=2i",
                     String(decoding: bodyData!, as: UTF8.self))
@@ -137,9 +139,13 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        let record1 = InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 1)
-        let record2 = InfluxDBClient.Point("mem").addTag(key: "tag", value: "b").addField(key: "value", value: 2)
-        client.getWriteAPI().writeRecords(records: [record1, [record2]]) { response, error in
+        let point1 = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "a")
+                .addField(key: "value", value: .int(1))
+        let point2 = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "b")
+                .addField(key: "value", value: .int(2))
+        client.makeWriteAPI().write(points: [point1, point2]) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -179,7 +185,7 @@ final class WriteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1") { _, _ in
+        client.makeWriteAPI().write(record: "mem,tag=a value=1") { _, _ in
             expectation.fulfill()
         }
 
@@ -190,7 +196,7 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, bodyData in
             XCTAssertEqual(
                     "mem,tag=a value=1\nmem,tag=a value=2\nmem,tag=a value=3\nmem,tag=a value=4",
                     String(decoding: bodyData!, as: UTF8.self))
@@ -202,7 +208,7 @@ final class WriteAPITests: XCTestCase {
         }
 
         let records = ["mem,tag=a value=1", "mem,tag=a value=2", " ", "mem,tag=a value=3", "", "mem,tag=a value=4"]
-        client.getWriteAPI().writeRecords(records: records) { _, error in
+        client.makeWriteAPI().write(records: records) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -214,32 +220,45 @@ final class WriteAPITests: XCTestCase {
 
     func testWriteRecordTypes() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
-        expectation.expectedFulfillmentCount = 2
+        expectation.expectedFulfillmentCount = 6
 
-        let required = "mem,tag=a value=1\nmem,tag=a value=2i\nmem,tag=a value=3i"
-                + "\nmem value=4i\nmem,tag=a value=5i 5\nmem value=6i 6"
+        var body: [String] = []
+        let required = "mem,tag=a value=1\nmem,tag=a value=2i\nmem,tag=a value=3i 3"
 
-        MockURLProtocol.handler = { request, bodyData in
-            XCTAssertEqual(
-                    required,
-                    String(decoding: bodyData!, as: UTF8.self))
-
+        MockURLProtocol.handler = { _, bodyData in
+            body.append(String(decoding: bodyData!, as: UTF8.self))
             expectation.fulfill()
 
             let response = HTTPURLResponse(statusCode: 204)
             return (response, Data())
         }
 
-        let records: [Any] = [
-            "mem,tag=a value=1",
-            InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 2),
-            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 3]),
-            (measurement: "mem", fields: ["value": 4]),
-            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 5], time: 5),
-            (measurement: "mem", fields: ["value": 6], time: 6)
-        ]
+        let record = "mem,tag=a value=1"
+        let tuple: InfluxDBClient.Point.Tuple = (
+                measurement: "mem",
+                tags: ["tag": "a"],
+                fields: ["value": .int(3)],
+                time: .interval(3)
+        )
+        let point = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "a")
+                .addField(key: "value", value: .int(2))
 
-        client.getWriteAPI().writeRecords(records: records) { _, error in
+        client.makeWriteAPI().write(records: [record]) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        client.makeWriteAPI().write(points: [point]) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        client.makeWriteAPI().write(tuples: [tuple]) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -247,6 +266,7 @@ final class WriteAPITests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
+        XCTAssertEqual(required, body.joined(separator: "\n"))
     }
 
     func testWriteRecordResult() {
@@ -255,7 +275,7 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
-        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1i") { result in
+        client.makeWriteAPI().write(record: "mem,tag=a value=1i") { result in
             switch result {
             case let .success(response):
                 XCTAssertTrue(response == Void())
@@ -276,8 +296,8 @@ final class WriteAPITests: XCTestCase {
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
 
-        client.getWriteAPI()
-                .writeRecord(record: "mem,tag=a value=1i")
+        client.makeWriteAPI()
+                .write(record: "mem,tag=a value=1i")
                 .sink(receiveCompletion: { completion in
                     if case .failure(let error) = completion {
                         XCTFail("Error occurs: \(error)")
@@ -303,12 +323,12 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Check requirements from API")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, _ in
             let response = HTTPURLResponse(statusCode: 422)
             return (response, Data())
         }
 
-        client.getWriteAPI().writeRecord(org: "my-org", record: "mem,tag=a value=1i") { response, error in
+        client.makeWriteAPI().write(org: "my-org", record: "mem,tag=a value=1i") { response, error in
             XCTAssertNotNil(error)
             XCTAssertNil(response)
 
@@ -319,7 +339,7 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        client.getWriteAPI().writeRecord(bucket: "my-bucket", record: "mem,tag=a value=1i") { response, error in
+        client.makeWriteAPI().write(bucket: "my-bucket", record: "mem,tag=a value=1i") { response, error in
             XCTAssertNotNil(error)
             XCTAssertNil(response)
 
@@ -337,12 +357,12 @@ final class WriteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Check requirements from API")
         expectation.expectedFulfillmentCount = 1
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, _ in
             let response = HTTPURLResponse(statusCode: 422)
             return (response, Data())
         }
 
-        client.getWriteAPI().writeRecord(record: "mem,tag=a value=1i") { response, error in
+        client.makeWriteAPI().write(record: "mem,tag=a value=1i") { response, error in
             XCTAssertNotNil(error)
             XCTAssertNil(response)
 
@@ -361,32 +381,45 @@ final class WriteAPITests: XCTestCase {
 
     func testDefaultTags() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
-        expectation.expectedFulfillmentCount = 2
+        expectation.expectedFulfillmentCount = 6
 
+        var body: [String] = []
         let required = "mem,tag=a value=1\nmem,tag=a,tag_a=tag_a_value value=2i\nmem,tag=a,tag_a=tag_a_value value=3i"
 
-        MockURLProtocol.handler = { request, bodyData in
-            XCTAssertEqual(
-                    required,
-                    String(decoding: bodyData!, as: UTF8.self))
-
+        MockURLProtocol.handler = { _, bodyData in
+            body.append(String(decoding: bodyData!, as: UTF8.self))
             expectation.fulfill()
 
             let response = HTTPURLResponse(statusCode: 204)
             return (response, Data())
         }
 
-        let records: [Any] = [
-            "mem,tag=a value=1",
-            InfluxDBClient.Point("mem").addTag(key: "tag", value: "a").addField(key: "value", value: 2),
-            (measurement: "mem", tags: ["tag": "a"], fields: ["value": 3])
-        ]
+        let record = "mem,tag=a value=1"
+        let point = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "a")
+                .addField(key: "value", value: .int(2))
+        let tuple: InfluxDBClient.Point.Tuple
+                = (measurement: "mem", tags: ["tag": "a"], fields: ["value": .int(3)], time: nil)
 
         let defaultTags = InfluxDBClient.PointSettings()
                 .addDefaultTag(key: "tag_a", value: "tag_a_value")
                 .addDefaultTag(key: "tag_nil", value: nil)
 
-        client.getWriteAPI(pointSettings: defaultTags).writeRecords(records: records) { _, error in
+        client.makeWriteAPI(pointSettings: defaultTags).write(record: record) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        client.makeWriteAPI(pointSettings: defaultTags).write(point: point) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        client.makeWriteAPI(pointSettings: defaultTags).write(tuple: tuple) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -394,10 +427,12 @@ final class WriteAPITests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
+        XCTAssertEqual(required, body.joined(separator: "\n"))
     }
 
     private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
-    -> (HTTPURLResponse, Data) { { request, bodyData in
+    -> (HTTPURLResponse, Data) {
+        { request, bodyData in
             XCTAssertEqual(
                     "influxdb-client-swift/\(InfluxDBClient.self.version)",
                     request.allHTTPHeaderFields!["User-Agent"])

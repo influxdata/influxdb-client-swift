@@ -26,14 +26,14 @@ final class DeleteAPITests: XCTestCase {
     }
 
     func testGetDeleteAPI() {
-        XCTAssertNotNil(client.getDeleteAPI())
+        XCTAssertNotNil(client.deleteAPI)
     }
 
     func testBucketOrgParameters() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { request, _ in
             XCTAssertEqual("my-bucket", request.url?.queryParamValue("bucket"))
             XCTAssertEqual("my-org", request.url?.queryParamValue("org"))
 
@@ -43,7 +43,7 @@ final class DeleteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getDeleteAPI().delete(
+        client.deleteAPI.delete(
                 predicate: DeletePredicateRequest(start: Date(), stop: Date()),
                 bucket: "my-bucket",
                 org: "my-org") { _, error in
@@ -60,7 +60,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { request, _ in
             XCTAssertEqual("org-id", request.url?.queryParamValue("orgID"))
             XCTAssertEqual("bucket-id", request.url?.queryParamValue("bucketID"))
 
@@ -70,7 +70,7 @@ final class DeleteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getDeleteAPI().delete(
+        client.deleteAPI.delete(
                 predicate: DeletePredicateRequest(start: Date(), stop: Date()),
                 bucketID: "bucket-id",
                 orgID: "org-id") { _, error in
@@ -87,7 +87,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { request, _ in
             XCTAssertNil(request.url?.queryParamValue("bucket"))
             XCTAssertNil(request.url?.queryParamValue("bucketID"))
             XCTAssertNil(request.url?.queryParamValue("org"))
@@ -99,7 +99,7 @@ final class DeleteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getDeleteAPI().delete(predicate: DeletePredicateRequest(start: Date(), stop: Date())) { _, error in
+        client.deleteAPI.delete(predicate: DeletePredicateRequest(start: Date(), stop: Date())) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -113,7 +113,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, bodyData in
             let predicate = try CodableHelper.decode(DeletePredicateRequest.self, from: bodyData!).get()
             XCTAssertEqual(Date(2010, 10, 5), predicate.start)
             XCTAssertEqual(Date(2010, 10, 7), predicate.stop)
@@ -129,7 +129,7 @@ final class DeleteAPITests: XCTestCase {
                 start: Date(2010, 10, 5),
                 stop: Date(2010, 10, 7),
                 predicate: "_measurement=\"sensorData\"")
-        client.getDeleteAPI().delete(predicate: predicate) { result in
+        client.deleteAPI.delete(predicate: predicate) { result in
             switch result {
             case let .success(response):
                 XCTAssertTrue(response == Void())
@@ -147,7 +147,7 @@ final class DeleteAPITests: XCTestCase {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { request, _ in
             XCTAssertEqual("my-bucket", request.url?.queryParamValue("bucket"))
             XCTAssertEqual("my-org", request.url?.queryParamValue("org"))
 
@@ -157,7 +157,7 @@ final class DeleteAPITests: XCTestCase {
             return (response, Data())
         }
 
-        client.getDeleteAPI().delete(
+        client.deleteAPI.delete(
                 predicate: DeletePredicateRequest(start: Date(), stop: Date()),
                 bucket: "my-bucket",
                 org: "my-org") { _, error in

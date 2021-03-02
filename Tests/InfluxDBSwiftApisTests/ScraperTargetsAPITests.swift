@@ -9,7 +9,7 @@ import XCTest
 class ScraperTargetsAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api.getScraperTargetsAPI().getScrapers { scrapers, _ in
+        api.scraperTargetsAPI.getScrapers { scrapers, _ in
             scrapers?
                     .configurations?
                     .filter { configuration in
@@ -18,7 +18,7 @@ class ScraperTargetsAPITests: APIXCTestCase {
                         }
                         return false
                     }.forEach { configuration in
-                        self.api.getScraperTargetsAPI().deleteScrapersID(scraperTargetID: configuration.id!) { _, _ in
+                        self.api.scraperTargetsAPI.deleteScrapersID(scraperTargetID: configuration.id!) { _, _ in
                         }
                     }
         }
@@ -42,6 +42,6 @@ class ScraperTargetsAPITests: APIXCTestCase {
             XCTAssertNotNil(response.links)
         }
 
-        checkPost(api.getScraperTargetsAPI().postScrapers, request, &checker)
+        checkPost(api.scraperTargetsAPI.postScrapers, request, &checker)
     }
 }

@@ -41,11 +41,11 @@ final class IntegrationTests: XCTestCase {
             InfluxDBClient.Point(measurement)
                     .addTag(key: "host", value: "aws")
                     .addTag(key: "location", value: "west")
-                    .addField(key: "value", value: $0)
-                    .time(time: Date(2020, 7, $0))
+                    .addField(key: "value", value: .int($0))
+                    .time(time: .date(Date(2020, 7, $0)))
         }
 
-        client.getWriteAPI().writeRecords(records: points) { _, error in
+        client.makeWriteAPI().write(points: points) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -61,7 +61,7 @@ final class IntegrationTests: XCTestCase {
                         |> filter(fn: (r) => r._measurement == "\(measurement)")
                     """
 
-        client.getQueryAPI().query(query: query) { response, error in
+        client.queryAPI.query(query: query) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -95,22 +95,22 @@ final class IntegrationTests: XCTestCase {
         let point1 = InfluxDBClient.Point(measurement)
                 .addTag(key: "host", value: "aws")
                 .addTag(key: "location", value: "west")
-                .addField(key: "value", value: 1)
-                .time(time: Date(2020, 7, 1))
+                .addField(key: "value", value: .int(1))
+                .time(time: .date(Date(2020, 7, 1)))
 
         let point2 = InfluxDBClient.Point(measurement)
                 .addTag(key: "host", value: "azure")
                 .addTag(key: "location", value: "west")
-                .addField(key: "value", value: 2)
-                .time(time: Date(2020, 7, 2))
+                .addField(key: "value", value: .int(2))
+                .time(time: .date(Date(2020, 7, 2)))
 
         let point3 = InfluxDBClient.Point(measurement)
                 .addTag(key: "host", value: "gc")
                 .addTag(key: "location", value: "west")
-                .addField(key: "value", value: 3)
-                .time(time: Date(2020, 7, 3))
+                .addField(key: "value", value: .int(3))
+                .time(time: .date(Date(2020, 7, 3)))
 
-        client.getWriteAPI().writeRecords(records: [point1, point2, point3]) { _, error in
+        client.makeWriteAPI().write(points: [point1, point2, point3]) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -126,7 +126,7 @@ final class IntegrationTests: XCTestCase {
                         |> filter(fn: (r) => r._measurement == "\(measurement)")
                     """
 
-        client.getQueryAPI().query(query: query) { response, error in
+        client.queryAPI.query(query: query) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -155,7 +155,7 @@ final class IntegrationTests: XCTestCase {
                 stop: Date(2021, 10, 7),
                 predicate: "_measurement=\"\(measurement)\" AND host=\"azure\"")
 
-        client.getDeleteAPI().delete(predicate: predicate, bucket: "my-bucket", org: "my-org") { _, error in
+        client.deleteAPI.delete(predicate: predicate, bucket: "my-bucket", org: "my-org") { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -166,7 +166,7 @@ final class IntegrationTests: XCTestCase {
 
         expectation = self.expectation(description: "Success response from Query API doesn't arrive")
 
-        client.getQueryAPI().query(query: query) { response, error in
+        client.queryAPI.query(query: query) { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }

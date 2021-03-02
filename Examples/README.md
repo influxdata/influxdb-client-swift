@@ -1,7 +1,7 @@
 # Examples
 
 ## Writes
-- [WriteData](WriteData#writedata) - How to write data with different type of records 
+- [WriteData](WriteData#writedata) - How to write data with Data Point structure 
 
 ## Queries
 - [QueryCpu](QueryCpu#querycpu) - How to query data into sequence of `FluxRecord`

@@ -102,7 +102,7 @@ client.close()
 |---|---|---|---|
 | bucket | Default destination bucket for writes | String | none |
 | org | Default organization bucket for writes | String | none |
-| precision | Default precision for the unix timestamps within the body line-protocol | WritePrecision | ns |
+| precision | Default precision for the unix timestamps within the body line-protocol | TimestampPrecision | ns |
 | timeoutIntervalForRequest | The timeout interval to use when waiting for additional data. | TimeInterval | 60 sec |
 | timeoutIntervalForResource | The maximum amount of time that a resource request should be allowed to take. | TimeInterval | 5 min |
 | enableGzip | Enable Gzip compression for HTTP requests. | Bool | false |
@@ -113,7 +113,7 @@ client.close()
 let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
         bucket: "my-bucket",
         org: "my-org",
-        precision: InfluxDBClient.WritePrecision.ns)
+        precision: .ns)
 
 let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
 
@@ -149,7 +149,7 @@ The data could be written as:
 1. Tuple style mapping with keys: `measurement`, `tags`, `fields` and `time`
 1. Array of above items
 
-The following example demonstrates how to write data with different type of records. For further information see docs and [examples](/Examples).
+The following example demonstrates how to write data with Data Point structure. For further information see docs and [examples](/Examples).
 
 ```swift
 import ArgumentParser
@@ -177,32 +177,22 @@ struct WriteData: ParsableCommand {
                 options: InfluxDBClient.InfluxDBOptions(bucket: self.bucket, org: self.org))
 
         //
-        // Record defined as String
-        //
-        let recordString = "demo,type=string value=1i"
-        //
         // Record defined as Data Point
         //
         let recordPoint = InfluxDBClient
                 .Point("demo")
                 .addTag(key: "type", value: "point")
-                .addField(key: "value", value: 2)
+                .addField(key: "value", value: .int(2))
         //
         // Record defined as Data Point with Timestamp
         //
         let recordPointDate = InfluxDBClient
                 .Point("demo")
                 .addTag(key: "type", value: "point-timestamp")
-                .addField(key: "value", value: 2)
-                .time(time: Date())
-        //
-        // Record defined as Tuple
-        //
-        let recordTuple = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": 3])
+                .addField(key: "value", value: .int(2))
+                .time(time: .date(Date()))
 
-        let records: [Any] = [recordString, recordPoint, recordPointDate, recordTuple]
-
-        client.getWriteAPI().writeRecords(records: records) { result, error in
+        client.makeWriteAPI().write(points: [recordPoint, recordPointDate]) { result, error in
             // For handle error
             if let error = error {
                 self.atExit(client: client, error: error)
@@ -210,7 +200,8 @@ struct WriteData: ParsableCommand {
 
             // For Success write
             if result != nil {
-                print("Successfully written data:\n\n\(records)")
+                print("Written data:\n\n\([recordPoint, recordPointDate].map { "\t- \($0)" }.joined(separator: "\n"))")
+                print("\nSuccess!")
             }
 
             self.atExit(client: client)
@@ -280,7 +271,7 @@ struct QueryCpu: ParsableCommand {
 
     print("\nQuery to execute:\n\n\(query)")
 
-    client.getQueryAPI().query(query: query) { response, error in
+    client.queryAPI.query(query: query) { response, error in
       // For handle error
       if let error = error {
         self.atExit(client: client, error: error)
@@ -358,7 +349,7 @@ struct QueryCpuData: ParsableCommand {
                     |> last()
                 """
 
-    client.getQueryAPI().queryRaw(query: query) { response, error in
+    client.queryAPI.queryRaw(query: query) { response, error in
       // For handle error
       if let error = error {
         self.atExit(client: client, error: error)
@@ -430,7 +421,7 @@ struct DeleteData: ParsableCommand {
             stop: Date(),
             predicate: predicate)
 
-    client.getDeleteAPI().delete(predicate: predicateRequest, bucket: bucket, org: org) { result, error in
+    client.deleteAPI.delete(predicate: predicateRequest, bucket: bucket, org: org) { result, error in
       // For handle error
       if let error = error {
         self.atExit(client: client, error: error)
@@ -457,7 +448,7 @@ struct DeleteData: ParsableCommand {
                     |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
                 """
 
-    client.getQueryAPI().query(query: query) { response, error in
+    client.queryAPI.query(query: query) { response, error in
       // For handle error
       if let error = error {
         self.atExit(client: client, error: error)
@@ -553,7 +544,7 @@ struct CreateNewBucket: ParsableCommand {
                 retentionRules: [RetentionRule(type: RetentionRule.ModelType.expire, everySeconds: self.retention)])
 
         // Create Bucket
-        api.getBucketsAPI().postBuckets(postBucketRequest: request) { bucket, error in
+        api.bucketsAPI.postBuckets(postBucketRequest: request) { bucket, error in
             // For error exit
             if let error = error {
                 self.atExit(client: client, error: error)
@@ -576,7 +567,7 @@ struct CreateNewBucket: ParsableCommand {
                         ])
 
                 // Create Authorization
-                api.getAuthorizationsAPI().postAuthorizations(authorization: request) { authorization, error in
+                api.authorizationsAPI.postAuthorizations(authorization: request) { authorization, error in
                     // For error exit
                     if let error = error {
                         atExit(client: client, error: error)
@@ -628,16 +619,21 @@ client = InfluxDBClient(
         token: "my-token",
         options: InfluxDBClient.InfluxDBOptions(bucket: "my-bucket", org: "my-org"))
 
+let tuple: InfluxDBClient.Point.Tuple
+        = (measurement: "mem", tags: ["tag": "a"], fields: ["value": .int(3)], time: nil)
+
 let records: [Any] = [
-        InfluxDBClient.Point("mining").addTag(key: "sensor_state", value: "normal").addField(key: "depth", value: 2),
-        (measurement: "mining", tags: ["sensor_state": "normal"], fields: ["pressure": 3])
+        InfluxDBClient.Point("mining")
+                .addTag(key: "sensor_state", value: "normal")
+                .addField(key: "depth", value: .int(2)),
+        tuple
 ]
 
 let defaultTags = InfluxDBClient.PointSettings()
         .addDefaultTag(key: "customer", value: "California Miner")
         .addDefaultTag(key: "sensor_id", value: "${env.SENSOR_ID}")
 
-let writeAPI = client.getWriteAPI(pointSettings: defaultTags)
+let writeAPI = client.makeWriteAPI(pointSettings: defaultTags)
 writeAPI.writeRecords(records: records) { _, error in
         if let error = error {
           print("Error: \(error)")

@@ -35,7 +35,7 @@ struct CreateNewBucket: ParsableCommand {
                 retentionRules: [RetentionRule(type: RetentionRule.ModelType.expire, everySeconds: self.retention)])
 
         // Create Bucket
-        api.getBucketsAPI().postBuckets(postBucketRequest: request) { bucket, error in
+        api.bucketsAPI.postBuckets(postBucketRequest: request) { bucket, error in
             // For error exit
             if let error = error {
                 self.atExit(client: client, error: error)
@@ -58,7 +58,7 @@ struct CreateNewBucket: ParsableCommand {
                         ])
 
                 // Create Authorization
-                api.getAuthorizationsAPI().postAuthorizations(authorization: request) { authorization, error in
+                api.authorizationsAPI.postAuthorizations(authorization: request) { authorization, error in
                     // For error exit
                     if let error = error {
                         atExit(client: client, error: error)

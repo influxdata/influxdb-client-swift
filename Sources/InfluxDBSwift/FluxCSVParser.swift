@@ -18,7 +18,7 @@ internal class FluxCSVParser {
     private var startNewTable = true
     private var groups: ArraySlice<String> = []
 
-    internal init(data: Data) throws {
+    init(data: Data) throws {
         csv = try CSVReader(stream: InputStream(data: data))
     }
 

@@ -17,6 +17,7 @@ extension DeleteAPITests {
     static let __allTests__DeleteAPITests = [
         ("testBucketIDOrgIDParameters", testBucketIDOrgIDParameters),
         ("testBucketOrgParameters", testBucketOrgParameters),
+        ("testErrorResponse", testErrorResponse),
         ("testGetDeleteAPI", testGetDeleteAPI),
         ("testPredicateRequestSerialization", testPredicateRequestSerialization),
         ("testWithoutBucketOrgParameters", testWithoutBucketOrgParameters),
@@ -108,6 +109,7 @@ extension PointTests {
         ("testFieldTypes", testFieldTypes),
         ("testFromTuple", testFromTuple),
         ("testInfinityValues", testInfinityValues),
+        ("testInt", testInt),
         ("testMeasurementEscape", testMeasurementEscape),
         ("testOnlyInfinityValues", testOnlyInfinityValues),
         ("testOverrideTagField", testOverrideTagField),
@@ -117,8 +119,8 @@ extension PointTests {
         ("testTagEmptyValue", testTagEmptyValue),
         ("testTagEscapingKeyAndValue", testTagEscapingKeyAndValue),
         ("testTime", testTime),
-        ("testTimePrecisionDefault", testTimePrecisionDefault),
         ("testTimestamp", testTimestamp),
+        ("testUnsignedInt", testUnsignedInt),
     ]
 }
 
@@ -140,7 +142,7 @@ extension WriteAPITests {
     static let __allTests__WriteAPITests = [
         ("testBucketAndOrgAreRequired", testBucketAndOrgAreRequired),
         ("testDefaultTags", testDefaultTags),
-        ("testGetWriteAPI", testGetWriteAPI),
+        ("testMakeWriteAPI", testMakeWriteAPI),
         ("testUnsuccessfulResponse", testUnsuccessfulResponse),
         ("testWriteArrayOfArray", testWriteArrayOfArray),
         ("testWritePoint", testWritePoint),

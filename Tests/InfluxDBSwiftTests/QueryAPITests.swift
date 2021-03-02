@@ -26,7 +26,7 @@ final class QueryAPITests: XCTestCase {
     }
 
     func testGetQueryAPI() {
-        XCTAssertNotNil(client.getQueryAPI())
+        XCTAssertNotNil(client.queryAPI)
     }
 
     func testQuery() {
@@ -42,14 +42,14 @@ final class QueryAPITests: XCTestCase {
 
                   """
 
-        MockURLProtocol.handler = { request, bodyData in
+        MockURLProtocol.handler = { _, _ in
             expectation.fulfill()
 
             let response = HTTPURLResponse(statusCode: 200)
             return (response, csv.data(using: .utf8)!)
         }
 
-        client.getQueryAPI().query(query: "from(bucket:\"my-bucket\") |> range(start: -1h)") { response, error in
+        client.queryAPI.query(query: "from(bucket:\"my-bucket\") |> range(start: -1h)") { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }
@@ -114,7 +114,7 @@ final class QueryAPITests: XCTestCase {
             return (response, responseBody)
         }
 
-        client.getQueryAPI().queryRaw(query: "from(bucket:\"my-bucket\") |> range(start: -1h)") { response, error in
+        client.queryAPI.queryRaw(query: "from(bucket:\"my-bucket\") |> range(start: -1h)") { response, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }

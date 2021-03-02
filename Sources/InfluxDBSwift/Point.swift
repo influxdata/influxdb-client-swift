@@ -8,58 +8,24 @@ extension InfluxDBClient {
     /// Point defines the values that will be written to the database.
     ///
     /// - SeeAlso: http://bit.ly/influxdata-point
-    public class Point: NSObject {
+    public class Point {
         /// The measurement name.
         private let measurement: String
         // The measurement tags.
         private var tags: [String: String?] = [:]
         // The measurement fields.
-        private var fields: [String: Any?] = [:]
+        private var fields: [String: FieldValue?] = [:]
         /// The data point time.
-        internal var time: Any?
-        /// The data point precision.
-        internal var precision: InfluxDBClient.WritePrecision
+        var time: TimestampValue?
 
         /// Create a new Point with specified a measurement name and precision.
         ///
         /// - Parameters:
         ///   - measurement: the measurement name
         ///   - precision: the data point precision
-        public init(_ measurement: String, precision: WritePrecision = InfluxDBClient.defaultWritePrecision) {
+        public init(_ measurement: String) {
             self.measurement = measurement
-            self.precision = precision
         }
-
-        // swiftlint:disable large_tuple
-
-        /// Create a new Point from Tuple.
-        ///
-        /// - Parameters:
-        ///   - tuple: the tuple with keys: `measurement`, `tags`, `fields` and `time`
-        ///   - precision: the data point precision
-        /// - Returns: created Point
-        public class func fromTuple(
-                _ tuple: (
-                        measurement: String,
-                        tags: [String?: String?]?,
-                        fields: [String?: Any?], time: Any?),
-                precision: WritePrecision? = nil) -> Point {
-            let point = InfluxDBClient.Point(tuple.measurement, precision: precision ?? defaultWritePrecision)
-            if let tags = tuple.tags {
-                for tag in tags {
-                    _ = point.addTag(key: tag.0, value: tag.1)
-                }
-            }
-            for field in tuple.fields {
-                _ = point.addField(key: field.0, value: field.1)
-            }
-            if let time = tuple.time {
-                _ = point.time(time: time, precision: precision ?? defaultWritePrecision)
-            }
-            return point
-        }
-
-        // swiftlint:enable large_tuple
 
         /// Adds or replaces a tag value for this point.
         ///
@@ -67,6 +33,7 @@ extension InfluxDBClient {
         ///   - key: the tag name
         ///   - value: the tag value
         /// - Returns: self
+        @discardableResult
         public func addTag(key: String?, value: String?) -> Point {
             if let key = key {
                 tags[key] = value
@@ -78,9 +45,10 @@ extension InfluxDBClient {
         ///
         /// - Parameters:
         ///   - key: the field name
-        ///   - value: the field value. It can be `Int`, `Float`, `Double`, `Bool` or `String`
+        ///   - value: the field value
         /// - Returns: self
-        public func addField(key: String?, value: Any?) -> Point {
+        @discardableResult
+        public func addField(key: String?, value: FieldValue?) -> Point {
             if let key = key {
                 fields[key] = value
             }
@@ -91,10 +59,9 @@ extension InfluxDBClient {
         ///
         /// - Parameters:
         ///   - time: the timestamp. It can be `Int` or `Date`.
-        ///   - precision: the timestamp precision
         /// - Returns: self
-        public func time(time: Any, precision: WritePrecision = defaultWritePrecision) -> Point {
-            self.precision = precision
+        @discardableResult
+        public func time(time: TimestampValue) -> Point {
             self.time = time
             return self
         }
@@ -111,14 +78,9 @@ extension InfluxDBClient {
             guard !fields.isEmpty else {
                 return nil
             }
-            let time = try escapeTime()
+            let time = escapeTime()
 
             return "\(meas)\(tags) \(fields)\(time)"
-        }
-
-        /// Line Protocol from Data Point.
-        override public var description: String {
-            "Point: measurement:\(measurement), tags:\(tags), fields:\(fields), time:\(time ?? "nil")"
         }
     }
 
@@ -133,7 +95,7 @@ extension InfluxDBClient {
     /// ````
     public class PointSettings {
         // Default tags which will be added to each point written by api.
-        internal var tags: [String: String?] = [:]
+        var tags: [String: String?] = [:]
 
         /// Add new default tag with key and value.
         ///
@@ -160,6 +122,121 @@ extension InfluxDBClient {
             }
             return map
         }
+    }
+}
+
+extension InfluxDBClient.Point {
+    /// Possible value types of Field
+    public enum FieldValue {
+        /// Support for Int8
+        init(_ value: Int8) {
+            self = .int(Int(value))
+        }
+        /// Support for Int16
+        init(_ value: Int16) {
+            self = .int(Int(value))
+        }
+        /// Support for Int32
+        init(_ value: Int32) {
+            self = .int(Int(value))
+        }
+        /// Support for Int64
+        init(_ value: Int64) {
+            self = .int(Int(value))
+        }
+        /// Support for UInt8
+        init(_ value: UInt8) {
+            self = .uint(UInt(value))
+        }
+        /// Support for UInt16
+        init(_ value: UInt16) {
+            self = .uint(UInt(value))
+        }
+        /// Support for UInt32
+        init(_ value: UInt32) {
+            self = .uint(UInt(value))
+        }
+        /// Support for UInt64
+        init(_ value: UInt64) {
+            self = .uint(UInt(value))
+        }
+        /// Support for Float
+        init(_ value: Float) {
+            self = .double(Double(value))
+        }
+
+        /// signed integer number
+        case int(Int)
+        /// unsigned integer number
+        case uint(UInt)
+        /// floating number
+        case double(Double)
+        /// true or false value
+        case boolean(Bool)
+        /// string value
+        case string(String)
+    }
+
+    /// Possible value types of Field
+    public enum TimestampValue: CustomStringConvertible {
+        // The number of ticks since the UNIX epoch. The value has to be specified with correct precision.
+        case interval(Int, InfluxDBClient.TimestampPrecision = InfluxDBClient.defaultTimestampPrecision)
+        // The date timestamp.
+        case date(Date, InfluxDBClient.TimestampPrecision = InfluxDBClient.defaultTimestampPrecision)
+
+        public var description: String {
+            switch self {
+            case let .interval(ticks, precision):
+                return "\(ticks) [\(precision)]"
+            case let .date(date, precision):
+                return "\(date) [\(precision)]"
+            }
+        }
+
+        public var precision: InfluxDBClient.TimestampPrecision {
+            switch self {
+            case let .interval(_, precision):
+                return precision
+            case let .date(_, precision):
+                return precision
+            }
+        }
+    }
+}
+
+extension InfluxDBClient.Point {
+    /// Tuple definition for construct `Point`.
+    public typealias Tuple = (measurement: String,
+                              tags: [String?: String?]?,
+                              fields: [String?: InfluxDBClient.Point.FieldValue?],
+                              time: InfluxDBClient.Point.TimestampValue?)
+    /// Create a new Point from Tuple.
+    ///
+    /// - Parameters:
+    ///   - tuple: the tuple with keys: `measurement`, `tags`, `fields` and `time`
+    ///   - precision: the data point precision
+    /// - Returns: created Point
+    public class func fromTuple(_ tuple: Tuple) -> InfluxDBClient.Point {
+        let point = InfluxDBClient.Point(tuple.measurement)
+        if let tags = tuple.tags {
+            for tag in tags {
+                point.addTag(key: tag.0, value: tag.1)
+            }
+        }
+        for field in tuple.fields {
+            point.addField(key: field.0, value: field.1)
+        }
+        if let time = tuple.time {
+            point.time(time: time)
+        }
+        return point
+    }
+}
+
+extension InfluxDBClient.Point: CustomStringConvertible {
+    /// Line Protocol from Data Point.
+    public var description: String {
+        "Point: measurement:\(measurement), tags:\(tags), fields:\(fields), time:\(time?.description ?? "nil")"
     }
 }
 
@@ -234,26 +311,21 @@ extension InfluxDBClient.Point {
         return mappedFields
     }
 
-    private func escapeValue(_ value: Any) throws -> String? {
+    private func escapeValue(_ value: FieldValue) throws -> String? {
         switch value {
-        case is Int, is Int8, is Int16, is Int32, is Int64:
+        case .int(let value):
             return "\(value)i"
-        case is UInt, is UInt8, is UInt16, is UInt32, is UInt64:
+        case .uint(let value):
             return "\(value)u"
-        case let floatValue as Float:
-            if floatValue.isInfinite || floatValue.isNaN {
+        case .double(let value):
+            if value.isInfinite || value.isNaN {
                 return nil
             }
             return "\(value)"
-        case let doubleValue as Double:
-            if doubleValue.isInfinite || doubleValue.isNaN {
-                return nil
-            }
-            return "\(value)"
-        case let boolValue as Bool:
-            return "\(boolValue ? "true" : "false")"
-        case let stringValue as String:
-            let escaped = stringValue.reduce(into: "") { result, character in
+        case .boolean(let value):
+            return "\(value ? "true" : "false")"
+        case .string(let value):
+            let escaped = value.reduce(into: "") { result, character in
                 switch character {
                 case "\\", "\"":
                     result.append("\\")
@@ -263,35 +335,29 @@ extension InfluxDBClient.Point {
                 }
             }
             return "\"\(escaped)\""
-        default:
-            throw InfluxDBClient.InfluxDBError
-                    .generic("Field value is not supported: \(value) with type: \(type(of: value))")
         }
     }
 
-    private func escapeTime() throws -> String {
+    private func escapeTime() -> String {
         guard let time = time else {
             return ""
         }
 
         switch time {
-        case is Int:
-            return " \(time)"
-        case let date as Date:
+        case let .interval(ticks, _):
+            return " \(ticks)"
+        case let .date(date, precision):
             let since1970 = date.timeIntervalSince1970
             switch precision {
-            case InfluxDBClient.WritePrecision.s:
+            case .s:
                 return " \(UInt64(since1970))"
-            case InfluxDBClient.WritePrecision.ms:
+            case .ms:
                 return " \(UInt64(since1970 * 1_000))"
-            case InfluxDBClient.WritePrecision.us:
+            case .us:
                 return " \(UInt64(since1970 * 1_000_000))"
             default:
                 return " \(UInt64(since1970 * 1_000_000_000))"
             }
-        default:
-            throw InfluxDBClient.InfluxDBError
-                    .generic("Time value is not supported: \(time) with type: \(type(of: time))")
         }
     }
 }

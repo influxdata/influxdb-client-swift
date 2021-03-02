@@ -14,7 +14,7 @@ import FoundationNetworking
 /// let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
 ///        bucket: "my-bucket",
 ///        org: "my-org",
-///        precision: InfluxDBClient.WritePrecision.ns)
+///        precision: .ns)
 ///
 /// let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
 ///
@@ -33,6 +33,12 @@ public class InfluxDBClient {
     internal let options: InfluxDBOptions
     /// Shared URLSession across the client.
     public let session: URLSession
+
+    /// Lazy initialized `QueryAPI`.
+    public lazy var queryAPI: QueryAPI = { QueryAPI(client: self) }()
+
+    /// Lazy initialized `DeleteAPI`.
+    public lazy var deleteAPI: DeleteAPI = { DeleteAPI(client: self) }()
 
     /// Create a new client for a InfluxDB.
     ///
@@ -79,7 +85,7 @@ public class InfluxDBClient {
                             password: String,
                             database: String,
                             retentionPolicy: String,
-                            precision: WritePrecision = WritePrecision.ns,
+                            precision: TimestampPrecision = TimestampPrecision.ns,
                             protocolClasses: [AnyClass]? = nil) {
         let options = InfluxDBOptions(bucket: "\(database)/\(retentionPolicy)", precision: precision)
 
@@ -91,22 +97,8 @@ public class InfluxDBClient {
     /// - Parameters:
     ///   - pointSettings: default settings for DataPoint, useful for default tags
     /// - Returns: WriteAPI instance
-    public func getWriteAPI(pointSettings: PointSettings? = nil) -> WriteAPI {
+    public func makeWriteAPI(pointSettings: PointSettings? = nil) -> WriteAPI {
         WriteAPI(client: self, pointSettings: pointSettings)
-    }
-
-    /// Creates QueryAPI with supplied default settings.
-    ///
-    /// - Returns: QueryAPI instance
-    public func getQueryAPI() -> QueryAPI {
-        QueryAPI(client: self)
-    }
-
-    /// Creates DeleteAPI to delete time series data from InfluxDB.
-    ///
-    /// - Returns: DeleteAPI instance
-    public func getDeleteAPI() -> DeleteAPI {
-        DeleteAPI(client: self)
     }
 
     /// Release all allocated resources.
@@ -126,7 +118,7 @@ extension InfluxDBClient {
         public let org: String?
         /// Default precision for the unix timestamps within the body line-protocol.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/glossary/#precision
-        public let precision: InfluxDBClient.WritePrecision
+        public let precision: InfluxDBClient.TimestampPrecision
         /// The timeout interval to use when waiting for additional data. Default to 60 sec.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForRequest
         public let timeoutIntervalForRequest: TimeInterval
@@ -150,7 +142,7 @@ extension InfluxDBClient {
         ///   - enableGzip: Enable Gzip compression for HTTP requests.
         public init(bucket: String? = nil,
                     org: String? = nil,
-                    precision: WritePrecision = defaultWritePrecision,
+                    precision: TimestampPrecision = defaultTimestampPrecision,
                     timeoutIntervalForRequest: TimeInterval = 60,
                     timeoutIntervalForResource: TimeInterval = 60 * 5,
                     enableGzip: Bool = false) {
@@ -216,11 +208,11 @@ extension InfluxDBClient {
 // swiftlint:disable identifier_name
 extension InfluxDBClient {
     /// Default Write Precision is Nanoseconds.
-    public static let defaultWritePrecision = WritePrecision.ns
+    public static let defaultTimestampPrecision = TimestampPrecision.ns
 
     /// An enum represents the precision for the unix timestamps within the body line-protocol.
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/write-data/#timestamp-precision
-    public enum WritePrecision: String, Codable, CaseIterable {
+    public enum TimestampPrecision: String, Codable, CaseIterable {
         /// Milliseconds
         case ms
         /// Seconds
@@ -235,7 +227,7 @@ extension InfluxDBClient {
 // swiftlint:enable identifier_name
 
 extension InfluxDBClient {
-    internal enum GZIPMode: String, Codable, CaseIterable {
+    enum GZIPMode: String, Codable, CaseIterable {
         /// Request could be encoded by GZIP.
         case request
         /// Response could be encoded by GZIP.
@@ -244,14 +236,14 @@ extension InfluxDBClient {
         case none
     }
     // swiftlint:disable function_body_length function_parameter_count
-    internal func httpPost(_ urlComponents: URLComponents?,
-                           _ contentTypeHeader: String,
-                           _ acceptHeader: String,
-                           _ gzipMode: InfluxDBClient.GZIPMode,
-                           _ content: Data,
-                           _ responseQueue: DispatchQueue,
-                           _ completion: @escaping (
-                                   _ result: Swift.Result<Data?, InfluxDBClient.InfluxDBError>) -> Void) {
+    func httpPost(_ urlComponents: URLComponents?,
+                  _ contentTypeHeader: String,
+                  _ acceptHeader: String,
+                  _ gzipMode: InfluxDBClient.GZIPMode,
+                  _ content: Data,
+                  _ responseQueue: DispatchQueue,
+                  _ completion: @escaping (
+                          _ result: Swift.Result<Data?, InfluxDBClient.InfluxDBError>) -> Void) {
         do {
             guard let url = urlComponents?.url else {
                 throw InfluxDBClient.InfluxDBError.error(

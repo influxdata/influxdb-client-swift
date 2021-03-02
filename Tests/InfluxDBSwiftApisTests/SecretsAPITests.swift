@@ -9,14 +9,14 @@ import XCTest
 class SecretsAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api.getSecretsAPI().getOrgsIDSecrets(orgID: Self.orgID) { response, _ in
+        api.secretsAPI.getOrgsIDSecrets(orgID: Self.orgID) { response, _ in
             let secrets = response?
                     .secrets?
                     .filter { secret in
                         secret.hasSuffix("_TEST")
                     }
 
-            self.api.getSecretsAPI()
+            self.api.secretsAPI
                     .postOrgsIDSecrets(orgID: Self.orgID, secretKeys: SecretKeys(secrets: secrets)) { _, _ in
                     }
         }
@@ -27,7 +27,7 @@ class SecretsAPITests: APIXCTestCase {
 
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
 
-        self.api.getSecretsAPI().patchOrgsIDSecrets(orgID: Self.orgID, requestBody: request) { _, error in
+        self.api.secretsAPI.patchOrgsIDSecrets(orgID: Self.orgID, requestBody: request) { _, error in
             if let error = error {
                 XCTFail("Error occurs: \(error)")
             }

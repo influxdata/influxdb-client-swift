@@ -9,11 +9,11 @@ import XCTest
 class DBRPsAPITests: APIXCTestCase {
     override func setUp() {
         super.setUp()
-        api.getDBRPsAPI().getDBRPs(orgID: Self.orgID) { dbrps, _ in
+        api.dbrpsAPI.getDBRPs(orgID: Self.orgID) { dbrps, _ in
             dbrps?
                     .content?
                     .forEach { dbrp in
-                        self.api.getDBRPsAPI().deleteDBRPID(orgID: Self.orgID, dbrpID: dbrp.id!) { _, _ in
+                        self.api.dbrpsAPI.deleteDBRPID(orgID: Self.orgID, dbrpID: dbrp.id!) { _, _ in
                         }
                     }
         }
@@ -35,6 +35,6 @@ class DBRPsAPITests: APIXCTestCase {
             XCTAssertEqual(policyName, response.retentionPolicy)
         }
 
-        checkPost(api.getDBRPsAPI().postDBRP, request, &checker)
+        checkPost(api.dbrpsAPI.postDBRP, request, &checker)
     }
 }

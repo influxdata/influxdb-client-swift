@@ -25,7 +25,7 @@ import Gzip
 ///                 |> last()
 ///             """
 ///
-/// client.getQueryAPI().query(query: query) { response, error in
+/// client.queryAPI.query(query: query) { response, error in
 ///     // For handle error
 ///     if let error = error {
 ///         print("Error:\n\n\(error)")
@@ -46,7 +46,7 @@ import Gzip
 /// ````
 /// #### Query into `Data` ####
 /// ````
-/// client.getQueryAPI().queryRaw(query: query) { response, error in
+/// client.queryAPI.queryRaw(query: query) { response, error in
 ///     // For handle error
 ///     if let error = error {
 ///         print("Error:\n\n\(error)")
@@ -74,7 +74,7 @@ public class QueryAPI {
     ///
     /// - Parameters
     ///   - client: Client with shared configuration and http library.
-    public init(client: InfluxDBClient) {
+    init(client: InfluxDBClient) {
         self.client = client
     }
 

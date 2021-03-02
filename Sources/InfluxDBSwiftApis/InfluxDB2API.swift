@@ -15,7 +15,7 @@ import InfluxDBSwift
 /// let client = InfluxDBClient(url: "http://localhost:8086", token: "my-token")
 /// let api = InfluxDB2API(client: client)
 ///
-/// api.getHealthAPI().getHealth { (response, error) in
+/// api.healthAPI.getHealth { (response, error) in
 ///    if let error = error {
 ///        print(error)
 ///        return
@@ -33,6 +33,52 @@ public class InfluxDB2API {
     internal let basePath: String
     internal let requestBuilderFactory: RequestBuilderFactory
     internal let apiResponseQueue: DispatchQueue
+    /// Shared `URLSession`.
+    internal var urlSession: URLSession {
+        client.session
+    }
+
+    /// Lazy initialized `AuthorizationsAPI`.
+    public lazy var authorizationsAPI: AuthorizationsAPI = { AuthorizationsAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `BucketsAPI`.
+    public lazy var bucketsAPI: BucketsAPI = { BucketsAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `DBRPsAPI`.
+    public lazy var dbrpsAPI: DBRPsAPI = { DBRPsAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `HealthAPI`.
+    public lazy var healthAPI: HealthAPI = { HealthAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `LabelsAPI`.
+    public lazy var labelsAPI: LabelsAPI = { LabelsAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `OrganizationsAPI`.
+    public lazy var organizationsAPI: OrganizationsAPI = { OrganizationsAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `ReadyAPI`.
+    public lazy var readyAPI: ReadyAPI = { ReadyAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `ScraperTargetsAPI`.
+    public lazy var scraperTargetsAPI: ScraperTargetsAPI = { ScraperTargetsAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `SecretsAPI`.
+    public lazy var secretsAPI: SecretsAPI = { SecretsAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `SetupAPI`.
+    public lazy var setupAPI: SetupAPI = { SetupAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `SourcesAPI`.
+    public lazy var sourcesAPI: SourcesAPI = { SourcesAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `TasksAPI`.
+    public lazy var tasksAPI: TasksAPI = { TasksAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `UsersAPI`.
+    public lazy var usersAPI: UsersAPI = { UsersAPI(influxDB2API: self) }()
+
+    /// Lazy initialized `VariablesAPI`.
+    public lazy var variablesAPI: VariablesAPI = { VariablesAPI(influxDB2API: self) }()
 
     /// Create a new managements client for a InfluxDB.
     ///
@@ -44,112 +90,5 @@ public class InfluxDB2API {
         self.basePath = client.url
         self.requestBuilderFactory = URLSessionRequestBuilderFactory()
         self.apiResponseQueue = apiResponseQueue
-    }
-
-    /// Get shared `URLSession`.
-    ///
-    /// - Returns: shared `URLSession`
-    internal func getURLSession() -> URLSession {
-        client.session
-    }
-}
-
-extension InfluxDB2API {
-    /// Create a new instance of `AuthorizationsAPI`.
-    ///
-    /// - Returns: AuthorizationsAPI
-    public func getAuthorizationsAPI() -> InfluxDB2API.AuthorizationsAPI {
-        AuthorizationsAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `BucketsAPI`.
-    ///
-    /// - Returns: BucketsAPI
-    public func getBucketsAPI() -> InfluxDB2API.BucketsAPI {
-        BucketsAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `DBRPsAPI`.
-    ///
-    /// - Returns: DBRPsAPI
-    public func getDBRPsAPI() -> InfluxDB2API.DBRPsAPI {
-        DBRPsAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `HealthAPI`.
-    ///
-    /// - Returns: HealthAPI
-    public func getHealthAPI() -> InfluxDB2API.HealthAPI {
-        HealthAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `LabelsAPI`.
-    ///
-    /// - Returns: LabelsAPI
-    public func getLabelsAPI() -> InfluxDB2API.LabelsAPI {
-        LabelsAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `OrganizationsAPI`.
-    ///
-    /// - Returns: OrganizationsAPI
-    public func getOrganizationsAPI() -> InfluxDB2API.OrganizationsAPI {
-        OrganizationsAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `ReadyAPI`.
-    ///
-    /// - Returns: ReadyAPI
-    public func getReadyAPI() -> InfluxDB2API.ReadyAPI {
-        ReadyAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `ScraperTargetsAPI`.
-    ///
-    /// - Returns: ScraperTargetsAPI
-    public func getScraperTargetsAPI() -> InfluxDB2API.ScraperTargetsAPI {
-        ScraperTargetsAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `SecretsAPI`.
-    ///
-    /// - Returns: SecretsAPI
-    public func getSecretsAPI() -> InfluxDB2API.SecretsAPI {
-        SecretsAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `SetupAPI`.
-    ///
-    /// - Returns: SetupAPI
-    public func getSetupAPI() -> InfluxDB2API.SetupAPI {
-        SetupAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `SourcesAPI`.
-    ///
-    /// - Returns: SourcesAPI
-    public func getSourcesAPI() -> InfluxDB2API.SourcesAPI {
-        SourcesAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `TasksAPI`.
-    ///
-    /// - Returns: TasksAPI
-    public func getTasksAPI() -> InfluxDB2API.TasksAPI {
-        TasksAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `UsersAPI`.
-    ///
-    /// - Returns: UsersAPI
-    public func getUsersAPI() -> InfluxDB2API.UsersAPI {
-        UsersAPI(influxDB2API: self)
-    }
-
-    /// Create a new instance of `VariablesAPI`.
-    ///
-    /// - Returns: VariablesAPI
-    public func getVariablesAPI() -> InfluxDB2API.VariablesAPI {
-        VariablesAPI(influxDB2API: self)
     }
 }
