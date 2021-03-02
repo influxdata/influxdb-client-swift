@@ -2,7 +2,7 @@
 
 ### API
 1. [#25](https://github.com/influxdata/influxdb-client-swift/pull/25): Updated client API to be more Swift like
-1. [#23](https://github.com/influxdata/influxdb-client-swift/pull/23): Updated swagger to latest version
+1. [#23](https://github.com/influxdata/influxdb-client-swift/pull/23), [#26](https://github.com/influxdata/influxdb-client-swift/pull/26): Updated swagger to latest version
 
 ### CI
 1. [#25](https://github.com/influxdata/influxdb-client-swift/pull/25): Updated `SwiftLint` to 0.42.0
