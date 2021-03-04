@@ -21,7 +21,7 @@ This is an example how to write data with Data Point structure.
       --name influxdb_v2 \
       --detach \
       --publish 8086:8086 \
-      quay.io/influxdb/influxdb:v2.0.4
+      influxdb:latest
     ```
 1. Configure your username, password, organization, bucket and token:
    ```bash
