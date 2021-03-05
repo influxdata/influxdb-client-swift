@@ -1,4 +1,4 @@
-## 0.2.0 [unreleased]
+## 0.2.0 [2021-03-05]
 
 ### API
 1. [#25](https://github.com/influxdata/influxdb-client-swift/pull/25): Updated client API to be more Swift like
