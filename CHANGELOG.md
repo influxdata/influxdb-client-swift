@@ -1,5 +1,7 @@
 ## 0.3.0 [unreleased]
 
+1. [#28](https://github.com/influxdata/influxdb-client-swift/pull/28): Updated swagger to latest version
+
 ## 0.2.0 [2021-03-05]
 
 ### API
