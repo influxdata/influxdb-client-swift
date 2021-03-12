@@ -14,12 +14,15 @@ public struct RetentionRule: Codable {
         case expire = "expire"
     }
     public var type: ModelType = .expire
-    /** Duration in seconds for how long data will be kept in the database. */
+    /** Duration in seconds for how long data will be kept in the database. 0 means infinite. */
     public var everySeconds: Int
+    /** Shard duration measured in seconds. */
+    public var shardGroupDurationSeconds: Int64?
 
-    public init(type: ModelType, everySeconds: Int) {
+    public init(type: ModelType, everySeconds: Int, shardGroupDurationSeconds: Int64? = nil) {
         self.type = type
         self.everySeconds = everySeconds
+        self.shardGroupDurationSeconds = shardGroupDurationSeconds
     }
 
 }
