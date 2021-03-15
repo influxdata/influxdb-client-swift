@@ -2,6 +2,7 @@
 
 ### API
 1. [#28](https://github.com/influxdata/influxdb-client-swift/pull/28): Updated swagger to latest version
+1. [#29](https://github.com/influxdata/influxdb-client-swift/pull/29): Updated `Cursor` API to latest version
 
 ## 0.2.0 [2021-03-05]
 
