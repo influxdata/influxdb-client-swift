@@ -239,7 +239,7 @@ extension QueryAPI {
         /// Description of the type of data contained within the column.
         public let dataType: String
         /// Boolean flag indicating if the column is part of the table's group key
-        public var group: Bool = false
+        public var group = false
         /// Default value to be used for rows whose string value is the empty string.
         public var defaultValue: String = ""
 
