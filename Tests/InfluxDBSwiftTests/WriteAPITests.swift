@@ -426,6 +426,26 @@ final class WriteAPITests: XCTestCase {
         XCTAssertEqual(required, body.joined(separator: "\n"))
     }
 
+    func testEmptyRecords() {
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+
+        MockURLProtocol.handler = { _, _ in
+            XCTFail("unexpected HTTP call")
+
+            let response = HTTPURLResponse(statusCode: 204)
+            return (response, Data())
+        }
+
+        client.makeWriteAPI().write(records: ["", ""]) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
     -> (HTTPURLResponse, Data) {
         { request, bodyData in

@@ -620,36 +620,37 @@ public class WriteAPI {
 
             let precision = precision ?? client.options.precision
 
-            // we need sort batches by insertion time (for LP without timestamp)
-            var batches: [InfluxDBClient.TimestampPrecision: (Int, [String])] = [:]
-            let defaultTags = pointSettings?.evaluate()
-            try toLineProtocol(precision: precision, any: records, defaultTags: defaultTags, batches: &batches)
+            // Query parameters
+            components?.queryItems = [
+                URLQueryItem(name: "bucket", value: bucket),
+                URLQueryItem(name: "org", value: org),
+                URLQueryItem(name: "precision", value: precision.rawValue)
+            ]
 
-            batches.sorted {
-                $0.value.0 < $1.value.0
-            }.forEach { key, values in
-                components?.queryItems = [
-                    URLQueryItem(name: "bucket", value: bucket),
-                    URLQueryItem(name: "org", value: org),
-                    URLQueryItem(name: "precision", value: key.rawValue)
-                ]
+            // Body
+            var lps = [String]()
+            try toLineProtocol(precision: precision, any: records, defaultTags: pointSettings?.evaluate(), lps: &lps)
+            let body: Data! = lps.joined(separator: "\n").data(using: .utf8)
+            // Without data => log information
+            if body.isEmpty {
+                print("There is nothing to write for following input: \(lps)")
+                completion(.success(()))
+                return
+            }
 
-                // Body
-                let body: Data! = values.1.joined(separator: "\n").data(using: .utf8)
-
-                client.httpPost(
-                        components,
-                        "text/plain; charset=utf-8",
-                        "application/json",
-                        InfluxDBClient.GZIPMode.request,
-                        body,
-                        responseQueue) { result -> Void in
-                    switch result {
-                    case .success:
-                        completion(.success(()))
-                    case let .failure(error):
-                        completion(.failure(error))
-                    }
+            // HTTP post
+            client.httpPost(
+                    components,
+                    "text/plain; charset=utf-8",
+                    "application/json",
+                    InfluxDBClient.GZIPMode.request,
+                    body,
+                    responseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    completion(.success(()))
+                case let .failure(error):
+                    completion(.failure(error))
                 }
             }
         } catch {
@@ -662,25 +663,25 @@ public class WriteAPI {
     private func toLineProtocol(precision: InfluxDBClient.TimestampPrecision,
                                 any: Any,
                                 defaultTags: [String: String?]?,
-                                batches: inout [InfluxDBClient.TimestampPrecision: (Int, [String])]) throws {
+                                lps: inout [String]) throws {
         // To avoid: "Could not cast value of type 'InfluxDBSwift.InfluxDBClient.Point' to 'Foundation.NSObject'."
         // on Linux - see:
         // https://app.circleci.com/pipelines/github/influxdata
         // /influxdb-client-swift/315/workflows/8467a324-6bbf-47ca-a2cf-6ff9d820385d/jobs/1042
         if type(of: any) == InfluxDBClient.Point.self {
             if let point = any as? InfluxDBClient.Point {
-                try toLineProtocol(precision: precision, point: point, defaultTags: defaultTags, batches: &batches)
+                try toLineProtocol(precision: precision, point: point, defaultTags: defaultTags, lps: &lps)
             }
         } else {
             switch any {
             case let string as String:
-                try toLineProtocol(precision: precision, record: string, defaultTags: defaultTags, batches: &batches)
+                toLineProtocol(precision: precision, record: string, defaultTags: defaultTags, lps: &lps)
             case let tuple as InfluxDBClient.Point.Tuple:
                 let point = InfluxDBClient.Point.fromTuple(tuple)
-                try toLineProtocol(precision: precision, point: point, defaultTags: defaultTags, batches: &batches)
+                try toLineProtocol(precision: precision, point: point, defaultTags: defaultTags, lps: &lps)
             case let array as [Any]:
                 try array.forEach { item in
-                    try toLineProtocol(precision: precision, any: item, defaultTags: defaultTags, batches: &batches)
+                    try toLineProtocol(precision: precision, any: item, defaultTags: defaultTags, lps: &lps)
                 }
             default:
                 throw InfluxDBClient.InfluxDBError
@@ -692,29 +693,24 @@ public class WriteAPI {
     private func toLineProtocol(precision: InfluxDBClient.TimestampPrecision,
                                 point: InfluxDBClient.Point,
                                 defaultTags: [String: String?]?,
-                                batches: inout [InfluxDBClient.TimestampPrecision: (Int, [String])]) throws {
+                                lps: inout [String]) throws {
         if let lineProtocol = try point.toLineProtocol(precision: precision, defaultTags: defaultTags) {
-            return try toLineProtocol(
+            return toLineProtocol(
                     precision: precision,
                     record: lineProtocol,
                     defaultTags: defaultTags,
-                    batches: &batches)
+                    lps: &lps)
         }
     }
 
     private func toLineProtocol(precision: InfluxDBClient.TimestampPrecision,
                                 record: String,
                                 defaultTags: [String: String?]?,
-                                batches: inout [InfluxDBClient.TimestampPrecision: (Int, [String])]) throws {
+                                lps: inout [String]) {
         guard !record.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
-        if var batch = batches[precision] {
-            batch.1.append(record)
-            batches[precision] = batch
-        } else {
-            batches[precision] = (batches.count, [record])
-        }
+        lps.append(record)
     }
 
     // swiftlint:enable function_parameter_count
