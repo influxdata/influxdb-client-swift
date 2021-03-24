@@ -1,6 +1,7 @@
 ## 0.3.0 [unreleased]
 
 ### API
+1. [#30](https://github.com/influxdata/influxdb-client-swift/pull/30): The writes uses precision from the `write` call
 1. [#28](https://github.com/influxdata/influxdb-client-swift/pull/28): Updated swagger to latest version
 1. [#29](https://github.com/influxdata/influxdb-client-swift/pull/29): Updated `Cursor` API to latest version
 
