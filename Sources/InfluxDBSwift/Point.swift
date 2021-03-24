@@ -69,16 +69,18 @@ extension InfluxDBClient {
         /// Creates Line Protocol from Data Point.
         ///
         /// - Parameters:
+        ///   - precision: the precision to use for the generated line protocol
         ///   - defaultTags: default tags for Point.
         /// - Returns: Line Protocol
-        public func toLineProtocol(defaultTags: [String: String?]? = nil) throws -> String? {
+        public func toLineProtocol(precision: TimestampPrecision = defaultTimestampPrecision,
+                                   defaultTags: [String: String?]? = nil) throws -> String? {
             let meas = escapeKey(measurement, false)
             let tags = escapeTags(defaultTags)
             let fields = try escapeFields()
             guard !fields.isEmpty else {
                 return nil
             }
-            let time = escapeTime()
+            let time = escapeTime(precision)
 
             return "\(meas)\(tags) \(fields)\(time)"
         }
@@ -182,23 +184,14 @@ extension InfluxDBClient.Point {
         // The number of ticks since the UNIX epoch. The value has to be specified with correct precision.
         case interval(Int, InfluxDBClient.TimestampPrecision = InfluxDBClient.defaultTimestampPrecision)
         // The date timestamp.
-        case date(Date, InfluxDBClient.TimestampPrecision = InfluxDBClient.defaultTimestampPrecision)
+        case date(Date)
 
         public var description: String {
             switch self {
             case let .interval(ticks, precision):
                 return "\(ticks) [\(precision)]"
-            case let .date(date, precision):
-                return "\(date) [\(precision)]"
-            }
-        }
-
-        public var precision: InfluxDBClient.TimestampPrecision {
-            switch self {
-            case let .interval(_, precision):
-                return precision
-            case let .date(_, precision):
-                return precision
+            case let .date(date):
+                return "\(date)"
             }
         }
     }
@@ -338,26 +331,53 @@ extension InfluxDBClient.Point {
         }
     }
 
-    private func escapeTime() -> String {
+    private func escapeTime(_ out: InfluxDBClient.TimestampPrecision) -> String {
         guard let time = time else {
             return ""
         }
 
+        let sinceEpoch: UInt64
         switch time {
-        case let .interval(ticks, _):
-            return " \(ticks)"
-        case let .date(date, precision):
-            let since1970 = date.timeIntervalSince1970
+        case let .interval(ticks, precision):
+            var multiplier: Decimal
             switch precision {
             case .s:
-                return " \(UInt64(since1970))"
+                multiplier = 1_000_000_000
             case .ms:
-                return " \(UInt64(since1970 * 1_000))"
+                multiplier = 1_000_000
             case .us:
-                return " \(UInt64(since1970 * 1_000_000))"
-            default:
-                return " \(UInt64(since1970 * 1_000_000_000))"
+                multiplier = 1_000
+            case .ns:
+                multiplier = 1
             }
+            switch out {
+            case .s:
+                multiplier /= 1_000_000_000
+            case .ms:
+                multiplier /= 1_000_000
+            case .us:
+                multiplier /= 1_000
+            case .ns:
+                multiplier /= 1
+            }
+
+            let decimal = Decimal(ticks) * multiplier
+            sinceEpoch = (decimal as NSDecimalNumber).uint64Value
+        case let .date(date):
+            let multiplier: Double
+            switch out {
+            case .s:
+                multiplier = 1
+            case .ms:
+                multiplier = 1_000
+            case .us:
+                multiplier = 1_000_000
+            default:
+                multiplier = 1_000_000_000
+            }
+            sinceEpoch = UInt64(date.timeIntervalSince1970 * multiplier)
         }
+
+        return " \(sinceEpoch)"
     }
 }

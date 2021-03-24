@@ -147,7 +147,7 @@ final class PointTests: XCTestCase {
                 .addField(key: "level", value: .int(2))
                 .time(time: .interval(123, .s))
 
-        XCTAssertEqual("h2o,location=europe level=2i 123", try point.toLineProtocol())
+        XCTAssertEqual("h2o,location=europe level=2i 123000000000", try point.toLineProtocol())
     }
 
     func testDateTimeFormatting() {
@@ -156,62 +156,62 @@ final class PointTests: XCTestCase {
         var point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: .int(2))
-                .time(time: .date(date, .ms))
+                .time(time: .date(date))
 
-        XCTAssertEqual("h2o,location=europe level=2i 1444897215000", try point.toLineProtocol())
+        XCTAssertEqual("h2o,location=europe level=2i 1444897215000", try point.toLineProtocol(precision: .ms))
 
         date = Date(2015, 10, 15, 8, 20, 15, 0, TimeZone(abbreviation: "JST"))
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: .int(2))
-                .time(time: .date(date, .ms))
+                .time(time: .date(date))
 
-        XCTAssertEqual("h2o,location=europe level=2i 1444864815000", try point.toLineProtocol())
+        XCTAssertEqual("h2o,location=europe level=2i 1444864815000", try point.toLineProtocol(precision: .ms))
 
         date = Date(2015, 10, 15, 8, 20, 15, 750)
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: .boolean(false))
-                .time(time: .date(date, .s))
+                .time(time: .date(date))
 
-        XCTAssertEqual("h2o,location=europe level=false 1444897215", try point.toLineProtocol())
-
-        point = InfluxDBClient.Point("h2o")
-                .addTag(key: "location", value: "europe")
-                .addField(key: "level", value: .boolean(false))
-                .time(time: .date(date, .ms))
-
-        XCTAssertEqual("h2o,location=europe level=false 1444897215000", try point.toLineProtocol())
+        XCTAssertEqual("h2o,location=europe level=false 1444897215", try point.toLineProtocol(precision: .s))
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: .boolean(false))
-                .time(time: .date(date, .us))
+                .time(time: .date(date))
 
-        XCTAssertEqual("h2o,location=europe level=false 1444897215000750", try point.toLineProtocol())
+        XCTAssertEqual("h2o,location=europe level=false 1444897215000", try point.toLineProtocol(precision: .ms))
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: .boolean(false))
-                .time(time: .date(date, .ns))
+                .time(time: .date(date))
 
-        XCTAssertEqual("h2o,location=europe level=false 1444897215000750080", try point.toLineProtocol())
+        XCTAssertEqual("h2o,location=europe level=false 1444897215000750", try point.toLineProtocol(precision: .us))
+
+        point = InfluxDBClient.Point("h2o")
+                .addTag(key: "location", value: "europe")
+                .addField(key: "level", value: .boolean(false))
+                .time(time: .date(date))
+
+        XCTAssertEqual("h2o,location=europe level=false 1444897215000750080", try point.toLineProtocol(precision: .ns))
 
         point = InfluxDBClient.Point("h2o")
                 .addTag(key: "location", value: "europe")
                 .addField(key: "level", value: .boolean(true))
-                .time(time: .date(Date(), .s))
+                .time(time: .date(Date()))
 
-        XCTAssertFalse(try point.toLineProtocol()!.contains("."))
+        XCTAssertFalse(try point.toLineProtocol(precision: .s)!.contains("."))
     }
 
     func testPointProtocol() {
         let date = Date(2009, 11, 10, 23, 0, 0)
 
         var point = InfluxDBClient.Point("weather")
-                .time(time: .date(date, .ms))
+                .time(time: .date(date))
                 .addTag(key: "location", value: "Přerov")
                 .addTag(key: "sid", value: "12345")
                 .addField(key: "temperature", value: .double(30.1))
@@ -220,14 +220,16 @@ final class PointTests: XCTestCase {
 
         XCTAssertEqual(
                 "weather,location=Přerov,sid=12345 float_field=0i,int_field=2i,temperature=30.1 1257894000000",
-                try point.toLineProtocol())
+                try point.toLineProtocol(precision: .ms))
 
         point = InfluxDBClient.Point("weather")
-                .time(time: .date(date, .ms))
+                .time(time: .date(date))
                 .addField(key: "temperature", value: .double(30.1))
                 .addField(key: "float_field", value: .int(0))
 
-        XCTAssertEqual("weather float_field=0i,temperature=30.1 1257894000000", try point.toLineProtocol())
+        XCTAssertEqual(
+                "weather float_field=0i,temperature=30.1 1257894000000",
+                try point.toLineProtocol(precision: .ms))
     }
 
     func testTimestamp() {
@@ -332,15 +334,6 @@ final class PointTests: XCTestCase {
             (
                     (
                             measurement: "h2o_feet",
-                            tags: ["location": "coyote_creek"],
-                            fields: ["water_level": .double(1.0)],
-                            time: .date(Date(2020, 10, 11, 0, 0, 0, 0), .s)
-                    ),
-                    "h2o_feet,location=coyote_creek water_level=1.0 1602374400"
-            ),
-            (
-                    (
-                            measurement: "h2o_feet",
                             tags: nil,
                             fields: ["water_level": .double(1.0)],
                             time: .date(Date(2020, 10, 11, 0, 0, 0, 0))
@@ -427,6 +420,58 @@ final class PointTests: XCTestCase {
         XCTAssertEqual(
                 "h2o,a_tag=a_tag_value,in_default_tags=use_this,loc=us,tag_a_key=tag_a_value value=100i",
                 try point.toLineProtocol(defaultTags: defaultTags))
+    }
+
+    func testIntervalPrecision() throws {
+        let expectations = [
+            (
+                    time: InfluxDBClient.Point.TimestampValue.interval(1556892576842902000, .ns),
+                    records: [
+                        "h2o level=1i 1556892576842902000",
+                        "h2o level=1i 1556892576842902",
+                        "h2o level=1i 1556892576842",
+                        "h2o level=1i 1556892576"
+                    ]
+            ),
+            (
+                    time: InfluxDBClient.Point.TimestampValue.interval(1556892576842902, .us),
+                    records: [
+                        "h2o level=1i 1556892576842902000",
+                        "h2o level=1i 1556892576842902",
+                        "h2o level=1i 1556892576842",
+                        "h2o level=1i 1556892576"
+                    ]
+            ),
+            (
+                    time: InfluxDBClient.Point.TimestampValue.interval(1556892576842, .ms),
+                    records: [
+                        "h2o level=1i 1556892576842000000",
+                        "h2o level=1i 1556892576842000",
+                        "h2o level=1i 1556892576842",
+                        "h2o level=1i 1556892576"
+                    ]
+            ),
+            (
+                    time: InfluxDBClient.Point.TimestampValue.interval(1556892576, .s),
+                    records: [
+                        "h2o level=1i 1556892576000000000",
+                        "h2o level=1i 1556892576000000",
+                        "h2o level=1i 1556892576000",
+                        "h2o level=1i 1556892576"
+                    ]
+            )
+        ]
+
+        try expectations.forEach { expectation in
+            let point = InfluxDBClient.Point("h2o")
+                    .addField(key: "level", value: .int(1))
+                    .time(time: expectation.time)
+
+            XCTAssertEqual(expectation.records[0], try point.toLineProtocol(precision: .ns))
+            XCTAssertEqual(expectation.records[1], try point.toLineProtocol(precision: .us))
+            XCTAssertEqual(expectation.records[2], try point.toLineProtocol(precision: .ms))
+            XCTAssertEqual(expectation.records[3], try point.toLineProtocol(precision: .s))
+        }
     }
 }
 

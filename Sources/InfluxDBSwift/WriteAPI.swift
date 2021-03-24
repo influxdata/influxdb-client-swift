@@ -693,10 +693,9 @@ public class WriteAPI {
                                 point: InfluxDBClient.Point,
                                 defaultTags: [String: String?]?,
                                 batches: inout [InfluxDBClient.TimestampPrecision: (Int, [String])]) throws {
-        if let lineProtocol = try point.toLineProtocol(defaultTags: defaultTags) {
-            let pointPrecision = point.time?.precision ?? InfluxDBClient.defaultTimestampPrecision
+        if let lineProtocol = try point.toLineProtocol(precision: precision, defaultTags: defaultTags) {
             return try toLineProtocol(
-                    precision: pointPrecision,
+                    precision: precision,
                     record: lineProtocol,
                     defaultTags: defaultTags,
                     batches: &batches)
