@@ -83,7 +83,7 @@ final class WriteAPITests: XCTestCase {
 
     func testWritePointsDifferentPrecision() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
-        expectation.expectedFulfillmentCount = 4
+        expectation.expectedFulfillmentCount = 2
 
         var requests: [URLRequest] = []
         var bodies: [String] = []
@@ -112,16 +112,12 @@ final class WriteAPITests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertEqual(2, requests.count)
-        XCTAssertEqual(
-                "\(Self.dbURL())/api/v2/write?bucket=my-bucket&org=my-org&precision=s",
-                requests[0].url?.description)
+        XCTAssertEqual(1, requests.count)
         XCTAssertEqual(
                 "\(Self.dbURL())/api/v2/write?bucket=my-bucket&org=my-org&precision=ns",
-                requests[1].url?.description)
-        XCTAssertEqual(2, bodies.count)
-        XCTAssertEqual("mem,tag=a value=1i 1", bodies[0])
-        XCTAssertEqual("mem,tag=b value=2i 2", bodies[1])
+                requests[0].url?.description)
+        XCTAssertEqual(1, bodies.count)
+        XCTAssertEqual("mem,tag=a value=1i 1000000000\nmem,tag=b value=2i 2", bodies[0])
     }
 
     func testWriteArrayOfArray() {
@@ -428,6 +424,26 @@ final class WriteAPITests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
         XCTAssertEqual(required, body.joined(separator: "\n"))
+    }
+
+    func testEmptyRecords() {
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+
+        MockURLProtocol.handler = { _, _ in
+            XCTFail("unexpected HTTP call")
+
+            let response = HTTPURLResponse(statusCode: 204)
+            return (response, Data())
+        }
+
+        client.makeWriteAPI().write(records: ["", ""]) { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
