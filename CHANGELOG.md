@@ -1,4 +1,4 @@
-## 0.3.0 [unreleased]
+## 0.3.0 [2021-04-01]
 
 ### API
 1. [#30](https://github.com/influxdata/influxdb-client-swift/pull/30): `WripeAPI` uses precision from the `write` call
@@ -8,12 +8,12 @@
 ## 0.2.0 [2021-03-05]
 
 ### API
-1. [#25](https://github.com/influxdata/influxdb-client-swift/pull/25): Updated client API to be more Swift like
-1. [#23](https://github.com/influxdata/influxdb-client-swift/pull/23), [#26](https://github.com/influxdata/influxdb-client-swift/pull/26): Updated swagger to latest version
+1. [#25](https://github.com/influxdata/influxdb-client-swift/pull/25): Update client API to be more Swift like
+1. [#23](https://github.com/influxdata/influxdb-client-swift/pull/23), [#26](https://github.com/influxdata/influxdb-client-swift/pull/26): Update swagger to latest version
 
 ### CI
-1. [#25](https://github.com/influxdata/influxdb-client-swift/pull/25): Updated `SwiftLint` to 0.42.0
-1. [#26](https://github.com/influxdata/influxdb-client-swift/pull/26): Updated stable image to `influxdb:latest` and nightly to `quay.io/influxdb/influxdb:nightly`
+1. [#25](https://github.com/influxdata/influxdb-client-swift/pull/25): Update `SwiftLint` to 0.42.0
+1. [#26](https://github.com/influxdata/influxdb-client-swift/pull/26): Update stable image to `influxdb:latest` and nightly to `quay.io/influxdb/influxdb:nightly`
 
 ## 0.1.0 [2021-01-29]
 
