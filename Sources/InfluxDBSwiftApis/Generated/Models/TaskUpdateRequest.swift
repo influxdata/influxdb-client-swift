@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct TaskUpdateRequest: Codable {
 
     public var status: TaskStatusType?
@@ -35,4 +34,3 @@ public struct TaskUpdateRequest: Codable {
     }
 
 }
-

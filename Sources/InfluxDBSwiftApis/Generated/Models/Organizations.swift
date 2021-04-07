@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Organizations: Codable {
 
     public var links: Links?
@@ -19,4 +18,3 @@ public struct Organizations: Codable {
     }
 
 }
-

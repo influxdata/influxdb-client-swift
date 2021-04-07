@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Organization: Codable {
 
     public enum Status: String, Codable, CaseIterable {
@@ -23,7 +22,7 @@ public struct Organization: Codable {
     /** If inactive the organization is inactive. */
     public var status: Status? = .active
 
-    public init(links: OrganizationLinks? = nil, id: String? = nil, name: String, description: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, status: Status? = nil) {
+    public init(links: OrganizationLinks? = nil, id: String? = nil, name: String, description: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, status: Status? = .active) {
         self.links = links
         self.id = id
         self.name = name
@@ -34,4 +33,3 @@ public struct Organization: Codable {
     }
 
 }
-

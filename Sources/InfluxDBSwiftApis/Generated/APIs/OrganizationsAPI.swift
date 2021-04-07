@@ -459,7 +459,7 @@ public class OrganizationsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchOrgsIDSecrets(orgID: String, requestBody: [String:String], zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func patchOrgsIDSecrets(orgID: String, requestBody: [String: String], zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         patchOrgsIDSecretsWithRequestBuilder(orgID: orgID, requestBody: requestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
@@ -478,7 +478,7 @@ public class OrganizationsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal func patchOrgsIDSecretsWithRequestBuilder(orgID: String, requestBody: [String:String], zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func patchOrgsIDSecretsWithRequestBuilder(orgID: String, requestBody: [String: String], zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
         var path = "/orgs/{orgID}/secrets"
         let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
         let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

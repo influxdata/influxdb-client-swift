@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct DBRP: Codable {
 
     /** the mapping identifier */
@@ -37,7 +36,7 @@ public struct DBRP: Codable {
         self.links = links
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case orgID
         case org
@@ -49,4 +48,3 @@ public struct DBRP: Codable {
     }
 
 }
-

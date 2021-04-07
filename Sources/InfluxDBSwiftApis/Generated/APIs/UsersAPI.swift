@@ -850,7 +850,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getFlags(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: [String:Any]?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func getFlags(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: [String: Any]?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getFlagsWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -865,9 +865,9 @@ public class UsersAPI {
      Return the feature flags for the currently authenticated user
      - GET /flags
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<[String:String]> 
+     - returns: RequestBuilder<[String: String]> 
      */
-    internal func getFlagsWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<[String:String]> {
+    internal func getFlagsWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<[String: String]> {
         let path = "/flags"
         let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
@@ -878,7 +878,7 @@ public class UsersAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<[String:String]> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
+        let requestBuilder: RequestBuilder<[String: String]> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }

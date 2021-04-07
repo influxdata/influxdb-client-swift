@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct LabelMapping: Codable {
 
     public var labelID: String?
@@ -17,4 +16,3 @@ public struct LabelMapping: Codable {
     }
 
 }
-

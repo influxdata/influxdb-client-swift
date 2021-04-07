@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Bucket: Codable {
 
     public enum ModelType: String, Codable, CaseIterable {
@@ -27,7 +26,7 @@ public struct Bucket: Codable {
     public var retentionRules: [RetentionRule]
     public var labels: [Label]?
 
-    public init(links: BucketLinks? = nil, id: String? = nil, type: ModelType? = nil, name: String, description: String? = nil, orgID: String? = nil, rp: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, retentionRules: [RetentionRule], labels: [Label]? = nil) {
+    public init(links: BucketLinks? = nil, id: String? = nil, type: ModelType? = .user, name: String, description: String? = nil, orgID: String? = nil, rp: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, retentionRules: [RetentionRule], labels: [Label]? = nil) {
         self.links = links
         self.id = id
         self.type = type
@@ -42,4 +41,3 @@ public struct Bucket: Codable {
     }
 
 }
-

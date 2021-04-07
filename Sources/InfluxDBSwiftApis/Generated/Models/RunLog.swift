@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct RunLog: Codable {
 
     public var runID: String?
@@ -21,4 +20,3 @@ public struct RunLog: Codable {
     }
 
 }
-

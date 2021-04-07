@@ -24,4 +24,3 @@ public struct DeletePredicateRequest: Codable {
     }
 
 }
-

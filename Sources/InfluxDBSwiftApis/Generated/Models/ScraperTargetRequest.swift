@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct ScraperTargetRequest: Codable {
 
     public enum ModelType: String, Codable, CaseIterable {
@@ -26,7 +25,7 @@ public struct ScraperTargetRequest: Codable {
     /** Skip TLS verification on endpoint. */
     public var allowInsecure: Bool? = false
 
-    public init(name: String? = nil, type: ModelType? = nil, url: String? = nil, orgID: String? = nil, bucketID: String? = nil, allowInsecure: Bool? = nil) {
+    public init(name: String? = nil, type: ModelType? = nil, url: String? = nil, orgID: String? = nil, bucketID: String? = nil, allowInsecure: Bool? = false) {
         self.name = name
         self.type = type
         self.url = url
@@ -36,4 +35,3 @@ public struct ScraperTargetRequest: Codable {
     }
 
 }
-

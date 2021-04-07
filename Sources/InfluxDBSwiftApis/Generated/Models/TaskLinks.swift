@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct TaskLinks: Codable {
 
     /** URI of resource. */
@@ -32,7 +31,7 @@ public struct TaskLinks: Codable {
         self.labels = labels
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case _self = "self"
         case owners
         case members
@@ -42,4 +41,3 @@ public struct TaskLinks: Codable {
     }
 
 }
-

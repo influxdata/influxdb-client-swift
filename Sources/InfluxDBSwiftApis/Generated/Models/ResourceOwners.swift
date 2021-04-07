@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct ResourceOwners: Codable {
 
     public var links: UsersLinks?
@@ -19,4 +18,3 @@ public struct ResourceOwners: Codable {
     }
 
 }
-

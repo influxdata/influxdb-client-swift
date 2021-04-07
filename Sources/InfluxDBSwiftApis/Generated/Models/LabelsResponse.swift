@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct LabelsResponse: Codable {
 
     public var labels: [Label]?
@@ -19,4 +18,3 @@ public struct LabelsResponse: Codable {
     }
 
 }
-

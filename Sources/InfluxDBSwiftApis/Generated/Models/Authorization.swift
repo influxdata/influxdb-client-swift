@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Authorization: Codable {
 
     public enum Status: String, Codable, CaseIterable {
@@ -35,7 +34,7 @@ public struct Authorization: Codable {
     public var org: String?
     public var links: AuthorizationAllOfLinks?
 
-    public init(status: Status? = nil, description: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, orgID: String, permissions: [Permission], id: String? = nil, token: String? = nil, userID: String? = nil, user: String? = nil, org: String? = nil, links: AuthorizationAllOfLinks? = nil) {
+    public init(status: Status? = .active, description: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, orgID: String, permissions: [Permission], id: String? = nil, token: String? = nil, userID: String? = nil, user: String? = nil, org: String? = nil, links: AuthorizationAllOfLinks? = nil) {
         self.status = status
         self.description = description
         self.createdAt = createdAt
@@ -51,4 +50,3 @@ public struct Authorization: Codable {
     }
 
 }
-

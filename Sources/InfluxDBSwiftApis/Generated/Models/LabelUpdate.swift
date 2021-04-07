@@ -7,17 +7,15 @@
 
 import Foundation
 
-
 public struct LabelUpdate: Codable {
 
     public var name: String?
     /** Key/Value pairs associated with this label. Keys can be removed by sending an update with an empty value. */
-    public var properties: [String:String]?
+    public var properties: [String: String]?
 
-    public init(name: String? = nil, properties: [String:String]? = nil) {
+    public init(name: String? = nil, properties: [String: String]? = nil) {
         self.name = name
         self.properties = properties
     }
 
 }
-

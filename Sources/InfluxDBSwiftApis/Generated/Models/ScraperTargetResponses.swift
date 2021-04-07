@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct ScraperTargetResponses: Codable {
 
     public var configurations: [ScraperTargetResponse]?
@@ -17,4 +16,3 @@ public struct ScraperTargetResponses: Codable {
     }
 
 }
-

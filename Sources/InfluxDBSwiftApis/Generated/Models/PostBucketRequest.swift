@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct PostBucketRequest: Codable {
 
     public var orgID: String
@@ -26,4 +25,3 @@ public struct PostBucketRequest: Codable {
     }
 
 }
-

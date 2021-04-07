@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct OrganizationLinks: Codable {
 
     /** URI of resource. */
@@ -38,7 +37,7 @@ public struct OrganizationLinks: Codable {
         self.dashboards = dashboards
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case _self = "self"
         case members
         case owners
@@ -50,4 +49,3 @@ public struct OrganizationLinks: Codable {
     }
 
 }
-
