@@ -145,6 +145,7 @@ jobs:
               tar zxvf influxdb.tar.gz -C influxdb --strip-components=1
             fi
             ./influxdb/influxd
+      - run: echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
       - run:
           name: Post onBoarding request to InfluxDB 2
           command: |
