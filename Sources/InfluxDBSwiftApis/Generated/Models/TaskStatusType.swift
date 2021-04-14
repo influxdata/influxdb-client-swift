@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public enum TaskStatusType: String, Codable, CaseIterable {
     case active = "active"
     case inactive = "inactive"

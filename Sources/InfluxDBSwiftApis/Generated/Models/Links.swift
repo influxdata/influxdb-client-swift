@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Links: Codable {
 
     /** URI of resource. */
@@ -23,11 +22,10 @@ public struct Links: Codable {
         self.prev = prev
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case next
         case _self = "self"
         case prev
     }
 
 }
-

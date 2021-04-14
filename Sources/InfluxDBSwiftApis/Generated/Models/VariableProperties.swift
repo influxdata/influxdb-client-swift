@@ -7,19 +7,17 @@
 
 import Foundation
 
-
 public struct VariableProperties: Codable {
 
     public enum ModelType: String, Codable, CaseIterable {
         case map = "map"
     }
     public var type: ModelType?
-    public var values: [String:String]?
+    public var values: [String: String]?
 
-    public init(type: ModelType? = nil, values: [String:String]? = nil) {
+    public init(type: ModelType? = nil, values: [String: String]? = nil) {
         self.type = type
         self.values = values
     }
 
 }
-

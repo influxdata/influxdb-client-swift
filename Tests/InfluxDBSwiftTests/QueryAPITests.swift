@@ -92,7 +92,7 @@ final class QueryAPITests: XCTestCase {
         MockURLProtocol.handler = { request, bodyData in
             XCTAssertEqual("Token my-token", request.allHTTPHeaderFields!["Authorization"])
             XCTAssertEqual("application/json; charset=utf-8", request.allHTTPHeaderFields!["Content-Type"])
-            XCTAssertEqual("163", request.allHTTPHeaderFields!["Content-Length"])
+            XCTAssertEqual("268", request.allHTTPHeaderFields!["Content-Length"])
             XCTAssertEqual("identity", request.allHTTPHeaderFields!["Content-Encoding"])
             XCTAssertEqual("identity", request.allHTTPHeaderFields!["Accept-Encoding"])
             XCTAssertEqual("text/csv", request.allHTTPHeaderFields!["Accept"])

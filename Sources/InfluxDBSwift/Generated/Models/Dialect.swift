@@ -30,7 +30,7 @@ public struct Dialect: Codable {
     /** Format of timestamps */
     public var dateTimeFormat: DateTimeFormat? = .rfc3339
 
-    public init(header: Bool? = nil, delimiter: String? = nil, annotations: Array<Annotations>? = nil, commentPrefix: String? = nil, dateTimeFormat: DateTimeFormat? = nil) {
+    public init(header: Bool? = true, delimiter: String? = ",", annotations: Array<Annotations>? = nil, commentPrefix: String? = "#", dateTimeFormat: DateTimeFormat? = .rfc3339) {
         self.header = header
         self.delimiter = delimiter
         self.annotations = annotations
@@ -39,4 +39,3 @@ public struct Dialect: Codable {
     }
 
 }
-

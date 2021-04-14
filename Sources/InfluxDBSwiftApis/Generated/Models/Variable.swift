@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Variable: Codable {
 
     public var links: VariableLinks?
@@ -35,4 +34,3 @@ public struct Variable: Codable {
     }
 
 }
-

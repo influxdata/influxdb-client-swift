@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct HealthCheck: Codable {
 
     public enum Status: String, Codable, CaseIterable {
@@ -31,4 +30,3 @@ public struct HealthCheck: Codable {
     }
 
 }
-

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct RunLinks: Codable {
 
     public var _self: String?
@@ -20,11 +19,10 @@ public struct RunLinks: Codable {
         self.retry = retry
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case _self = "self"
         case task
         case retry
     }
 
 }
-

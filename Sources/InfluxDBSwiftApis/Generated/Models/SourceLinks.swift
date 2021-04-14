@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct SourceLinks: Codable {
 
     public var _self: String?
@@ -22,7 +21,7 @@ public struct SourceLinks: Codable {
         self.buckets = buckets
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case _self = "self"
         case query
         case health
@@ -30,4 +29,3 @@ public struct SourceLinks: Codable {
     }
 
 }
-

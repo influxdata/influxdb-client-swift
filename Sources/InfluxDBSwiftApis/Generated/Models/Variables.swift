@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Variables: Codable {
 
     public var variables: [Variable]?
@@ -17,4 +16,3 @@ public struct Variables: Codable {
     }
 
 }
-

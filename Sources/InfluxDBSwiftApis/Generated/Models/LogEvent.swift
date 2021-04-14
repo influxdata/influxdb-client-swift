@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct LogEvent: Codable {
 
     /** Time event occurred, RFC3339Nano. */
@@ -21,4 +20,3 @@ public struct LogEvent: Codable {
     }
 
 }
-

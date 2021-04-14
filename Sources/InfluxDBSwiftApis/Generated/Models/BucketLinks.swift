@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct BucketLinks: Codable {
 
     /** URI of resource. */
@@ -32,7 +31,7 @@ public struct BucketLinks: Codable {
         self.write = write
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case labels
         case members
         case org
@@ -42,4 +41,3 @@ public struct BucketLinks: Codable {
     }
 
 }
-

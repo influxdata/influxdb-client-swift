@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct OnboardingResponse: Codable {
 
     public var user: User?
@@ -23,4 +22,3 @@ public struct OnboardingResponse: Codable {
     }
 
 }
-

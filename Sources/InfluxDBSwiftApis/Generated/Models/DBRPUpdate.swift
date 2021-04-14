@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct DBRPUpdate: Codable {
 
     /** InfluxDB v1 database */
@@ -24,7 +23,7 @@ public struct DBRPUpdate: Codable {
         self.links = links
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case database
         case retentionPolicy = "retention_policy"
         case _default = "default"
@@ -32,4 +31,3 @@ public struct DBRPUpdate: Codable {
     }
 
 }
-

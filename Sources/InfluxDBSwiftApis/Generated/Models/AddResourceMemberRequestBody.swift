@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct AddResourceMemberRequestBody: Codable {
 
     public var id: String
@@ -19,4 +18,3 @@ public struct AddResourceMemberRequestBody: Codable {
     }
 
 }
-

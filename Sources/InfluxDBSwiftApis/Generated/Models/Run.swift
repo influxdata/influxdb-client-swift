@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Run: Codable {
 
     public enum Status: String, Codable, CaseIterable {
@@ -45,4 +44,3 @@ public struct Run: Codable {
     }
 
 }
-

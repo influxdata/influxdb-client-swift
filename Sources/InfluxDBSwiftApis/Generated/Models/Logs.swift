@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Logs: Codable {
 
     public var events: [LogEvent]?
@@ -17,4 +16,3 @@ public struct Logs: Codable {
     }
 
 }
-

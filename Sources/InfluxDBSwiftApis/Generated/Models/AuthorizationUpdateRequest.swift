@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct AuthorizationUpdateRequest: Codable {
 
     public enum Status: String, Codable, CaseIterable {
@@ -19,10 +18,9 @@ public struct AuthorizationUpdateRequest: Codable {
     /** A description of the token. */
     public var description: String?
 
-    public init(status: Status? = nil, description: String? = nil) {
+    public init(status: Status? = .active, description: String? = nil) {
         self.status = status
         self.description = description
     }
 
 }
-

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct ScraperTargetResponse: Codable {
 
     public enum ModelType: String, Codable, CaseIterable {
@@ -32,7 +31,7 @@ public struct ScraperTargetResponse: Codable {
     public var bucket: String?
     public var links: ScraperTargetResponseAllOfLinks?
 
-    public init(name: String? = nil, type: ModelType? = nil, url: String? = nil, orgID: String? = nil, bucketID: String? = nil, allowInsecure: Bool? = nil, id: String? = nil, org: String? = nil, bucket: String? = nil, links: ScraperTargetResponseAllOfLinks? = nil) {
+    public init(name: String? = nil, type: ModelType? = nil, url: String? = nil, orgID: String? = nil, bucketID: String? = nil, allowInsecure: Bool? = false, id: String? = nil, org: String? = nil, bucket: String? = nil, links: ScraperTargetResponseAllOfLinks? = nil) {
         self.name = name
         self.type = type
         self.url = url
@@ -46,4 +45,3 @@ public struct ScraperTargetResponse: Codable {
     }
 
 }
-

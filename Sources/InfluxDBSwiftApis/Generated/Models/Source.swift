@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Source: Codable {
 
     public enum ModelType: String, Codable, CaseIterable {
@@ -55,7 +54,7 @@ public struct Source: Codable {
         self.languages = languages
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case links
         case id
         case orgID
@@ -75,4 +74,3 @@ public struct Source: Codable {
     }
 
 }
-

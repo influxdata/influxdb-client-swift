@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct DBRPs: Codable {
 
     public var content: [DBRP]?
@@ -17,4 +16,3 @@ public struct DBRPs: Codable {
     }
 
 }
-

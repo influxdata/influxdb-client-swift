@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct PasswordResetBody: Codable {
 
     public var password: String
@@ -17,4 +16,3 @@ public struct PasswordResetBody: Codable {
     }
 
 }
-

@@ -7,19 +7,17 @@
 
 import Foundation
 
-
 public struct LabelCreateRequest: Codable {
 
     public var orgID: String
     public var name: String
     /** Key/Value pairs associated with this label. Keys can be removed by sending an update with an empty value. */
-    public var properties: [String:String]?
+    public var properties: [String: String]?
 
-    public init(orgID: String, name: String, properties: [String:String]? = nil) {
+    public init(orgID: String, name: String, properties: [String: String]? = nil) {
         self.orgID = orgID
         self.name = name
         self.properties = properties
     }
 
 }
-

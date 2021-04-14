@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct ScraperTargetResponseAllOfLinks: Codable {
 
     /** URI of resource. */
@@ -29,7 +28,7 @@ public struct ScraperTargetResponseAllOfLinks: Codable {
         self.organization = organization
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case _self = "self"
         case members
         case owners
@@ -38,4 +37,3 @@ public struct ScraperTargetResponseAllOfLinks: Codable {
     }
 
 }
-

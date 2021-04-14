@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct TaskCreateRequest: Codable {
 
     /** The ID of the organization that owns this Task. */
@@ -29,4 +28,3 @@ public struct TaskCreateRequest: Codable {
     }
 
 }
-

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct RetentionRule: Codable {
 
     public enum ModelType: String, Codable, CaseIterable {
@@ -19,11 +18,10 @@ public struct RetentionRule: Codable {
     /** Shard duration measured in seconds. */
     public var shardGroupDurationSeconds: Int64?
 
-    public init(type: ModelType, everySeconds: Int, shardGroupDurationSeconds: Int64? = nil) {
+    public init(type: ModelType = .expire, everySeconds: Int, shardGroupDurationSeconds: Int64? = nil) {
         self.type = type
         self.everySeconds = everySeconds
         self.shardGroupDurationSeconds = shardGroupDurationSeconds
     }
 
 }
-

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct ResourceOwner: Codable {
 
     public enum Status: String, Codable, CaseIterable {
@@ -25,7 +24,7 @@ public struct ResourceOwner: Codable {
     public var links: UserLinks?
     public var role: Role? = .owner
 
-    public init(id: String? = nil, oauthID: String? = nil, name: String, status: Status? = nil, links: UserLinks? = nil, role: Role? = nil) {
+    public init(id: String? = nil, oauthID: String? = nil, name: String, status: Status? = .active, links: UserLinks? = nil, role: Role? = .owner) {
         self.id = id
         self.oauthID = oauthID
         self.name = name
@@ -35,4 +34,3 @@ public struct ResourceOwner: Codable {
     }
 
 }
-

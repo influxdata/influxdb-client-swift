@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct AuthorizationAllOfLinks: Codable {
 
     /** URI of resource. */
@@ -20,10 +19,9 @@ public struct AuthorizationAllOfLinks: Codable {
         self.user = user
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case _self = "self"
         case user
     }
 
 }
-

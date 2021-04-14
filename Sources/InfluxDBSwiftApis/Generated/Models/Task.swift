@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Task: Codable {
 
     public enum LastRunStatus: String, Codable, CaseIterable {
@@ -69,4 +68,3 @@ public struct Task: Codable {
     }
 
 }
-

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct SecretKeysResponse: Codable {
 
     public var secrets: [String]?
@@ -19,4 +18,3 @@ public struct SecretKeysResponse: Codable {
     }
 
 }
-

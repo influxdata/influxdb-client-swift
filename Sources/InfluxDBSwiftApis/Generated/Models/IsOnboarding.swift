@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct IsOnboarding: Codable {
 
     /** True means that the influxdb instance has NOT had initial setup; false means that the database has been setup. */
@@ -18,4 +17,3 @@ public struct IsOnboarding: Codable {
     }
 
 }
-

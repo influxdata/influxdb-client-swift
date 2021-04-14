@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct OnboardingRequest: Codable {
 
     public var username: String
@@ -16,7 +15,6 @@ public struct OnboardingRequest: Codable {
     public var bucket: String
     public var retentionPeriodSeconds: Int?
     /** Retention period *in nanoseconds* for the new bucket. This key&#39;s name has been misleading since OSS 2.0 GA, please transition to use &#x60;retentionPeriodSeconds&#x60;  */
-    
     @available(*, deprecated, message: "This property is deprecated.")
     public var retentionPeriodHrs: Int?
 
@@ -30,4 +28,3 @@ public struct OnboardingRequest: Codable {
     }
 
 }
-

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct UsersLinks: Codable {
 
     public var _self: String?
@@ -16,9 +15,8 @@ public struct UsersLinks: Codable {
         self._self = _self
     }
 
-    public enum CodingKeys: String, CodingKey, CaseIterable { 
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case _self = "self"
     }
 
 }
-

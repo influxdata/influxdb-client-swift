@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Permission: Codable {
 
     public enum Action: String, Codable, CaseIterable {
@@ -23,4 +22,3 @@ public struct Permission: Codable {
     }
 
 }
-

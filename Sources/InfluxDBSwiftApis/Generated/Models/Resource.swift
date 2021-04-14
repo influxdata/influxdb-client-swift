@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct Resource: Codable {
 
     public enum ModelType: String, Codable, CaseIterable {
@@ -49,4 +48,3 @@ public struct Resource: Codable {
     }
 
 }
-
