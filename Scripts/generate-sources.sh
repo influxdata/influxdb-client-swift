@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#
+# How to run script from ROOT path:
+#   docker run --rm -it -v "${PWD}":/code -v ~/.m2:/root/.m2 -w /code maven:3.6-slim /code/Scripts/generate-sources.sh
+#
+
 SCRIPT_PATH="$( cd "$(dirname "$0")" || exit ; pwd -P )"
 
 rm -rf "${SCRIPT_PATH}"/generated
