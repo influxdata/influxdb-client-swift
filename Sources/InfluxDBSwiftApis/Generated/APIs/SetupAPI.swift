@@ -110,6 +110,7 @@ public class SetupAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     public func postSetupUser(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: OnboardingResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postSetupUserWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
@@ -124,11 +125,12 @@ public class SetupAPI {
     /**
      Set up a new user, org and bucket
      - POST /setup/user
-     - Post an onboarding request to set up a new user, org and bucket.
+     - Post an onboarding request to set up a new user, org and bucket. NOTE: This API will be removed in InfluxDB 2.1.0. Please migrate to using the dedicated APIs for users, orgs, and buckets. 
      - parameter onboardingRequest: (body) Source to create 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<OnboardingResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal func postSetupUserWithRequestBuilder(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil) -> RequestBuilder<OnboardingResponse> {
         let path = "/setup/user"
         let URLString = influxDB2API.basePath + "/api/v2" + path
