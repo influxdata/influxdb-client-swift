@@ -1,10 +1,13 @@
 ## 0.5.0 [unreleased]
 
+### API
+1. [#33](https://github.com/influxdata/influxdb-client-swift/pull/33): Update swagger to latest version
+
 ## 0.4.0 [2021-04-30]
 
 ### API
 1. [#31](https://github.com/influxdata/influxdb-client-swift/pull/31): Update management API to code produced by `openapi-generator` v5.1.0
-1. [#32](https://github.com/influxdata/influxdb-client-ruby/pull/32): Update swagger to latest version
+1. [#32](https://github.com/influxdata/influxdb-client-swift/pull/32): Update swagger to latest version
 
 ## 0.3.0 [2021-04-01]
 
