@@ -14,7 +14,7 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>5.1.0</version>
                 <configuration>
-                    <inputSpec>https://raw.githubusercontent.com/influxdata/influxdb/master/http/swagger.yml</inputSpec>
+                    <inputSpec>https://raw.githubusercontent.com/influxdata/openapi/master/contracts/oss.yml</inputSpec>
                     <generatorName>swift5</generatorName>
                     <configOptions>
                         <projectName>InfluxDB2</projectName>

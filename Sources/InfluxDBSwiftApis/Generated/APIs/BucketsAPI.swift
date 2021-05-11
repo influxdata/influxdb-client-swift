@@ -223,11 +223,12 @@ public class BucketsAPI {
      - parameter org: (query) The organization name. (optional)
      - parameter orgID: (query) The organization ID. (optional)
      - parameter name: (query) Only returns buckets with a specific name. (optional)
+     - parameter id: (query) Only returns buckets with a specific ID. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getBuckets(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Buckets?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        getBucketsWithRequestBuilder(zapTraceSpan: zapTraceSpan, offset: offset, limit: limit, after: after, org: org, orgID: orgID, name: name).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func getBuckets(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil, id: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Buckets?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        getBucketsWithRequestBuilder(zapTraceSpan: zapTraceSpan, offset: offset, limit: limit, after: after, org: org, orgID: orgID, name: name, id: id).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -247,9 +248,10 @@ public class BucketsAPI {
      - parameter org: (query) The organization name. (optional)
      - parameter orgID: (query) The organization ID. (optional)
      - parameter name: (query) Only returns buckets with a specific name. (optional)
+     - parameter id: (query) Only returns buckets with a specific ID. (optional)
      - returns: RequestBuilder<Buckets> 
      */
-    internal func getBucketsWithRequestBuilder(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil) -> RequestBuilder<Buckets> {
+    internal func getBucketsWithRequestBuilder(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil, id: String? = nil) -> RequestBuilder<Buckets> {
         let path = "/buckets"
         let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
@@ -261,7 +263,8 @@ public class BucketsAPI {
             "after": after?.encodeToJSON(), 
             "org": org?.encodeToJSON(), 
             "orgID": orgID?.encodeToJSON(), 
-            "name": name?.encodeToJSON()
+            "name": name?.encodeToJSON(), 
+            "id": id?.encodeToJSON()
         ])
         let nillableHeaders: [String: Any?] = [
             "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
@@ -507,13 +510,13 @@ public class BucketsAPI {
      Update a bucket
      
      - parameter bucketID: (path) The bucket ID. 
-     - parameter bucket: (body) Bucket update to apply 
+     - parameter patchBucketRequest: (body) Bucket update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchBucketsID(bucketID: String, bucket: Bucket, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Bucket?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        patchBucketsIDWithRequestBuilder(bucketID: bucketID, bucket: bucket, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func patchBucketsID(bucketID: String, patchBucketRequest: PatchBucketRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Bucket?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        patchBucketsIDWithRequestBuilder(bucketID: bucketID, patchBucketRequest: patchBucketRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -527,17 +530,17 @@ public class BucketsAPI {
      Update a bucket
      - PATCH /buckets/{bucketID}
      - parameter bucketID: (path) The bucket ID. 
-     - parameter bucket: (body) Bucket update to apply 
+     - parameter patchBucketRequest: (body) Bucket update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Bucket> 
      */
-    internal func patchBucketsIDWithRequestBuilder(bucketID: String, bucket: Bucket, zapTraceSpan: String? = nil) -> RequestBuilder<Bucket> {
+    internal func patchBucketsIDWithRequestBuilder(bucketID: String, patchBucketRequest: PatchBucketRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Bucket> {
         var path = "/buckets/{bucketID}"
         let bucketIDPreEscape = "\(APIHelper.mapValueToPathItem(bucketID))"
         let bucketIDPostEscape = bucketIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{bucketID}", with: bucketIDPostEscape, options: .literal, range: nil)
         let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: bucket)
+        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: patchBucketRequest)
 
         let url = URLComponents(string: URLString)
         let nillableHeaders: [String: Any?] = [

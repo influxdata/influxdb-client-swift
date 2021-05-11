@@ -25,10 +25,10 @@ class UsersAPITests: APIXCTestCase {
         let userName = generateName("user")
         let request = User(name: userName, status: User.Status.active)
 
-        var checker: (User) -> Void = { response in
+        var checker: (UserResponse) -> Void = { response in
             XCTAssertNotNil(response.id)
             XCTAssertEqual(userName, response.name)
-            XCTAssertEqual(User.Status.active, response.status)
+            XCTAssertEqual(UserResponse.Status.active, response.status)
             XCTAssertNotNil(response.links)
         }
 

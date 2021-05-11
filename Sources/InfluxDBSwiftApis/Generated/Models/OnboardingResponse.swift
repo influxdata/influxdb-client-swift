@@ -9,12 +9,12 @@ import Foundation
 
 public struct OnboardingResponse: Codable {
 
-    public var user: User?
+    public var user: UserResponse?
     public var org: Organization?
     public var bucket: Bucket?
     public var auth: Authorization?
 
-    public init(user: User? = nil, org: Organization? = nil, bucket: Bucket? = nil, auth: Authorization? = nil) {
+    public init(user: UserResponse? = nil, org: Organization? = nil, bucket: Bucket? = nil, auth: Authorization? = nil) {
         self.user = user
         self.org = org
         self.bucket = bucket

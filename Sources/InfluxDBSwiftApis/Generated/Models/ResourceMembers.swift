@@ -9,10 +9,10 @@ import Foundation
 
 public struct ResourceMembers: Codable {
 
-    public var links: UsersLinks?
+    public var links: ResourceMembersLinks?
     public var users: [ResourceMember]?
 
-    public init(links: UsersLinks? = nil, users: [ResourceMember]? = nil) {
+    public init(links: ResourceMembersLinks? = nil, users: [ResourceMember]? = nil) {
         self.links = links
         self.users = users
     }

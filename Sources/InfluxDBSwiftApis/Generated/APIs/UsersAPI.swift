@@ -890,7 +890,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getMe(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: User?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func getMe(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: UserResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getMeWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -905,9 +905,9 @@ public class UsersAPI {
      Return the current authenticated user
      - GET /me
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<User> 
+     - returns: RequestBuilder<UserResponse> 
      */
-    internal func getMeWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<User> {
+    internal func getMeWithRequestBuilder(zapTraceSpan: String? = nil) -> RequestBuilder<UserResponse> {
         let path = "/me"
         let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
@@ -918,7 +918,7 @@ public class UsersAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<User> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
+        let requestBuilder: RequestBuilder<UserResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }
@@ -1331,7 +1331,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getUsersID(userID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: User?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func getUsersID(userID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: UserResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getUsersIDWithRequestBuilder(userID: userID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1347,9 +1347,9 @@ public class UsersAPI {
      - GET /users/{userID}
      - parameter userID: (path) The user ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<User> 
+     - returns: RequestBuilder<UserResponse> 
      */
-    internal func getUsersIDWithRequestBuilder(userID: String, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
+    internal func getUsersIDWithRequestBuilder(userID: String, zapTraceSpan: String? = nil) -> RequestBuilder<UserResponse> {
         var path = "/users/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1363,7 +1363,7 @@ public class UsersAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<User> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
+        let requestBuilder: RequestBuilder<UserResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }
@@ -1377,7 +1377,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchUsersID(userID: String, user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: User?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func patchUsersID(userID: String, user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: UserResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         patchUsersIDWithRequestBuilder(userID: userID, user: user, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -1394,9 +1394,9 @@ public class UsersAPI {
      - parameter userID: (path) The ID of the user to update. 
      - parameter user: (body) User update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<User> 
+     - returns: RequestBuilder<UserResponse> 
      */
-    internal func patchUsersIDWithRequestBuilder(userID: String, user: User, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
+    internal func patchUsersIDWithRequestBuilder(userID: String, user: User, zapTraceSpan: String? = nil) -> RequestBuilder<UserResponse> {
         var path = "/users/{userID}"
         let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
         let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1410,7 +1410,7 @@ public class UsersAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<User> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
+        let requestBuilder: RequestBuilder<UserResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }
@@ -1987,7 +1987,7 @@ public class UsersAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postUsers(user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: User?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func postUsers(user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: UserResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         postUsersWithRequestBuilder(user: user, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
@@ -2003,9 +2003,9 @@ public class UsersAPI {
      - POST /users
      - parameter user: (body) User to create 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<User> 
+     - returns: RequestBuilder<UserResponse> 
      */
-    internal func postUsersWithRequestBuilder(user: User, zapTraceSpan: String? = nil) -> RequestBuilder<User> {
+    internal func postUsersWithRequestBuilder(user: User, zapTraceSpan: String? = nil) -> RequestBuilder<UserResponse> {
         let path = "/users"
         let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: user)
@@ -2016,7 +2016,7 @@ public class UsersAPI {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<User> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
+        let requestBuilder: RequestBuilder<UserResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }

@@ -71,12 +71,11 @@ public class AuthorizationsAPI {
      - parameter user: (query) Only show authorizations that belong to a user name. (optional)
      - parameter orgID: (query) Only show authorizations that belong to an organization ID. (optional)
      - parameter org: (query) Only show authorizations that belong to a organization name. (optional)
-     - parameter token: (query) Find a token by value. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getAuthorizations(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil, token: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Authorizations?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        getAuthorizationsWithRequestBuilder(zapTraceSpan: zapTraceSpan, userID: userID, user: user, orgID: orgID, org: org, token: token).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func getAuthorizations(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Authorizations?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        getAuthorizationsWithRequestBuilder(zapTraceSpan: zapTraceSpan, userID: userID, user: user, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -94,10 +93,9 @@ public class AuthorizationsAPI {
      - parameter user: (query) Only show authorizations that belong to a user name. (optional)
      - parameter orgID: (query) Only show authorizations that belong to an organization ID. (optional)
      - parameter org: (query) Only show authorizations that belong to a organization name. (optional)
-     - parameter token: (query) Find a token by value. (optional)
      - returns: RequestBuilder<Authorizations> 
      */
-    internal func getAuthorizationsWithRequestBuilder(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil, token: String? = nil) -> RequestBuilder<Authorizations> {
+    internal func getAuthorizationsWithRequestBuilder(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil) -> RequestBuilder<Authorizations> {
         let path = "/authorizations"
         let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
@@ -107,8 +105,7 @@ public class AuthorizationsAPI {
             "userID": userID?.encodeToJSON(), 
             "user": user?.encodeToJSON(), 
             "orgID": orgID?.encodeToJSON(), 
-            "org": org?.encodeToJSON(), 
-            "token": token?.encodeToJSON()
+            "org": org?.encodeToJSON()
         ])
         let nillableHeaders: [String: Any?] = [
             "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()

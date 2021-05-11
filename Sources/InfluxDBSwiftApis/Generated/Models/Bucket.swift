@@ -20,13 +20,14 @@ public struct Bucket: Codable {
     public var description: String?
     public var orgID: String?
     public var rp: String?
+    public var schemaType: SchemaType?
     public var createdAt: Date?
     public var updatedAt: Date?
     /** Rules to expire or retain data.  No rules means data never expires. */
     public var retentionRules: [RetentionRule]
     public var labels: [Label]?
 
-    public init(links: BucketLinks? = nil, id: String? = nil, type: ModelType? = .user, name: String, description: String? = nil, orgID: String? = nil, rp: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, retentionRules: [RetentionRule], labels: [Label]? = nil) {
+    public init(links: BucketLinks? = nil, id: String? = nil, type: ModelType? = .user, name: String, description: String? = nil, orgID: String? = nil, rp: String? = nil, schemaType: SchemaType? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, retentionRules: [RetentionRule], labels: [Label]? = nil) {
         self.links = links
         self.id = id
         self.type = type
@@ -34,6 +35,7 @@ public struct Bucket: Codable {
         self.description = description
         self.orgID = orgID
         self.rp = rp
+        self.schemaType = schemaType
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.retentionRules = retentionRules
