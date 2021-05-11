@@ -12,7 +12,7 @@ struct CreateNewBucket: ParsableCommand {
     private var name: String
 
     @Option(name: .shortAndLong, help: "Duration bucket will retain data.")
-    private var retention: Int = 3600
+    private var retention: Int64 = 3600
 
     @Option(name: .shortAndLong, help: "The ID of the organization.")
     private var orgId: String
