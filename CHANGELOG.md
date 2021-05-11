@@ -2,6 +2,7 @@
 
 ### API
 1. [#33](https://github.com/influxdata/influxdb-client-swift/pull/33): Update swagger to latest version
+1. [#34](https://github.com/influxdata/influxdb-client-swift/pull/34): Use [openapi](https://github.com/influxdata/openapi) repository as a source for InfluxDB API definition
 
 ## 0.4.0 [2021-04-30]
 
