@@ -58,7 +58,7 @@ struct CreateNewBucket: ParsableCommand {
                         ])
 
                 // Create Authorization
-                api.authorizationsAPI.postAuthorizations(authorization: request) { authorization, error in
+                api.authorizationsAPI.postAuthorizations(authorizationPostRequest: request) { authorization, error in
                     // For error exit
                     if let error = error {
                         atExit(client: client, error: error)
