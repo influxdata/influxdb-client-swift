@@ -49,7 +49,7 @@ struct CreateNewBucket: ParsableCommand {
                         orgID: self.orgId
                 )
                 // Authorization configuration
-                let request = Authorization(
+                let request = AuthorizationPostRequest(
                         description: "Authorization to read/write bucket: \(self.name)",
                         orgID: self.orgId,
                         permissions: [
