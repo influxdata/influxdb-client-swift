@@ -212,13 +212,13 @@ public class AuthorizationsAPI {
     /**
      Create an authorization
      
-     - parameter authorization: (body) Authorization to create 
+     - parameter authorizationPostRequest: (body) Authorization to create 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postAuthorizations(authorization: Authorization, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Authorization?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postAuthorizationsWithRequestBuilder(authorization: authorization, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func postAuthorizations(authorizationPostRequest: AuthorizationPostRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Authorization?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        postAuthorizationsWithRequestBuilder(authorizationPostRequest: authorizationPostRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -231,14 +231,14 @@ public class AuthorizationsAPI {
     /**
      Create an authorization
      - POST /authorizations
-     - parameter authorization: (body) Authorization to create 
+     - parameter authorizationPostRequest: (body) Authorization to create 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Authorization> 
      */
-    internal func postAuthorizationsWithRequestBuilder(authorization: Authorization, zapTraceSpan: String? = nil) -> RequestBuilder<Authorization> {
+    internal func postAuthorizationsWithRequestBuilder(authorizationPostRequest: AuthorizationPostRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Authorization> {
         let path = "/authorizations"
         let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: authorization)
+        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: authorizationPostRequest)
 
         let url = URLComponents(string: URLString)
         let nillableHeaders: [String: Any?] = [

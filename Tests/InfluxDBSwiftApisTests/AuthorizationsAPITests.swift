@@ -27,7 +27,7 @@ class AuthorizationsAPITests: APIXCTestCase {
     func testCreateAuthorization() {
         let authorizationDesc = generateName("authorization")
 
-        let request = Authorization(
+        let request = AuthorizationPostRequest(
                 description: authorizationDesc,
                 orgID: Self.orgID,
                 permissions: [
