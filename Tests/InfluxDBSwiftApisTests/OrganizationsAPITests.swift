@@ -23,7 +23,7 @@ class OrganizationsAPITests: APIXCTestCase {
 
     func testCreateOrg() {
         let orgName = generateName("org")
-        let request = Organization(name: orgName)
+        let request = PostOrganizationRequest(name: orgName)
 
         var checker: (Organization) -> Void = { response in
             XCTAssertNotNil(response.id)
