@@ -407,13 +407,13 @@ public class OrganizationsAPI {
      Update an organization
      
      - parameter orgID: (path) The ID of the organization to get. 
-     - parameter organization: (body) Organization update to apply 
+     - parameter patchOrganizationRequest: (body) Organization update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchOrgsID(orgID: String, organization: Organization, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Organization?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        patchOrgsIDWithRequestBuilder(orgID: orgID, organization: organization, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func patchOrgsID(orgID: String, patchOrganizationRequest: PatchOrganizationRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Organization?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        patchOrgsIDWithRequestBuilder(orgID: orgID, patchOrganizationRequest: patchOrganizationRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -427,17 +427,17 @@ public class OrganizationsAPI {
      Update an organization
      - PATCH /orgs/{orgID}
      - parameter orgID: (path) The ID of the organization to get. 
-     - parameter organization: (body) Organization update to apply 
+     - parameter patchOrganizationRequest: (body) Organization update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Organization> 
      */
-    internal func patchOrgsIDWithRequestBuilder(orgID: String, organization: Organization, zapTraceSpan: String? = nil) -> RequestBuilder<Organization> {
+    internal func patchOrgsIDWithRequestBuilder(orgID: String, patchOrganizationRequest: PatchOrganizationRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Organization> {
         var path = "/orgs/{orgID}"
         let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
         let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{orgID}", with: orgIDPostEscape, options: .literal, range: nil)
         let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: organization)
+        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: patchOrganizationRequest)
 
         let url = URLComponents(string: URLString)
         let nillableHeaders: [String: Any?] = [
@@ -500,13 +500,13 @@ public class OrganizationsAPI {
     /**
      Create an organization
      
-     - parameter organization: (body) Organization to create 
+     - parameter postOrganizationRequest: (body) Organization to create 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postOrgs(organization: Organization, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Organization?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postOrgsWithRequestBuilder(organization: organization, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func postOrgs(postOrganizationRequest: PostOrganizationRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Organization?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        postOrgsWithRequestBuilder(postOrganizationRequest: postOrganizationRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -519,14 +519,14 @@ public class OrganizationsAPI {
     /**
      Create an organization
      - POST /orgs
-     - parameter organization: (body) Organization to create 
+     - parameter postOrganizationRequest: (body) Organization to create 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Organization> 
      */
-    internal func postOrgsWithRequestBuilder(organization: Organization, zapTraceSpan: String? = nil) -> RequestBuilder<Organization> {
+    internal func postOrgsWithRequestBuilder(postOrganizationRequest: PostOrganizationRequest, zapTraceSpan: String? = nil) -> RequestBuilder<Organization> {
         let path = "/orgs"
         let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: organization)
+        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: postOrganizationRequest)
 
         let url = URLComponents(string: URLString)
         let nillableHeaders: [String: Any?] = [

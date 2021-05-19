@@ -21,10 +21,10 @@ public struct ResourceMember: Codable {
     public var name: String
     /** If inactive the user is inactive. */
     public var status: Status? = .active
-    public var links: UserLinks?
+    public var links: UserResponseLinks?
     public var role: Role? = .member
 
-    public init(id: String? = nil, oauthID: String? = nil, name: String, status: Status? = .active, links: UserLinks? = nil, role: Role? = .member) {
+    public init(id: String? = nil, oauthID: String? = nil, name: String, status: Status? = .active, links: UserResponseLinks? = nil, role: Role? = .member) {
         self.id = id
         self.oauthID = oauthID
         self.name = name

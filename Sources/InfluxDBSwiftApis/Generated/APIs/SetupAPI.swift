@@ -102,50 +102,5 @@ public class SetupAPI {
         return requestBuilder
     }
 
-    /**
-     Set up a new user, org and bucket
-     
-     - parameter onboardingRequest: (body) Source to create 
-     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    @available(*, deprecated, message: "This operation is deprecated.")
-    public func postSetupUser(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: OnboardingResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postSetupUserWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
-    }
-
-    /**
-     Set up a new user, org and bucket
-     - POST /setup/user
-     - Post an onboarding request to set up a new user, org and bucket. NOTE: This API will be removed in InfluxDB 2.1.0. Please migrate to using the dedicated APIs for users, orgs, and buckets. 
-     - parameter onboardingRequest: (body) Source to create 
-     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<OnboardingResponse> 
-     */
-    @available(*, deprecated, message: "This operation is deprecated.")
-    internal func postSetupUserWithRequestBuilder(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil) -> RequestBuilder<OnboardingResponse> {
-        let path = "/setup/user"
-        let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: onboardingRequest)
-
-        let url = URLComponents(string: URLString)
-        let nillableHeaders: [String: Any?] = [
-            "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
-        ]
-        let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
-
-        let requestBuilder: RequestBuilder<OnboardingResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
-
-        return requestBuilder
-    }
-
 }
 }

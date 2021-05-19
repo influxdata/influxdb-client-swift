@@ -15,13 +15,15 @@ public struct PostBucketRequest: Codable {
     public var rp: String?
     /** Rules to expire or retain data.  No rules means data never expires. */
     public var retentionRules: [RetentionRule]
+    public var schemaType: SchemaType?
 
-    public init(orgID: String, name: String, description: String? = nil, rp: String? = nil, retentionRules: [RetentionRule]) {
+    public init(orgID: String, name: String, description: String? = nil, rp: String? = nil, retentionRules: [RetentionRule], schemaType: SchemaType? = nil) {
         self.orgID = orgID
         self.name = name
         self.description = description
         self.rp = rp
         self.retentionRules = retentionRules
+        self.schemaType = schemaType
     }
 
 }

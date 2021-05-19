@@ -12,7 +12,7 @@ struct CreateNewBucket: ParsableCommand {
     private var name: String
 
     @Option(name: .shortAndLong, help: "Duration bucket will retain data.")
-    private var retention: Int = 3600
+    private var retention: Int64 = 3600
 
     @Option(name: .shortAndLong, help: "The ID of the organization.")
     private var orgId: String
@@ -49,7 +49,7 @@ struct CreateNewBucket: ParsableCommand {
                         orgID: self.orgId
                 )
                 // Authorization configuration
-                let request = Authorization(
+                let request = AuthorizationPostRequest(
                         description: "Authorization to read/write bucket: \(self.name)",
                         orgID: self.orgId,
                         permissions: [
@@ -58,7 +58,7 @@ struct CreateNewBucket: ParsableCommand {
                         ])
 
                 // Create Authorization
-                api.authorizationsAPI.postAuthorizations(authorization: request) { authorization, error in
+                api.authorizationsAPI.postAuthorizations(authorizationPostRequest: request) { authorization, error in
                     // For error exit
                     if let error = error {
                         atExit(client: client, error: error)
