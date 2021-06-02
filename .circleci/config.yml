@@ -220,9 +220,6 @@ jobs:
           command: |
             ./Scripts/generate-sources.sh
             make build
-      - run:
-          name: Checks that there are not changes sources from swagger
-          command: git diff --exit-code
       - save_cache:
           name: Saving Cache
           key: *generate-sources-cache-key
