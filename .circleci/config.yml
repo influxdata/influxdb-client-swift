@@ -269,6 +269,9 @@ workflows:
       - check-documentation
       - check-examples
       - tests-linux
+      - tests-linux:
+          name: tests-linux-5.4
+          swift-image: "swift:5.4"
       - tests-macOS
   nightly:
     triggers:
