@@ -139,7 +139,7 @@ cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/SynchronizedDictiona
 sed -i 's/Any]>/String]>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/UsersAPI.swift
 sed -i 's/extern: File? = nil, //' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/self.extern = extern/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
-sed -i 's/Any?/[String:String]?/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
+sed -i 's/Any/String/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/public var extern: File?/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i 's/Set<Annotations>/Array<Annotations>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Dialect.swift
 
