@@ -17,13 +17,16 @@ public struct Query: Codable {
     public var query: String
     /** The type of query. Must be \&quot;flux\&quot;. */
     public var type: ModelType?
+    /** Enumeration of key/value pairs that respresent parameters to be injected into query (can only specify either this field or extern and not both)  */
+    public var params: [String: String]?
     public var dialect: Dialect?
     /** Specifies the time that should be reported as \&quot;now\&quot; in the query. Default is the server&#39;s now time. */
     public var now: Date?
 
-    public init(query: String, type: ModelType? = nil, dialect: Dialect? = nil, now: Date? = nil) {
+    public init(query: String, type: ModelType? = nil, params: [String: String]? = nil, dialect: Dialect? = nil, now: Date? = nil) {
         self.query = query
         self.type = type
+        self.params = params
         self.dialect = dialect
         self.now = now
     }

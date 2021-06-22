@@ -21,14 +21,15 @@ public class DBRPsAPI {
     /**
      Delete a database retention policy
      
-     - parameter orgID: (query) Specifies the organization ID of the mapping 
      - parameter dbrpID: (path) The database retention policy mapping 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func deleteDBRPID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        deleteDBRPIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func deleteDBRPID(dbrpID: String, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        deleteDBRPIDWithRequestBuilder(dbrpID: dbrpID, zapTraceSpan: zapTraceSpan, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case .success:
                 completion((), nil)
@@ -41,12 +42,13 @@ public class DBRPsAPI {
     /**
      Delete a database retention policy
      - DELETE /dbrps/{dbrpID}
-     - parameter orgID: (query) Specifies the organization ID of the mapping 
      - parameter dbrpID: (path) The database retention policy mapping 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal func deleteDBRPIDWithRequestBuilder(orgID: String, dbrpID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
+    internal func deleteDBRPIDWithRequestBuilder(dbrpID: String, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil) -> RequestBuilder<Void> {
         var path = "/dbrps/{dbrpID}"
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -56,7 +58,8 @@ public class DBRPsAPI {
         
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-            "orgID": orgID.encodeToJSON()
+            "orgID": orgID?.encodeToJSON(), 
+            "org": org?.encodeToJSON()
         ])
         let nillableHeaders: [String: Any?] = [
             "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
@@ -71,8 +74,9 @@ public class DBRPsAPI {
     /**
      List all database retention policy mappings
      
-     - parameter orgID: (query) Specifies the organization ID to filter on 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID to filter on (optional)
+     - parameter org: (query) Specifies the organization name to filter on (optional)
      - parameter id: (query) Specifies the mapping ID to filter on (optional)
      - parameter bucketID: (query) Specifies the bucket ID to filter on (optional)
      - parameter _default: (query) Specifies filtering on default (optional)
@@ -81,8 +85,8 @@ public class DBRPsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getDBRPs(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRPs?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        getDBRPsWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan, id: id, bucketID: bucketID, _default: _default, db: db, rp: rp).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func getDBRPs(zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRPs?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        getDBRPsWithRequestBuilder(zapTraceSpan: zapTraceSpan, orgID: orgID, org: org, id: id, bucketID: bucketID, _default: _default, db: db, rp: rp).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -95,8 +99,9 @@ public class DBRPsAPI {
     /**
      List all database retention policy mappings
      - GET /dbrps
-     - parameter orgID: (query) Specifies the organization ID to filter on 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID to filter on (optional)
+     - parameter org: (query) Specifies the organization name to filter on (optional)
      - parameter id: (query) Specifies the mapping ID to filter on (optional)
      - parameter bucketID: (query) Specifies the bucket ID to filter on (optional)
      - parameter _default: (query) Specifies filtering on default (optional)
@@ -104,14 +109,15 @@ public class DBRPsAPI {
      - parameter rp: (query) Specifies the retention policy to filter on (optional)
      - returns: RequestBuilder<DBRPs> 
      */
-    internal func getDBRPsWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil) -> RequestBuilder<DBRPs> {
+    internal func getDBRPsWithRequestBuilder(zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil) -> RequestBuilder<DBRPs> {
         let path = "/dbrps"
         let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
         
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-            "orgID": orgID.encodeToJSON(), 
+            "orgID": orgID?.encodeToJSON(), 
+            "org": org?.encodeToJSON(), 
             "id": id?.encodeToJSON(), 
             "bucketID": bucketID?.encodeToJSON(), 
             "default": _default?.encodeToJSON(), 
@@ -131,14 +137,15 @@ public class DBRPsAPI {
     /**
      Retrieve a database retention policy mapping
      
-     - parameter orgID: (query) Specifies the organization ID of the mapping 
      - parameter dbrpID: (path) The database retention policy mapping ID 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getDBRPsID(orgID: String, dbrpID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        getDBRPsIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func getDBRPsID(dbrpID: String, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRPGet?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        getDBRPsIDWithRequestBuilder(dbrpID: dbrpID, zapTraceSpan: zapTraceSpan, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -151,12 +158,13 @@ public class DBRPsAPI {
     /**
      Retrieve a database retention policy mapping
      - GET /dbrps/{dbrpID}
-     - parameter orgID: (query) Specifies the organization ID of the mapping 
      - parameter dbrpID: (path) The database retention policy mapping ID 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<DBRP> 
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
+     - returns: RequestBuilder<DBRPGet> 
      */
-    internal func getDBRPsIDWithRequestBuilder(orgID: String, dbrpID: String, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
+    internal func getDBRPsIDWithRequestBuilder(dbrpID: String, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil) -> RequestBuilder<DBRPGet> {
         var path = "/dbrps/{dbrpID}"
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -166,14 +174,15 @@ public class DBRPsAPI {
         
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-            "orgID": orgID.encodeToJSON()
+            "orgID": orgID?.encodeToJSON(), 
+            "org": org?.encodeToJSON()
         ])
         let nillableHeaders: [String: Any?] = [
             "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<DBRP> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
+        let requestBuilder: RequestBuilder<DBRPGet> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }
@@ -181,15 +190,16 @@ public class DBRPsAPI {
     /**
      Update a database retention policy mapping
      
-     - parameter orgID: (query) Specifies the organization ID of the mapping 
      - parameter dbrpID: (path) The database retention policy mapping. 
      - parameter dBRPUpdate: (body) Database retention policy update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func patchDBRPID(orgID: String, dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        patchDBRPIDWithRequestBuilder(orgID: orgID, dbrpID: dbrpID, dBRPUpdate: dBRPUpdate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func patchDBRPID(dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRPGet?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        patchDBRPIDWithRequestBuilder(dbrpID: dbrpID, dBRPUpdate: dBRPUpdate, zapTraceSpan: zapTraceSpan, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -202,13 +212,14 @@ public class DBRPsAPI {
     /**
      Update a database retention policy mapping
      - PATCH /dbrps/{dbrpID}
-     - parameter orgID: (query) Specifies the organization ID of the mapping 
      - parameter dbrpID: (path) The database retention policy mapping. 
      - parameter dBRPUpdate: (body) Database retention policy update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<DBRP> 
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
+     - returns: RequestBuilder<DBRPGet> 
      */
-    internal func patchDBRPIDWithRequestBuilder(orgID: String, dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
+    internal func patchDBRPIDWithRequestBuilder(dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil) -> RequestBuilder<DBRPGet> {
         var path = "/dbrps/{dbrpID}"
         let dbrpIDPreEscape = "\(APIHelper.mapValueToPathItem(dbrpID))"
         let dbrpIDPostEscape = dbrpIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -218,14 +229,15 @@ public class DBRPsAPI {
 
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-            "orgID": orgID.encodeToJSON()
+            "orgID": orgID?.encodeToJSON(), 
+            "org": org?.encodeToJSON()
         ])
         let nillableHeaders: [String: Any?] = [
             "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<DBRP> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
+        let requestBuilder: RequestBuilder<DBRPGet> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }
@@ -233,13 +245,13 @@ public class DBRPsAPI {
     /**
      Add a database retention policy mapping
      
-     - parameter DBRP: (body) The database retention policy mapping to add 
+     - parameter dBRPCreate: (body) The database retention policy mapping to add 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postDBRP(DBRP: DBRP, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postDBRPWithRequestBuilder(DBRP: DBRP, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func postDBRP(dBRPCreate: DBRPCreate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: DBRP?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        postDBRPWithRequestBuilder(dBRPCreate: dBRPCreate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -252,14 +264,14 @@ public class DBRPsAPI {
     /**
      Add a database retention policy mapping
      - POST /dbrps
-     - parameter DBRP: (body) The database retention policy mapping to add 
+     - parameter dBRPCreate: (body) The database retention policy mapping to add 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<DBRP> 
      */
-    internal func postDBRPWithRequestBuilder(DBRP: DBRP, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
+    internal func postDBRPWithRequestBuilder(dBRPCreate: DBRPCreate, zapTraceSpan: String? = nil) -> RequestBuilder<DBRP> {
         let path = "/dbrps"
         let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: DBRP)
+        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: dBRPCreate)
 
         let url = URLComponents(string: URLString)
         let nillableHeaders: [String: Any?] = [

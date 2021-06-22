@@ -220,7 +220,7 @@ public class BucketsAPI {
      - parameter offset: (query)  (optional)
      - parameter limit: (query)  (optional, default to 20)
      - parameter after: (query) The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;.  (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - parameter orgID: (query) The organization ID. (optional)
      - parameter name: (query) Only returns buckets with a specific name. (optional)
      - parameter id: (query) Only returns buckets with a specific ID. (optional)
@@ -245,7 +245,7 @@ public class BucketsAPI {
      - parameter offset: (query)  (optional)
      - parameter limit: (query)  (optional, default to 20)
      - parameter after: (query) The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;.  (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - parameter orgID: (query) The organization ID. (optional)
      - parameter name: (query) Only returns buckets with a specific name. (optional)
      - parameter id: (query) Only returns buckets with a specific ID. (optional)
@@ -461,7 +461,7 @@ public class BucketsAPI {
      
      - parameter sourceID: (path) The source ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -481,7 +481,7 @@ public class BucketsAPI {
      - GET /sources/{sourceID}/buckets
      - parameter sourceID: (path) The source ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - returns: RequestBuilder<Buckets> 
      */
     internal func getSourcesIDBucketsWithRequestBuilder(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil) -> RequestBuilder<Buckets> {

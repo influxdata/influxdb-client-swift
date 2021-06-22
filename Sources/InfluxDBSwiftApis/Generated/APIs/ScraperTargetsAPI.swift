@@ -21,7 +21,7 @@ public class ScraperTargetsAPI {
     /**
      Delete a scraper target
      
-     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -40,7 +40,7 @@ public class ScraperTargetsAPI {
     /**
      Delete a scraper target
      - DELETE /scrapers/{scraperTargetID}
-     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -214,7 +214,7 @@ public class ScraperTargetsAPI {
     }
 
     /**
-     Get all scraper targets
+     List all scraper targets
      
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter name: (query) Specifies the name of the scraper target. (optional)
@@ -236,7 +236,7 @@ public class ScraperTargetsAPI {
     }
 
     /**
-     Get all scraper targets
+     List all scraper targets
      - GET /scrapers
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter name: (query) Specifies the name of the scraper target. (optional)
@@ -268,9 +268,9 @@ public class ScraperTargetsAPI {
     }
 
     /**
-     Get a scraper target by ID
+     Retrieve a scraper target
      
-     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -287,9 +287,9 @@ public class ScraperTargetsAPI {
     }
 
     /**
-     Get a scraper target by ID
+     Retrieve a scraper target
      - GET /scrapers/{scraperTargetID}
-     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ScraperTargetResponse> 
      */
@@ -450,7 +450,7 @@ public class ScraperTargetsAPI {
     /**
      Update a scraper target
      
-     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
      - parameter scraperTargetRequest: (body) Scraper target update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -470,7 +470,7 @@ public class ScraperTargetsAPI {
     /**
      Update a scraper target
      - PATCH /scrapers/{scraperTargetID}
-     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
      - parameter scraperTargetRequest: (body) Scraper target update to apply 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<ScraperTargetResponse> 

@@ -64,10 +64,10 @@ public class SourcesAPI {
     }
 
     /**
-     Get all sources
+     List all sources
      
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -83,10 +83,10 @@ public class SourcesAPI {
     }
 
     /**
-     Get all sources
+     List all sources
      - GET /sources
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - returns: RequestBuilder<Sources> 
      */
     internal func getSourcesWithRequestBuilder(zapTraceSpan: String? = nil, org: String? = nil) -> RequestBuilder<Sources> {
@@ -109,7 +109,7 @@ public class SourcesAPI {
     }
 
     /**
-     Get a source
+     Retrieve a source
      
      - parameter sourceID: (path) The source ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
@@ -128,7 +128,7 @@ public class SourcesAPI {
     }
 
     /**
-     Get a source
+     Retrieve a source
      - GET /sources/{sourceID}
      - parameter sourceID: (path) The source ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
@@ -158,7 +158,7 @@ public class SourcesAPI {
      
      - parameter sourceID: (path) The source ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -178,7 +178,7 @@ public class SourcesAPI {
      - GET /sources/{sourceID}/buckets
      - parameter sourceID: (path) The source ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - returns: RequestBuilder<Buckets> 
      */
     internal func getSourcesIDBucketsWithRequestBuilder(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil) -> RequestBuilder<Buckets> {

@@ -114,10 +114,10 @@ public class VariablesAPI {
     }
 
     /**
-     Get all variables
+     List all variables
      
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - parameter orgID: (query) The organization ID. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -134,10 +134,10 @@ public class VariablesAPI {
     }
 
     /**
-     Get all variables
+     List all variables
      - GET /variables
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter org: (query) The organization name. (optional)
+     - parameter org: (query) The name of the organization. (optional)
      - parameter orgID: (query) The organization ID. (optional)
      - returns: RequestBuilder<Variables> 
      */
@@ -162,7 +162,7 @@ public class VariablesAPI {
     }
 
     /**
-     Get a variable
+     Retrieve a variable
      
      - parameter variableID: (path) The variable ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
@@ -181,7 +181,7 @@ public class VariablesAPI {
     }
 
     /**
-     Get a variable
+     Retrieve a variable
      - GET /variables/{variableID}
      - parameter variableID: (path) The variable ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)

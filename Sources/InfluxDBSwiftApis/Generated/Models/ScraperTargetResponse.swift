@@ -25,7 +25,7 @@ public struct ScraperTargetResponse: Codable {
     /** Skip TLS verification on endpoint. */
     public var allowInsecure: Bool? = false
     public var id: String?
-    /** The organization name. */
+    /** The name of the organization. */
     public var org: String?
     /** The bucket name. */
     public var bucket: String?

@@ -359,51 +359,6 @@ public class OrganizationsAPI {
     }
 
     /**
-     List all secret keys for an organization
-     
-     - parameter orgID: (path) The organization ID. 
-     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    public func getOrgsIDSecrets(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: SecretKeysResponse?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        getOrgsIDSecretsWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
-    }
-
-    /**
-     List all secret keys for an organization
-     - GET /orgs/{orgID}/secrets
-     - parameter orgID: (path) The organization ID. 
-     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<SecretKeysResponse> 
-     */
-    internal func getOrgsIDSecretsWithRequestBuilder(orgID: String, zapTraceSpan: String? = nil) -> RequestBuilder<SecretKeysResponse> {
-        var path = "/orgs/{orgID}/secrets"
-        let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
-        let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{orgID}", with: orgIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters: [String:Any]? = nil
-        
-        let url = URLComponents(string: URLString)
-        let nillableHeaders: [String: Any?] = [
-            "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
-        ]
-        let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
-
-        let requestBuilder: RequestBuilder<SecretKeysResponse> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
-
-        return requestBuilder
-    }
-
-    /**
      Update an organization
      
      - parameter orgID: (path) The ID of the organization to get. 
@@ -446,53 +401,6 @@ public class OrganizationsAPI {
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
         let requestBuilder: RequestBuilder<Organization> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
-
-        return requestBuilder
-    }
-
-    /**
-     Update secrets in an organization
-     
-     - parameter orgID: (path) The organization ID. 
-     - parameter requestBody: (body) Secret key value pairs to update/add 
-     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    public func patchOrgsIDSecrets(orgID: String, requestBody: [String: String], zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        patchOrgsIDSecretsWithRequestBuilder(orgID: orgID, requestBody: requestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
-            switch result {
-            case .success:
-                completion((), nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
-    }
-
-    /**
-     Update secrets in an organization
-     - PATCH /orgs/{orgID}/secrets
-     - parameter orgID: (path) The organization ID. 
-     - parameter requestBody: (body) Secret key value pairs to update/add 
-     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<Void> 
-     */
-    internal func patchOrgsIDSecretsWithRequestBuilder(orgID: String, requestBody: [String: String], zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
-        var path = "/orgs/{orgID}/secrets"
-        let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
-        let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{orgID}", with: orgIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
-
-        let url = URLComponents(string: URLString)
-        let nillableHeaders: [String: Any?] = [
-            "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
-        ]
-        let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
-
-        let requestBuilder: RequestBuilder<Void> = influxDB2API.requestBuilderFactory.getRequestNonDecodableBuilder(method: "PATCH", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }
@@ -629,53 +537,6 @@ public class OrganizationsAPI {
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
         let requestBuilder: RequestBuilder<ResourceOwner> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
-
-        return requestBuilder
-    }
-
-    /**
-     Delete secrets from an organization
-     
-     - parameter orgID: (path) The organization ID. 
-     - parameter secretKeys: (body) Secret key to delete 
-     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    public func postOrgsIDSecrets(orgID: String, secretKeys: SecretKeys, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postOrgsIDSecretsWithRequestBuilder(orgID: orgID, secretKeys: secretKeys, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
-            switch result {
-            case .success:
-                completion((), nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
-    }
-
-    /**
-     Delete secrets from an organization
-     - POST /orgs/{orgID}/secrets/delete
-     - parameter orgID: (path) The organization ID. 
-     - parameter secretKeys: (body) Secret key to delete 
-     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
-     - returns: RequestBuilder<Void> 
-     */
-    internal func postOrgsIDSecretsWithRequestBuilder(orgID: String, secretKeys: SecretKeys, zapTraceSpan: String? = nil) -> RequestBuilder<Void> {
-        var path = "/orgs/{orgID}/secrets/delete"
-        let orgIDPreEscape = "\(APIHelper.mapValueToPathItem(orgID))"
-        let orgIDPostEscape = orgIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{orgID}", with: orgIDPostEscape, options: .literal, range: nil)
-        let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: secretKeys)
-
-        let url = URLComponents(string: URLString)
-        let nillableHeaders: [String: Any?] = [
-            "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
-        ]
-        let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
-
-        let requestBuilder: RequestBuilder<Void> = influxDB2API.requestBuilderFactory.getRequestNonDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }
