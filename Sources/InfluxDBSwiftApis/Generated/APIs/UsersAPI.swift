@@ -104,7 +104,7 @@ public class UsersAPI {
     }
 
     /**
-     Return the current authenticated user
+     Retrieve the currently authenticated user
      
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -122,7 +122,7 @@ public class UsersAPI {
     }
 
     /**
-     Return the current authenticated user
+     Retrieve the currently authenticated user
      - GET /me
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<UserResponse> 
@@ -150,11 +150,13 @@ public class UsersAPI {
      - parameter offset: (query)  (optional)
      - parameter limit: (query)  (optional, default to 20)
      - parameter after: (query) The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;.  (optional)
+     - parameter name: (query)  (optional)
+     - parameter id: (query)  (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getUsers(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Users?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        getUsersWithRequestBuilder(zapTraceSpan: zapTraceSpan, offset: offset, limit: limit, after: after).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func getUsers(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, name: String? = nil, id: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Users?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        getUsersWithRequestBuilder(zapTraceSpan: zapTraceSpan, offset: offset, limit: limit, after: after, name: name, id: id).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -171,9 +173,11 @@ public class UsersAPI {
      - parameter offset: (query)  (optional)
      - parameter limit: (query)  (optional, default to 20)
      - parameter after: (query) The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;.  (optional)
+     - parameter name: (query)  (optional)
+     - parameter id: (query)  (optional)
      - returns: RequestBuilder<Users> 
      */
-    internal func getUsersWithRequestBuilder(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil) -> RequestBuilder<Users> {
+    internal func getUsersWithRequestBuilder(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, name: String? = nil, id: String? = nil) -> RequestBuilder<Users> {
         let path = "/users"
         let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
@@ -182,7 +186,9 @@ public class UsersAPI {
         url?.queryItems = APIHelper.mapValuesToQueryItems([
             "offset": offset?.encodeToJSON(), 
             "limit": limit?.encodeToJSON(), 
-            "after": after?.encodeToJSON()
+            "after": after?.encodeToJSON(), 
+            "name": name?.encodeToJSON(), 
+            "id": id?.encodeToJSON()
         ])
         let nillableHeaders: [String: Any?] = [
             "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()

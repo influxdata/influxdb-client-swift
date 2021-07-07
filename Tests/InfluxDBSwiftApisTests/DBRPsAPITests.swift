@@ -13,7 +13,7 @@ class DBRPsAPITests: APIXCTestCase {
             dbrps?
                     .content?
                     .forEach { dbrp in
-                        self.api.dbrpsAPI.deleteDBRPID(orgID: Self.orgID, dbrpID: dbrp.id!) { _, _ in
+                        self.api.dbrpsAPI.deleteDBRPID(dbrpID: dbrp.id, orgID: Self.orgID) { _, _ in
                         }
                     }
         }
@@ -21,7 +21,7 @@ class DBRPsAPITests: APIXCTestCase {
 
     func testCreateDBRPS() {
         let policyName = generateName("retention_policy")
-        let request = DBRP(
+        let request = DBRPCreate(
                 org: "my-org",
                 bucketID: Self.bucketID,
                 database: "my-db",

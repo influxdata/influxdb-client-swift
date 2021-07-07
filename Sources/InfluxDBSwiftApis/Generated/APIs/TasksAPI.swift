@@ -1003,11 +1003,12 @@ public class TasksAPI {
      - parameter taskID: (path) The task ID. 
      - parameter runID: (path) The run ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter body: (body)  (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func postTasksIDRunsIDRetry(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Run?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        postTasksIDRunsIDRetryWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func postTasksIDRunsIDRetry(taskID: String, runID: String, zapTraceSpan: String? = nil, body: Any? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Run?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        postTasksIDRunsIDRetryWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan, body: body).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -1023,9 +1024,10 @@ public class TasksAPI {
      - parameter taskID: (path) The task ID. 
      - parameter runID: (path) The run ID. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter body: (body)  (optional)
      - returns: RequestBuilder<Run> 
      */
-    internal func postTasksIDRunsIDRetryWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil) -> RequestBuilder<Run> {
+    internal func postTasksIDRunsIDRetryWithRequestBuilder(taskID: String, runID: String, zapTraceSpan: String? = nil, body: Any? = nil) -> RequestBuilder<Run> {
         var path = "/tasks/{taskID}/runs/{runID}/retry"
         let taskIDPreEscape = "\(APIHelper.mapValueToPathItem(taskID))"
         let taskIDPostEscape = taskIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1034,15 +1036,15 @@ public class TasksAPI {
         let runIDPostEscape = runIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{runID}", with: runIDPostEscape, options: .literal, range: nil)
         let URLString = influxDB2API.basePath + "/api/v2" + path
-        let parameters: [String:Any]? = nil
-        
+        let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
+
         let url = URLComponents(string: URLString)
         let nillableHeaders: [String: Any?] = [
             "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
-        let requestBuilder: RequestBuilder<Run> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false, headers: headerParameters, influxDB2API: influxDB2API)
+        let requestBuilder: RequestBuilder<Run> = influxDB2API.requestBuilderFactory.getRequestDecodableBuilder(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true, headers: headerParameters, influxDB2API: influxDB2API)
 
         return requestBuilder
     }

@@ -64,7 +64,7 @@ public class LabelsAPI {
     }
 
     /**
-     Get all labels
+     List all labels
      
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter orgID: (query) The organization ID. (optional)
@@ -83,7 +83,7 @@ public class LabelsAPI {
     }
 
     /**
-     Get all labels
+     List all labels
      - GET /labels
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter orgID: (query) The organization ID. (optional)
@@ -109,7 +109,7 @@ public class LabelsAPI {
     }
 
     /**
-     Get a label
+     Retrieve a label
      
      - parameter labelID: (path) The ID of the label to update. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
@@ -128,7 +128,7 @@ public class LabelsAPI {
     }
 
     /**
-     Get a label
+     Retrieve a label
      - GET /labels/{labelID}
      - parameter labelID: (path) The ID of the label to update. 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)

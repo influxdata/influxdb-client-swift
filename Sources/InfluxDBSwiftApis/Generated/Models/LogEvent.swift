@@ -13,10 +13,13 @@ public struct LogEvent: Codable {
     public var time: Date?
     /** A description of the event that occurred. */
     public var message: String?
+    /** the ID of the task that logged */
+    public var runID: String?
 
-    public init(time: Date? = nil, message: String? = nil) {
+    public init(time: Date? = nil, message: String? = nil, runID: String? = nil) {
         self.time = time
         self.message = message
+        self.runID = runID
     }
 
 }

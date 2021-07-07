@@ -22,7 +22,7 @@ public struct Run: Codable {
     /** Time used for run&#39;s \&quot;now\&quot; option, RFC3339. */
     public var scheduledFor: Date?
     /** An array of logs associated with the run. */
-    public var log: [RunLog]?
+    public var log: [LogEvent]?
     /** Time run started executing, RFC3339Nano. */
     public var startedAt: Date?
     /** Time run finished executing, RFC3339Nano. */
@@ -31,7 +31,7 @@ public struct Run: Codable {
     public var requestedAt: Date?
     public var links: RunLinks?
 
-    public init(id: String? = nil, taskID: String? = nil, status: Status? = nil, scheduledFor: Date? = nil, log: [RunLog]? = nil, startedAt: Date? = nil, finishedAt: Date? = nil, requestedAt: Date? = nil, links: RunLinks? = nil) {
+    public init(id: String? = nil, taskID: String? = nil, status: Status? = nil, scheduledFor: Date? = nil, log: [LogEvent]? = nil, startedAt: Date? = nil, finishedAt: Date? = nil, requestedAt: Date? = nil, links: RunLinks? = nil) {
         self.id = id
         self.taskID = taskID
         self.status = status
