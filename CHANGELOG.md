@@ -1,4 +1,4 @@
-## 0.6.0 [unreleased]
+## 0.6.0 [2021-07-09]
 
 ### API
 1. [#36](https://github.com/influxdata/influxdb-client-swift/pull/36): Update ManagementAPI to latest version
