@@ -132,9 +132,9 @@ extension InfluxDBClient {
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostQuery
         public let enableGzip: Bool
         /// A dictionary containing information about the proxy to use within the HTTP client.
-        /// - SeeAlso: https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1411499-connectionproxydictionary
+        /// - SeeAlso: https://developer.apple.com/documentation/foundation/urlsessionconfiguration/
         /// - SeeAlso: https://developer.apple.com/documentation/cfnetwork/global_proxy_settings_constants/
-        public let connectionProxyDictionary: [AnyHashable : Any]?
+        public let connectionProxyDictionary: [AnyHashable: Any]?
 
         /// Create a new options for client.
         ///
@@ -152,7 +152,7 @@ extension InfluxDBClient {
                     timeoutIntervalForRequest: TimeInterval = 60,
                     timeoutIntervalForResource: TimeInterval = 60 * 5,
                     enableGzip: Bool = false,
-                    connectionProxyDictionary: [AnyHashable : Any]? = nil) {
+                    connectionProxyDictionary: [AnyHashable: Any]? = nil) {
             self.bucket = bucket
             self.org = org
             self.precision = precision
