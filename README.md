@@ -663,6 +663,8 @@ mining,customer=California\ Miner,sensor_id=123-456-789,sensor_state=normal pres
 
 ### Proxy and redirects
 
+> :warning: The `connectionProxyDictionary` cannot be defined on **Linux**. You have to set `HTTPS_PROXY` or `HTTP_PROXY` system environment.
+
 You can configure the client to tunnel requests through an HTTP proxy by `connectionProxyDictionary` option:
 
 ```swift
