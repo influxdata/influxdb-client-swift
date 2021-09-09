@@ -683,16 +683,28 @@ For more info see - [URLSessionConfiguration.connectionProxyDictionary](https://
 
 #### Redirects
 
-Client automatically follows HTTP redirects. You can configure redirects behaviour by  a `allow_redirects` configuration:
-```php
-$client = new InfluxDB2\Client([
-  "url" => "http://localhost:8086", 
-  "token" => "my-token",
-  "bucket" => "my-bucket",
-  "org" => "my-org",
-  "allow_redirects" => false,
-]);
+Client automatically follows HTTP redirects. You can disable redirects by an `urlSessionDelegate` configuration:
+
+```swift
+class DisableRedirect: NSObject, URLSessionTaskDelegate {
+    func urlSession(_ session: URLSession,
+                    task: URLSessionTask,
+                    willPerformHTTPRedirection response: HTTPURLResponse,
+                    newRequest request: URLRequest,
+                    completionHandler: @escaping (URLRequest?) -> Void) {
+        completionHandler(nil)
+    }
+}
+
+let options = InfluxDBClient.InfluxDBOptions(
+        bucket: "my-bucket",
+        org: "my-org",
+        urlSessionDelegate: DisableRedirect())
+
+client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
 ```
+
+For more info see - [URLSessionDelegate](https://developer.apple.com/documentation/foundation/urlsessiondelegate).
 
 
 ## Contributing
