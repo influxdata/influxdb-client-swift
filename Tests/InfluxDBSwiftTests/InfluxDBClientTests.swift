@@ -76,6 +76,7 @@ final class InfluxDBClientTests: XCTestCase {
     }
 
     func testConfigureProxy() {
+        #if os(macOS)
         var connectionProxyDictionary = [AnyHashable: Any]()
         connectionProxyDictionary[kCFNetworkProxiesHTTPEnable as String] = 1
         connectionProxyDictionary[kCFNetworkProxiesHTTPProxy as String] = "localhost"
@@ -88,6 +89,7 @@ final class InfluxDBClientTests: XCTestCase {
                 connectionProxyDictionary: connectionProxyDictionary)
 
         client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+        #endif
     }
 }
 
