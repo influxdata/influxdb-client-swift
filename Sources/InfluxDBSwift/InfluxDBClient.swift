@@ -66,7 +66,18 @@ public class InfluxDBClient {
         configuration.connectionProxyDictionary = self.options.connectionProxyDictionary
         configuration.protocolClasses = protocolClasses
 
-        session = URLSession(configuration: configuration)
+        class Helper: NSObject, URLSessionTaskDelegate {
+            func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+                print("HEJ")
+                completionHandler(nil)
+            }
+        }
+
+        if let urlSessionDelegate = self.options.urlSessionDelegate {
+            session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: nil)
+        } else {
+            session = URLSession(configuration: configuration)
+        }
     }
 
     /// Create a new client for InfluxDB 1.8 compatibility API.
@@ -135,6 +146,9 @@ extension InfluxDBClient {
         /// - SeeAlso: https://developer.apple.com/documentation/foundation/urlsessionconfiguration/
         /// - SeeAlso: https://developer.apple.com/documentation/cfnetwork/global_proxy_settings_constants/
         public let connectionProxyDictionary: [AnyHashable: Any]?
+        /// A delegate to handle HTTP session-level events. Useful for disable redirects or custom auth handling.
+        /// - SeeAlso: https://developer.apple.com/documentation/foundation/urlsessiondelegate
+        public weak var urlSessionDelegate: URLSessionDelegate?
 
         /// Create a new options for client.
         ///
@@ -146,13 +160,15 @@ extension InfluxDBClient {
         ///   - timeoutIntervalForResource: Maximum amount of time that a resource request should be allowed to take.
         ///   - enableGzip: Enable Gzip compression for HTTP requests.
         ///   - connectionProxyDictionary: Enable Gzip compression for HTTP requests.
+        ///   - urlSessionDelegate: A delegate to handle HTTP session-level events.
         public init(bucket: String? = nil,
                     org: String? = nil,
                     precision: TimestampPrecision = defaultTimestampPrecision,
                     timeoutIntervalForRequest: TimeInterval = 60,
                     timeoutIntervalForResource: TimeInterval = 60 * 5,
                     enableGzip: Bool = false,
-                    connectionProxyDictionary: [AnyHashable: Any]? = nil) {
+                    connectionProxyDictionary: [AnyHashable: Any]? = nil,
+                    urlSessionDelegate: URLSessionDelegate? = nil) {
             self.bucket = bucket
             self.org = org
             self.precision = precision
@@ -160,6 +176,7 @@ extension InfluxDBClient {
             self.timeoutIntervalForResource = timeoutIntervalForResource
             self.enableGzip = enableGzip
             self.connectionProxyDictionary = connectionProxyDictionary
+            self.urlSessionDelegate = urlSessionDelegate
         }
     }
 }
