@@ -66,13 +66,6 @@ public class InfluxDBClient {
         configuration.connectionProxyDictionary = self.options.connectionProxyDictionary
         configuration.protocolClasses = protocolClasses
 
-        class Helper: NSObject, URLSessionTaskDelegate {
-            func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-                print("HEJ")
-                completionHandler(nil)
-            }
-        }
-
         if let urlSessionDelegate = self.options.urlSessionDelegate {
             session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: nil)
         } else {

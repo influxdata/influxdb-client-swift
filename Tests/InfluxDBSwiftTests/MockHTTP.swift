@@ -35,9 +35,9 @@ class MockURLProtocol: URLProtocol {
 
         do {
             let (response, data) = try handler(request, request.bodyValue)
-            if let location = response.allHeaderFields["Location"], response.statusCode == 307 {
-                let url = URLRequest(url: URL(string: location as! String)!)
-                client?.urlProtocol(self, wasRedirectedTo: url, redirectResponse: response)
+            let locationHeader = response.allHeaderFields["Location"]
+            if let location = locationHeader as? String, let url = URL(string: location), response.statusCode == 307 {
+                client?.urlProtocol(self, wasRedirectedTo: URLRequest(url: url), redirectResponse: response)
             } else {
                 client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
                 client?.urlProtocol(self, didLoad: data)
