@@ -25,6 +25,7 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
     - [Management API](#management-api)
 - [Advanced Usage](#advanced-usage)
     - [Default Tags](#default-tags)
+    - [Proxy and redirects](#proxy-and-redirects)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -659,6 +660,40 @@ writeAPI.writeRecords(records: records) { _, error in
 mining,customer=California\ Miner,sensor_id=123-456-789,sensor_state=normal depth=2i
 mining,customer=California\ Miner,sensor_id=123-456-789,sensor_state=normal pressure=3i
 ```
+
+### Proxy and redirects
+
+You can configure the client to tunnel requests through an HTTP proxy by `connectionProxyDictionary` option:
+
+```swift
+var connectionProxyDictionary = [AnyHashable: Any]()
+connectionProxyDictionary[kCFNetworkProxiesHTTPEnable as String] = 1
+connectionProxyDictionary[kCFNetworkProxiesHTTPProxy as String] = "localhost"
+connectionProxyDictionary[kCFNetworkProxiesHTTPPort as String] = 3128
+
+let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+        bucket: "my-bucket",
+        org: "my-org",
+        precision: .ns,
+        connectionProxyDictionary: connectionProxyDictionary)
+
+client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+```
+For more info see - [URLSessionConfiguration.connectionProxyDictionary](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1411499-connectionproxydictionary), [Global Proxy Settings Constants](https://developer.apple.com/documentation/cfnetwork/global_proxy_settings_constants/).
+
+#### Redirects
+
+Client automatically follows HTTP redirects. You can configure redirects behaviour by  a `allow_redirects` configuration:
+```php
+$client = new InfluxDB2\Client([
+  "url" => "http://localhost:8086", 
+  "token" => "my-token",
+  "bucket" => "my-bucket",
+  "org" => "my-org",
+  "allow_redirects" => false,
+]);
+```
+
 
 ## Contributing
 

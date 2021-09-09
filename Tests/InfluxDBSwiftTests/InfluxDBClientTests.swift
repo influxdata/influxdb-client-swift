@@ -74,6 +74,21 @@ final class InfluxDBClientTests: XCTestCase {
         XCTAssertEqual(Self.dbURL(), client.url)
         client.close()
     }
+
+    func testConfigureProxy() {
+        var connectionProxyDictionary = [AnyHashable: Any]()
+        connectionProxyDictionary[kCFNetworkProxiesHTTPEnable as String] = 1
+        connectionProxyDictionary[kCFNetworkProxiesHTTPProxy as String] = "localhost"
+        connectionProxyDictionary[kCFNetworkProxiesHTTPPort as String] = 3128
+
+        let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+                bucket: "my-bucket",
+                org: "my-org",
+                precision: .ns,
+                connectionProxyDictionary: connectionProxyDictionary)
+
+        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+    }
 }
 
 final class InfluxDBErrorTests: XCTestCase {

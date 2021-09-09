@@ -63,6 +63,7 @@ public class InfluxDBClient {
         configuration.httpAdditionalHeaders = headers
         configuration.timeoutIntervalForRequest = self.options.timeoutIntervalForRequest
         configuration.timeoutIntervalForResource = self.options.timeoutIntervalForResource
+        configuration.connectionProxyDictionary = self.options.connectionProxyDictionary
         configuration.protocolClasses = protocolClasses
 
         session = URLSession(configuration: configuration)
@@ -130,6 +131,10 @@ extension InfluxDBClient {
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostWrite
         /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostQuery
         public let enableGzip: Bool
+        /// A dictionary containing information about the proxy to use within the HTTP client.
+        /// - SeeAlso: https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1411499-connectionproxydictionary
+        /// - SeeAlso: https://developer.apple.com/documentation/cfnetwork/global_proxy_settings_constants/
+        public let connectionProxyDictionary: [AnyHashable : Any]?
 
         /// Create a new options for client.
         ///
@@ -140,18 +145,21 @@ extension InfluxDBClient {
         ///   - timeoutIntervalForRequest: Timeout interval to use when waiting for additional data.
         ///   - timeoutIntervalForResource: Maximum amount of time that a resource request should be allowed to take.
         ///   - enableGzip: Enable Gzip compression for HTTP requests.
+        ///   - connectionProxyDictionary: Enable Gzip compression for HTTP requests.
         public init(bucket: String? = nil,
                     org: String? = nil,
                     precision: TimestampPrecision = defaultTimestampPrecision,
                     timeoutIntervalForRequest: TimeInterval = 60,
                     timeoutIntervalForResource: TimeInterval = 60 * 5,
-                    enableGzip: Bool = false) {
+                    enableGzip: Bool = false,
+                    connectionProxyDictionary: [AnyHashable : Any]? = nil) {
             self.bucket = bucket
             self.org = org
             self.precision = precision
             self.timeoutIntervalForRequest = timeoutIntervalForRequest
             self.timeoutIntervalForResource = timeoutIntervalForResource
             self.enableGzip = enableGzip
+            self.connectionProxyDictionary = connectionProxyDictionary
         }
     }
 }
