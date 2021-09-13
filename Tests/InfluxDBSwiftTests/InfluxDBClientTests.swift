@@ -74,6 +74,107 @@ final class InfluxDBClientTests: XCTestCase {
         XCTAssertEqual(Self.dbURL(), client.url)
         client.close()
     }
+
+    func testConfigureProxy() {
+        #if os(macOS)
+        var connectionProxyDictionary = [AnyHashable: Any]()
+        connectionProxyDictionary[kCFNetworkProxiesHTTPEnable as String] = 1
+        connectionProxyDictionary[kCFNetworkProxiesHTTPProxy as String] = "localhost"
+        connectionProxyDictionary[kCFNetworkProxiesHTTPPort as String] = 3128
+
+        let options: InfluxDBClient.InfluxDBOptions = InfluxDBClient.InfluxDBOptions(
+                bucket: "my-bucket",
+                org: "my-org",
+                precision: .ns,
+                connectionProxyDictionary: connectionProxyDictionary)
+
+        client = InfluxDBClient(url: "http://localhost:8086", token: "my-token", options: options)
+        #endif
+    }
+
+    func testFollowRedirect() {
+        client = InfluxDBClient(
+                url: Self.dbURL(),
+                token: "my-token",
+                options: InfluxDBClient.InfluxDBOptions(bucket: "my-bucket", org: "my-org"),
+                protocolClasses: [MockURLProtocol.self])
+
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        expectation.expectedFulfillmentCount = 3
+
+        MockURLProtocol.handler = { request, _ in
+            XCTAssertEqual("Token my-token", request.allHTTPHeaderFields!["Authorization"])
+
+            expectation.fulfill()
+
+            // success
+            if let port = request.url?.port, port == 8088 {
+                let response = HTTPURLResponse(statusCode: 200)
+                return (response, "".data(using: .utf8)!)
+            }
+
+            // redirect
+            let response = HTTPURLResponse(statusCode: 307, headers: ["location": "http://localhost:8088"])
+            return (response, Data())
+        }
+
+        client.queryAPI.query(query: "from ...") { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testDisableRedirect() {
+        let expectation = self.expectation(description: "Redirect response from API doesn't arrive")
+        expectation.expectedFulfillmentCount = 2
+
+        class DisableRedirect: NSObject, URLSessionTaskDelegate {
+            let expectation: XCTestExpectation
+
+            init(_ expectation: XCTestExpectation) {
+                self.expectation = expectation
+            }
+
+            func urlSession(_ session: URLSession,
+                            task: URLSessionTask,
+                            willPerformHTTPRedirection response: HTTPURLResponse,
+                            newRequest request: URLRequest,
+                            completionHandler: @escaping (URLRequest?) -> Void) {
+                expectation.fulfill()
+                completionHandler(nil)
+            }
+        }
+
+        let options = InfluxDBClient.InfluxDBOptions(
+                bucket: "my-bucket",
+                org: "my-org",
+                urlSessionDelegate: DisableRedirect(expectation))
+
+        client = InfluxDBClient(
+                url: Self.dbURL(),
+                token: "my-token",
+                options: options,
+                protocolClasses: [MockURLProtocol.self])
+
+        MockURLProtocol.handler = { request, _ in
+            XCTAssertEqual("Token my-token", request.allHTTPHeaderFields!["Authorization"])
+
+            expectation.fulfill()
+
+            // redirect
+            let response = HTTPURLResponse(statusCode: 307, headers: ["location": "http://localhost:8088"])
+            return (response, Data())
+        }
+
+        client.queryAPI.query(query: "from ...") { _, _ in
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
 }
 
 final class InfluxDBErrorTests: XCTestCase {

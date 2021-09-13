@@ -8,6 +8,10 @@ extension HTTPURLResponse {
     convenience init(statusCode: Int) {
         self.init(url: MockURLProtocol.url, statusCode: statusCode, httpVersion: "HTTP/1.1", headerFields: [:])!
     }
+
+    convenience init(statusCode: Int, headers: [String: String]?) {
+        self.init(url: MockURLProtocol.url, statusCode: statusCode, httpVersion: "HTTP/1.1", headerFields: headers)!
+    }
 }
 
 class MockURLProtocol: URLProtocol {
@@ -31,9 +35,14 @@ class MockURLProtocol: URLProtocol {
 
         do {
             let (response, data) = try handler(request, request.bodyValue)
-            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-            client?.urlProtocol(self, didLoad: data)
-            client?.urlProtocolDidFinishLoading(self)
+            let locationHeader = response.allHeaderFields["Location"]
+            if let location = locationHeader as? String, let url = URL(string: location), response.statusCode == 307 {
+                client?.urlProtocol(self, wasRedirectedTo: URLRequest(url: url), redirectResponse: response)
+            } else {
+                client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+                client?.urlProtocol(self, didLoad: data)
+                client?.urlProtocolDidFinishLoading(self)
+            }
         } catch {
             client?.urlProtocol(self, didFailWithError: error)
         }
