@@ -1,4 +1,4 @@
-## 0.7.0 [unreleased]
+## 0.7.0 [2021-09-17]
 
 ### Features
 1. [#38](https://github.com/influxdata/influxdb-client-swift/pull/38): Add configuration option for _Proxy_ and _Redirects_
