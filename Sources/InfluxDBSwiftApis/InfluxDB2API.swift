@@ -50,6 +50,9 @@ public class InfluxDB2API {
     /// Lazy initialized `HealthAPI`.
     public lazy var healthAPI: HealthAPI = { HealthAPI(influxDB2API: self) }()
 
+    /// Lazy initialized `PingAPI`.
+    public lazy var pingAPI: PingAPI = { PingAPI(influxDB2API: self) }()
+
     /// Lazy initialized `LabelsAPI`.
     public lazy var labelsAPI: LabelsAPI = { LabelsAPI(influxDB2API: self) }()
 
