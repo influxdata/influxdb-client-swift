@@ -276,6 +276,9 @@ workflows:
       - tests-linux:
           name: tests-linux-5.4
           swift-image: "swift:5.4"
+      - tests-linux:
+          name: tests-linux-5.5
+          swift-image: "swift:5.5"
       - tests-macOS
   nightly:
     triggers:
