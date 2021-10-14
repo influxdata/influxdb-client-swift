@@ -19,12 +19,15 @@ struct InfluxDBStatus: ParsableCommand {
         let client = InfluxDBClient(url: url, token: token)
         let api = InfluxDB2API(client: client)
 
-        api.pingAPI.headPing { _, error in
+        api.pingAPI.getPing { headers, error in
             if let error = error {
                 print("InfluxDB status: DOWN: \(error)")
                 self.atExit(client: client, error: error)
-            } else {
-                print("InfluxDB status: UP")
+            }
+            if let headers = headers {
+                let version = headers["X-Influxdb-Version"]
+                let build = headers["X-Influxdb-Build"]
+                print("InfluxDB status: UP, version: \(version), build: \(build)")
                 atExit(client: client)
             }
         }

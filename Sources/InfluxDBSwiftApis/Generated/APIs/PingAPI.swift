@@ -24,11 +24,11 @@ public class PingAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getPing(apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func getPing(apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: [String: String]?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         getPingWithRequestBuilder().execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
-            case .success:
-                completion((), nil)
+            case let .success(response):
+                completion(response.header, nil)
             case let .failure(error):
                 completion(nil, error)
             }
@@ -68,11 +68,11 @@ public class PingAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func headPing(apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Void?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+    public func headPing(apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: [String: String]?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
         headPingWithRequestBuilder().execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
-            case .success:
-                completion((), nil)
+            case let .success(response):
+                completion(response.header, nil)
             case let .failure(error):
                 completion(nil, error)
             }

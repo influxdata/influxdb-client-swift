@@ -50,7 +50,5 @@ This is an example how to check status of InfluxDB.
 ## Expected output
 
 ```bash
-The bucket: 'new-bucket' is successfully created.
-The following token could be use to read/write:
-        224axj_OaOOVIaEnSQgx2GTrrt18ZqUATS1I0Hsha3M7Bbbsn_yX9EiXTMnlq5aHz-f8h9iNcRJGd1_ImAD7fA==
+InfluxDB status: UP, version: Optional("2.0.9"), build: Optional("OSS")
 ```

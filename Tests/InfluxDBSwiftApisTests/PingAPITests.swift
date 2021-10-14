@@ -10,13 +10,14 @@ final class PingAPITests: APIXCTestCase {
     func testPing() {
         let expectation = self.expectation(description: "Success response from API doesn't arrive")
 
-        api.pingAPI.headPingWithRequestBuilder().execute(api.apiResponseQueue) { result -> Void in
-            switch result {
-            case let .success(response):
-                XCTAssertTrue(response.header["X-Influxdb-Build"] != nil)
-                XCTAssertTrue(response.header["X-Influxdb-Version"] != nil)
-            case let .failure(error):
+        api.pingAPI.getPing { headers, error -> Void in
+            if let error = error {
                 XCTFail(error.description)
+            }
+
+            if let headers = headers {
+                XCTAssertTrue(headers["X-Influxdb-Build"] != nil)
+                XCTAssertTrue(headers["X-Influxdb-Version"] != nil)
             }
 
             expectation.fulfill()
