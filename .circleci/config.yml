@@ -248,6 +248,8 @@ jobs:
           directory: QueryCpu
       - check-example:
           directory: DeleteData
+      - check-example:
+          directory: InfluxDBStatus
       - save_cache:
           name: Saving Example Cache
           key: *cache-example-key
@@ -260,6 +262,8 @@ jobs:
             - Examples/QueryCpu/.build/repositories
             - Examples/DeleteData/Package.resolved
             - Examples/DeleteData/.build/repositories
+            - Examples/InfluxDBStatus/Package.resolved
+            - Examples/InfluxDBStatus/.build/repositories
 
 workflows:
   version: 2
@@ -272,6 +276,9 @@ workflows:
       - tests-linux:
           name: tests-linux-5.4
           swift-image: "swift:5.4"
+      - tests-linux:
+          name: tests-linux-5.5
+          swift-image: "swift:5.5"
       - tests-macOS
   nightly:
     triggers:

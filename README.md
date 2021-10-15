@@ -506,6 +506,7 @@ The client supports following management API:
 | [**BucketsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
 | [**DBRPsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/DBRPs |
 | [**HealthAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Health |
+| [**PingAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/PingAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Ping |
 | [**LabelsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
 | [**OrganizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
 | [**ReadyAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Ready |

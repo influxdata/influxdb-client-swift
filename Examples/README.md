@@ -11,4 +11,5 @@
 
 ## Others
 - [DeleteData](DeleteData#deletedata) - How to delete data with specified predicate
+- [InfluxDBStatus](InfluxDBStatus#influxdbstatus) - This is an example how to check status of InfluxDB
   
