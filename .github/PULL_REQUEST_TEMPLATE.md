@@ -11,4 +11,4 @@ _Briefly describe your proposed changes:_
 - [ ] A test has been added if appropriate
 - [ ] `swift test` completes successfully
 - [ ] Commit messages are in [semantic format](https://seesparkbox.com/foundry/semantic_commit_messages)
-- [ ] Sign [CLA](https://influxdata.com/community/cla/) (if not already signed)
+- [ ] Sign [CLA](https://www.influxdata.com/legal/cla/) (if not already signed)
