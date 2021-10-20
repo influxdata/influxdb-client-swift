@@ -11,7 +11,7 @@ build: ## Build both source and test targets
 	swift build --build-tests
 
 lint: ## Format code
-	swiftlint autocorrect
+	swiftlint --fix
 
 check-lint: ## Check that all files are formatted properly
 	swiftlint lint --strict
