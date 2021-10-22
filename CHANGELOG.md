@@ -1,4 +1,4 @@
-## 0.8.0 [unreleased]
+## 0.8.0 [2021-10-22]
 
 ### Features
 1. [#39](https://github.com/influxdata/influxdb-client-swift/pull/39): Add a `PingAPI to check status of OSS and Cloud instance.

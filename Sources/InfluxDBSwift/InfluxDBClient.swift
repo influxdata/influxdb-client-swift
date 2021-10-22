@@ -24,12 +24,12 @@ import FoundationNetworking
 /// ````
 public class InfluxDBClient {
     /// Version of client.
-    public static var version: String = "0.8.0dev"
+    public static var version: String = "0.8.0"
     /// InfluxDB host and port.
     public let url: String
     /// Authentication token.
     internal let token: String
-    /// The options to configre client.
+    /// The options to configure client.
     internal let options: InfluxDBOptions
     /// Shared URLSession across the client.
     public let session: URLSession
