@@ -11,8 +11,6 @@
 
 This repository contains the reference Swift client for the InfluxDB 2.0.
 
-#### Disclaimer: This library is a work in progress and should not be considered production ready yet.
-
 - [Features](#features)
 - [Supported Platforms](#supported-platforms)
 - [Installation](#installation)
