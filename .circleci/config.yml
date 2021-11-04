@@ -118,7 +118,7 @@ jobs:
     parameters:
       xcode-version:
         type: string
-        default: "12.3.0"
+        default: &default-xcode "12.3.0"
       influxdb-package-version:
         type: string
         default: "2.0.4"
@@ -271,7 +271,7 @@ jobs:
     parameters:
       xcode-version:
         type: string
-        default: "12.3.0"
+        default: *default-xcode
     steps:
       - checkout
       - restore_cache:
@@ -279,6 +279,7 @@ jobs:
           keys:
             - &cache-example-key example-macOS-cache-v0-{{ checksum "Examples/WriteDataInBatches/Package.swift" }}
             - example-macOS-cache-v0-
+      - run: brew install swiftlint
       - check-example:
           directory: WriteDataInBatches
       - save_cache:
