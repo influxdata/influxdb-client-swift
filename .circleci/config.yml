@@ -273,7 +273,7 @@ jobs:
         type: string
         default: "12.3.0"
     steps:
-      - prepare
+      - checkout
       - restore_cache:
           name: Restoring Example Cache
           keys:
