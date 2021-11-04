@@ -279,7 +279,9 @@ jobs:
           keys:
             - &cache-example-key example-macOS-cache-v0-{{ checksum "Examples/WriteDataInBatches/Package.swift" }}
             - example-macOS-cache-v0-
-      - run: brew install swiftlint
+      - run: |
+          HOMEBREW_NO_AUTO_UPDATE=1
+          brew install swiftlint
       - check-example:
           directory: WriteDataInBatches
       - save_cache:
