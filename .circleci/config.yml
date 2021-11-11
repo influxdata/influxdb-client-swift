@@ -118,7 +118,7 @@ jobs:
     parameters:
       xcode-version:
         type: string
-        default: "12.3.0"
+        default: &default-xcode "12.5.1"
       influxdb-package-version:
         type: string
         default: "2.0.4"
@@ -265,6 +265,32 @@ jobs:
             - Examples/InfluxDBStatus/Package.resolved
             - Examples/InfluxDBStatus/.build/repositories
 
+  check-examples-macOS:
+    macos:
+      xcode: << parameters.xcode-version >>
+    parameters:
+      xcode-version:
+        type: string
+        default: *default-xcode
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restoring Example Cache
+          keys:
+            - &cache-example-key example-macOS-cache-v0-{{ checksum "Examples/WriteDataInBatches/Package.swift" }}
+            - example-macOS-cache-v0-
+      - run: |
+          HOMEBREW_NO_AUTO_UPDATE=1
+          brew install swiftlint
+      - check-example:
+          directory: WriteDataInBatches
+      - save_cache:
+          name: Saving Example Cache
+          key: *cache-example-key
+          paths:
+            - Examples/WriteDataInBatches/Package.resolved
+            - Examples/WriteDataInBatches/.build/repositories
+
 workflows:
   version: 2
   build:
@@ -272,6 +298,7 @@ workflows:
       - check-code-style
       - check-documentation
       - check-examples
+      - check-examples-macOS
       - tests-linux
       - tests-linux:
           name: tests-linux-5.4
