@@ -1,4 +1,4 @@
-## 0.9.0 [unreleased]
+## 0.9.0 [2021-11-26]
 
 ### Documentation
 1. [#44](https://github.com/influxdata/influxdb-client-swift/pull/44): Add an example how to use `Combine` to prepare batches for write into InfluxDB
