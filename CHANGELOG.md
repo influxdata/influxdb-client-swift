@@ -1,3 +1,5 @@
+## 1.0.0 [unreleased]
+
 ## 0.9.0 [2021-11-26]
 
 ### Documentation
