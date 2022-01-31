@@ -88,7 +88,7 @@ public class QueryAPI {
     ///   - completion: The handler to receive the data and the error objects.
     public func query(query: String,
                       org: String? = nil,
-                      params: [String:String]? = nil,
+                      params: [String: String]? = nil,
                       responseQueue: DispatchQueue = .main,
                       completion: @escaping (_ response: FluxRecordCursor?,
                                              _ error: InfluxDBClient.InfluxDBError?) -> Void) {
@@ -112,7 +112,7 @@ public class QueryAPI {
     ///   - completion: completion handler to receive the `Swift.Result`
     public func query(query: String,
                       org: String? = nil,
-                      params: [String:String]? = nil,
+                      params: [String: String]? = nil,
                       responseQueue: DispatchQueue = .main,
                       completion: @escaping (
                               _ result: Swift.Result<FluxRecordCursor, InfluxDBClient.InfluxDBError>) -> Void) {
@@ -147,7 +147,7 @@ public class QueryAPI {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func query(query: String,
                       org: String? = nil,
-                      params: [String:String]? = nil,
+                      params: [String: String]? = nil,
                       responseQueue: DispatchQueue = .main)
                     -> AnyPublisher<FluxRecordCursor, InfluxDBClient.InfluxDBError> {
         Future<FluxRecordCursor, InfluxDBClient.InfluxDBError> { promise in
@@ -175,10 +175,11 @@ public class QueryAPI {
     public func queryRaw(query: String,
                          org: String? = nil,
                          dialect: Dialect = defaultDialect,
-                         params: [String:String]? = nil,
+                         params: [String: String]? = nil,
                          responseQueue: DispatchQueue = .main,
                          completion: @escaping (_ response: Data?, _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        self.queryRaw(query: query, org: org, dialect: dialect, params: params, responseQueue: responseQueue) { result -> Void in
+        self.queryRaw(query: query, org: org, dialect: dialect, params: params, responseQueue: responseQueue) {
+            result -> Void in
             switch result {
             case let .success(data):
                 completion(data, nil)
@@ -200,7 +201,7 @@ public class QueryAPI {
     public func queryRaw(query: String,
                          org: String? = nil,
                          dialect: Dialect = defaultDialect,
-                         params: [String:String]? = nil,
+                         params: [String: String]? = nil,
                          responseQueue: DispatchQueue = .main,
                          completion: @escaping (_ result: Swift.Result<Data, InfluxDBClient.InfluxDBError>) -> Void) {
         postQuery(query, org, dialect, params, responseQueue, completion)
@@ -220,10 +221,11 @@ public class QueryAPI {
     public func queryRaw(query: String,
                          org: String? = nil,
                          dialect: Dialect = defaultDialect,
-                         params: [String:String]? = nil,
+                         params: [String: String]? = nil,
                          responseQueue: DispatchQueue = .main) -> AnyPublisher<Data, InfluxDBClient.InfluxDBError> {
         Future<Data, InfluxDBClient.InfluxDBError> { promise in
-            self.queryRaw(query: query, org: org, dialect: dialect, params: params, responseQueue: responseQueue) { result -> Void in
+            self.queryRaw(query: query, org: org, dialect: dialect, params: params, responseQueue: responseQueue) {
+                result -> Void in
                 switch result {
                 case let .success(data):
                     promise(.success(data))
@@ -289,7 +291,7 @@ extension QueryAPI {
     private func postQuery(_ query: String,
                            _ org: String?,
                            _ dialect: Dialect = defaultDialect,
-                           _ params: [String:String]?,
+                           _ params: [String: String]?,
                            _ responseQueue: DispatchQueue,
                            _ completion: @escaping (
                                    _ result: Swift.Result<Data, InfluxDBClient.InfluxDBError>) -> Void) {

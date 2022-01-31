@@ -95,7 +95,7 @@ final class QueryAPITests: XCTestCase {
         }
 
         let query = "from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))"
-        let queryParams = [ "bucketParam":"my-bucket", "startParam":"-1h" ]
+        let queryParams = [ "bucketParam": "my-bucket", "startParam": "-1h" ]
 
         client.queryAPI.query(query: query, params: queryParams) { response, error in
             if let error = error {
@@ -204,7 +204,8 @@ final class QueryAPITests: XCTestCase {
                     request.url?.description)
             let query = try CodableHelper.decode(Query.self, from: bodyData!).get()
 
-            XCTAssertEqual("from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))", query.query)
+            XCTAssertEqual("from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))",
+                    query.query)
             XCTAssertEqual([
                 Dialect.Annotations.datatype,
                 Dialect.Annotations.group,
@@ -218,7 +219,7 @@ final class QueryAPITests: XCTestCase {
         }
 
         let fluxQuery = "from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))"
-        let queryParams = [ "bucketParam":"my-bucket", "startParam":"-1h" ]
+        let queryParams = [ "bucketParam": "my-bucket", "startParam": "-1h" ]
 
         client.queryAPI.queryRaw(query: fluxQuery, params: queryParams) { response, error in
             if let error = error {
