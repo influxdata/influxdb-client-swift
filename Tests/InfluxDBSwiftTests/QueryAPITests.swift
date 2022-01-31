@@ -205,7 +205,7 @@ final class QueryAPITests: XCTestCase {
             let query = try CodableHelper.decode(Query.self, from: bodyData!).get()
 
             XCTAssertEqual("from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))",
-                    query.query)
+                           query.query)
             XCTAssertEqual([
                 Dialect.Annotations.datatype,
                 Dialect.Annotations.group,
