@@ -83,14 +83,16 @@ public class QueryAPI {
     /// - Parameters:
     ///   - query: The Flux query to execute.
     ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
+    ///   - params: params represent key/value pairs parameters to be injected into query
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: The handler to receive the data and the error objects.
     public func query(query: String,
                       org: String? = nil,
+                      params: [String:String]? = nil,
                       responseQueue: DispatchQueue = .main,
                       completion: @escaping (_ response: FluxRecordCursor?,
                                              _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        self.query(query: query, org: org, responseQueue: responseQueue) { result -> Void in
+        self.query(query: query, org: org, params: params, responseQueue: responseQueue) { result -> Void in
             switch result {
             case let .success(cursor):
                 completion(cursor, nil)
@@ -105,10 +107,12 @@ public class QueryAPI {
     /// - Parameters:
     ///   - query: The Flux query to execute.
     ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
+    ///   - params: params represent key/value pairs parameters to be injected into query
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: completion handler to receive the `Swift.Result`
     public func query(query: String,
                       org: String? = nil,
+                      params: [String:String]? = nil,
                       responseQueue: DispatchQueue = .main,
                       completion: @escaping (
                               _ result: Swift.Result<FluxRecordCursor, InfluxDBClient.InfluxDBError>) -> Void) {
@@ -116,6 +120,7 @@ public class QueryAPI {
                 query: query,
                 org: org,
                 dialect: QueryAPI.defaultDialect,
+                params: params,
                 responseQueue: responseQueue) { result -> Void in
             switch result {
             case let .success(data):
@@ -136,15 +141,17 @@ public class QueryAPI {
     /// - Parameters:
     ///   - query: The Flux query to execute.
     ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
+    ///   - params: params represent key/value pairs parameters to be injected into query
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func query(query: String,
                       org: String? = nil,
+                      params: [String:String]? = nil,
                       responseQueue: DispatchQueue = .main)
                     -> AnyPublisher<FluxRecordCursor, InfluxDBClient.InfluxDBError> {
         Future<FluxRecordCursor, InfluxDBClient.InfluxDBError> { promise in
-            self.query(query: query, org: org, responseQueue: responseQueue) { result -> Void in
+            self.query(query: query, org: org, params: params, responseQueue: responseQueue) { result -> Void in
                 switch result {
                 case let .success(data):
                     promise(.success(data))
@@ -162,14 +169,16 @@ public class QueryAPI {
     ///   - query: The Flux query to execute.
     ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
     ///   - dialect: The Dialect are options to change the default CSV output format.
+    ///   - params: params represent key/value pairs parameters to be injected into query
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: handler to receive the data and the error objects
     public func queryRaw(query: String,
                          org: String? = nil,
                          dialect: Dialect = defaultDialect,
+                         params: [String:String]? = nil,
                          responseQueue: DispatchQueue = .main,
                          completion: @escaping (_ response: Data?, _ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        self.queryRaw(query: query, org: org, dialect: dialect, responseQueue: responseQueue) { result -> Void in
+        self.queryRaw(query: query, org: org, dialect: dialect, params: params, responseQueue: responseQueue) { result -> Void in
             switch result {
             case let .success(data):
                 completion(data, nil)
@@ -185,14 +194,16 @@ public class QueryAPI {
     ///   - query: The Flux query to execute.
     ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
     ///   - dialect: The Dialect are options to change the default CSV output format.
+    ///   - params: params represent key/value pairs parameters to be injected into query
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: completion handler to receive the `Swift.Result`
     public func queryRaw(query: String,
                          org: String? = nil,
                          dialect: Dialect = defaultDialect,
+                         params: [String:String]? = nil,
                          responseQueue: DispatchQueue = .main,
                          completion: @escaping (_ result: Swift.Result<Data, InfluxDBClient.InfluxDBError>) -> Void) {
-        postQuery(query, org, dialect, responseQueue, completion)
+        postQuery(query, org, dialect, params, responseQueue, completion)
     }
 
     #if canImport(Combine)
@@ -202,15 +213,17 @@ public class QueryAPI {
     ///   - query: The Flux query to execute.
     ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
     ///   - dialect: The Dialect are options to change the default CSV output format.
+    ///   - params: params represent key/value pairs parameters to be injected into query
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func queryRaw(query: String,
                          org: String? = nil,
                          dialect: Dialect = defaultDialect,
+                         params: [String:String]? = nil,
                          responseQueue: DispatchQueue = .main) -> AnyPublisher<Data, InfluxDBClient.InfluxDBError> {
         Future<Data, InfluxDBClient.InfluxDBError> { promise in
-            self.queryRaw(query: query, org: org, dialect: dialect, responseQueue: responseQueue) { result -> Void in
+            self.queryRaw(query: query, org: org, dialect: dialect, params: params, responseQueue: responseQueue) { result -> Void in
                 switch result {
                 case let .success(data):
                     promise(.success(data))
@@ -276,6 +289,7 @@ extension QueryAPI {
     private func postQuery(_ query: String,
                            _ org: String?,
                            _ dialect: Dialect = defaultDialect,
+                           _ params: [String:String]?,
                            _ responseQueue: DispatchQueue,
                            _ completion: @escaping (
                                    _ result: Swift.Result<Data, InfluxDBClient.InfluxDBError>) -> Void) {
@@ -291,7 +305,7 @@ extension QueryAPI {
             ]
 
             // Body
-            let body = try CodableHelper.encode(Query(query: query, dialect: dialect)).get()
+            let body = try CodableHelper.encode(Query(query: query, params: params, dialect: dialect)).get()
 
             client.httpPost(
                     components,

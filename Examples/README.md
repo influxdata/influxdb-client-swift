@@ -6,6 +6,7 @@
 
 ## Queries
 - [QueryCpu](QueryCpu#querycpu) - How to query data into sequence of `FluxRecord`
+- [ParameterizedQuery](ParameterizedQuery#parameterizedquery) - How to use parameterized Flux queries
 
 ## Management
 - [CreateNewBucket](CreateNewBucket#createnewbucket) - How to create new bucket with permission to write
