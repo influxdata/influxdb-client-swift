@@ -29,6 +29,11 @@ public struct Resource: Codable {
         case checks = "checks"
         case dbrp = "dbrp"
         case notebooks = "notebooks"
+        case annotations = "annotations"
+        case remotes = "remotes"
+        case replications = "replications"
+        case flows = "flows"
+        case functions = "functions"
     }
     public var type: ModelType
     /** If ID is set that is a permission for a specific resource. if it is not set it is a permission for all resources of that resource type. */
