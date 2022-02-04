@@ -1,4 +1,4 @@
-## 1.0.0 [unreleased]
+## 1.0.0 [2022-02-04]
 
 ### Bug Fixes
 1. [#46](https://github.com/influxdata/influxdb-client-swift/pull/46): Add missing PermissionResources from Cloud API definition
