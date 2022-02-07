@@ -87,8 +87,11 @@ final class QueryAPITests: XCTestCase {
 
                   """
 
-        MockURLProtocol.handler = { _, _ in
+        MockURLProtocol.handler = { _, bodyData in
             expectation.fulfill()
+            let query = try CodableHelper.decode(Query.self, from: bodyData!).get()
+            XCTAssertEqual("from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))",
+                    query.query)
 
             let response = HTTPURLResponse(statusCode: 200)
             return (response, csv.data(using: .utf8)!)
@@ -206,6 +209,7 @@ final class QueryAPITests: XCTestCase {
 
             XCTAssertEqual("from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))",
                            query.query)
+            XCTAssertEqual(["bucketParam": "my-bucket", "startParam": "-1h"], query.params)
             XCTAssertEqual([
                 Dialect.Annotations.datatype,
                 Dialect.Annotations.group,

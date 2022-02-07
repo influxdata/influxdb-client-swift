@@ -1,6 +1,6 @@
 # ParameterizedQuery
 
-This is an example how to query data into sequence of `FluxRecord`. 
+This is an example how to query with query parameters.
 The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/cpu/README.md) into InfluxDB 2.0.
 
 ## Prerequisites:
@@ -12,7 +12,7 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
    ```
 
 ## Sources:
-- [Package.swift](/Examples/QueryCpu/Package.swift)
+- [Package.swift](/Examples/ParameterizedQuery/Package.swift)
 - [main.swift](/Examples/ParameterizedQuery/Sources/ParameterizedQuery/main.swift)
 
 ## How to test:
