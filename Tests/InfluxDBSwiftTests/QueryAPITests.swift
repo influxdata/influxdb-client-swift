@@ -91,7 +91,7 @@ final class QueryAPITests: XCTestCase {
             expectation.fulfill()
             let query = try CodableHelper.decode(Query.self, from: bodyData!).get()
             XCTAssertEqual("from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))",
-                    query.query)
+                           query.query)
 
             let response = HTTPURLResponse(statusCode: 200)
             return (response, csv.data(using: .utf8)!)
