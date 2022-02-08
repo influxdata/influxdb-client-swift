@@ -1,15 +1,15 @@
 ## 1.1.0 [unreleased]
 
-## 1.0.0 [2022-02-04]
-
-### Bug Fixes
-1. [#46](https://github.com/influxdata/influxdb-client-swift/pull/46): Add missing PermissionResources from Cloud API definition
-
 ### Features
 1. [#45](https://github.com/influxdata/influxdb-client-swift/pull/45): Add support for Parameterized Queries
 
 ### Documentation
 1. [#45](https://github.com/influxdata/influxdb-client-swift/pull/45): Add Parameterized Queries example
+
+## 1.0.0 [2022-02-04]
+
+### Bug Fixes
+1. [#46](https://github.com/influxdata/influxdb-client-swift/pull/46): Add missing PermissionResources from Cloud API definition
 
 ## 0.9.0 [2021-11-26]
 
