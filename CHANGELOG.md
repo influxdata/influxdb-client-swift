@@ -1,4 +1,4 @@
-## 1.1.0 [unreleased]
+## 1.1.0 [2022-02-18]
 
 ### Features
 1. [#45](https://github.com/influxdata/influxdb-client-swift/pull/45): Add support for Parameterized Queries
