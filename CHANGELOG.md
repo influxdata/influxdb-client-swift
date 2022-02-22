@@ -1,5 +1,8 @@
 ## 1.2.0 [unreleased]
 
+### CI
+1. [#47](https://github.com/influxdata/influxdb-client-swift/pull/47): Use new Codecov uploader for reporting code coverage
+
 ## 1.1.0 [2022-02-18]
 
 ### Features
