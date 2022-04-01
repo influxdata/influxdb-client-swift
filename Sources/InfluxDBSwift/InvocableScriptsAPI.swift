@@ -6,7 +6,8 @@ import Foundation
 
 /// Use API invokable scripts to create custom InfluxDB API endpoints that query, process, and shape data.
 ///
-/// API invokable scripts let you assign scripts to API endpoints and then execute them as standard REST operations in InfluxDB Cloud.
+/// API invokable scripts let you assign scripts to API endpoints and then execute them
+/// as standard REST operations in InfluxDB Cloud.
 public class InvocableScriptsAPI {
     /// Shared client.
     private let client: InfluxDBClient

@@ -8,7 +8,6 @@ import Foundation
 import XCTest
 
 final class InvocableScriptsAPITests: XCTestCase {
-
     private var client: InfluxDBClient!
 
     override func setUp() {
