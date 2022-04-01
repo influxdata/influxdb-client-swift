@@ -43,8 +43,14 @@ public class InvocableScriptsAPI {
                     responseQueue) { result -> Void in
                 switch result {
                 case let .success(success):
-                    let model = try! CodableHelper.decode(Script.self, from: success!).get()
-                    completion(.success(model))
+                    do {
+                        if let data = success {
+                            let model = try CodableHelper.decode(Script.self, from: data).get()
+                            completion(.success(model))
+                        }
+                    } catch {
+                        completion(.failure(InfluxDBClient.InfluxDBError.cause(error)))
+                    }
                 case let .failure(error):
                     completion(.failure(error))
                 }
