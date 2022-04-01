@@ -27,7 +27,28 @@ struct InvocableScriptsAPI: ParsableCommand {
                 token: token,
                 options: InfluxDBClient.InfluxDBOptions(org: self.org))
 
-        atExit(client: client)
+        let invocableScriptsApi = client.invocableScriptsApi
+
+        //
+        // Create Invocable Script
+        //
+        print("------- Create -------\n")
+        let scriptQuery = "from(bucket: params.bucket_name) |> range(start: -30d) |> limit(n:2)"
+        let createRequest = ScriptCreateRequest(
+                name: "my_script_\(Date().timeIntervalSince1970)",
+                description: "my first try",
+                script: scriptQuery,
+                language: ScriptLanguage.flux)
+
+        invocableScriptsApi.createScript(createRequest: createRequest) { result in
+            switch result {
+            case let .success(script):
+                dump(script)
+                self.atExit(client: client)
+            case let .failure(error):
+                self.atExit(client: client, error: error)
+            }
+        }
 
         // Wait to end of script
         RunLoop.current.run()
