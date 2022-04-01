@@ -104,6 +104,5 @@ SourceKitten/
 junit.xml
 tests.xml
 
-Scripts/cloud.yml
-Scripts/oss.yml
+Scripts/*.yml
 Scripts/influxdb-clients-apigen/

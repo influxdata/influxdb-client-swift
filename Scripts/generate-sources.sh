@@ -15,7 +15,9 @@ rm -rf "${SCRIPT_PATH}"/cloud.yml || true
 rm -rf "${SCRIPT_PATH}"/influxdb-clients-apigen || true
 wget https://raw.githubusercontent.com/influxdata/openapi/master/contracts/oss.yml -O "${SCRIPT_PATH}/oss.yml"
 wget https://raw.githubusercontent.com/influxdata/openapi/master/contracts/cloud.yml -O "${SCRIPT_PATH}/cloud.yml"
+wget https://raw.githubusercontent.com/influxdata/openapi/master/contracts/invocable-scripts.yml -O "${SCRIPT_PATH}/invocable-scripts.yml"
 git clone --single-branch --branch master https://github.com/bonitoo-io/influxdb-clients-apigen "${SCRIPT_PATH}/influxdb-clients-apigen"
+mvn -f "$SCRIPT_PATH"/influxdb-clients-apigen/openapi-generator/pom.xml compile exec:java -Dexec.mainClass="com.influxdb.MergeContracts" -Dexec.args="$SCRIPT_PATH/oss.yml $SCRIPT_PATH/invocable-scripts.yml"
 mvn -f "$SCRIPT_PATH"/influxdb-clients-apigen/openapi-generator/pom.xml compile exec:java -Dexec.mainClass="com.influxdb.AppendCloudDefinitions" -Dexec.args="$SCRIPT_PATH/oss.yml $SCRIPT_PATH/cloud.yml"
 
 # Generate client
@@ -133,6 +135,12 @@ cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/SourceLinks.s
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Query.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Dialect.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/DeletePredicateRequest.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Scripts.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/Script.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/ScriptCreateRequest.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/ScriptInvocationParams.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/ScriptLanguage.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/Models/ScriptUpdateRequest.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
 
 # copy supporting files
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/CodableHelper.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/
