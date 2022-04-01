@@ -9,7 +9,7 @@ let package = Package(
         ],
         dependencies: [
             .package(name: "influxdb-client-swift", path: "../../"),
-            .package(url: "https://github.com/apple/swift-argument-parser", from: "0.3.0")
+            .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0")
         ],
         targets: [
             .target(name: "DeleteData", dependencies: [
