@@ -11,7 +11,7 @@ import FoundationNetworking
 #endif
 import Gzip
 
-/// The asynchronous API to Query InfluxDB 2.0.
+/// The asynchronous API to Query InfluxDB 2.x.
 ///
 /// ### Example: ###
 /// #### Query into sequence of `FluxRecord` ####

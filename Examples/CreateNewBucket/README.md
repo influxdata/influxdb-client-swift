@@ -34,7 +34,7 @@ This is an example how to create new bucket with permission to write.
    ```
 1. Navigate to http://localhost:8086/ and find the id of your organization:
     - Username: `my-user`, Password: `my-password`
-    - https://docs.influxdata.com/influxdb/v2.0/organizations/view-orgs/
+    - https://docs.influxdata.com/influxdb/latest/organizations/view-orgs/
 1. Start SwiftCLI by:
    ```bash
     docker run --rm \

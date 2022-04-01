@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-/// Delete time series data from InfluxDB 2.0.
+/// Delete time series data from InfluxDB 2.x.
 ///
 /// ### Example: ###
 /// ````

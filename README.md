@@ -9,7 +9,7 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/influxdata/influxdb-client-swift.svg)](https://github.com/influxdata/influxdb-client-swift/pulls)
 [![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://www.influxdata.com/slack)
 
-This repository contains the reference Swift client for the InfluxDB 2.0.
+This repository contains the reference Swift client for the InfluxDB 2.x.
 
 - [Features](#features)
 - [Supported Platforms](#supported-platforms)
@@ -31,14 +31,14 @@ This repository contains the reference Swift client for the InfluxDB 2.0.
 
 This section contains links to the client library documentation.
 
-* [Product documentation](https://docs.influxdata.com/influxdb/v2.0/api-guide/client-libraries/), [Getting Started](#installation)
+* [Product documentation](https://docs.influxdata.com/influxdb/latest/api-guide/client-libraries/), [Getting Started](#installation)
 * [Examples](Examples/README.md#examples)
 * [API Reference](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDBClient.html)
 * [Changelog](CHANGELOG.md)
 
 ## Features
 
-InfluxDB 2.0 client consists of two packages
+InfluxDB 2.x client consists of two packages
 
 - `InfluxDBSwift`
   - Querying data using the Flux language
@@ -46,7 +46,7 @@ InfluxDB 2.0 client consists of two packages
     - batched in chunks on background
     - automatic retries on write failures
 - `InfluxDBSwiftApis`
-  - provides all other InfluxDB 2.0 APIs for managing
+  - provides all other InfluxDB 2.x APIs for managing
     - health check
     - sources, buckets
     - tasks
@@ -147,7 +147,7 @@ client.close()
 
 ### Writes
 
-The WriteApi supports asynchronous writes into InfluxDB 2.0. 
+The WriteApi supports asynchronous writes into InfluxDB 2.x. 
 The results of writes could be handled by `(response, error)`, `Swift.Result` or `Combine`.
 
 The data could be written as:
@@ -482,7 +482,7 @@ ParameterizedQuery.main()
 ### Delete data
 
 The [DeleteAPI](https://influxdata.github.io/influxdb-client-swift/Classes/DeleteAPI.html) supports deletes 
-[points](https://v2.docs.influxdata.com/v2.0/reference/glossary/#point) from an InfluxDB bucket. 
+[points](https://docs.influxdata.com/influxdb/latest/reference/glossary/#point) from an InfluxDB bucket. 
 Use the [DeletePredicateRequest](https://influxdata.github.io/influxdb-client-swift/Structs/DeletePredicateRequest.html) identifies which points to delete.
 
 ```swift
@@ -589,23 +589,23 @@ DeleteData.main()
 
 The client supports following management API:
 
-|  | API docs |
-| --- | --- |
-| [**AuthorizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/AuthorizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Authorizations |
-| [**BucketsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
-| [**DBRPsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/DBRPs |
-| [**HealthAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Health |
-| [**PingAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/PingAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Ping |
-| [**LabelsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
-| [**OrganizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
-| [**ReadyAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Ready |
-| [**ScraperTargetsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ScraperTargetsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/ScraperTargets |
-| [**SecretsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SecretsAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Secrets|
-| [**SetupAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SetupAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Tasks |
-| [**SourcesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SourcesAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Sources |
-| [**TasksAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/TasksAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Tasks |
-| [**UsersAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/UsersAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Users |
-| [**VariablesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/VariablesAPI.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Variables |
+|  | API docs                                                            |
+| --- |---------------------------------------------------------------------|
+| [**AuthorizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/AuthorizationsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Authorizations |
+| [**BucketsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Buckets          |
+| [**DBRPsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/DBRPs            |
+| [**HealthAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Health           |
+| [**PingAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/PingAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Ping             |
+| [**LabelsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Labels           |
+| [**OrganizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Organizations    |
+| [**ReadyAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Ready            |
+| [**ScraperTargetsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ScraperTargetsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/ScraperTargets   |
+| [**SecretsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SecretsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Secrets          |
+| [**SetupAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SetupAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks            |
+| [**SourcesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SourcesAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Sources          |
+| [**TasksAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/TasksAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks            |
+| [**UsersAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/UsersAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Users            |
+| [**VariablesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/VariablesAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Variables        |
 
 
 The following example demonstrates how to use a InfluxDB 2.0 Management API to create new bucket. For further information see docs and [examples](/Examples).

@@ -11,7 +11,7 @@ import FoundationNetworking
 #endif
 import Gzip
 
-/// The asynchronous API to Write time-series data into InfluxDB 2.0.
+/// The asynchronous API to Write time-series data into InfluxDB 2.x.
 ///
 /// ### Example: ###
 /// ````
@@ -104,7 +104,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: completion handler to receive the data and the error objects
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -131,7 +131,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: handler to receive the data and the error objects
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -159,7 +159,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: completion handler to receive the data and the error objects
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -186,7 +186,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: handler to receive the data and the error objects
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -214,7 +214,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: completion handler to receive the data and the error objects
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -241,7 +241,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     ///   - completion: handler to receive the data and the error objects
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -270,7 +270,7 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the `Swift.Result`
     ///
     /// - SeeAlso: `Swift.Result`
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -298,7 +298,7 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the `Swift.Result`
     ///
     /// - SeeAlso: `Swift.Result`
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -327,7 +327,7 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the `Swift.Result`
     ///
     /// - SeeAlso: `Swift.Result`
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -355,7 +355,7 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the `Swift.Result`
     ///
     /// - SeeAlso: `Swift.Result`
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -384,7 +384,7 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the `Swift.Result`
     ///
     /// - SeeAlso: `Swift.Result`
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -412,7 +412,7 @@ public class WriteAPI {
     ///   - completion: completion handler to receive the `Swift.Result`
     ///
     /// - SeeAlso: `Swift.Result`
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     public func write(bucket: String? = nil,
                       org: String? = nil,
                       precision: InfluxDBClient.TimestampPrecision? = nil,
@@ -441,7 +441,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func write(bucket: String? = nil,
                       org: String? = nil,
@@ -466,7 +466,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func write(bucket: String? = nil,
                       org: String? = nil,
@@ -496,7 +496,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func write(bucket: String? = nil,
                       org: String? = nil,
@@ -521,7 +521,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func write(bucket: String? = nil,
                       org: String? = nil,
@@ -551,7 +551,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func write(bucket: String? = nil,
                       org: String? = nil,
@@ -576,7 +576,7 @@ public class WriteAPI {
     ///   - responseQueue: The queue on which api response is dispatched.
     /// - Returns: Publisher to attach a subscriber
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func write(bucket: String? = nil,
                       org: String? = nil,
