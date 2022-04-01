@@ -9,9 +9,9 @@ import Foundation
 
 public struct ScriptInvocationParams: Codable {
 
-    public var params: [String: Any]?
+    public var params: [String: String]?
 
-    public init(params: [String: Any]? = nil) {
+    public init(params: [String: String]? = nil) {
         self.params = params
     }
 

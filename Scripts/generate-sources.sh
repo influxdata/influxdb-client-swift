@@ -165,6 +165,7 @@ sed -i '/self.extern = extern/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Gener
 sed -i 's/Any/String/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/public var extern: File?/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i 's/Set<Annotations>/Array<Annotations>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Dialect.swift
+sed -i 's/Any/String/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/ScriptInvocationParams.swift
 
 # Download Cursor implementation
 curl -s -o "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift https://raw.githubusercontent.com/groue/GRDB.swift/master/GRDB/Core/Cursor.swift
