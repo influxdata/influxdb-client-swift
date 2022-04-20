@@ -239,4 +239,31 @@ final class QueryAPITests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
     }
+
+    #if swift(>=5.5)
+    func testAsyncFluxRecords() async throws {
+        let csv = """
+                  #datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,string,string,string,string,long,long,string
+                  #group,false,false,true,true,true,true,true,true,false,false,false
+                  #default,_result,,,,,,,,,,
+                  ,result,table,_start,_stop,_field,_measurement,host,region,_value2,value1,value_str
+                  ,,0,1677-09-21T00:12:43.145224192Z,2018-07-16T11:21:02.547596934Z,free,mem,A,west,121,11,test
+
+                  """
+
+        MockURLProtocol.handler = { _, _ in
+            let response = HTTPURLResponse(statusCode: 200)
+            return (response, csv.data(using: .utf8)!)
+        }
+
+        let cursor = try await client.queryAPI.query(query: "from(bucket:\"my-bucket\") |> range(start: -1h)")
+
+        let collection = try Array(cursor)
+
+        XCTAssertEqual(1, collection.count)
+        XCTAssertEqual(121, collection[0].values["_value2"] as? Int64)
+        XCTAssertEqual(11, collection[0].values["value1"] as? Int64)
+        XCTAssertEqual("west", collection[0].values["region"] as? String)
+    }
+    #endif
 }
