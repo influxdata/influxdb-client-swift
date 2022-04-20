@@ -126,7 +126,7 @@ jobs:
     parameters:
       xcode-version:
         type: string
-        default: &default-xcode "13.3.0"
+        default: &default-xcode "12.5.1"
       influxdb-package-version:
         type: string
         default: "2.0.4"
