@@ -142,6 +142,38 @@ public class DeleteAPI {
     }
     #endif
 
+    #if swift(>=5.5)
+    /// Asynchronously delete points from an InfluxDB by specified predicate.
+    ///
+    /// - Parameters:
+    ///   - predicate: Delete predicate statement.
+    ///   - bucket: Specifies the bucket to delete data from.
+    ///   - bucketID: Specifies the bucket ID to delete data from.
+    ///   - org: Specifies the organization to delete data from.
+    ///   - orgID: Specifies the organization ID of the resource.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/cloud/reference/syntax/delete-predicate/
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func delete(predicate: DeletePredicateRequest,
+                       bucket: String? = nil,
+                       bucketID: String? = nil,
+                       org: String? = nil,
+                       orgID: String? = nil,
+                       responseQueue: DispatchQueue = .main) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
+            postDelete(predicate, bucket, bucketID, org, orgID, responseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     // swiftlint:disable function_parameter_count
     private func postDelete(_ predicate: DeletePredicateRequest,
                             _ bucket: String?,
