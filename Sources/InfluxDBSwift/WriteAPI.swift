@@ -597,6 +597,164 @@ public class WriteAPI {
     }
     #endif
 
+    #if swift(>=5.5)
+    /// Write time-series data asynchronously into InfluxDB.
+    ///
+    /// - Parameters:
+    ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - precision: The precision for the unix timestamps within the body line-protocol.
+    ///   - record: The record to write.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      record: String,
+                      responseQueue: DispatchQueue = .main) async throws {
+        try await self.write(
+                bucket: bucket,
+                org: org,
+                precision: precision,
+                records: [record],
+                responseQueue: responseQueue)
+    }
+
+    /// Write time-series data asynchronously into InfluxDB.
+    ///
+    /// - Parameters:
+    ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - precision: The precision for the unix timestamps within the body line-protocol.
+    ///   - records: The records to write.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      records: [String],
+                      responseQueue: DispatchQueue = .main) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
+            self.postWrite(bucket, org, precision, records, responseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    /// Write time-series data asynchronously into InfluxDB.
+    ///
+    /// - Parameters:
+    ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - precision: The precision for the unix timestamps within the body line-protocol.
+    ///   - point: The `Point` to write.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      point: InfluxDBClient.Point,
+                      responseQueue: DispatchQueue = .main) async throws {
+        try await self.write(
+                bucket: bucket,
+                org: org,
+                precision: precision,
+                points: [point],
+                responseQueue: responseQueue)
+    }
+
+    /// Write time-series data asynchronously into InfluxDB.
+    ///
+    /// - Parameters:
+    ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - precision: The precision for the unix timestamps within the body line-protocol.
+    ///   - points: The `Points` to write.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      points: [InfluxDBClient.Point],
+                      responseQueue: DispatchQueue = .main) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
+            self.postWrite(bucket, org, precision, points, responseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    /// Write time-series data asynchronously into InfluxDB.
+    ///
+    /// - Parameters:
+    ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - precision: The precision for the unix timestamps within the body line-protocol.
+    ///   - tuple: The `Tuple` to write.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      tuple: InfluxDBClient.Point.Tuple,
+                      responseQueue: DispatchQueue = .main) async throws {
+        try await self.write(
+                bucket: bucket,
+                org: org,
+                precision: precision,
+                tuples: [tuple],
+                responseQueue: responseQueue)
+    }
+
+    /// Write time-series data asynchronously into InfluxDB.
+    ///
+    /// - Parameters:
+    ///   - bucket:  The destination bucket for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - org: The destination organization for writes. Takes either the `ID` or `Name` interchangeably.
+    ///   - precision: The precision for the unix timestamps within the body line-protocol.
+    ///   - tuples: The `Tuples` to write.
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/syntax/line-protocol/
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func write(bucket: String? = nil,
+                      org: String? = nil,
+                      precision: InfluxDBClient.TimestampPrecision? = nil,
+                      tuples: [InfluxDBClient.Point.Tuple],
+                      responseQueue: DispatchQueue = .main) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
+            postWrite(bucket, org, precision, tuples, responseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     // swiftlint:disable function_parameter_count
     private func postWrite(_ bucket: String?,
                            _ org: String?,
