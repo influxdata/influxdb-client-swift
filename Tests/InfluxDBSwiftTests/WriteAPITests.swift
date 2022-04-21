@@ -474,8 +474,7 @@ final class WriteAPITests: XCTestCase {
     #endif
 
     private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
-    -> (HTTPURLResponse, Data) {
-        { request, bodyData in
+    -> (HTTPURLResponse, Data) { { request, bodyData in
             XCTAssertEqual(
                     "influxdb-client-swift/\(InfluxDBClient.self.version)",
                     request.allHTTPHeaderFields!["User-Agent"])

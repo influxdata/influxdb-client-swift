@@ -44,7 +44,7 @@ commands:
       - run: |
           apt-get update
           apt-get install wget unzip --yes
-          wget https://github.com/realm/SwiftLint/releases/download/0.46.3/swiftlint_linux.zip
+          wget https://github.com/realm/SwiftLint/releases/download/0.45.0/swiftlint_linux.zip
           unzip -n swiftlint_linux.zip
           ln -s /root/project/swiftlint /usr/bin/swiftlint
   check-example:
