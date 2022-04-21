@@ -35,18 +35,31 @@ public class PingAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Checks the status of InfluxDB instance and version of InfluxDB.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getPing(apiResponseQueue: DispatchQueue? = nil) async throws -> [String: String]? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[String: String]?, Error>) -> Void in
+            getPingWithRequestBuilder().execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.header)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Checks the status of InfluxDB instance and version of InfluxDB.
      - GET /ping
-     - BASIC:
-       - type: http
-       - name: BasicAuth
-     - API Key:
-       - type: apiKey u&#x3D;&amp;p&#x3D; (QUERY)
-       - name: QuerystringAuth
-     - BASIC:
-       - type: http
-       - name: TokenAuth
      - responseHeaders: [X-Influxdb-Build(String), X-Influxdb-Version(Int)]
      - returns: RequestBuilder<Void> 
      */
@@ -79,18 +92,31 @@ public class PingAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Checks the status of InfluxDB instance and version of InfluxDB.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func headPing(apiResponseQueue: DispatchQueue? = nil) async throws -> [String: String]? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[String: String]?, Error>) -> Void in
+            headPingWithRequestBuilder().execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.header)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Checks the status of InfluxDB instance and version of InfluxDB.
      - HEAD /ping
-     - BASIC:
-       - type: http
-       - name: BasicAuth
-     - API Key:
-       - type: apiKey u&#x3D;&amp;p&#x3D; (QUERY)
-       - name: QuerystringAuth
-     - BASIC:
-       - type: http
-       - name: TokenAuth
      - responseHeaders: [X-Influxdb-Build(String), X-Influxdb-Version(Int)]
      - returns: RequestBuilder<Void> 
      */
