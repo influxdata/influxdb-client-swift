@@ -281,9 +281,9 @@ public class QueryAPI {
     /// - Returns: `Cursor<FluxRecord>`
     @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     public func queryRaw(query: String,
-                      org: String? = nil,
-                      params: [String: String]? = nil,
-                      responseQueue: DispatchQueue = .main) async throws -> Data {
+                         org: String? = nil,
+                         params: [String: String]? = nil,
+                         responseQueue: DispatchQueue = .main) async throws -> Data {
         try await withCheckedThrowingContinuation { continuation in
             self.queryRaw(query: query, org: org, params: params, responseQueue: responseQueue) { result in
                 switch result {
