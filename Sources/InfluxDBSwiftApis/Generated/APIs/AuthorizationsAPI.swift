@@ -37,6 +37,30 @@ public class AuthorizationsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete an authorization
+     
+     - parameter authID: (path) The ID of the authorization to delete. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteAuthorizationsID(authID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteAuthorizationsIDWithRequestBuilder(authID: authID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete an authorization
      - DELETE /authorizations/{authID}
@@ -84,6 +108,33 @@ public class AuthorizationsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all authorizations
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter userID: (query) Only show authorizations that belong to a user ID. (optional)
+     - parameter user: (query) Only show authorizations that belong to a user name. (optional)
+     - parameter orgID: (query) Only show authorizations that belong to an organization ID. (optional)
+     - parameter org: (query) Only show authorizations that belong to a organization name. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getAuthorizations(zapTraceSpan: String? = nil, userID: String? = nil, user: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Authorizations? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Authorizations?, Error>) -> Void in
+            getAuthorizationsWithRequestBuilder(zapTraceSpan: zapTraceSpan, userID: userID, user: user, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all authorizations
@@ -136,6 +187,30 @@ public class AuthorizationsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Retrieve an authorization
+     
+     - parameter authID: (path) The ID of the authorization to get. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getAuthorizationsID(authID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Authorization? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Authorization?, Error>) -> Void in
+            getAuthorizationsIDWithRequestBuilder(authID: authID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Retrieve an authorization
      - GET /authorizations/{authID}
@@ -182,6 +257,31 @@ public class AuthorizationsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update an authorization to be active or inactive
+     
+     - parameter authID: (path) The ID of the authorization to update. 
+     - parameter authorizationUpdateRequest: (body) Authorization to update 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchAuthorizationsID(authID: String, authorizationUpdateRequest: AuthorizationUpdateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Authorization? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Authorization?, Error>) -> Void in
+            patchAuthorizationsIDWithRequestBuilder(authID: authID, authorizationUpdateRequest: authorizationUpdateRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update an authorization to be active or inactive
      - PATCH /authorizations/{authID}
@@ -227,6 +327,30 @@ public class AuthorizationsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Create an authorization
+     
+     - parameter authorizationPostRequest: (body) Authorization to create 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postAuthorizations(authorizationPostRequest: AuthorizationPostRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Authorization? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Authorization?, Error>) -> Void in
+            postAuthorizationsWithRequestBuilder(authorizationPostRequest: authorizationPostRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Create an authorization

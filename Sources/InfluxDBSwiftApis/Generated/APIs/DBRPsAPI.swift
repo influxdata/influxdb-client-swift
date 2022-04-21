@@ -39,6 +39,32 @@ public class DBRPsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete a database retention policy
+     
+     - parameter dbrpID: (path) The database retention policy mapping 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteDBRPID(dbrpID: String, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteDBRPIDWithRequestBuilder(dbrpID: dbrpID, zapTraceSpan: zapTraceSpan, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete a database retention policy
      - DELETE /dbrps/{dbrpID}
@@ -72,7 +98,7 @@ public class DBRPsAPI {
     }
 
     /**
-     List all database retention policy mappings
+     List database retention policy mappings
      
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter orgID: (query) Specifies the organization ID to filter on (optional)
@@ -96,8 +122,38 @@ public class DBRPsAPI {
         }
     }
 
+    #if swift(>=5.5)
     /**
-     List all database retention policy mappings
+     List database retention policy mappings
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID to filter on (optional)
+     - parameter org: (query) Specifies the organization name to filter on (optional)
+     - parameter id: (query) Specifies the mapping ID to filter on (optional)
+     - parameter bucketID: (query) Specifies the bucket ID to filter on (optional)
+     - parameter _default: (query) Specifies filtering on default (optional)
+     - parameter db: (query) Specifies the database to filter on (optional)
+     - parameter rp: (query) Specifies the retention policy to filter on (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getDBRPs(zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, id: String? = nil, bucketID: String? = nil, _default: Bool? = nil, db: String? = nil, rp: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> DBRPs? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<DBRPs?, Error>) -> Void in
+            getDBRPsWithRequestBuilder(zapTraceSpan: zapTraceSpan, orgID: orgID, org: org, id: id, bucketID: bucketID, _default: _default, db: db, rp: rp).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
+    /**
+     List database retention policy mappings
      - GET /dbrps
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter orgID: (query) Specifies the organization ID to filter on (optional)
@@ -155,6 +211,32 @@ public class DBRPsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Retrieve a database retention policy mapping
+     
+     - parameter dbrpID: (path) The database retention policy mapping ID 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getDBRPsID(dbrpID: String, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> DBRPGet? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<DBRPGet?, Error>) -> Void in
+            getDBRPsIDWithRequestBuilder(dbrpID: dbrpID, zapTraceSpan: zapTraceSpan, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Retrieve a database retention policy mapping
      - GET /dbrps/{dbrpID}
@@ -209,6 +291,33 @@ public class DBRPsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a database retention policy mapping
+     
+     - parameter dbrpID: (path) The database retention policy mapping. 
+     - parameter dBRPUpdate: (body) Database retention policy update to apply 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) Specifies the organization ID of the mapping (optional)
+     - parameter org: (query) Specifies the organization name of the mapping (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchDBRPID(dbrpID: String, dBRPUpdate: DBRPUpdate, zapTraceSpan: String? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> DBRPGet? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<DBRPGet?, Error>) -> Void in
+            patchDBRPIDWithRequestBuilder(dbrpID: dbrpID, dBRPUpdate: dBRPUpdate, zapTraceSpan: zapTraceSpan, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a database retention policy mapping
      - PATCH /dbrps/{dbrpID}
@@ -260,6 +369,30 @@ public class DBRPsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add a database retention policy mapping
+     
+     - parameter dBRPCreate: (body) The database retention policy mapping to add 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postDBRP(dBRPCreate: DBRPCreate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> DBRP? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<DBRP?, Error>) -> Void in
+            postDBRPWithRequestBuilder(dBRPCreate: dBRPCreate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add a database retention policy mapping

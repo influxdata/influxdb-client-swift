@@ -151,6 +151,7 @@ sed -i 's/Any]>/String]>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generat
 sed -i 's/Void?/[String: String]?/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/PingAPI.swift
 sed -i 's/.success/let .success(response)/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/PingAPI.swift
 sed -i 's/completion(()/completion(response.header/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/PingAPI.swift
+sed -i 's/returning: ()/returning: response.header/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/PingAPI.swift
 sed -i 's/extern: File? = nil, //' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/self.extern = extern/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i 's/Any/String/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift

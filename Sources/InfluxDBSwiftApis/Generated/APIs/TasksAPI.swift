@@ -37,6 +37,30 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete a task
+     
+     - parameter taskID: (path) The ID of the task to delete. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteTasksID(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteTasksIDWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete a task
      - DELETE /tasks/{taskID}
@@ -83,6 +107,31 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Delete a label from a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter labelID: (path) The label ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteTasksIDLabelsID(taskID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteTasksIDLabelsIDWithRequestBuilder(taskID: taskID, labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Delete a label from a task
@@ -134,6 +183,31 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Remove a member from a task
+     
+     - parameter userID: (path) The ID of the member to remove. 
+     - parameter taskID: (path) The task ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteTasksIDMembersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteTasksIDMembersIDWithRequestBuilder(userID: userID, taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Remove a member from a task
      - DELETE /tasks/{taskID}/members/{userID}
@@ -183,6 +257,31 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Remove an owner from a task
+     
+     - parameter userID: (path) The ID of the owner to remove. 
+     - parameter taskID: (path) The task ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteTasksIDOwnersID(userID: String, taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteTasksIDOwnersIDWithRequestBuilder(userID: userID, taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Remove an owner from a task
@@ -234,6 +333,31 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Cancel a running task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter runID: (path) The run ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteTasksIDRunsID(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteTasksIDRunsIDWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Cancel a running task
      - DELETE /tasks/{taskID}/runs/{runID}
@@ -273,6 +397,14 @@ public class TasksAPI {
     }
 
     /**
+     * enum for parameter type
+     */
+    public enum ModelType_getTasks: String, CaseIterable {
+        case basic = "basic"
+        case system = "system"
+    }
+
+    /**
      List all tasks
      
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
@@ -283,11 +415,12 @@ public class TasksAPI {
      - parameter orgID: (query) Filter tasks to a specific organization ID. (optional)
      - parameter status: (query) Filter tasks by a status--\&quot;inactive\&quot; or \&quot;active\&quot;. (optional)
      - parameter limit: (query) The number of tasks to return (optional, default to 100)
+     - parameter type: (query) Type of task, unset by default. (optional, default to .empty)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
-    public func getTasks(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Tasks?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
-        getTasksWithRequestBuilder(zapTraceSpan: zapTraceSpan, name: name, after: after, user: user, org: org, orgID: orgID, status: status, limit: limit).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+    public func getTasks(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil, type: ModelType_getTasks? = nil, apiResponseQueue: DispatchQueue? = nil, completion: @escaping (_ data: Tasks?,_ error: InfluxDBClient.InfluxDBError?) -> Void) {
+        getTasksWithRequestBuilder(zapTraceSpan: zapTraceSpan, name: name, after: after, user: user, org: org, orgID: orgID, status: status, limit: limit, type: type).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -296,6 +429,37 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all tasks
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter name: (query) Returns task with a specific name. (optional)
+     - parameter after: (query) Return tasks after a specified ID. (optional)
+     - parameter user: (query) Filter tasks to a specific user ID. (optional)
+     - parameter org: (query) Filter tasks to a specific organization name. (optional)
+     - parameter orgID: (query) Filter tasks to a specific organization ID. (optional)
+     - parameter status: (query) Filter tasks by a status--\&quot;inactive\&quot; or \&quot;active\&quot;. (optional)
+     - parameter limit: (query) The number of tasks to return (optional, default to 100)
+     - parameter type: (query) Type of task, unset by default. (optional, default to .empty)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasks(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil, type: ModelType_getTasks? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Tasks? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Tasks?, Error>) -> Void in
+            getTasksWithRequestBuilder(zapTraceSpan: zapTraceSpan, name: name, after: after, user: user, org: org, orgID: orgID, status: status, limit: limit, type: type).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all tasks
@@ -308,9 +472,10 @@ public class TasksAPI {
      - parameter orgID: (query) Filter tasks to a specific organization ID. (optional)
      - parameter status: (query) Filter tasks by a status--\&quot;inactive\&quot; or \&quot;active\&quot;. (optional)
      - parameter limit: (query) The number of tasks to return (optional, default to 100)
+     - parameter type: (query) Type of task, unset by default. (optional, default to .empty)
      - returns: RequestBuilder<Tasks> 
      */
-    internal func getTasksWithRequestBuilder(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil) -> RequestBuilder<Tasks> {
+    internal func getTasksWithRequestBuilder(zapTraceSpan: String? = nil, name: String? = nil, after: String? = nil, user: String? = nil, org: String? = nil, orgID: String? = nil, status: Status_getTasks? = nil, limit: Int? = nil, type: ModelType_getTasks? = nil) -> RequestBuilder<Tasks> {
         let path = "/tasks"
         let URLString = influxDB2API.basePath + "/api/v2" + path
         let parameters: [String:Any]? = nil
@@ -323,7 +488,8 @@ public class TasksAPI {
             "org": org?.encodeToJSON(), 
             "orgID": orgID?.encodeToJSON(), 
             "status": status?.encodeToJSON(), 
-            "limit": limit?.encodeToJSON()
+            "limit": limit?.encodeToJSON(), 
+            "type": type?.encodeToJSON()
         ])
         let nillableHeaders: [String: Any?] = [
             "Zap-Trace-Span": zapTraceSpan?.encodeToJSON()
@@ -353,6 +519,30 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Retrieve a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasksID(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Task? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Task?, Error>) -> Void in
+            getTasksIDWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Retrieve a task
@@ -399,6 +589,30 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all labels for a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasksIDLabels(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelsResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelsResponse?, Error>) -> Void in
+            getTasksIDLabelsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all labels for a task
      - GET /tasks/{taskID}/labels
@@ -443,6 +657,30 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Retrieve all logs for a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasksIDLogs(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Logs? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Logs?, Error>) -> Void in
+            getTasksIDLogsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Retrieve all logs for a task
@@ -489,6 +727,30 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all task members
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasksIDMembers(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceMembers? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceMembers?, Error>) -> Void in
+            getTasksIDMembersWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all task members
      - GET /tasks/{taskID}/members
@@ -533,6 +795,30 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all owners of a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasksIDOwners(taskID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceOwners? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceOwners?, Error>) -> Void in
+            getTasksIDOwnersWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all owners of a task
@@ -582,6 +868,34 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List runs for a task
+     
+     - parameter taskID: (path) The ID of the task to get runs for. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter after: (query) Returns runs after a specific ID. (optional)
+     - parameter limit: (query) The number of runs to return (optional, default to 100)
+     - parameter afterTime: (query) Filter runs to those scheduled after this time, RFC3339 (optional)
+     - parameter beforeTime: (query) Filter runs to those scheduled before this time, RFC3339 (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasksIDRuns(taskID: String, zapTraceSpan: String? = nil, after: String? = nil, limit: Int? = nil, afterTime: Date? = nil, beforeTime: Date? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Runs? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Runs?, Error>) -> Void in
+            getTasksIDRunsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan, after: after, limit: limit, afterTime: afterTime, beforeTime: beforeTime).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List runs for a task
@@ -639,6 +953,31 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Retrieve a single run for a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter runID: (path) The run ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasksIDRunsID(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Run? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Run?, Error>) -> Void in
+            getTasksIDRunsIDWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Retrieve a single run for a task
      - GET /tasks/{taskID}/runs/{runID}
@@ -688,6 +1027,31 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Retrieve all logs for a run
+     
+     - parameter taskID: (path) ID of task to get logs for. 
+     - parameter runID: (path) ID of run to get logs for. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getTasksIDRunsIDLogs(taskID: String, runID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Logs? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Logs?, Error>) -> Void in
+            getTasksIDRunsIDLogsWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Retrieve all logs for a run
@@ -739,6 +1103,31 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter taskUpdateRequest: (body) Task update to apply 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchTasksID(taskID: String, taskUpdateRequest: TaskUpdateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Task? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Task?, Error>) -> Void in
+            patchTasksIDWithRequestBuilder(taskID: taskID, taskUpdateRequest: taskUpdateRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a task
      - PATCH /tasks/{taskID}
@@ -786,6 +1175,30 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Create a new task
+     
+     - parameter taskCreateRequest: (body) Task to create 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postTasks(taskCreateRequest: TaskCreateRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Task? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Task?, Error>) -> Void in
+            postTasksWithRequestBuilder(taskCreateRequest: taskCreateRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Create a new task
      - POST /tasks
@@ -828,6 +1241,31 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add a label to a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter labelMapping: (body) Label to add 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postTasksIDLabels(taskID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelResponse?, Error>) -> Void in
+            postTasksIDLabelsWithRequestBuilder(taskID: taskID, labelMapping: labelMapping, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add a label to a task
@@ -876,6 +1314,31 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Add a member to a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter addResourceMemberRequestBody: (body) User to add as member 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postTasksIDMembers(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceMember? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceMember?, Error>) -> Void in
+            postTasksIDMembersWithRequestBuilder(taskID: taskID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Add a member to a task
      - POST /tasks/{taskID}/members
@@ -922,6 +1385,31 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add an owner to a task
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter addResourceMemberRequestBody: (body) User to add as owner 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postTasksIDOwners(taskID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceOwner? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceOwner?, Error>) -> Void in
+            postTasksIDOwnersWithRequestBuilder(taskID: taskID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add an owner to a task
@@ -970,6 +1458,31 @@ public class TasksAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Manually start a task run, overriding the current schedule
+     
+     - parameter taskID: (path)  
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter runManually: (body)  (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postTasksIDRuns(taskID: String, zapTraceSpan: String? = nil, runManually: RunManually? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Run? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Run?, Error>) -> Void in
+            postTasksIDRunsWithRequestBuilder(taskID: taskID, zapTraceSpan: zapTraceSpan, runManually: runManually).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Manually start a task run, overriding the current schedule
      - POST /tasks/{taskID}/runs
@@ -1017,6 +1530,32 @@ public class TasksAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Retry a task run
+     
+     - parameter taskID: (path) The task ID. 
+     - parameter runID: (path) The run ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter body: (body)  (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postTasksIDRunsIDRetry(taskID: String, runID: String, zapTraceSpan: String? = nil, body: Any? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Run? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Run?, Error>) -> Void in
+            postTasksIDRunsIDRetryWithRequestBuilder(taskID: taskID, runID: runID, zapTraceSpan: zapTraceSpan, body: body).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Retry a task run

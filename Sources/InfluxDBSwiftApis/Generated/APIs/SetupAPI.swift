@@ -36,6 +36,29 @@ public class SetupAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Check if database has default user, org, bucket
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getSetup(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> IsOnboarding? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<IsOnboarding?, Error>) -> Void in
+            getSetupWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Check if database has default user, org, bucket
      - GET /setup
@@ -77,6 +100,30 @@ public class SetupAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Set up initial user, org and bucket
+     
+     - parameter onboardingRequest: (body) Source to create 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postSetup(onboardingRequest: OnboardingRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> OnboardingResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<OnboardingResponse?, Error>) -> Void in
+            postSetupWithRequestBuilder(onboardingRequest: onboardingRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Set up initial user, org and bucket

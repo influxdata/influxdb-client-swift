@@ -37,6 +37,30 @@ public class UsersAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete a user
+     
+     - parameter userID: (path) The ID of the user to delete. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteUsersID(userID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteUsersIDWithRequestBuilder(userID: userID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete a user
      - DELETE /users/{userID}
@@ -81,6 +105,29 @@ public class UsersAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Return the feature flags for the currently authenticated user
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getFlags(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> [String: Any]? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[String: Any]?, Error>) -> Void in
+            getFlagsWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Return the feature flags for the currently authenticated user
      - GET /flags
@@ -121,6 +168,29 @@ public class UsersAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Retrieve the currently authenticated user
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getMe(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> UserResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<UserResponse?, Error>) -> Void in
+            getMeWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Retrieve the currently authenticated user
      - GET /me
@@ -149,7 +219,7 @@ public class UsersAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter offset: (query)  (optional)
      - parameter limit: (query)  (optional, default to 20)
-     - parameter after: (query) The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;.  (optional)
+     - parameter after: (query) Resource ID to seek from. Results are not inclusive of this ID. Use &#x60;after&#x60; instead of &#x60;offset&#x60;.  (optional)
      - parameter name: (query)  (optional)
      - parameter id: (query)  (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -166,13 +236,41 @@ public class UsersAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all users
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter offset: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 20)
+     - parameter after: (query) Resource ID to seek from. Results are not inclusive of this ID. Use &#x60;after&#x60; instead of &#x60;offset&#x60;.  (optional)
+     - parameter name: (query)  (optional)
+     - parameter id: (query)  (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getUsers(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, name: String? = nil, id: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Users? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Users?, Error>) -> Void in
+            getUsersWithRequestBuilder(zapTraceSpan: zapTraceSpan, offset: offset, limit: limit, after: after, name: name, id: id).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all users
      - GET /users
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter offset: (query)  (optional)
      - parameter limit: (query)  (optional, default to 20)
-     - parameter after: (query) The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;.  (optional)
+     - parameter after: (query) Resource ID to seek from. Results are not inclusive of this ID. Use &#x60;after&#x60; instead of &#x60;offset&#x60;.  (optional)
      - parameter name: (query)  (optional)
      - parameter id: (query)  (optional)
      - returns: RequestBuilder<Users> 
@@ -218,6 +316,30 @@ public class UsersAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Retrieve a user
+     
+     - parameter userID: (path) The user ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getUsersID(userID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> UserResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<UserResponse?, Error>) -> Void in
+            getUsersIDWithRequestBuilder(userID: userID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Retrieve a user
@@ -265,6 +387,31 @@ public class UsersAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a user
+     
+     - parameter userID: (path) The ID of the user to update. 
+     - parameter user: (body) User update to apply 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchUsersID(userID: String, user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> UserResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<UserResponse?, Error>) -> Void in
+            patchUsersIDWithRequestBuilder(userID: userID, user: user, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a user
      - PATCH /users/{userID}
@@ -311,6 +458,30 @@ public class UsersAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Create a user
+     
+     - parameter user: (body) User to create 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postUsers(user: User, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> UserResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<UserResponse?, Error>) -> Void in
+            postUsersWithRequestBuilder(user: user, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Create a user
      - POST /users
@@ -354,12 +525,34 @@ public class UsersAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a password
+     
+     - parameter userID: (path) The user ID. 
+     - parameter passwordResetBody: (body) New password 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postUsersIDPassword(userID: String, passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            postUsersIDPasswordWithRequestBuilder(userID: userID, passwordResetBody: passwordResetBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a password
      - POST /users/{userID}/password
-     - BASIC:
-       - type: http
-       - name: BasicAuth
      - parameter userID: (path) The user ID. 
      - parameter passwordResetBody: (body) New password 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
@@ -403,12 +596,33 @@ public class UsersAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a password
+     
+     - parameter passwordResetBody: (body) New password 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func putMePassword(passwordResetBody: PasswordResetBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            putMePasswordWithRequestBuilder(passwordResetBody: passwordResetBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a password
      - PUT /me/password
-     - BASIC:
-       - type: http
-       - name: BasicAuth
      - parameter passwordResetBody: (body) New password 
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - returns: RequestBuilder<Void> 

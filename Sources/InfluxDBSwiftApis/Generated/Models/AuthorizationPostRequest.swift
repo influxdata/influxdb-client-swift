@@ -13,7 +13,7 @@ public struct AuthorizationPostRequest: Codable {
         case active = "active"
         case inactive = "inactive"
     }
-    /** If inactive the token is inactive and requests using the token will be rejected. */
+    /** Status of the token. If &#x60;inactive&#x60;, requests using the token will be rejected. */
     public var status: Status? = .active
     /** A description of the token. */
     public var description: String?

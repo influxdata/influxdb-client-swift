@@ -13,24 +13,24 @@ public struct Authorization: Codable {
         case active = "active"
         case inactive = "inactive"
     }
-    /** If inactive the token is inactive and requests using the token will be rejected. */
+    /** Status of the token. If &#x60;inactive&#x60;, requests using the token will be rejected. */
     public var status: Status? = .active
     /** A description of the token. */
     public var description: String?
     public var createdAt: Date?
     public var updatedAt: Date?
-    /** ID of org that authorization is scoped to. */
+    /** ID of the organization that the authorization is scoped to. */
     public var orgID: String
-    /** List of permissions for an auth.  An auth must have at least one Permission. */
+    /** List of permissions for an authorization.  An authorization must have at least one permission. */
     public var permissions: [Permission]
     public var id: String?
-    /** Passed via the Authorization Header and Token Authentication type. */
+    /** Token used to authenticate API requests. */
     public var token: String?
-    /** ID of user that created and owns the token. */
+    /** ID of the user that created and owns the token. */
     public var userID: String?
-    /** Name of user that created and owns the token. */
+    /** Name of the user that created and owns the token. */
     public var user: String?
-    /** Name of the org token is scoped to. */
+    /** Name of the organization that the token is scoped to. */
     public var org: String?
     public var links: AuthorizationAllOfLinks?
 
