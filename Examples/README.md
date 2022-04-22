@@ -13,5 +13,6 @@
 
 ## Others
 - [DeleteData](DeleteData#deletedata) - How to delete data with specified predicate
+- [AsyncAwait](AsyncAwait#asyncawait) - How to use `async/await` with the InfluxDB client.
 - [InfluxDBStatus](InfluxDBStatus#influxdbstatus) - This is an example how to check status of InfluxDB
   
