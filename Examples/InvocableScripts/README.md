@@ -24,7 +24,7 @@ This is an example how to use Invocable scripts Cloud API to create custom endpo
       --tty \
       --volume $PWD/../..:/client \
       --workdir /client/Examples/InvocableScripts \
-      swift:5.3 /bin/bash
+      swift:5.6 /bin/bash
    ```
 1. Run Example by:
    ```bash

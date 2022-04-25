@@ -68,7 +68,12 @@ public class InvocableScriptsAPI {
                              responseQueue: DispatchQueue = .main,
                              completion: @escaping (
                                      _ result: Swift.Result<Script?, InfluxDBClient.InfluxDBError>) -> Void) {
-        httpRequest(queryId: scriptId, model: updateRequest, httpMethod: "PATCH", responseQueue: responseQueue, completion: completion)
+        httpRequest(
+                queryId: scriptId,
+                model: updateRequest,
+                httpMethod: "PATCH",
+                responseQueue: responseQueue,
+                completion: completion)
     }
 
     #if swift(>=5.5)
@@ -204,7 +209,8 @@ public class InvocableScriptsAPI {
                                    model: M? = nil,
                                    httpMethod: String = "POST",
                                    responseQueue: DispatchQueue,
-                                   completion: @escaping (Result<B?, InfluxDBClient.InfluxDBError>) -> Void) where M: Encodable, B: Decodable {
+                                   completion: @escaping (Result<B?, InfluxDBClient.InfluxDBError>) -> Void)
+            where M: Encodable, B: Decodable {
         let urls = [
             client.url,
             "api/v2/scripts",
