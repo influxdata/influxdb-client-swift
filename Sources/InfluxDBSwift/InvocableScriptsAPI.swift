@@ -136,7 +136,7 @@ public class InvocableScriptsAPI {
     ///   - limit: (query) The number of scripts to return. (optional)
     ///   - offset: (query) The offset for pagination. (optional)
     ///   - responseQueue: The queue on which api response is dispatched.
-    ///   - completion: completion handler to receive the list of Scripts or the error object
+    /// - Returns: `Scripts`
     @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     public func findScripts(limit: Int? = nil,
                             offset: Int? = nil,
@@ -187,12 +187,107 @@ public class InvocableScriptsAPI {
     /// - Parameters:
     ///   - scriptId: The ID of the script to delete. (required)
     ///   - responseQueue: The queue on which api response is dispatched.
-    ///   - completion: completion handler to receive the list of Scripts or the error object
     @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     public func deleteScript(scriptId: String,
                              responseQueue: DispatchQueue = .main) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
             self.deleteScript(scriptId: scriptId, responseQueue: responseQueue) { result in
+                switch result {
+                case .success(let value):
+                    continuation.resume(returning: value)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
+    /// Invoke asynchronously a script and return result as a `Cursor<FluxRecord>`.
+    ///
+    /// - Parameters:
+    ///   - scriptId: The ID of the script to invoke. (required)
+    ///   - params: params represent key/value pairs parameters to be injected into script
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///   - completion: completion handler to receive the `Swift.Result`
+    public func invokeScript(scriptId: String,
+                             params: [String: String]? = nil,
+                             responseQueue: DispatchQueue = .main,
+                             completion: @escaping (
+                                     _ result: Swift.Result<QueryAPI.FluxRecordCursor, InfluxDBClient.InfluxDBError>)
+                             -> Void) {
+        let model = ScriptInvocationParams(params: params)
+        let url = urlComponents(scriptId: scriptId, resource: "invoke")
+        client.queryRequest(model, url, InfluxDBClient.GZIPMode.none, responseQueue) { result -> Void in
+            switch result {
+            case let .success(data):
+                do {
+                    try completion(.success(QueryAPI.FluxRecordCursor(data: data)))
+                } catch {
+                    completion(.failure(InfluxDBClient.InfluxDBError.cause(error)))
+                }
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    #if swift(>=5.5)
+    /// Invoke asynchronously a script and return result as a `Cursor<FluxRecord>`.
+    ///
+    /// - Parameters:
+    ///   - scriptId: The ID of the script to invoke. (required)
+    ///   - params: params represent key/value pairs parameters to be injected into script
+    ///   - responseQueue: The queue on which api response is dispatched.
+    /// - Returns: `Cursor<FluxRecord>`
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func invokeScript(scriptId: String,
+                             params: [String: String]? = nil,
+                             responseQueue: DispatchQueue = .main) async throws -> QueryAPI.FluxRecordCursor {
+        try await withCheckedThrowingContinuation { continuation in
+            self.invokeScript(scriptId: scriptId, params: params, responseQueue: responseQueue) { result in
+                switch result {
+                case .success(let value):
+                    continuation.resume(returning: value)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
+    /// Invoke asynchronously a script and return result as a `Data`.
+    ///
+    /// - Parameters:
+    ///   - scriptId: The ID of the script to invoke. (required)
+    ///   - params: params represent key/value pairs parameters to be injected into script
+    ///   - responseQueue: The queue on which api response is dispatched.
+    ///   - completion: completion handler to receive the `Swift.Result`
+    public func invokeScriptRaw(scriptId: String,
+                                params: [String: String]? = nil,
+                                responseQueue: DispatchQueue = .main,
+                                completion: @escaping (
+                                        _ result: Swift.Result<Data, InfluxDBClient.InfluxDBError>) -> Void) {
+        let model = ScriptInvocationParams(params: params)
+        let url = urlComponents(scriptId: scriptId, resource: "invoke")
+        client.queryRequest(model, url, InfluxDBClient.GZIPMode.none, responseQueue, completion)
+    }
+
+    #if swift(>=5.5)
+    /// Invoke asynchronously a script and return result as a `Data`.
+    ///
+    /// - Parameters:
+    ///   - scriptId: The ID of the script to invoke. (required)
+    ///   - params: params represent key/value pairs parameters to be injected into script
+    ///   - responseQueue: The queue on which api response is dispatched.
+    /// - Returns: `Data`
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func invokeScriptRaw(scriptId: String,
+                                params: [String: String]? = nil,
+                                responseQueue: DispatchQueue = .main) async throws -> Data {
+        try await withCheckedThrowingContinuation { continuation in
+            self.invokeScriptRaw(scriptId: scriptId, params: params, responseQueue: responseQueue) { result in
                 switch result {
                 case .success(let value):
                     continuation.resume(returning: value)
@@ -211,16 +306,7 @@ public class InvocableScriptsAPI {
                                    responseQueue: DispatchQueue,
                                    completion: @escaping (Result<B?, InfluxDBClient.InfluxDBError>) -> Void)
             where M: Encodable, B: Decodable {
-        let urls = [
-            client.url,
-            "api/v2/scripts",
-            queryId?.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
-        ].compactMap {
-                    $0
-        }
-                .joined(separator: "/")
-
-        var url = URLComponents(string: urls)
+        var url = urlComponents(scriptId: queryId)
         url?.queryItems = queryItems
 
         do {
@@ -259,5 +345,19 @@ public class InvocableScriptsAPI {
                 completion(.failure(InfluxDBClient.InfluxDBError.error(415, nil, nil, error)))
             }
         }
+    }
+
+    private func urlComponents(scriptId: String? = nil, resource: String? = nil) -> URLComponents? {
+        let urls = [
+            client.url,
+            "api/v2/scripts",
+            scriptId?.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
+            resource
+        ].compactMap {
+                    $0
+        }
+                .joined(separator: "/")
+
+        return URLComponents(string: urls)
     }
 }

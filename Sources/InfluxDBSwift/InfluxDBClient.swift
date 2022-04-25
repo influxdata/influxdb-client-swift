@@ -35,13 +35,19 @@ public class InfluxDBClient {
     public let session: URLSession
 
     /// Lazy initialized `QueryAPI`.
-    public lazy var queryAPI: QueryAPI = { QueryAPI(client: self) }()
+    public lazy var queryAPI: QueryAPI = {
+        QueryAPI(client: self)
+    }()
 
     /// Lazy initialized `DeleteAPI`.
-    public lazy var deleteAPI: DeleteAPI = { DeleteAPI(client: self) }()
+    public lazy var deleteAPI: DeleteAPI = {
+        DeleteAPI(client: self)
+    }()
 
     /// Lazy initialized `InvocableScriptsApi`.
-    public lazy var invocableScriptsApi: InvocableScriptsAPI = { InvocableScriptsAPI(client: self) }()
+    public lazy var invocableScriptsApi: InvocableScriptsAPI = {
+        InvocableScriptsAPI(client: self)
+    }()
 
     /// Create a new client for a InfluxDB.
     ///
@@ -344,4 +350,36 @@ extension InfluxDBClient {
         }
     }
     // swiftlint:enable function_body_length function_parameter_count
+
+    func queryRequest<M>(_ model: M,
+                         _ url: URLComponents?,
+                         _ gzipMode: InfluxDBClient.GZIPMode,
+                         _ responseQueue: DispatchQueue,
+                         _ completion: @escaping (_ result: Swift.Result<Data, InfluxDBClient.InfluxDBError>) -> Void)
+            where M: Encodable {
+        do {
+            // Body
+            let body = try CodableHelper.encode(model).get()
+
+            httpRequest(
+                    url,
+                    "application/json; charset=utf-8",
+                    "text/csv",
+                    gzipMode,
+                    body,
+                    "POST",
+                    responseQueue) { result -> Void in
+                switch result {
+                case let .success(data):
+                    completion(.success(data ?? Data(count: 0)))
+                case let .failure(error):
+                    completion(.failure(error))
+                }
+            }
+        } catch {
+            responseQueue.async {
+                completion(.failure(InfluxDBClient.InfluxDBError.cause(error)))
+            }
+        }
+    }
 }

@@ -35,6 +35,19 @@ extension InvocableScriptsAPI {
         let invocableScriptsApi = client.invocableScriptsApi
 
         //
+        // Prepare Data
+        //
+        let point1 = InfluxDBClient
+                .Point("my_measurement")
+                .addTag(key: "location", value: "Prague")
+                .addField(key: "temperature", value: .double(25.3))
+        let point2 = InfluxDBClient
+                .Point("my_measurement")
+                .addTag(key: "location", value: "New York")
+                .addField(key: "temperature", value: .double(24.3))
+        try await client.makeWriteAPI().write(points: [point1, point2])
+
+        //
         // Create Invocable Script
         //
         print("------- Create -------\n")
@@ -69,6 +82,24 @@ extension InvocableScriptsAPI {
         let scripts = try await invocableScriptsApi.findScripts()
         print("Scripts:")
         scripts?.scripts?.forEach { print(" > \($0.id ?? ""): \($0.name): \($0.description ?? "")") }
+
+        //
+        // Invoke a Script
+        //
+        // FluxRecords
+        print("\n------- Invoke to FluxRecords -------\n")
+        let records = try await invocableScriptsApi.invokeScript(
+                scriptId: updatedScript.id!,
+                params: ["bucket_name": "\(self.bucket)"])
+        try records.forEach { record in
+            print("\t\(record.values["_field"]!): \(record.values["_value"]!)")
+        }
+        // Raw
+        print("\n------- Invoke to Raw -------\n")
+        let raw = try await invocableScriptsApi.invokeScriptRaw(
+                scriptId: updatedScript.id!,
+                params: ["bucket_name": "\(self.bucket)"])
+        print("RAW output:\n\n \(String(decoding: raw, as: UTF8.self))")
 
         //
         // Delete previously created Script
