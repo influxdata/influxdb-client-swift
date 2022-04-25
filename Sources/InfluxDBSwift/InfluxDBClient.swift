@@ -256,15 +256,17 @@ extension InfluxDBClient {
         /// Request or response not using GZIP.
         case none
     }
+
     // swiftlint:disable function_body_length function_parameter_count
-    func httpPost(_ urlComponents: URLComponents?,
-                  _ contentTypeHeader: String,
-                  _ acceptHeader: String,
-                  _ gzipMode: InfluxDBClient.GZIPMode,
-                  _ content: Data,
-                  _ responseQueue: DispatchQueue,
-                  _ completion: @escaping (
-                          _ result: Swift.Result<Data?, InfluxDBClient.InfluxDBError>) -> Void) {
+    func httpRequest(_ urlComponents: URLComponents?,
+                     _ contentTypeHeader: String,
+                     _ acceptHeader: String,
+                     _ gzipMode: InfluxDBClient.GZIPMode,
+                     _ content: Data?,
+                     _ httpMethod: String,
+                     _ responseQueue: DispatchQueue,
+                     _ completion: @escaping (
+                             _ result: Swift.Result<Data?, InfluxDBClient.InfluxDBError>) -> Void) {
         do {
             guard let url = urlComponents?.url else {
                 throw InfluxDBClient.InfluxDBError.error(
@@ -275,18 +277,22 @@ extension InfluxDBClient {
             }
 
             var request = URLRequest(url: url)
-            request.httpMethod = "POST"
+            request.httpMethod = httpMethod
 
             // Body
-            var body: Data! = content
-            if options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode {
-                body = try content.gzipped()
+            if let content = content {
+                var body = content
+                if options.enableGzip && InfluxDBClient.GZIPMode.request == gzipMode {
+                    body = try content.gzipped()
+                }
+                request.httpBody = body
+                request.setValue(String(body.count), forHTTPHeaderField: "Content-Length")
+            } else {
+                request.setValue("0", forHTTPHeaderField: "Content-Length")
             }
-            request.httpBody = body
 
             // Headers
             request.setValue(contentTypeHeader, forHTTPHeaderField: "Content-Type")
-            request.setValue(String(body.count), forHTTPHeaderField: "Content-Length")
             request.setValue(acceptHeader, forHTTPHeaderField: "Accept")
             request.setValue("identity", forHTTPHeaderField: "Accept-Encoding")
             request.setValue(

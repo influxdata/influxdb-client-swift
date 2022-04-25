@@ -797,12 +797,13 @@ public class WriteAPI {
             }
 
             // HTTP post
-            client.httpPost(
+            client.httpRequest(
                     components,
                     "text/plain; charset=utf-8",
                     "application/json",
                     InfluxDBClient.GZIPMode.request,
                     body,
+                    "POST",
                     responseQueue) { result -> Void in
                 switch result {
                 case .success:

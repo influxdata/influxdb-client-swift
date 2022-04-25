@@ -13,7 +13,7 @@ This is an example how to use Invocable scripts Cloud API to create custom endpo
 
 ## Sources:
 - [Package.swift](/Examples/InvocableScripts/Package.swift)
-- [main.swift](/Examples/InvocableScripts/Sources/InvocableScripts/main.swift)
+- [InvocableScripts.swift](/Examples/InvocableScripts/Sources/InvocableScripts/InvocableScripts.swift)
 
 ## How to test:
 1. Start SwiftCLI by:

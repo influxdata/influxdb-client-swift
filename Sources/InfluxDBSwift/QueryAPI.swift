@@ -369,12 +369,13 @@ extension QueryAPI {
             // Body
             let body = try CodableHelper.encode(Query(query: query, params: params, dialect: dialect)).get()
 
-            client.httpPost(
+            client.httpRequest(
                     components,
                     "application/json; charset=utf-8",
                     "text/csv",
                     InfluxDBClient.GZIPMode.response,
                     body,
+                    "POST",
                     responseQueue) { result -> Void in
                 switch result {
                 case let .success(data):
