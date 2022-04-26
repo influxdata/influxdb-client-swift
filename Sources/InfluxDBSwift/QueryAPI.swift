@@ -366,8 +366,8 @@ extension QueryAPI {
     public final class FluxRecordCursor: Cursor {
         private let _parser: FluxCSVParser
 
-        init(data: Data) throws {
-            _parser = try FluxCSVParser(data: data)
+        init(data: Data, responseMode: FluxCSVParser.ResponseMode = .full) throws {
+            _parser = try FluxCSVParser(data: data, responseMode: responseMode)
         }
 
         /// Get next element and returns it, or nil if no next element exists.

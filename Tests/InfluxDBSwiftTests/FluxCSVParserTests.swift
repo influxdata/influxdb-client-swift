@@ -458,16 +458,33 @@ final class FluxCSVParserTests: XCTestCase {
         XCTAssertEqual(-Double.infinity, records[11].values["le"] as? Double)
     }
 
+    func testParseWithoutDatatype() throws {
+        let data = """
+                   ,result,table,_start,_stop,_field,_measurement,host,region,_value2,value1,value_str
+                   ,,0,1677-09-21T00:12:43.145224192Z,2018-07-16T11:21:02.547596934Z,free,mem,A,west,121,11,test
+                   ,,1,1677-09-21T00:12:43.145224192Z,2018-07-16T11:21:02.547596934Z,free,mem,A,west,121,11,test
+
+                   """
+        let records = try parse_to_records(data: data, responseMode: .onlyNames)
+        XCTAssertEqual(2, records.count)
+        XCTAssertEqual(11, records[0].values.count)
+        XCTAssertEqual("0", records[0].values["table"] as? String)
+        XCTAssertEqual("11", records[0].values["value1"] as? String)
+        XCTAssertEqual("west", records[0].values["region"] as? String)
+    }
+
     // swiftlint:enable line_length trailing_whitespace
 
-    func parse_to_records(data: String) throws -> [QueryAPI.FluxRecord] {
-        try parse(data: data).map {
+    func parse_to_records(data: String, responseMode: FluxCSVParser.ResponseMode = .full)
+            throws -> [QueryAPI.FluxRecord] {
+        try parse(data: data, responseMode: responseMode).map {
             $0.record
         }
     }
 
-    func parse(data: String) throws -> [(table: QueryAPI.FluxTable, record: QueryAPI.FluxRecord)] {
-        let parser = try FluxCSVParser(data: data.data(using: .utf8)!)
+    func parse(data: String, responseMode: FluxCSVParser.ResponseMode = .full)
+            throws -> [(table: QueryAPI.FluxTable, record: QueryAPI.FluxRecord)] {
+        let parser = try FluxCSVParser(data: data.data(using: .utf8)!, responseMode: responseMode)
 
         var records: [(table: QueryAPI.FluxTable, record: QueryAPI.FluxRecord)] = []
         while let row = try parser.next() {

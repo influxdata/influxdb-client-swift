@@ -222,7 +222,7 @@ public class InvocableScriptsAPI {
             switch result {
             case let .success(data):
                 do {
-                    try completion(.success(QueryAPI.FluxRecordCursor(data: data)))
+                    try completion(.success(QueryAPI.FluxRecordCursor(data: data, responseMode: .onlyNames)))
                 } catch {
                     completion(.failure(InfluxDBClient.InfluxDBError.cause(error)))
                 }

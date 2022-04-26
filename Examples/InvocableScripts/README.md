@@ -34,18 +34,67 @@ This is an example how to use Invocable scripts Cloud API to create custom endpo
 ## Expected output
 
 ```bash
-Query to execute:
+------- Create -------
 
-from(bucket: "my-bucket")
-    |> range(start: -10m)
-    |> filter(fn: (r) => r["_measurement"] == "cpu")
-    |> filter(fn: (r) => r["cpu"] == "cpu-total")
-    |> filter(fn: (r) => r["_field"] == "usage_user" or r["_field"] == "usage_system")
-    |> last()
+▿ InfluxDBSwift.Script
+  ▿ id: Optional("0945186f3962f000")
+    - some: "0945186f3962f000"
+  - name: "my_script_1650951739.551672"
+  ▿ description: Optional("my first try")
+    - some: "my first try"
+  - orgID: "04014de4ed590000"
+  - script: "from(bucket: params.bucket_name) |> range(start: -30d) |> limit(n:2)"
+  ▿ language: Optional(InfluxDBSwift.ScriptLanguage.flux)
+    - some: InfluxDBSwift.ScriptLanguage.flux
+  - url: nil
+  ▿ createdAt: Optional(2022-04-26 05:42:19 +0000)
+    ▿ some: 2022-04-26 05:42:19 +0000
+      - timeIntervalSinceReferenceDate: 672644539.621
+  ▿ updatedAt: Optional(2022-04-26 05:42:19 +0000)
+    ▿ some: 2022-04-26 05:42:19 +0000
+      - timeIntervalSinceReferenceDate: 672644539.621
 
-Success response...
+------- Update -------
 
-CPU usage:
-        usage_system: 22.717622080683473
-        usage_user: 61.46496815287725
+▿ InfluxDBSwift.Script
+  ▿ id: Optional("0945186f3962f000")
+    - some: "0945186f3962f000"
+  - name: "my_script_1650951739.551672"
+  ▿ description: Optional("my updated description")
+    - some: "my updated description"
+  - orgID: "04014de4ed590000"
+  - script: "from(bucket: params.bucket_name) |> range(start: -30d) |> limit(n:2)"
+  ▿ language: Optional(InfluxDBSwift.ScriptLanguage.flux)
+    - some: InfluxDBSwift.ScriptLanguage.flux
+  - url: nil
+  ▿ createdAt: Optional(2022-04-26 05:42:19 +0000)
+    ▿ some: 2022-04-26 05:42:19 +0000
+      - timeIntervalSinceReferenceDate: 672644539.621
+  ▿ updatedAt: Optional(2022-04-26 05:42:19 +0000)
+    ▿ some: 2022-04-26 05:42:19 +0000
+      - timeIntervalSinceReferenceDate: 672644539.8399999
+
+------- List -------
+
+Scripts:
+        0945186f3962f000: my_script_1650951739.551672: my updated description
+
+------- Invoke to FluxRecords -------
+
+        Prague: 25.3
+        New York: 24.3
+
+------- Invoke to Raw -------
+
+RAW output:
+
+ ,result,table,_start,_stop,_time,_value,_field,_measurement,location
+,_result,1,2022-03-27T05:42:20.589649766Z,2022-04-26T05:42:20.589649766Z,2022-03-28T07:59:52Z,25.3,temperature,my_measurement,Prague
+,_result,2,2022-03-27T05:42:20.589649766Z,2022-04-26T05:42:20.589649766Z,2022-03-28T07:59:52Z,24.3,temperature,my_measurement,New York
+
+
+------- Delete -------
+
+Successfully deleted script: 'my_script_1650951739.551672'
+
 ```

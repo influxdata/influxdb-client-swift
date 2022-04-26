@@ -81,7 +81,7 @@ extension InvocableScriptsAPI {
         print("\n------- List -------\n")
         let scripts = try await invocableScriptsApi.findScripts()
         print("Scripts:")
-        scripts?.scripts?.forEach { print(" > \($0.id ?? ""): \($0.name): \($0.description ?? "")") }
+        scripts?.scripts?.forEach { print("\t\($0.id ?? ""): \($0.name): \($0.description ?? "")") }
 
         //
         // Invoke a Script
@@ -92,7 +92,7 @@ extension InvocableScriptsAPI {
                 scriptId: updatedScript.id!,
                 params: ["bucket_name": "\(self.bucket)"])
         try records.forEach { record in
-            print("\t\(record.values["_field"]!): \(record.values["_value"]!)")
+            print("\t\(record.values["location"]!): \(record.values["_value"]!)")
         }
         // Raw
         print("\n------- Invoke to Raw -------\n")
