@@ -2,6 +2,8 @@
 
 ### Features
 1. [#49](https://github.com/influxdata/influxdb-client-swift/pull/49): Add support `async/await` functions
+1. [#48](https://github.com/influxdata/influxdb-client-swift/pull/48): Add `InvocableScriptsApi` to create, update, list, delete and invoke scripts by seamless way
+
 
 ### API
 1. [#49](https://github.com/influxdata/influxdb-client-swift/pull/49): Update InfluxDB API to latest version [OpenAPI]
