@@ -1,5 +1,5 @@
 //
-// Warning: Invocable Scripts are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.
+// Warning: Invokable Scripts are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.
 //
 
 import ArgumentParser
@@ -7,7 +7,7 @@ import Foundation
 import InfluxDBSwift
 
 @main
-struct InvocableScriptsAPI: AsyncParsableCommand {
+struct InvokableScriptsAPI: AsyncParsableCommand {
     @Option(name: .shortAndLong, help: "The bucket to query. The name or id of the bucket destination.")
     private var bucket: String
 
@@ -22,7 +22,7 @@ struct InvocableScriptsAPI: AsyncParsableCommand {
     private var url: String
 }
 
-extension InvocableScriptsAPI {
+extension InvokableScriptsAPI {
     mutating func run() async throws {
         //
         // Initialize Client with default Organization
@@ -32,7 +32,7 @@ extension InvocableScriptsAPI {
                 token: token,
                 options: InfluxDBClient.InfluxDBOptions(bucket: self.bucket, org: self.org))
 
-        let invocableScriptsApi = client.invocableScriptsApi
+        let invokableScriptsApi = client.invokableScriptsApi
 
         //
         // Prepare Data
@@ -48,7 +48,7 @@ extension InvocableScriptsAPI {
         try await client.makeWriteAPI().write(points: [point1, point2])
 
         //
-        // Create Invocable Script
+        // Create Invokable Script
         //
         print("------- Create -------\n")
         let scriptQuery = "from(bucket: params.bucket_name) |> range(start: -30d) |> limit(n:2)"
@@ -58,28 +58,28 @@ extension InvocableScriptsAPI {
                 script: scriptQuery,
                 language: ScriptLanguage.flux)
 
-        let createdScript = try await invocableScriptsApi.createScript(createRequest: createRequest)
+        let createdScript = try await invokableScriptsApi.createScript(createRequest: createRequest)
         guard let createdScript = createdScript else {
             return
         }
         dump(createdScript)
 
         //
-        // Update Invocable Script
+        // Update Invokable Script
         //
         print("\n------- Update -------\n")
         let updateRequest = ScriptUpdateRequest(description: "my updated description")
-        let updatedScript = try await invocableScriptsApi.updateScript(scriptId: createdScript.id!, updateRequest: updateRequest)
+        let updatedScript = try await invokableScriptsApi.updateScript(scriptId: createdScript.id!, updateRequest: updateRequest)
         guard let updatedScript = updatedScript else {
             return
         }
         dump(updatedScript)
 
         //
-        // List Invocable Scripts
+        // List Invokable Scripts
         //
         print("\n------- List -------\n")
-        let scripts = try await invocableScriptsApi.findScripts()
+        let scripts = try await invokableScriptsApi.findScripts()
         print("Scripts:")
         scripts?.scripts?.forEach { print("\t\($0.id ?? ""): \($0.name): \($0.description ?? "")") }
 
@@ -88,7 +88,7 @@ extension InvocableScriptsAPI {
         //
         // FluxRecords
         print("\n------- Invoke to FluxRecords -------\n")
-        let records = try await invocableScriptsApi.invokeScript(
+        let records = try await invokableScriptsApi.invokeScript(
                 scriptId: updatedScript.id!,
                 params: ["bucket_name": "\(self.bucket)"])
         try records.forEach { record in
@@ -96,7 +96,7 @@ extension InvocableScriptsAPI {
         }
         // Raw
         print("\n------- Invoke to Raw -------\n")
-        let raw = try await invocableScriptsApi.invokeScriptRaw(
+        let raw = try await invokableScriptsApi.invokeScriptRaw(
                 scriptId: updatedScript.id!,
                 params: ["bucket_name": "\(self.bucket)"])
         print("RAW output:\n\n \(String(decoding: raw, as: UTF8.self))")
@@ -105,7 +105,7 @@ extension InvocableScriptsAPI {
         // Delete previously created Script
         //
         print("\n------- Delete -------\n")
-        try await invocableScriptsApi.deleteScript(scriptId: updatedScript.id!)
+        try await invokableScriptsApi.deleteScript(scriptId: updatedScript.id!)
         print("Successfully deleted script: '\(updatedScript.name)'")
 
         client.close()

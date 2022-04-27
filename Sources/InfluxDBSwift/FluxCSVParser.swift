@@ -171,7 +171,7 @@ extension FluxCSVParser {
     enum ResponseMode {
         /// full information about types, default values and groups
         case full
-        /// useful for Invocable scripts
+        /// useful for Invokable scripts
         case onlyNames
     }
 }

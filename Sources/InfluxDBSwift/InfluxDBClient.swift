@@ -44,9 +44,9 @@ public class InfluxDBClient {
         DeleteAPI(client: self)
     }()
 
-    /// Lazy initialized `InvocableScriptsApi`.
-    public lazy var invocableScriptsApi: InvocableScriptsAPI = {
-        InvocableScriptsAPI(client: self)
+    /// Lazy initialized `InvokableScriptsApi`.
+    public lazy var invokableScriptsApi: InvokableScriptsAPI = {
+        InvokableScriptsAPI(client: self)
     }()
 
     /// Create a new client for a InfluxDB.

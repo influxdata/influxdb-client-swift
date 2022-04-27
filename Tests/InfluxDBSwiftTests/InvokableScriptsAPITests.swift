@@ -7,7 +7,7 @@ import Foundation
 @testable import InfluxDBSwift
 import XCTest
 
-final class InvocableScriptsAPITests: XCTestCase {
+final class InvokableScriptsAPITests: XCTestCase {
     private var client: InfluxDBClient!
 
     override func setUp() {
@@ -22,7 +22,7 @@ final class InvocableScriptsAPITests: XCTestCase {
         client.close()
     }
 
-    func testGetInvocableScriptsApi() {
-        XCTAssertNotNil(client.invocableScriptsApi)
+    func testGetInvokableScriptsApi() {
+        XCTAssertNotNil(client.invokableScriptsApi)
     }
 }

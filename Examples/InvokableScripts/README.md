@@ -1,19 +1,19 @@
-# InvocableScripts
+# InvokableScripts
 
-This is an example how to use Invocable scripts Cloud API to create custom endpoints that query data.
-> :warning: Invocable Scripts are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.
+This is an example how to use Invokable scripts Cloud API to create custom endpoints that query data.
+> :warning: Invokable Scripts are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.
 
 ## Prerequisites:
 - Docker
 - Cloned examples:
    ```bash
    git clone git@github.com:influxdata/influxdb-client-swift.git
-   cd Examples/InvocableScripts
+   cd Examples/InvokableScripts
    ```
 
 ## Sources:
-- [Package.swift](/Examples/InvocableScripts/Package.swift)
-- [InvocableScripts.swift](/Examples/InvocableScripts/Sources/InvocableScripts/InvocableScripts.swift)
+- [Package.swift](/Examples/InvokableScripts/Package.swift)
+- [InvokableScripts.swift](/Examples/InvokableScripts/Sources/InvokableScripts/InvokableScripts.swift)
 
 ## How to test:
 1. Start SwiftCLI by:
@@ -23,12 +23,12 @@ This is an example how to use Invocable scripts Cloud API to create custom endpo
       --interactive \
       --tty \
       --volume $PWD/../..:/client \
-      --workdir /client/Examples/InvocableScripts \
+      --workdir /client/Examples/InvokableScripts \
       swift:5.6 /bin/bash
    ```
 1. Run Example by:
    ```bash
-   swift run invocable-scripts --org my-org --bucket my-bucket --token my-token --url https://us-west-2-1.aws.cloud2.influxdata.com
+   swift run invokable-scripts --org my-org --bucket my-bucket --token my-token --url https://us-west-2-1.aws.cloud2.influxdata.com
    ```
    
 ## Expected output
