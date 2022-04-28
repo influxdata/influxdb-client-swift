@@ -14,12 +14,14 @@ internal class FluxCSVParser {
 
     private let csv: CSVReader
     private var state = FluxCSVParser.ParsingState.normal
+    private let responseMode: FluxCSVParser.ResponseMode
     private var table: QueryAPI.FluxTable?
-    private var startNewTable = true
-    private var groups: ArraySlice<String> = []
+    private var startNewTable = false
+    private var groups: [String] = []
 
-    init(data: Data) throws {
+    init(data: Data, responseMode: FluxCSVParser.ResponseMode = .full) throws {
         csv = try CSVReader(stream: InputStream(data: data))
+        self.responseMode = responseMode
     }
 
     internal func next() throws -> (table: QueryAPI.FluxTable, record: QueryAPI.FluxRecord)? {
@@ -42,26 +44,30 @@ internal class FluxCSVParser {
             }
 
             let token = row[0]
-            if Self.annotations.contains(token) && startNewTable {
+            if (Self.annotations.contains(token) && !startNewTable) || (responseMode == .onlyNames && table == nil) {
                 table = QueryAPI.FluxTable()
                 groups = []
-                startNewTable = false
+                startNewTable = true
             } else if table == nil {
                 throw InfluxDBClient.InfluxDBError.generic(Self.errorMessage)
             }
 
             switch token {
             case Self.annotationDatatype:
-                try addDatatype(row: row[1..<row.count])
+                try addDatatype(row: row)
             case Self.annotationGroup:
-                groups = row[1..<row.count]
+                groups = row
             case Self.annotationDefault:
                 try addDefault(row: row[1..<row.count])
             default:
-                if !startNewTable {
-                    startNewTable = true
+                if startNewTable {
+                    if responseMode == .onlyNames && table?.columns.isEmpty ?? true {
+                        groups = row.map { _ in "false" }
+                        try addDatatype(row: row.map { _ in "string" })
+                    }
                     try addGroups()
-                    try addNames(row: row[1..<row.count])
+                    try addNames(row: row)
+                    startNewTable = false
                     continue
                 }
 
@@ -86,12 +92,12 @@ internal class FluxCSVParser {
         }
     }
 
-    private func addDatatype(row: ArraySlice<String>) throws {
+    private func addDatatype(row: [String]) throws {
         guard let table = table else {
             throw InfluxDBClient.InfluxDBError.generic(Self.errorMessage)
         }
 
-        row.enumerated().forEach {
+        row[1..<row.count].enumerated().forEach {
             let column = QueryAPI.FluxColumn(index: $0.offset, dataType: $0.element)
             table.columns.append(column)
         }
@@ -102,18 +108,18 @@ internal class FluxCSVParser {
             throw InfluxDBClient.InfluxDBError.generic(Self.errorMessage)
         }
 
-        groups.enumerated().forEach {
+        groups[1..<groups.count].enumerated().forEach {
             let column: QueryAPI.FluxColumn = table.columns[$0.offset]
             column.group = ($0.element as NSString).boolValue
         }
     }
 
-    private func addNames(row: ArraySlice<String>) throws {
+    private func addNames(row: [String]) throws {
         guard let table = table else {
             throw InfluxDBClient.InfluxDBError.generic(Self.errorMessage)
         }
 
-        row.enumerated().forEach {
+        row[1..<row.count].enumerated().forEach {
             let column: QueryAPI.FluxColumn = table.columns[$0.offset]
             column.name = $0.element
         }
@@ -159,5 +165,13 @@ extension FluxCSVParser {
     private enum ParsingState {
         case normal
         case error
+    }
+
+    /// The configuration for expected amount of metadata response from InfluxDB.
+    enum ResponseMode {
+        /// full information about types, default values and groups
+        case full
+        /// useful for Invokable scripts
+        case onlyNames
     }
 }

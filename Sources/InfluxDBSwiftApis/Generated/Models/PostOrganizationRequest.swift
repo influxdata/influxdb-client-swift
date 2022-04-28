@@ -11,10 +11,13 @@ public struct PostOrganizationRequest: Codable {
 
     public var name: String
     public var description: String?
+    /** An optional list of email address&#39;s to be invited to the organization */
+    public var users: [String]?
 
-    public init(name: String, description: String? = nil) {
+    public init(name: String, description: String? = nil, users: [String]? = nil) {
         self.name = name
         self.description = description
+        self.users = users
     }
 
 }

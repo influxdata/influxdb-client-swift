@@ -194,12 +194,13 @@ public class DeleteAPI {
 
             let body = try CodableHelper.encode(predicate).get()
 
-            client.httpPost(
+            client.httpRequest(
                     components,
                     "text/plain; charset=utf-8",
                     "application/json",
                     InfluxDBClient.GZIPMode.none,
                     body,
+                    "POST",
                     responseQueue) { result -> Void in
                 switch result {
                 case .success:

@@ -234,7 +234,21 @@ public class QueryAPI {
                          params: [String: String]? = nil,
                          responseQueue: DispatchQueue = .main,
                          completion: @escaping (_ result: Swift.Result<Data, InfluxDBClient.InfluxDBError>) -> Void) {
-        postQuery(query, org, dialect, params, responseQueue, completion)
+        guard let org = org ?? client.options.org else {
+            responseQueue.async {
+                let error = InfluxDBClient.InfluxDBError.generic(
+                        "The organization executing the query should be specified.")
+                return completion(.failure(error))
+            }
+            return
+        }
+
+        let model = Query(query: query, params: params, dialect: dialect)
+        var url = URLComponents(string: client.url + "/api/v2/query")
+        url?.queryItems = [
+            URLQueryItem(name: "org", value: org)
+        ]
+        client.queryRequest(model, url, InfluxDBClient.GZIPMode.response, responseQueue, completion)
     }
 
     #if canImport(Combine)
@@ -348,56 +362,12 @@ extension QueryAPI {
 }
 
 extension QueryAPI {
-    private func postQuery(_ query: String,
-                           _ org: String?,
-                           _ dialect: Dialect = defaultDialect,
-                           _ params: [String: String]?,
-                           _ responseQueue: DispatchQueue,
-                           _ completion: @escaping (
-                                   _ result: Swift.Result<Data, InfluxDBClient.InfluxDBError>) -> Void) {
-        do {
-            guard let org = org ?? client.options.org else {
-                throw InfluxDBClient.InfluxDBError
-                        .generic("The organization executing the query  should be specified.")
-            }
-
-            var components = URLComponents(string: client.url + "/api/v2/query")
-            components?.queryItems = [
-                URLQueryItem(name: "org", value: org)
-            ]
-
-            // Body
-            let body = try CodableHelper.encode(Query(query: query, params: params, dialect: dialect)).get()
-
-            client.httpPost(
-                    components,
-                    "application/json; charset=utf-8",
-                    "text/csv",
-                    InfluxDBClient.GZIPMode.response,
-                    body,
-                    responseQueue) { result -> Void in
-                switch result {
-                case let .success(data):
-                    completion(.success(data ?? Data(count: 0)))
-                case let .failure(error):
-                    completion(.failure(error))
-                }
-            }
-        } catch {
-            responseQueue.async {
-                completion(.failure(InfluxDBClient.InfluxDBError.error(415, nil, nil, error)))
-            }
-        }
-    }
-}
-
-extension QueryAPI {
     /// Cursor for `FluxRecord`.
     public final class FluxRecordCursor: Cursor {
         private let _parser: FluxCSVParser
 
-        fileprivate init(data: Data) throws {
-            _parser = try FluxCSVParser(data: data)
+        init(data: Data, responseMode: FluxCSVParser.ResponseMode = .full) throws {
+            _parser = try FluxCSVParser(data: data, responseMode: responseMode)
         }
 
         /// Get next element and returns it, or nil if no next element exists.
