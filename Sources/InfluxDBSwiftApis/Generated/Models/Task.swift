@@ -15,29 +15,31 @@ public struct Task: Codable {
         case canceled = "canceled"
     }
     public var id: String
-    /** The type of task, this can be used for filtering tasks on list actions. */
+    /** Type of the task, useful for filtering a task list. */
     public var type: String?
-    /** The ID of the organization that owns this Task. */
+    /** ID of the organization that owns the task. */
     public var orgID: String
-    /** The name of the organization that owns this Task. */
+    /** Name of the organization that owns the task. */
     public var org: String?
-    /** The name of the task. */
+    /** Name of the task. */
     public var name: String
-    /** An optional description of the task. */
+    /** ID of the user who owns this Task. */
+    public var ownerID: String?
+    /** Description of the task. */
     public var description: String?
     public var status: TaskStatusType?
     public var labels: [Label]?
-    /** The ID of the authorization used when this task communicates with the query engine. */
+    /** ID of the authorization used when the task communicates with the query engine. */
     public var authorizationID: String?
-    /** The Flux script to run for this task. */
+    /** Flux script to run for this task. */
     public var flux: String
-    /** A simple task repetition schedule; parsed from Flux. */
+    /** Interval at which the task runs. &#x60;every&#x60; also determines when the task first runs, depending on the specified time. Value is a [duration literal](https://docs.influxdata.com/flux/v0.x/spec/lexical-elements/#duration-literals)). */
     public var every: String?
-    /** A task repetition schedule in the form &#39;* * * * * *&#39;; parsed from Flux. */
+    /** [Cron expression](https://en.wikipedia.org/wiki/Cron#Overview) that defines the schedule on which the task runs. Cron scheduling is based on system time. Value is a [Cron expression](https://en.wikipedia.org/wiki/Cron#Overview). */
     public var cron: String?
-    /** Duration to delay after the schedule, before executing the task; parsed from flux, if set to zero it will remove this option and use 0 as the default. */
+    /** [Duration](https://docs.influxdata.com/flux/v0.x/spec/lexical-elements/#duration-literals) to delay execution of the task after the scheduled time has elapsed. &#x60;0&#x60; removes the offset. The value is a [duration literal](https://docs.influxdata.com/flux/v0.x/spec/lexical-elements/#duration-literals). */
     public var offset: String?
-    /** Timestamp of latest scheduled, completed run, RFC3339. */
+    /** Timestamp of the latest scheduled and completed run. Value is a timestamp in [RFC3339 date/time format](https://docs.influxdata.com/flux/v0.x/data-types/basic/time/#time-syntax). */
     public var latestCompleted: Date?
     public var lastRunStatus: LastRunStatus?
     public var lastRunError: String?
@@ -45,12 +47,13 @@ public struct Task: Codable {
     public var updatedAt: Date?
     public var links: TaskLinks?
 
-    public init(id: String, type: String? = nil, orgID: String, org: String? = nil, name: String, description: String? = nil, status: TaskStatusType? = nil, labels: [Label]? = nil, authorizationID: String? = nil, flux: String, every: String? = nil, cron: String? = nil, offset: String? = nil, latestCompleted: Date? = nil, lastRunStatus: LastRunStatus? = nil, lastRunError: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, links: TaskLinks? = nil) {
+    public init(id: String, type: String? = nil, orgID: String, org: String? = nil, name: String, ownerID: String? = nil, description: String? = nil, status: TaskStatusType? = nil, labels: [Label]? = nil, authorizationID: String? = nil, flux: String, every: String? = nil, cron: String? = nil, offset: String? = nil, latestCompleted: Date? = nil, lastRunStatus: LastRunStatus? = nil, lastRunError: String? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, links: TaskLinks? = nil) {
         self.id = id
         self.type = type
         self.orgID = orgID
         self.org = org
         self.name = name
+        self.ownerID = ownerID
         self.description = description
         self.status = status
         self.labels = labels

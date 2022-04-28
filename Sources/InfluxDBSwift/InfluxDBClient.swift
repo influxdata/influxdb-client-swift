@@ -48,8 +48,8 @@ public class InfluxDBClient {
     ///   - options: optional `InfluxDBOptions` to use for this client.
     ///   - protocolClasses: optional array of extra protocol subclasses that handle requests.
     ///
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/urls/#influxdb-oss-urls
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/security/tokens/
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/urls/#influxdb-oss-urls
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/security/tokens/
     public init(url: String, token: String, options: InfluxDBOptions? = nil, protocolClasses: [AnyClass]? = nil) {
         self.url = url.hasSuffix("/") ? String(url.dropLast(1)) : url
         self.token = token
@@ -116,13 +116,13 @@ extension InfluxDBClient {
     /// Options to use when creating a `InfluxDBClient`.
     public struct InfluxDBOptions {
         /// Default organization bucket for writes.
-        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/organizations/buckets/view-buckets/
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/organizations/buckets/view-buckets/
         public let bucket: String?
         /// Default destination bucket for writes.
-        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/organizations/view-orgs/
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/organizations/view-orgs/
         public let org: String?
         /// Default precision for the unix timestamps within the body line-protocol.
-        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/reference/glossary/#precision
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/glossary/#precision
         public let precision: InfluxDBClient.TimestampPrecision
         /// The timeout interval to use when waiting for additional data. Default to 60 sec.
         /// - SeeAlso: http://bit.ly/timeoutIntervalForRequest
@@ -132,8 +132,8 @@ extension InfluxDBClient {
         public let timeoutIntervalForResource: TimeInterval
         /// Enable Gzip compression for HTTP requests.
         /// Currently only the `Write` and `Query` endpoints supports the Gzip compression.
-        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostWrite
-        /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/api/#operation/PostQuery
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/api/#operation/PostWrite
+        /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/api/#operation/PostQuery
         public let enableGzip: Bool
         /// A dictionary containing information about the proxy to use within the HTTP client.
         /// - SeeAlso: https://developer.apple.com/documentation/foundation/urlsessionconfiguration/
@@ -229,7 +229,7 @@ extension InfluxDBClient {
     public static let defaultTimestampPrecision = TimestampPrecision.ns
 
     /// An enum represents the precision for the unix timestamps within the body line-protocol.
-    /// - SeeAlso: https://docs.influxdata.com/influxdb/v2.0/write-data/#timestamp-precision
+    /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/write-data/#timestamp-precision
     public enum TimestampPrecision: String, Codable, CaseIterable {
         /// Milliseconds
         case ms

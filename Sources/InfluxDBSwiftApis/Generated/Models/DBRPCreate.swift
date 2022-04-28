@@ -9,17 +9,17 @@ import Foundation
 
 public struct DBRPCreate: Codable {
 
-    /** the organization ID that owns this mapping. */
+    /** ID of the organization that owns this mapping. */
     public var orgID: String?
-    /** the organization that owns this mapping. */
+    /** Name of the organization that owns this mapping. */
     public var org: String?
-    /** the bucket ID used as target for the translation. */
+    /** ID of the bucket used as the target for the translation. */
     public var bucketID: String
     /** InfluxDB v1 database */
     public var database: String
     /** InfluxDB v1 retention policy */
     public var retentionPolicy: String
-    /** Specify if this mapping represents the default retention policy for the database specificed. */
+    /** Mapping represents the default retention policy for the database specified. */
     public var _default: Bool?
 
     public init(orgID: String? = nil, org: String? = nil, bucketID: String, database: String, retentionPolicy: String, _default: Bool? = nil) {

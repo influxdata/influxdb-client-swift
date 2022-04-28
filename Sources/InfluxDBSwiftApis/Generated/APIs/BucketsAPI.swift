@@ -37,6 +37,30 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete a bucket
+     
+     - parameter bucketID: (path) The ID of the bucket to delete. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteBucketsID(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteBucketsIDWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete a bucket
      - DELETE /buckets/{bucketID}
@@ -82,6 +106,31 @@ public class BucketsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Delete a label from a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter labelID: (path) The ID of the label to delete. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteBucketsIDLabelsID(bucketID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteBucketsIDLabelsIDWithRequestBuilder(bucketID: bucketID, labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Delete a label from a bucket
@@ -133,6 +182,31 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Remove a member from a bucket
+     
+     - parameter userID: (path) The ID of the member to remove. 
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteBucketsIDMembersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteBucketsIDMembersIDWithRequestBuilder(userID: userID, bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Remove a member from a bucket
      - DELETE /buckets/{bucketID}/members/{userID}
@@ -183,6 +257,31 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Remove an owner from a bucket
+     
+     - parameter userID: (path) The ID of the owner to remove. 
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteBucketsIDOwnersID(userID: String, bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteBucketsIDOwnersIDWithRequestBuilder(userID: userID, bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Remove an owner from a bucket
      - DELETE /buckets/{bucketID}/owners/{userID}
@@ -219,7 +318,7 @@ public class BucketsAPI {
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter offset: (query)  (optional)
      - parameter limit: (query)  (optional, default to 20)
-     - parameter after: (query) The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;.  (optional)
+     - parameter after: (query) Resource ID to seek from. Results are not inclusive of this ID. Use &#x60;after&#x60; instead of &#x60;offset&#x60;.  (optional)
      - parameter org: (query) The name of the organization. (optional)
      - parameter orgID: (query) The organization ID. (optional)
      - parameter name: (query) Only returns buckets with a specific name. (optional)
@@ -238,13 +337,43 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all buckets
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter offset: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 20)
+     - parameter after: (query) Resource ID to seek from. Results are not inclusive of this ID. Use &#x60;after&#x60; instead of &#x60;offset&#x60;.  (optional)
+     - parameter org: (query) The name of the organization. (optional)
+     - parameter orgID: (query) The organization ID. (optional)
+     - parameter name: (query) Only returns buckets with a specific name. (optional)
+     - parameter id: (query) Only returns buckets with a specific ID. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getBuckets(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, after: String? = nil, org: String? = nil, orgID: String? = nil, name: String? = nil, id: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Buckets? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Buckets?, Error>) -> Void in
+            getBucketsWithRequestBuilder(zapTraceSpan: zapTraceSpan, offset: offset, limit: limit, after: after, org: org, orgID: orgID, name: name, id: id).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all buckets
      - GET /buckets
      - parameter zapTraceSpan: (header) OpenTracing span context (optional)
      - parameter offset: (query)  (optional)
      - parameter limit: (query)  (optional, default to 20)
-     - parameter after: (query) The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;.  (optional)
+     - parameter after: (query) Resource ID to seek from. Results are not inclusive of this ID. Use &#x60;after&#x60; instead of &#x60;offset&#x60;.  (optional)
      - parameter org: (query) The name of the organization. (optional)
      - parameter orgID: (query) The organization ID. (optional)
      - parameter name: (query) Only returns buckets with a specific name. (optional)
@@ -295,6 +424,30 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Retrieve a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getBucketsID(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Bucket? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bucket?, Error>) -> Void in
+            getBucketsIDWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Retrieve a bucket
      - GET /buckets/{bucketID}
@@ -339,6 +492,30 @@ public class BucketsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all labels for a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getBucketsIDLabels(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelsResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelsResponse?, Error>) -> Void in
+            getBucketsIDLabelsWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all labels for a bucket
@@ -385,6 +562,30 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all users with member privileges for a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getBucketsIDMembers(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceMembers? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceMembers?, Error>) -> Void in
+            getBucketsIDMembersWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all users with member privileges for a bucket
      - GET /buckets/{bucketID}/members
@@ -429,6 +630,30 @@ public class BucketsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all owners of a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getBucketsIDOwners(bucketID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceOwners? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceOwners?, Error>) -> Void in
+            getBucketsIDOwnersWithRequestBuilder(bucketID: bucketID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all owners of a bucket
@@ -475,6 +700,31 @@ public class BucketsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Get buckets in a source
+     
+     - parameter sourceID: (path) The source ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter org: (query) The name of the organization. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getSourcesIDBuckets(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Buckets? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Buckets?, Error>) -> Void in
+            getSourcesIDBucketsWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Get buckets in a source
@@ -526,6 +776,31 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter patchBucketRequest: (body) Bucket update to apply 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchBucketsID(bucketID: String, patchBucketRequest: PatchBucketRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Bucket? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bucket?, Error>) -> Void in
+            patchBucketsIDWithRequestBuilder(bucketID: bucketID, patchBucketRequest: patchBucketRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a bucket
      - PATCH /buckets/{bucketID}
@@ -572,6 +847,30 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Create a bucket
+     
+     - parameter postBucketRequest: (body) Bucket to create 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postBuckets(postBucketRequest: PostBucketRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Bucket? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bucket?, Error>) -> Void in
+            postBucketsWithRequestBuilder(postBucketRequest: postBucketRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Create a bucket
      - POST /buckets
@@ -614,6 +913,31 @@ public class BucketsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add a label to a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter labelMapping: (body) Label to add 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postBucketsIDLabels(bucketID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelResponse?, Error>) -> Void in
+            postBucketsIDLabelsWithRequestBuilder(bucketID: bucketID, labelMapping: labelMapping, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add a label to a bucket
@@ -662,6 +986,31 @@ public class BucketsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Add a member to a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter addResourceMemberRequestBody: (body) User to add as member 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postBucketsIDMembers(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceMember? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceMember?, Error>) -> Void in
+            postBucketsIDMembersWithRequestBuilder(bucketID: bucketID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Add a member to a bucket
      - POST /buckets/{bucketID}/members
@@ -708,6 +1057,31 @@ public class BucketsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add an owner to a bucket
+     
+     - parameter bucketID: (path) The bucket ID. 
+     - parameter addResourceMemberRequestBody: (body) User to add as owner 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postBucketsIDOwners(bucketID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceOwner? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceOwner?, Error>) -> Void in
+            postBucketsIDOwnersWithRequestBuilder(bucketID: bucketID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add an owner to a bucket

@@ -37,6 +37,30 @@ public class OrganizationsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete an organization
+     
+     - parameter orgID: (path) The ID of the organization to delete. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteOrgsID(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteOrgsIDWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete an organization
      - DELETE /orgs/{orgID}
@@ -82,6 +106,31 @@ public class OrganizationsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Remove a member from an organization
+     
+     - parameter userID: (path) The ID of the member to remove. 
+     - parameter orgID: (path) The organization ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteOrgsIDMembersID(userID: String, orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteOrgsIDMembersIDWithRequestBuilder(userID: userID, orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Remove a member from an organization
@@ -132,6 +181,31 @@ public class OrganizationsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Remove an owner from an organization
+     
+     - parameter userID: (path) The ID of the owner to remove. 
+     - parameter orgID: (path) The organization ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteOrgsIDOwnersID(userID: String, orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteOrgsIDOwnersIDWithRequestBuilder(userID: userID, orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Remove an owner from an organization
@@ -186,6 +260,35 @@ public class OrganizationsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all organizations
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter offset: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 20)
+     - parameter descending: (query)  (optional, default to false)
+     - parameter org: (query) Filter organizations to a specific organization name. (optional)
+     - parameter orgID: (query) Filter organizations to a specific organization ID. (optional)
+     - parameter userID: (query) Filter organizations to a specific user ID. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getOrgs(zapTraceSpan: String? = nil, offset: Int? = nil, limit: Int? = nil, descending: Bool? = nil, org: String? = nil, orgID: String? = nil, userID: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Organizations? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Organizations?, Error>) -> Void in
+            getOrgsWithRequestBuilder(zapTraceSpan: zapTraceSpan, offset: offset, limit: limit, descending: descending, org: org, orgID: orgID, userID: userID).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all organizations
@@ -242,6 +345,30 @@ public class OrganizationsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Retrieve an organization
+     
+     - parameter orgID: (path) The ID of the organization to get. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getOrgsID(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Organization? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Organization?, Error>) -> Void in
+            getOrgsIDWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Retrieve an organization
      - GET /orgs/{orgID}
@@ -287,6 +414,30 @@ public class OrganizationsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all members of an organization
+     
+     - parameter orgID: (path) The organization ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getOrgsIDMembers(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceMembers? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceMembers?, Error>) -> Void in
+            getOrgsIDMembersWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all members of an organization
      - GET /orgs/{orgID}/members
@@ -331,6 +482,30 @@ public class OrganizationsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all owners of an organization
+     
+     - parameter orgID: (path) The organization ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getOrgsIDOwners(orgID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceOwners? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceOwners?, Error>) -> Void in
+            getOrgsIDOwnersWithRequestBuilder(orgID: orgID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all owners of an organization
@@ -378,6 +553,31 @@ public class OrganizationsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update an organization
+     
+     - parameter orgID: (path) The ID of the organization to get. 
+     - parameter patchOrganizationRequest: (body) Organization update to apply 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchOrgsID(orgID: String, patchOrganizationRequest: PatchOrganizationRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Organization? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Organization?, Error>) -> Void in
+            patchOrgsIDWithRequestBuilder(orgID: orgID, patchOrganizationRequest: patchOrganizationRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update an organization
      - PATCH /orgs/{orgID}
@@ -424,6 +624,30 @@ public class OrganizationsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Create an organization
+     
+     - parameter postOrganizationRequest: (body) Organization to create 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postOrgs(postOrganizationRequest: PostOrganizationRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Organization? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Organization?, Error>) -> Void in
+            postOrgsWithRequestBuilder(postOrganizationRequest: postOrganizationRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Create an organization
      - POST /orgs
@@ -466,6 +690,31 @@ public class OrganizationsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add a member to an organization
+     
+     - parameter orgID: (path) The organization ID. 
+     - parameter addResourceMemberRequestBody: (body) User to add as member 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postOrgsIDMembers(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceMember? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceMember?, Error>) -> Void in
+            postOrgsIDMembersWithRequestBuilder(orgID: orgID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add a member to an organization
@@ -513,6 +762,31 @@ public class OrganizationsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add an owner to an organization
+     
+     - parameter orgID: (path) The organization ID. 
+     - parameter addResourceMemberRequestBody: (body) User to add as owner 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postOrgsIDOwners(orgID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceOwner? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceOwner?, Error>) -> Void in
+            postOrgsIDOwnersWithRequestBuilder(orgID: orgID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add an owner to an organization

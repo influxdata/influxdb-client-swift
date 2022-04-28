@@ -37,6 +37,30 @@ public class LabelsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete a label
+     
+     - parameter labelID: (path) The ID of the label to delete. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteLabelsID(labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteLabelsIDWithRequestBuilder(labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete a label
      - DELETE /labels/{labelID}
@@ -82,6 +106,30 @@ public class LabelsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all labels
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter orgID: (query) The organization ID. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getLabels(zapTraceSpan: String? = nil, orgID: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelsResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelsResponse?, Error>) -> Void in
+            getLabelsWithRequestBuilder(zapTraceSpan: zapTraceSpan, orgID: orgID).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all labels
      - GET /labels
@@ -126,6 +174,30 @@ public class LabelsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Retrieve a label
+     
+     - parameter labelID: (path) The ID of the label to update. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getLabelsID(labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelResponse?, Error>) -> Void in
+            getLabelsIDWithRequestBuilder(labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Retrieve a label
@@ -173,6 +245,31 @@ public class LabelsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a label
+     
+     - parameter labelID: (path) The ID of the label to update. 
+     - parameter labelUpdate: (body) Label update 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchLabelsID(labelID: String, labelUpdate: LabelUpdate, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelResponse?, Error>) -> Void in
+            patchLabelsIDWithRequestBuilder(labelID: labelID, labelUpdate: labelUpdate, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a label
      - PATCH /labels/{labelID}
@@ -217,6 +314,29 @@ public class LabelsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Create a label
+     
+     - parameter labelCreateRequest: (body) Label to create 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postLabels(labelCreateRequest: LabelCreateRequest, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelResponse?, Error>) -> Void in
+            postLabelsWithRequestBuilder(labelCreateRequest: labelCreateRequest).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Create a label

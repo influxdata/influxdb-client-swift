@@ -25,4 +25,12 @@ final class PingAPITests: APIXCTestCase {
 
         waitForExpectations(timeout: 5, handler: nil)
     }
+
+    #if swift(>=5.5)
+    func testPingAsync() async throws {
+        let headers = try await api.pingAPI.getPing()!
+        XCTAssertTrue(headers["X-Influxdb-Build"] != nil)
+        XCTAssertTrue(headers["X-Influxdb-Version"] != nil)
+    }
+    #endif
 }

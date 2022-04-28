@@ -37,6 +37,30 @@ public class SourcesAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete a source
+     
+     - parameter sourceID: (path) The source ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteSourcesID(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteSourcesIDWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete a source
      - DELETE /sources/{sourceID}
@@ -81,6 +105,30 @@ public class SourcesAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all sources
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter org: (query) The name of the organization. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getSources(zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Sources? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Sources?, Error>) -> Void in
+            getSourcesWithRequestBuilder(zapTraceSpan: zapTraceSpan, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all sources
@@ -127,6 +175,30 @@ public class SourcesAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Retrieve a source
+     
+     - parameter sourceID: (path) The source ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getSourcesID(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Source? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Source?, Error>) -> Void in
+            getSourcesIDWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Retrieve a source
      - GET /sources/{sourceID}
@@ -172,6 +244,31 @@ public class SourcesAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Get buckets in a source
+     
+     - parameter sourceID: (path) The source ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter org: (query) The name of the organization. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getSourcesIDBuckets(sourceID: String, zapTraceSpan: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Buckets? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Buckets?, Error>) -> Void in
+            getSourcesIDBucketsWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Get buckets in a source
@@ -222,6 +319,30 @@ public class SourcesAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Get the health of a source
+     
+     - parameter sourceID: (path) The source ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getSourcesIDHealth(sourceID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> HealthCheck? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<HealthCheck?, Error>) -> Void in
+            getSourcesIDHealthWithRequestBuilder(sourceID: sourceID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Get the health of a source
      - GET /sources/{sourceID}/health
@@ -268,6 +389,31 @@ public class SourcesAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a Source
+     
+     - parameter sourceID: (path) The source ID. 
+     - parameter source: (body) Source update 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchSourcesID(sourceID: String, source: Source, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Source? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Source?, Error>) -> Void in
+            patchSourcesIDWithRequestBuilder(sourceID: sourceID, source: source, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a Source
      - PATCH /sources/{sourceID}
@@ -313,6 +459,30 @@ public class SourcesAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Create a source
+     
+     - parameter source: (body) Source to create 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postSources(source: Source, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Source? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Source?, Error>) -> Void in
+            postSourcesWithRequestBuilder(source: source, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Create a source

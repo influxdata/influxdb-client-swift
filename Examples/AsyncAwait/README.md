@@ -1,19 +1,18 @@
-# CreateNewBucket
+# AsyncAwait
 
-This is an example how to create new bucket with permission to write.
+This is an example how to use `async/await` with the InfluxDB client.
 
 ## Prerequisites:
 - Docker
 - Cloned examples:
    ```bash
    git clone git@github.com:influxdata/influxdb-client-swift.git
-   cd Examples/CreateNewBucket
+   cd Examples/AsyncAwait
    ```
 
 ## Sources:
-- [Package.swift](/Examples/CreateNewBucket/Package.swift)
-- [main.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
-
+- [Package.swift](/Examples/AsyncAwait/Package.swift)
+- [AsyncAwait.swift](/Examples/AsyncAwait/Sources/AsyncAwait/AsyncAwait.swift)
 
 ## How to test:
 1. Start InfluxDB:
@@ -32,9 +31,6 @@ This is an example how to create new bucket with permission to write.
          -H 'accept: application/json' \
          -d '{"username": "my-user", "password": "my-password", "org": "my-org", "bucket": "my-bucket", "token": "my-token"}'
    ```
-1. Navigate to http://localhost:8086/ and find the id of your organization:
-    - Username: `my-user`, Password: `my-password`
-    - https://docs.influxdata.com/influxdb/latest/organizations/view-orgs/
 1. Start SwiftCLI by:
    ```bash
     docker run --rm \
@@ -43,18 +39,23 @@ This is an example how to create new bucket with permission to write.
       --interactive \
       --tty \
       --volume $PWD/../..:/client \
-      --workdir /client/Examples/CreateNewBucket \
-      swift:5.3 /bin/bash
+      --workdir /client/Examples/AsyncAwait \
+      swift:5.6 /bin/bash
    ```
-1. Create a new Bucket by:
+1. Use `async/await` with `WriteAPI`, `QueryAPI` and `BucketsAPI`:
    ```bash
-   export orgId=your-org-id
-   swift run create-new-bucket --name new-bucket --org-id $orgId --token my-token --url http://influxdb_v2:8086
+   swift run async-await --bucket my-bucket --org my-org --token my-token --url http://influxdb_v2:8086
    ```
+   
 ## Expected output
 
 ```bash
-The bucket: 'new-bucket' is successfully created.
-The following token could be use to read/write:
-        224axj_OaOOVIaEnSQgx2GTrrt18ZqUATS1I0Hsha3M7Bbbsn_yX9EiXTMnlq5aHz-f8h9iNcRJGd1_ImAD7fA==
+Written data:
+ > Optional("demo,type=point value=2i")
+Query results:
+ > value: 2
+Buckets:
+ > Optional("10c59301e9077c50"): my-bucket
+ > Optional("552d1011d2cdab2d"): _tasks
+ > Optional("a1a02f67f7189b89"): _monitoring
 ```

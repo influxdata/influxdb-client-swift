@@ -1,7 +1,14 @@
 ## 1.2.0 [unreleased]
 
+### Features
+1. [#49](https://github.com/influxdata/influxdb-client-swift/pull/49): Add support `async/await` functions
+
+### API
+1. [#49](https://github.com/influxdata/influxdb-client-swift/pull/49): Update InfluxDB API to latest version [OpenAPI]
+
 ### CI
 1. [#47](https://github.com/influxdata/influxdb-client-swift/pull/47): Use new Codecov uploader for reporting code coverage
+1. [#49](https://github.com/influxdata/influxdb-client-swift/pull/49): Add Swift 5.6 to CI
 
 ## 1.1.0 [2022-02-18]
 

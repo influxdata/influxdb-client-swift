@@ -37,6 +37,30 @@ public class ScraperTargetsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Delete a scraper target
+     
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteScrapersID(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteScrapersIDWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Delete a scraper target
      - DELETE /scrapers/{scraperTargetID}
@@ -82,6 +106,31 @@ public class ScraperTargetsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Delete a label from a scraper target
+     
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter labelID: (path) The label ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteScrapersIDLabelsID(scraperTargetID: String, labelID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteScrapersIDLabelsIDWithRequestBuilder(scraperTargetID: scraperTargetID, labelID: labelID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Delete a label from a scraper target
@@ -133,6 +182,31 @@ public class ScraperTargetsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Remove a member from a scraper target
+     
+     - parameter userID: (path) The ID of member to remove. 
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteScrapersIDMembersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteScrapersIDMembersIDWithRequestBuilder(userID: userID, scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Remove a member from a scraper target
      - DELETE /scrapers/{scraperTargetID}/members/{userID}
@@ -182,6 +256,31 @@ public class ScraperTargetsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Remove an owner from a scraper target
+     
+     - parameter userID: (path) The ID of owner to remove. 
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func deleteScrapersIDOwnersID(userID: String, scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> Void? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void?, Error>) -> Void in
+            deleteScrapersIDOwnersIDWithRequestBuilder(userID: userID, scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Remove an owner from a scraper target
@@ -235,6 +334,33 @@ public class ScraperTargetsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all scraper targets
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter name: (query) Specifies the name of the scraper target. (optional)
+     - parameter id: (query) List of scraper target IDs to return. If both &#x60;id&#x60; and &#x60;owner&#x60; are specified, only &#x60;id&#x60; is used. (optional)
+     - parameter orgID: (query) Specifies the organization ID of the scraper target. (optional)
+     - parameter org: (query) Specifies the organization name of the scraper target. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getScrapers(zapTraceSpan: String? = nil, name: String? = nil, id: [String]? = nil, orgID: String? = nil, org: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ScraperTargetResponses? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ScraperTargetResponses?, Error>) -> Void in
+            getScrapersWithRequestBuilder(zapTraceSpan: zapTraceSpan, name: name, id: id, orgID: orgID, org: org).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all scraper targets
      - GET /scrapers
@@ -286,6 +412,30 @@ public class ScraperTargetsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Retrieve a scraper target
+     
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getScrapersID(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ScraperTargetResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ScraperTargetResponse?, Error>) -> Void in
+            getScrapersIDWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Retrieve a scraper target
      - GET /scrapers/{scraperTargetID}
@@ -330,6 +480,30 @@ public class ScraperTargetsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all labels for a scraper target
+     
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getScrapersIDLabels(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelsResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelsResponse?, Error>) -> Void in
+            getScrapersIDLabelsWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all labels for a scraper target
@@ -376,6 +550,30 @@ public class ScraperTargetsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     List all users with member privileges for a scraper target
+     
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getScrapersIDMembers(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceMembers? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceMembers?, Error>) -> Void in
+            getScrapersIDMembersWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      List all users with member privileges for a scraper target
      - GET /scrapers/{scraperTargetID}/members
@@ -420,6 +618,30 @@ public class ScraperTargetsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     List all owners of a scraper target
+     
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getScrapersIDOwners(scraperTargetID: String, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceOwners? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceOwners?, Error>) -> Void in
+            getScrapersIDOwnersWithRequestBuilder(scraperTargetID: scraperTargetID, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      List all owners of a scraper target
@@ -467,6 +689,31 @@ public class ScraperTargetsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Update a scraper target
+     
+     - parameter scraperTargetID: (path) The identifier of the scraper target. 
+     - parameter scraperTargetRequest: (body) Scraper target update to apply 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func patchScrapersID(scraperTargetID: String, scraperTargetRequest: ScraperTargetRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ScraperTargetResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ScraperTargetResponse?, Error>) -> Void in
+            patchScrapersIDWithRequestBuilder(scraperTargetID: scraperTargetID, scraperTargetRequest: scraperTargetRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Update a scraper target
      - PATCH /scrapers/{scraperTargetID}
@@ -513,6 +760,30 @@ public class ScraperTargetsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Create a scraper target
+     
+     - parameter scraperTargetRequest: (body) Scraper target to create 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postScrapers(scraperTargetRequest: ScraperTargetRequest, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ScraperTargetResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ScraperTargetResponse?, Error>) -> Void in
+            postScrapersWithRequestBuilder(scraperTargetRequest: scraperTargetRequest, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Create a scraper target
      - POST /scrapers
@@ -555,6 +826,31 @@ public class ScraperTargetsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add a label to a scraper target
+     
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter labelMapping: (body) Label to add 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postScrapersIDLabels(scraperTargetID: String, labelMapping: LabelMapping, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> LabelResponse? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<LabelResponse?, Error>) -> Void in
+            postScrapersIDLabelsWithRequestBuilder(scraperTargetID: scraperTargetID, labelMapping: labelMapping, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add a label to a scraper target
@@ -603,6 +899,31 @@ public class ScraperTargetsAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Add a member to a scraper target
+     
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter addResourceMemberRequestBody: (body) User to add as member 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postScrapersIDMembers(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceMember? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceMember?, Error>) -> Void in
+            postScrapersIDMembersWithRequestBuilder(scraperTargetID: scraperTargetID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Add a member to a scraper target
      - POST /scrapers/{scraperTargetID}/members
@@ -649,6 +970,31 @@ public class ScraperTargetsAPI {
             }
         }
     }
+
+    #if swift(>=5.5)
+    /**
+     Add an owner to a scraper target
+     
+     - parameter scraperTargetID: (path) The scraper target ID. 
+     - parameter addResourceMemberRequestBody: (body) User to add as owner 
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func postScrapersIDOwners(scraperTargetID: String, addResourceMemberRequestBody: AddResourceMemberRequestBody, zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> ResourceOwner? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ResourceOwner?, Error>) -> Void in
+            postScrapersIDOwnersWithRequestBuilder(scraperTargetID: scraperTargetID, addResourceMemberRequestBody: addResourceMemberRequestBody, zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
 
     /**
      Add an owner to a scraper target

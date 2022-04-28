@@ -36,6 +36,29 @@ public class HealthAPI {
         }
     }
 
+    #if swift(>=5.5)
+    /**
+     Get the health of an instance
+     
+     - parameter zapTraceSpan: (header) OpenTracing span context (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func getHealth(zapTraceSpan: String? = nil, apiResponseQueue: DispatchQueue? = nil) async throws -> HealthCheck? {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<HealthCheck?, Error>) -> Void in
+            getHealthWithRequestBuilder(zapTraceSpan: zapTraceSpan).execute(apiResponseQueue ?? self.influxDB2API.apiResponseQueue) { result -> Void in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: response.body)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /**
      Get the health of an instance
      - GET /health

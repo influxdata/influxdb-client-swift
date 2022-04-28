@@ -11,7 +11,7 @@ import FoundationNetworking
 #endif
 import Gzip
 
-/// The asynchronous API to Query InfluxDB 2.0.
+/// The asynchronous API to Query InfluxDB 2.x.
 ///
 /// ### Example: ###
 /// #### Query into sequence of `FluxRecord` ####
@@ -163,6 +163,33 @@ public class QueryAPI {
     }
     #endif
 
+    #if swift(>=5.5)
+    /// Query executes a query and asynchronously returns the response as a `Cursor<FluxRecord>`.
+    ///
+    /// - Parameters:
+    ///   - query: The Flux query to execute.
+    ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
+    ///   - params: params represent key/value pairs parameters to be injected into query
+    ///   - responseQueue: The queue on which api response is dispatched.
+    /// - Returns: `Cursor<FluxRecord>`
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func query(query: String,
+                      org: String? = nil,
+                      params: [String: String]? = nil,
+                      responseQueue: DispatchQueue = .main) async throws -> FluxRecordCursor {
+        try await withCheckedThrowingContinuation { continuation in
+            self.query(query: query, org: org, params: params, responseQueue: responseQueue) { result in
+                switch result {
+                case .success(let value):
+                    continuation.resume(returning: value)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    #endif
+
     /// QueryRaw executes a query and returns the response as a `Data`.
     ///
     /// - Parameters:
@@ -240,6 +267,33 @@ public class QueryAPI {
                 }
             }
         }.eraseToAnyPublisher()
+    }
+    #endif
+
+    #if swift(>=5.5)
+    /// QueryRaw executes a query and asynchronously returns the response as a `Data`.
+    ///
+    /// - Parameters:
+    ///   - query: The Flux query to execute.
+    ///   - org: The organization executing the query. Takes either the `ID` or `Name` interchangeably.
+    ///   - params: params represent key/value pairs parameters to be injected into query
+    ///   - responseQueue: The queue on which api response is dispatched.
+    /// - Returns: `Cursor<FluxRecord>`
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func queryRaw(query: String,
+                         org: String? = nil,
+                         params: [String: String]? = nil,
+                         responseQueue: DispatchQueue = .main) async throws -> Data {
+        try await withCheckedThrowingContinuation { continuation in
+            self.queryRaw(query: query, org: org, params: params, responseQueue: responseQueue) { result in
+                switch result {
+                case .success(let value):
+                    continuation.resume(returning: value)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
     #endif
 }

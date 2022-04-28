@@ -446,9 +446,35 @@ final class WriteAPITests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
+    #if swift(>=5.5)
+    func testWriteAsync() async throws {
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        expectation.expectedFulfillmentCount = 3
+
+        MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
+
+        // record
+        try await client.makeWriteAPI().write(record: "mem,tag=a value=1i")
+        // point
+        let point = InfluxDBClient.Point("mem")
+                .addTag(key: "tag", value: "a")
+                .addField(key: "value", value: .int(1))
+        try await client.makeWriteAPI().write(point: point)
+        // tuple
+        let tuple: InfluxDBClient.Point.Tuple = (
+                measurement: "mem",
+                tags: ["tag": "a"],
+                fields: ["value": .int(1)],
+                time: nil
+        )
+        try await client.makeWriteAPI().write(tuple: tuple)
+
+        await waitForExpectations(timeout: 1, handler: nil)
+    }
+    #endif
+
     private func simpleWriteHandler(expectation: XCTestExpectation) -> (URLRequest, Data?)
-    -> (HTTPURLResponse, Data) {
-        { request, bodyData in
+    -> (HTTPURLResponse, Data) { { request, bodyData in
             XCTAssertEqual(
                     "influxdb-client-swift/\(InfluxDBClient.self.version)",
                     request.allHTTPHeaderFields!["User-Agent"])

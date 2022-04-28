@@ -167,6 +167,29 @@ final class DeleteAPITests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
     }
+
+    #if swift(>=5.5)
+    func testDeleteAsync() async throws {
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        expectation.expectedFulfillmentCount = 1
+
+        MockURLProtocol.handler = { _, _ in
+            expectation.fulfill()
+
+            let response = HTTPURLResponse(statusCode: 204)
+            return (response, Data())
+        }
+
+        let predicate = DeletePredicateRequest(
+                start: Date(2010, 10, 5),
+                stop: Date(2010, 10, 7),
+                predicate: "_measurement=\"sensorData\"")
+
+        try await client.deleteAPI.delete(predicate: predicate)
+
+        await waitForExpectations(timeout: 1, handler: nil)
+    }
+    #endif
 }
 
 extension URL {
