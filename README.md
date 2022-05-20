@@ -56,7 +56,7 @@ InfluxDB 2.x client consists of two packages
 
 ## Supported Platforms
 
-This package requires Swift 5 and Xcode 12.
+This package requires Swift 5 and Xcode 12+.
 
 - iOS 14.0+
 - macOS 11.0+
