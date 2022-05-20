@@ -1,4 +1,4 @@
-## 1.2.0 [unreleased]
+## 1.2.0 [2022-05-20]
 
 ### Features
 1. [#49](https://github.com/influxdata/influxdb-client-swift/pull/49): Add support `async/await` functions
