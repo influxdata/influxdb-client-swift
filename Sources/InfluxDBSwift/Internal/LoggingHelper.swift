@@ -31,9 +31,11 @@ extension InfluxDBClient {
         ///
         /// - Parameter request: to log
         public func log(_ request: URLRequest?) {
-            logger.debug(">>> Request: '\(request?.httpMethod ?? "") \(request?.url?.absoluteString ?? "")'")
-            log_headers(headers: request?.allHTTPHeaderFields, prefix: ">>>")
-            log_body(body: request?.httpBody, prefix: ">>>")
+            if debugging {
+                logger.debug(">>> Request: '\(request?.httpMethod ?? "") \(request?.url?.absoluteString ?? "")'")
+                log_headers(headers: request?.allHTTPHeaderFields, prefix: ">>>")
+                log_body(body: request?.httpBody, prefix: ">>>")
+            }
         }
 
         /// Log the HTTP response.
@@ -42,10 +44,12 @@ extension InfluxDBClient {
         ///   - response: to log
         ///   - data: response data
         public func log(_ response: URLResponse?, _ data: Data?) {
-            let httpResponse = response as? HTTPURLResponse
-            logger.debug("<<< Response: \(httpResponse?.statusCode ?? 0)")
-            log_headers(headers: httpResponse?.allHeaderFields, prefix: "<<<")
-            log_body(body: data, prefix: "<<<")
+            if debugging {
+                let httpResponse = response as? HTTPURLResponse
+                logger.debug("<<< Response: \(httpResponse?.statusCode ?? 0)")
+                log_headers(headers: httpResponse?.allHeaderFields, prefix: "<<<")
+                log_body(body: data, prefix: "<<<")
+            }
         }
 
         func log_body(body: Data?, prefix: String) {
