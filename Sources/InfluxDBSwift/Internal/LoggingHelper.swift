@@ -10,7 +10,6 @@ import FoundationNetworking
 extension InfluxDBClient {
     /// The logger for logging HTTP request/response.
     public class HTTPLogger {
-
         /// Enable debugging for HTTP request/response.
         internal let debugging: Bool
 
@@ -19,7 +18,6 @@ extension InfluxDBClient {
         /// - Parameters:
         ///   - debugging: optional Enable debugging for HTTP request/response. Default `false`.
         public init(debugging: Bool? = nil) {
-
             self.debugging = debugging ?? false
         }
 
@@ -51,12 +49,12 @@ extension InfluxDBClient {
         }
 
         func log_headers(headers: [AnyHashable: Any]?, prefix: String) {
-            headers?.forEach { key, v in
+            headers?.forEach { key, value in
 //                var value = v
 //                if "authorization" == String(describing: key).lowercased() {
 //                    value = "xxx"
 //                }
-                print("\(prefix) \(key): \(v)")
+                print("\(prefix) \(key): \(value)")
             }
         }
     }
