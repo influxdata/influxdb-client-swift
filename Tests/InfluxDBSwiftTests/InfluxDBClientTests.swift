@@ -245,8 +245,16 @@ internal class TestLogHandler: LogHandler {
         }
     }
 
-    func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata?, source: String, file: String, function: String, line: UInt) {
+    // swiftlint:disable function_parameter_count
+    func log(level: Logger.Level,
+             message: Logger.Message,
+             metadata: Logger.Metadata?,
+             source: String,
+             file: String,
+             function: String,
+             line: UInt) {
         Self.content.append(message.description)
         Self.content.append("\n")
     }
+    // swiftlint:enable function_parameter_count
 }
