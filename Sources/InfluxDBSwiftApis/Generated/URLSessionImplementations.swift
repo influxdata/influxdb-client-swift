@@ -109,10 +109,15 @@ internal class URLSessionRequestBuilder<T>: RequestBuilder<T> {
 
         do {
             let request = try createURLRequest(urlSession: urlSession, method: xMethod, encoding: encoding, headers: headers)
-            
+
+            let logger = InfluxDBClient.HTTPLogger(debugging: influxDB2API.client.debugging)
+            logger.log(request)
+
             let dataTask = urlSession.dataTask(with: request) { [weak self] data, response, error in
                 
                 guard let self = self else { return }
+
+                logger.log(response, data)
                 
                 if let taskCompletionShouldRetry = self.taskCompletionShouldRetry {
                     

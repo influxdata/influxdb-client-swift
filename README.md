@@ -106,14 +106,15 @@ client.close()
 
 #### Client Options
 
-| Option | Description | Type | Default |
-|---|---|---|---|
-| bucket | Default destination bucket for writes | String | none |
-| org | Default organization bucket for writes | String | none |
-| precision | Default precision for the unix timestamps within the body line-protocol | TimestampPrecision | ns |
-| timeoutIntervalForRequest | The timeout interval to use when waiting for additional data. | TimeInterval | 60 sec |
-| timeoutIntervalForResource | The maximum amount of time that a resource request should be allowed to take. | TimeInterval | 5 min |
-| enableGzip | Enable Gzip compression for HTTP requests. | Bool | false |
+| Option                     | Description                                                                   | Type               | Default |
+|----------------------------|-------------------------------------------------------------------------------|--------------------|---------|
+| bucket                     | Default destination bucket for writes                                         | String             | none    |
+| org                        | Default organization bucket for writes                                        | String             | none    |
+| precision                  | Default precision for the unix timestamps within the body line-protocol       | TimestampPrecision | ns      |
+| timeoutIntervalForRequest  | The timeout interval to use when waiting for additional data.                 | TimeInterval       | 60 sec  |
+| timeoutIntervalForResource | The maximum amount of time that a resource request should be allowed to take. | TimeInterval       | 5 min   |
+| enableGzip                 | Enable Gzip compression for HTTP requests.                                    | Bool               | false   |
+| debugging                  | Enable debugging for HTTP request/response.                                   | Bool               | false   |
 
 ##### Configure default `Bucket`, `Organization` and `Precision`
 
@@ -589,23 +590,23 @@ DeleteData.main()
 
 The client supports following management API:
 
-|  | API docs                                                            |
-| --- |---------------------------------------------------------------------|
-| [**AuthorizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/AuthorizationsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Authorizations |
-| [**BucketsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Buckets          |
-| [**DBRPsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/DBRPs            |
-| [**HealthAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Health           |
-| [**PingAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/PingAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Ping             |
-| [**LabelsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Labels           |
-| [**OrganizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Organizations    |
-| [**ReadyAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Ready            |
-| [**ScraperTargetsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ScraperTargetsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/ScraperTargets   |
-| [**SecretsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SecretsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Secrets          |
-| [**SetupAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SetupAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks            |
-| [**SourcesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SourcesAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Sources          |
-| [**TasksAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/TasksAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks            |
-| [**UsersAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/UsersAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Users            |
-| [**VariablesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/VariablesAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Variables        |
+|                                                                                                                         | API docs                                                             |
+|-------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| [**AuthorizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/AuthorizationsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Authorizations  |
+| [**BucketsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html)               | https://docs.influxdata.com/influxdb/latest/api/#tag/Buckets         |
+| [**DBRPsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html)                   | https://docs.influxdata.com/influxdb/latest/api/#tag/DBRPs           |
+| [**HealthAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html)                 | https://docs.influxdata.com/influxdb/latest/api/#tag/Health          |
+| [**PingAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/PingAPI.html)                     | https://docs.influxdata.com/influxdb/latest/api/#tag/Ping            |
+| [**LabelsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html)                 | https://docs.influxdata.com/influxdb/latest/api/#tag/Labels          |
+| [**OrganizationsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html)   | https://docs.influxdata.com/influxdb/latest/api/#tag/Organizations   |
+| [**ReadyAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html)                   | https://docs.influxdata.com/influxdb/latest/api/#tag/Ready           |
+| [**ScraperTargetsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ScraperTargetsAPI.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/ScraperTargets  |
+| [**SecretsAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SecretsAPI.html)               | https://docs.influxdata.com/influxdb/latest/api/#tag/Secrets         |
+| [**SetupAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SetupAPI.html)                   | https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks           |
+| [**SourcesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SourcesAPI.html)               | https://docs.influxdata.com/influxdb/latest/api/#tag/Sources         |
+| [**TasksAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/TasksAPI.html)                   | https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks           |
+| [**UsersAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/UsersAPI.html)                   | https://docs.influxdata.com/influxdb/latest/api/#tag/Users           |
+| [**VariablesAPI**](https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/VariablesAPI.html)           | https://docs.influxdata.com/influxdb/latest/api/#tag/Variables       |
 
 
 The following example demonstrates how to use a InfluxDB 2.0 Management API to create new bucket. For further information see docs and [examples](/Examples).
