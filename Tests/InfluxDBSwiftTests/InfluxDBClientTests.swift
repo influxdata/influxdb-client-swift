@@ -6,6 +6,7 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import Logging
 
 @testable import InfluxDBSwift
 import XCTest
@@ -175,6 +176,33 @@ final class InfluxDBClientTests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
     }
+
+    func testHTTPLogging() {
+        TestLogHandler.content = ""
+        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        LoggingSystem.bootstrap(TestLogHandler.init)
+
+        client = InfluxDBClient(url: Self.dbURL(), token: "my-token", debugging: true)
+
+        MockURLProtocol.handler = { _, _ in
+            expectation.fulfill()
+
+            let response = HTTPURLResponse(statusCode: 200)
+            return (response, "csv".data(using: .utf8)!)
+        }
+
+        client.queryAPI.query(query: "from(bucket:\"my-bucket\") |> range(start: -1h)", org: "my-org") { _, error in
+            if let error = error {
+                XCTFail("Error occurs: \(error)")
+            }
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+
+        XCTAssertTrue(TestLogHandler.content.contains("Authorization: ***"), TestLogHandler.content)
+    }
 }
 
 final class InfluxDBErrorTests: XCTestCase {
@@ -198,4 +226,35 @@ extension XCTestCase {
         }
         return "http://localhost:8086"
     }
+}
+
+internal class TestLogHandler: LogHandler {
+    var metadata = Logger.Metadata()
+    var logLevel = Logger.Level.debug
+    static var content = ""
+
+    init(label: String) {
+    }
+
+    subscript(metadataKey metadataKey: String) -> Logger.Metadata.Value? {
+        get {
+            metadata[metadataKey]
+        }
+        set {
+            metadata[metadataKey] = newValue
+        }
+    }
+
+    // swiftlint:disable function_parameter_count
+    func log(level: Logger.Level,
+             message: Logger.Message,
+             metadata: Logger.Metadata?,
+             source: String,
+             file: String,
+             function: String,
+             line: UInt) {
+        Self.content.append(message.description)
+        Self.content.append("\n")
+    }
+    // swiftlint:enable function_parameter_count
 }

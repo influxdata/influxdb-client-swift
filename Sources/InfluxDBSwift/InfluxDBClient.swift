@@ -31,6 +31,8 @@ public class InfluxDBClient {
     internal let token: String
     /// The options to configure client.
     internal let options: InfluxDBOptions
+    /// Enable debugging for HTTP request/response.
+    public let debugging: Bool
     /// Shared URLSession across the client.
     public let session: URLSession
 
@@ -55,14 +57,20 @@ public class InfluxDBClient {
     ///   - url: InfluxDB host and port.
     ///   - token: Authentication token.
     ///   - options: optional `InfluxDBOptions` to use for this client.
+    ///   - debugging: optional Enable debugging for HTTP request/response. Default `false`.
     ///   - protocolClasses: optional array of extra protocol subclasses that handle requests.
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/reference/urls/#influxdb-oss-urls
     /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/security/tokens/
-    public init(url: String, token: String, options: InfluxDBOptions? = nil, protocolClasses: [AnyClass]? = nil) {
+    public init(url: String,
+                token: String,
+                options: InfluxDBOptions? = nil,
+                debugging: Bool? = nil,
+                protocolClasses: [AnyClass]? = nil) {
         self.url = url.hasSuffix("/") ? String(url.dropLast(1)) : url
         self.token = token
         self.options = options ?? InfluxDBClient.InfluxDBOptions()
+        self.debugging = debugging ?? false
 
         var headers: [AnyHashable: Any] = [:]
         headers["Authorization"] = "Token \(token)"
@@ -309,6 +317,9 @@ extension InfluxDBClient {
                 request.setValue("\(value)", forHTTPHeaderField: "\(key)")
             }
 
+            let logger = InfluxDBClient.HTTPLogger(debugging: debugging)
+            logger.log(request)
+
             let task = session.dataTask(with: request) { data, response, error in
                 responseQueue.async {
                     if let error = error {
@@ -328,6 +339,8 @@ extension InfluxDBClient {
                                 InfluxDBClient.InfluxDBError.generic("Missing data"))))
                         return
                     }
+
+                    logger.log(httpResponse, data)
 
                     guard Array(200..<300).contains(httpResponse.statusCode) else {
                         completion(.failure(InfluxDBClient.InfluxDBError.error(
