@@ -1,4 +1,4 @@
-## 1.3.0 [unreleased]
+## 1.3.0 [2022-07-29]
 
 ### Features
 1. [#52](https://github.com/influxdata/influxdb-client-swift/pull/52): Add logging for HTTP requests
