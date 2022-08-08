@@ -97,7 +97,7 @@ public class InfluxDBClient {
     ///   - username: Username for authentication.
     ///   - password: Password for authentication.
     ///   - database: Target database.
-    ///   - retention_policy: Target retention policy.
+    ///   - retentionPolicy: Target retention policy.
     ///   - precision: Default precision for the unix timestamps within the body line-protocol.
     ///   - protocolClasses: optional array of extra protocol subclasses that handle requests.
     ///
