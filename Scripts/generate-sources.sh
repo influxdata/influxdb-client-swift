@@ -32,7 +32,9 @@ mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/ || true
 mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/ || true
 
 ## delete old sources
-rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/*.swift
+rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/APIHelper.swift
+rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/CodableHelper.swift
+rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/OpenISO8601DateFormatter.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/*.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/*.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/*.swift
@@ -166,15 +168,5 @@ sed -i 's/Any/String/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Model
 sed -i '/public var extern: File?/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i 's/Set<Annotations>/Array<Annotations>/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Dialect.swift
 sed -i 's/Any/String/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/ScriptInvocationParams.swift
-
-# Download Cursor implementation
-curl -s -o "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift https://raw.githubusercontent.com/groue/GRDB.swift/master/GRDB/Core/Cursor.swift
-printf '\n@inlinable\nfunc GRDBPrecondition(_ condition: @autoclosure () -> Bool,\n                        _ message: @autoclosure () -> String = "",\n                        file: StaticString = #file,\n                        line: UInt = #line) {\n    if !condition() {\n        fatalError(message(), file: file, line: line)\n    }\n}\n' >> "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
-sed -i 's/GRDBPrecondition/CursorPrecondition/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
-sed -i 's/try ! predicate/try !predicate/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
-sed -i '/fetchCursor/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
-sed -i '/foo/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
-sed -i '/bar/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
-sed -i '1i//===----------------------------------------------------------------------===//\n//\n// This file are derived from the GRDB.swift open source project: https://github.com/groue/GRDB.swift\n//\n// Copyright (C) 2015-2020 Gwendal Roué\n//\n// See https://github.com/groue/GRDB.swift/blob/master/LICENSE for license information\n//\n//===----------------------------------------------------------------------===//' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Cursor.swift
 
 rm -rf "${SCRIPT_PATH}"/generated

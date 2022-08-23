@@ -25,7 +25,7 @@ generate-sources: ## Generate Models and APIs from swagger
 	    -v "${PWD}":/code \
 	    -v "${PWD}/Scripts/.m2":/root/.m2 \
 	    -w /code \
-	    maven:3.6-slim /code/Scripts/generate-sources.sh
+	    maven:3-openjdk-8 /code/Scripts/generate-sources.sh
 	$(MAKE) build
 
 generate-test: ## Generate LinuxMain.swift entries for the package
