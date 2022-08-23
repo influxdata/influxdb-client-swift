@@ -32,7 +32,9 @@ mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/ || true
 mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/ || true
 
 ## delete old sources
-rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/*.swift
+rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/APIHelper.swift
+rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/CodableHelper.swift
+rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/OpenISO8601DateFormatter.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/*.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/*.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/*.swift
