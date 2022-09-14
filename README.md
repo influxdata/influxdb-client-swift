@@ -595,7 +595,7 @@ extension CreateNewBucket {
   }
 }
 ```
-- sources - [CreateNewBucket/CreateNewBucket.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/CreateNewBucket.swift)
+- sources - [CreateNewBucket/CreateNewBucket.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
 
 ## Advanced Usage
 

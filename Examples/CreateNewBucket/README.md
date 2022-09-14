@@ -12,7 +12,7 @@ This is an example how to create new bucket with permission to write.
 
 ## Sources:
 - [Package.swift](/Examples/CreateNewBucket/Package.swift)
-- [CreateNewBucket.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/CreateNewBucket.swift)
+- [CreateNewBucket.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
 
 
 ## How to test:

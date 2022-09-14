@@ -7,7 +7,6 @@ import Foundation
 import InfluxDBSwift
 import InfluxDBSwiftApis
 
-@main
 struct CreateNewBucket: AsyncParsableCommand {
     @Option(name: .shortAndLong, help: "New bucket name.")
     private var name: String
@@ -23,8 +22,6 @@ struct CreateNewBucket: AsyncParsableCommand {
 
     @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
     private var url: String
-
-    static func main() async { }
 }
 
 extension CreateNewBucket {
