@@ -1,20 +1,23 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 
 import PackageDescription
 
 let package = Package(
         name: "WriteData",
+        platforms: [
+            .macOS(.v10_15)
+        ],
         products: [
             .executable(name: "write-data", targets: ["WriteData"])
         ],
         dependencies: [
             .package(name: "influxdb-client-swift", path: "../../"),
-            .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0")
+            .package(url: "https://github.com/apple/swift-argument-parser", from: "1.1.2")
         ],
         targets: [
-            .target(name: "WriteData", dependencies: [
-                .product(name: "InfluxDBSwift", package: "influxdb-client-swift"),
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            .executableTarget(name: "WriteData", dependencies: [
+                .product(name: "InfluxDBSwiftApis", package: "influxdb-client-swift"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ])
         ]
 )

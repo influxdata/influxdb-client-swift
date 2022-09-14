@@ -12,7 +12,7 @@ This is an example how to write data with Data Point structure.
 
 ## Sources:
 - [Package.swift](/Examples/WriteData/Package.swift)
-- [main.swift](/Examples/WriteData/Sources/WriteData/main.swift)
+- [WriteData.swift](/Examples/WriteData/Sources/WriteData/WriteData.swift)
 
 ## How to test:
 1. Start InfluxDB:
