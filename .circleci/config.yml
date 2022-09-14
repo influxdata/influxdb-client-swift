@@ -277,7 +277,7 @@ jobs:
             - Examples/ParameterizedQuery/Package.resolved
             - Examples/ParameterizedQuery/.build/repositories
 
-  <check-examples-macOS:
+  check-examples-macOS:
     macos:
       xcode: << parameters.xcode-version >>
     parameters:
