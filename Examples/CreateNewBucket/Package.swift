@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
         name: "CreateNewBucket",
         platforms: [
-            .macOS(.v10_15)
+            .macOS(.v11)
         ],
         products: [
             .executable(name: "create-new-bucket", targets: ["CreateNewBucket"])
