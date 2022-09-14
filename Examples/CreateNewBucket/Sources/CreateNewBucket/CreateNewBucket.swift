@@ -59,7 +59,8 @@ extension CreateNewBucket {
                 ])
 
         // Create Authorization
-        let authorization = try await api.authorizationsAPI.postAuthorizations(authorizationPostRequest: authorizationRequest)!
+        let authorization =
+                try await api.authorizationsAPI.postAuthorizations(authorizationPostRequest: authorizationRequest)!
 
         print("The bucket: '\(bucket.name)' is successfully created.")
         print("The following token could be use to read/write:")
