@@ -67,7 +67,7 @@ jobs:
     parameters:
       swift-image:
         type: string
-        default: &default-swift-image "swift:5.3"
+        default: &default-swift-image "swift:5.5"
       influxdb-image:
         type: string
         default: &default-influxdb-image "influxdb:latest"
@@ -217,7 +217,7 @@ jobs:
       - restore_cache:
           name: Restoring Cache
           keys:
-            - &generate-sources-cache-key gs-cache-v1-swift:5.3
+            - &generate-sources-cache-key gs-cache-v1-swift:5.5
       - run:
           name: Install Maven & Curl
           command: |
@@ -307,7 +307,9 @@ workflows:
       - check-documentation
       - check-examples
       - check-examples-macOS
-      - tests-linux
+      - tests-linux:
+          name: tests-linux-5.3
+          swift-image: "swift:5.3"
       - tests-linux:
           name: tests-linux-5.4
           swift-image: "swift:5.4"
