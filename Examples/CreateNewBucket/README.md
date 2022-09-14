@@ -48,7 +48,6 @@ This is an example how to create new bucket with permission to write.
    ```
 1. Create a new Bucket by:
    ```bash
-   export orgId=your-org-id
    swift run create-new-bucket --name new-bucket --org my-org --token my-token --url http://influxdb_v2:8086
    ```
 ## Expected output

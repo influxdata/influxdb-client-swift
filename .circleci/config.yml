@@ -246,7 +246,7 @@ jobs:
       - restore_cache:
           name: Restoring Example Cache
           keys:
-            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }}
+            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }}-{{ checksum "Examples/ParameterizedQuery/Package.swift" }}
             - example-cache-v3-
       - check-example:
           directory: CreateNewBucket
@@ -258,6 +258,8 @@ jobs:
           directory: DeleteData
       - check-example:
           directory: InfluxDBStatus
+      - check-example:
+          directory: ParameterizedQuery
       - save_cache:
           name: Saving Example Cache
           key: *cache-example-key
@@ -272,8 +274,10 @@ jobs:
             - Examples/DeleteData/.build/repositories
             - Examples/InfluxDBStatus/Package.resolved
             - Examples/InfluxDBStatus/.build/repositories
+            - Examples/ParameterizedQuery/Package.resolved
+            - Examples/ParameterizedQuery/.build/repositories
 
-  check-examples-macOS:
+  <check-examples-macOS:
     macos:
       xcode: << parameters.xcode-version >>
     parameters:
