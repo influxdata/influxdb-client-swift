@@ -26,7 +26,7 @@ struct CreateNewBucket: AsyncParsableCommand {
 }
 
 extension CreateNewBucket {
-    mutating func run() async throws {
+    mutating func main() async throws {
         // Initialize Client and API
         let client = InfluxDBClient(url: url, token: token)
         let api = InfluxDB2API(client: client)

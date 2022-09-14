@@ -246,8 +246,10 @@ jobs:
       - restore_cache:
           name: Restoring Example Cache
           keys:
-            - &cache-example-key example-cache-v3-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }}-{{ checksum "Examples/ParameterizedQuery/Package.swift" }}
+            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }}-{{ checksum "Examples/ParameterizedQuery/Package.swift" }}
             - example-cache-v3-
+      - check-example:
+          directory: CreateNewBucket
       - check-example:
           directory: WriteData
       - check-example:
@@ -262,6 +264,8 @@ jobs:
           name: Saving Example Cache
           key: *cache-example-key
           paths:
+            - Examples/CreateNewBucket/Package.resolved
+            - Examples/CreateNewBucket/.build/repositories
             - Examples/WriteData/Package.resolved
             - Examples/WriteData/.build/repositories
             - Examples/QueryCpu/Package.resolved
