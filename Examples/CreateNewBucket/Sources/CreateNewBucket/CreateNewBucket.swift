@@ -23,10 +23,12 @@ struct CreateNewBucket: AsyncParsableCommand {
 
     @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
     private var url: String
+
+    static func main() async { }
 }
 
 extension CreateNewBucket {
-    mutating func main() async throws {
+    mutating func run() async throws {
         // Initialize Client and API
         let client = InfluxDBClient(url: url, token: token)
         let api = InfluxDB2API(client: client)
