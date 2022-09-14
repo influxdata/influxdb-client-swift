@@ -12,7 +12,7 @@ This is an example how to create new bucket with permission to write.
 
 ## Sources:
 - [Package.swift](/Examples/CreateNewBucket/Package.swift)
-- [main.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
+- [CreateNewBucket.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/CreateNewBucket.swift)
 
 
 ## How to test:
@@ -49,7 +49,7 @@ This is an example how to create new bucket with permission to write.
 1. Create a new Bucket by:
    ```bash
    export orgId=your-org-id
-   swift run create-new-bucket --name new-bucket --org-id $orgId --token my-token --url http://influxdb_v2:8086
+   swift run create-new-bucket --name new-bucket --org my-org --token my-token --url http://influxdb_v2:8086
    ```
 ## Expected output
 

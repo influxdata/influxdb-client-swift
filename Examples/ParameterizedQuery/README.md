@@ -1,10 +1,8 @@
 # ParameterizedQuery
 
-This is an example how to query with query parameters.
-The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/cpu/README.md) into InfluxDB 2.x.
+This is an example how to query with query parameters in InfluxDB Cloud (no support in InfluxDB OSS).
 
 ## Prerequisites:
-- Docker
 - Cloned examples:
    ```bash
    git clone git@github.com:influxdata/influxdb-client-swift.git
@@ -13,55 +11,29 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
 
 ## Sources:
 - [Package.swift](/Examples/ParameterizedQuery/Package.swift)
-- [main.swift](/Examples/ParameterizedQuery/Sources/ParameterizedQuery/main.swift)
+- [ParameterizedQuery.swift](/Examples/ParameterizedQuery/Sources/ParameterizedQuery/ParameterizedQuery.swift)
 
 ## How to test:
-1. Start InfluxDB:
-    ```bash
-    docker run --rm \
-      --name influxdb_v2 \
-      --detach \
-      --publish 8086:8086 \
-      influxdb:latest
-    ```
-1. Configure your username, password, organization, bucket and token:
+1. Start [InfluxDB cloud](https://cloud2.influxdata.com/)
+
+
+2. Get Url and Organization name - @url, @org
+
+<img src="Images/organization-settings.png" alt="drawing" width="80%" >
+
+3. Create bucket - @bucketName
+
+<img src="Images/create-bucket.png" alt="drawing" width="80%" >
+
+4. Generate API token - @apiToken
+
+<img src="Images/generate-api-token.png" alt="drawing" width="80%" >
+<img src="Images/api-token.png" alt="drawing" width="50%" >
+
+
+5. Execute Query by:
    ```bash
-   docker run --rm \
-      --link influxdb_v2 \
-      curlimages/curl -s -i -X POST http://influxdb_v2:8086/api/v2/setup \
-         -H 'accept: application/json' \
-         -d '{"username": "my-user", "password": "my-password", "org": "my-org", "bucket": "my-bucket", "token": "my-token"}'
-   ```
-1. Start Telegraf as a source of data:
-   ```bash
-   docker run --rm \
-      --name telegraf \
-      --link influxdb_v2 \
-      --detach \
-      --env HOST_ETC=/hostfs/etc \
-      --env HOST_PROC=/hostfs/proc \
-      --env HOST_SYS=/hostfs/sys \
-      --env HOST_VAR=/hostfs/var \
-      --env HOST_RUN=/hostfs/run \
-      --env HOST_MOUNT_PREFIX=/hostfs \
-      --volume /:/hostfs:ro \
-      --volume $PWD/telegraf.conf:/etc/telegraf/telegraf.conf:ro \
-      telegraf
-   ```
-1. Start SwiftCLI by:
-   ```bash
-    docker run --rm \
-      --link influxdb_v2 \
-      --privileged \
-      --interactive \
-      --tty \
-      --volume $PWD/../..:/client \
-      --workdir /client/Examples/ParameterizedQuery \
-      swift:5.3 /bin/bash
-   ```
-1. Execute Query by:
-   ```bash
-   swift run parameterized-query --org my-org --bucket my-bucket --token my-token --url http://influxdb_v2:8086
+   swift run parameterized-query --org @org --bucket @bucketName --token @apiToken --url @url
    ```
    
 ## Expected output
@@ -69,16 +41,15 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
 ```bash
 Query to execute:
 
-from(bucket: "my-bucket")
+from(bucket: params.bucketParam)
     |> range(start: -10m)
-    |> filter(fn: (r) => r["_measurement"] == "cpu")
-    |> filter(fn: (r) => r["cpu"] == "cpu-total")
-    |> filter(fn: (r) => r["_field"] == "usage_user" or r["_field"] == "usage_system")
-    |> last()
+    |> filter(fn: (r) => r["_measurement"] == params.measurement)
+
+["measurement": "demo", "bucketParam": "my-bucket"]
 
 Success response...
 
-CPU usage:
-        usage_system: 22.717622080683473
-        usage_user: 61.46496815287725
+ > value: 1
+ > value: 2
+ > value: 3
 ```

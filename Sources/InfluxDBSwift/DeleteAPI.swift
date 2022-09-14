@@ -15,21 +15,13 @@ import FoundationNetworking
 /// ### Example: ###
 /// ````
 /// let predicateRequest = DeletePredicateRequest(
-///         start: Date(timeIntervalSince1970: 0),
-///         stop: Date(),
-///         predicate: "_measurement=\"server\" AND production=\"no\"")
+///        start: Date(timeIntervalSince1970: 0),
+///        stop: Date(),
+///        predicate: predicate)
 ///
-/// client.deleteAPI.delete(predicate: predicateRequest, bucket: "my-bucket", org: "my-org") { result, error in
-///     // For handle error
-///     if let error = error {
-///         print("Error:\n\n\(error)")
-///     }
+/// try await client.deleteAPI.delete(predicate: predicateRequest, bucket: "my-bucket", org: "my-org")
 ///
-///     // For Success Delete
-///     if result != nil {
-///         print("Successfully data data by:\n\n\(predicateRequest)")
-///     }
-/// }
+/// print("Successfully data data by:\n\n\(predicateRequest)")
 /// ````
 public class DeleteAPI {
     /// Shared client.

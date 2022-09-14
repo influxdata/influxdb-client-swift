@@ -5,8 +5,10 @@
 import ArgumentParser
 import Foundation
 import InfluxDBSwift
+import InfluxDBSwiftApis
 
-struct WriteData: ParsableCommand {
+@main
+struct WriteData: AsyncParsableCommand {
     @Option(name: .shortAndLong, help: "The name or id of the bucket destination.")
     private var bucket: String
 
@@ -18,13 +20,17 @@ struct WriteData: ParsableCommand {
 
     @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
     private var url: String
+}
 
-    public func run() {
+extension WriteData {
+    mutating func run() async throws {
+        //
         // Initialize Client with default Bucket and Organization
+        //
         let client = InfluxDBClient(
                 url: url,
                 token: token,
-                options: InfluxDBClient.InfluxDBOptions(bucket: self.bucket, org: self.org))
+                options: InfluxDBClient.InfluxDBOptions(bucket: bucket, org: org))
 
         //
         // Record defined as Data Point
@@ -42,31 +48,10 @@ struct WriteData: ParsableCommand {
                 .addField(key: "value", value: .int(2))
                 .time(time: .date(Date()))
 
-        client.makeWriteAPI().write(points: [recordPoint, recordPointDate]) { result, error in
-            // For handle error
-            if let error = error {
-                self.atExit(client: client, error: error)
-            }
+        try await client.makeWriteAPI().write(points: [recordPoint, recordPointDate])
+        print("Written data:\n\n\([recordPoint, recordPointDate].map { "\t- \($0)" }.joined(separator: "\n"))")
+        print("\nSuccess!")
 
-            // For Success write
-            if result != nil {
-                print("Written data:\n\n\([recordPoint, recordPointDate].map { "\t- \($0)" }.joined(separator: "\n"))")
-                print("\nSuccess!")
-            }
-
-            self.atExit(client: client)
-        }
-
-        // Wait to end of script
-        RunLoop.current.run()
-    }
-
-    private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
-        // Dispose the Client
         client.close()
-        // Exit script
-        Self.exit(withError: error)
     }
 }
-
-WriteData.main()

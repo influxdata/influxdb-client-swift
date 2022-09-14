@@ -13,7 +13,7 @@ See delete predicate syntax in InfluxDB docs - [delete-predicate](https://docs.i
 
 ## Sources:
 - [Package.swift](/Examples/DeleteData/Package.swift)
-- [main.swift](/Examples/DeleteData/Sources/DeleteData/main.swift)
+- [DeleteData.swift](/Examples/DeleteData/Sources/DeleteData/DeleteData.swift)
 
 ## How to test:
 1. Start InfluxDB:

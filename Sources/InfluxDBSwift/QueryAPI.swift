@@ -25,24 +25,12 @@ import Gzip
 ///                 |> last()
 ///             """
 ///
-/// client.queryAPI.query(query: query) { response, error in
-///     // For handle error
-///     if let error = error {
-///         print("Error:\n\n\(error)")
-///     }
+/// print("\nQuery to execute:\n\(query)\n")
 ///
-///     // For Success response
-///     if let response = response {
+/// let records = try await client.queryAPI.query(query: query)
 ///
-///         do {
-///             try response.forEach { record in
-///                 print("\t\(record.values["_field"]!): \(record.values["_value"]!)")
-///             }
-///         } catch {
-///             print("Error:\n\n\(error)")
-///         }
-///     }
-/// }
+/// print("Query results:")
+/// try records.forEach { print(" > \($0.values["_field"]!): \($0.values["_value"]!)") }
 /// ````
 /// #### Query into `Data` ####
 /// ````

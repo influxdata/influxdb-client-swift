@@ -1,6 +1,6 @@
 # QueryCpu
 
-This is an example how to query data into sequence of `FluxRecord`. 
+This is an example how to query data into sequence of `FluxRecord`.
 The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/cpu/README.md) into InfluxDB 2.x.
 
 ## Prerequisites:
@@ -13,7 +13,7 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
 
 ## Sources:
 - [Package.swift](/Examples/QueryCpu/Package.swift)
-- [main.swift](/Examples/QueryCpu/Sources/QueryCpu/main.swift)
+- [QueryCpu.swift](/Examples/QueryCpu/Sources/QueryCpu/QueryCpu.swift)
 
 ## How to test:
 1. Start InfluxDB:
@@ -63,7 +63,7 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
    ```bash
    swift run query-cpu --org my-org --bucket my-bucket --token my-token --url http://influxdb_v2:8086
    ```
-   
+
 ## Expected output
 
 ```bash
