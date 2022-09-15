@@ -246,7 +246,7 @@ jobs:
       - restore_cache:
           name: Restoring Example Cache
           keys:
-            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }}-{{ checksum "Examples/ParameterizedQuery/Package.swift" }}
+            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/QueryCpuData/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }}-{{ checksum "Examples/ParameterizedQuery/Package.swift" }}
             - example-cache-v3-
       - check-example:
           directory: CreateNewBucket
@@ -254,6 +254,8 @@ jobs:
           directory: WriteData
       - check-example:
           directory: QueryCpu
+      - check-example:
+          directory: QueryCpuData
       - check-example:
           directory: DeleteData
       - check-example:
@@ -270,6 +272,8 @@ jobs:
             - Examples/WriteData/.build/repositories
             - Examples/QueryCpu/Package.resolved
             - Examples/QueryCpu/.build/repositories
+            - Examples/QueryCpuData/Package.resolved
+            - Examples/QueryCpuData/.build/repositories
             - Examples/DeleteData/Package.resolved
             - Examples/DeleteData/.build/repositories
             - Examples/InfluxDBStatus/Package.resolved

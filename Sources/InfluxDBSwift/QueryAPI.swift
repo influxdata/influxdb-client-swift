@@ -34,18 +34,12 @@ import Gzip
 /// ````
 /// #### Query into `Data` ####
 /// ````
-/// client.queryAPI.queryRaw(query: query) { response, error in
-///     // For handle error
-///     if let error = error {
-///         print("Error:\n\n\(error)")
-///     }
+/// let response = try await client.queryAPI.queryRaw(query: query)
 ///
-///     // For Success response
-///     if let response = response {
-///         let csv = String(decoding: response, as: UTF8.self)
-///         print("InfluxDB response: \(csv)")
-///     }
-/// }
+/// let csv = String(decoding: response, as: UTF8.self)
+/// print("InfluxDB response: \(csv)")
+///
+/// client.close()
 /// ````
 public class QueryAPI {
     /// The default Query Dialect with annotation = ["datatype", "group", "default"]

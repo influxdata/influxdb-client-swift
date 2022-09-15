@@ -283,16 +283,12 @@ extension QueryCpu {
 #### Query to Data
 
 ```swift
-import ArgumentParser
-import Foundation
-import InfluxDBSwift
-
-struct QueryCpuData: ParsableCommand {
-  @Option(name: .shortAndLong, help: "The bucket to query. The name or id of the bucket destination.")
+@main
+struct QueryCpuData: AsyncParsableCommand {
+  @Option(name: .shortAndLong, help: "The name or id of the bucket destination.")
   private var bucket: String
 
-  @Option(name: .shortAndLong,
-          help: "The organization executing the query. Takes either the `ID` or `Name` interchangeably.")
+  @Option(name: .shortAndLong, help: "The name or id of the organization destination.")
   private var org: String
 
   @Option(name: .shortAndLong, help: "Authentication token.")
@@ -300,13 +296,17 @@ struct QueryCpuData: ParsableCommand {
 
   @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
   private var url: String
+}
 
-  public func run() {
-    // Initialize Client with default Organization
+extension QueryCpuData {
+  mutating func run() async throws {
+    //
+    // Initialize Client with default Bucket and Organization
+    //
     let client = InfluxDBClient(
             url: url,
             token: token,
-            options: InfluxDBClient.InfluxDBOptions(org: self.org))
+            options: InfluxDBClient.InfluxDBOptions(bucket: bucket, org: org))
 
     // Flux query
     let query = """
@@ -318,36 +318,18 @@ struct QueryCpuData: ParsableCommand {
                     |> last()
                 """
 
-    client.queryAPI.queryRaw(query: query) { response, error in
-      // For handle error
-      if let error = error {
-        self.atExit(client: client, error: error)
-      }
+    print("\nQuery to execute:\n\(query)\n")
 
-      // For Success response
-      if let response = response {
-        let csv = String(decoding: response, as: UTF8.self)
-        print("InfluxDB response: \(csv)")
-      }
+    let response = try await client.queryAPI.queryRaw(query: query)
 
-      self.atExit(client: client)
-    }
+    let csv = String(decoding: response, as: UTF8.self)
+    print("InfluxDB response: \(csv)")
 
-    // Wait to end of script
-    RunLoop.current.run()
-  }
-
-  private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
-    // Dispose the Client
     client.close()
-    // Exit script
-    Self.exit(withError: error)
   }
 }
-
-QueryCpuData.main()
-
 ```
+- sources - [QueryCpuData/QueryCpuData.swift](/Examples/QueryCpuData/Sources/QueryCpuData/QueryCpuData.swift)
 
 #### Parameterized queries
 InfluxDB Cloud supports [Parameterized Queries](https://docs.influxdata.com/influxdb/cloud/query-data/parameterized-queries/)
