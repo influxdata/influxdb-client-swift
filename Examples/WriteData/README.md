@@ -12,7 +12,7 @@ This is an example how to write data with Data Point structure.
 
 ## Sources:
 - [Package.swift](/Examples/WriteData/Package.swift)
-- [main.swift](/Examples/WriteData/Sources/WriteData/main.swift)
+- [WriteData.swift](/Examples/WriteData/Sources/WriteData/WriteData.swift)
 
 ## How to test:
 1. Start InfluxDB:
@@ -40,7 +40,7 @@ This is an example how to write data with Data Point structure.
       --tty \
       --volume $PWD/../..:/client \
       --workdir /client/Examples/WriteData \
-      swift:5.3 /bin/bash
+      swift:5.7 /bin/bash
    ```
 1. Write data by:
    ```bash

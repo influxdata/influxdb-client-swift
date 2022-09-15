@@ -40,7 +40,7 @@ This is an example how to use `async/await` with the InfluxDB client.
       --tty \
       --volume $PWD/../..:/client \
       --workdir /client/Examples/AsyncAwait \
-      swift:5.6 /bin/bash
+      swift:5.7 /bin/bash
    ```
 1. Use `async/await` with `WriteAPI`, `QueryAPI` and `BucketsAPI`:
    ```bash

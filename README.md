@@ -164,74 +164,58 @@ The following example demonstrates how to write data with Data Point structure. 
 import ArgumentParser
 import Foundation
 import InfluxDBSwift
+import InfluxDBSwiftApis
 
-struct WriteData: ParsableCommand {
-    @Option(name: .shortAndLong, help: "The name or id of the bucket destination.")
-    private var bucket: String
+@main
+struct WriteData: AsyncParsableCommand {
+  @Option(name: .shortAndLong, help: "The name or id of the bucket destination.")
+  private var bucket: String
 
-    @Option(name: .shortAndLong, help: "The name or id of the organization destination.")
-    private var org: String
+  @Option(name: .shortAndLong, help: "The name or id of the organization destination.")
+  private var org: String
 
-    @Option(name: .shortAndLong, help: "Authentication token.")
-    private var token: String
+  @Option(name: .shortAndLong, help: "Authentication token.")
+  private var token: String
 
-    @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
-    private var url: String
-
-    public func run() {
-        // Initialize Client with default Bucket and Organization
-        let client = InfluxDBClient(
-                url: url,
-                token: token,
-                options: InfluxDBClient.InfluxDBOptions(bucket: self.bucket, org: self.org))
-
-        //
-        // Record defined as Data Point
-        //
-        let recordPoint = InfluxDBClient
-                .Point("demo")
-                .addTag(key: "type", value: "point")
-                .addField(key: "value", value: .int(2))
-        //
-        // Record defined as Data Point with Timestamp
-        //
-        let recordPointDate = InfluxDBClient
-                .Point("demo")
-                .addTag(key: "type", value: "point-timestamp")
-                .addField(key: "value", value: .int(2))
-                .time(time: .date(Date()))
-
-        client.makeWriteAPI().write(points: [recordPoint, recordPointDate]) { result, error in
-            // For handle error
-            if let error = error {
-                self.atExit(client: client, error: error)
-            }
-
-            // For Success write
-            if result != nil {
-                print("Written data:\n\n\([recordPoint, recordPointDate].map { "\t- \($0)" }.joined(separator: "\n"))")
-                print("\nSuccess!")
-            }
-
-            self.atExit(client: client)
-        }
-
-        // Wait to end of script
-        RunLoop.current.run()
-    }
-
-    private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
-        // Dispose the Client
-        client.close()
-        // Exit script
-        Self.exit(withError: error)
-    }
+  @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
+  private var url: String
 }
 
-WriteData.main()
+extension WriteData {
+  mutating func run() async throws {
+    //
+    // Initialize Client with default Bucket and Organization
+    //
+    let client = InfluxDBClient(
+            url: url,
+            token: token,
+            options: InfluxDBClient.InfluxDBOptions(bucket: bucket, org: org))
 
+    //
+    // Record defined as Data Point
+    //
+    let recordPoint = InfluxDBClient
+            .Point("demo")
+            .addTag(key: "type", value: "point")
+            .addField(key: "value", value: .int(2))
+    //
+    // Record defined as Data Point with Timestamp
+    //
+    let recordPointDate = InfluxDBClient
+            .Point("demo")
+            .addTag(key: "type", value: "point-timestamp")
+            .addField(key: "value", value: .int(2))
+            .time(time: .date(Date()))
+
+    try await client.makeWriteAPI().write(points: [recordPoint, recordPointDate])
+    print("Written data:\n\n\([recordPoint, recordPointDate].map { "\t- \($0)" }.joined(separator: "\n"))")
+    print("\nSuccess!")
+
+    client.close()
+  }
+}
 ```
-- sources - [WriteData/main.swift](/Examples/WriteData/Sources/WriteData/main.swift)
+- sources - [WriteData/WriteData.swift](/Examples/WriteData/Sources/WriteData/WriteData.swift)
 
 ### Queries
 
@@ -246,13 +230,14 @@ The result retrieved by [QueryApi](/Sources/InfluxDBSwift/QueryAPI.swift#L62) co
 import ArgumentParser
 import Foundation
 import InfluxDBSwift
+import InfluxDBSwiftApis
 
-struct QueryCpu: ParsableCommand {
-  @Option(name: .shortAndLong, help: "The bucket to query. The name or id of the bucket destination.")
+@main
+struct QueryCpu: AsyncParsableCommand {
+  @Option(name: .shortAndLong, help: "The name or id of the bucket destination.")
   private var bucket: String
 
-  @Option(name: .shortAndLong,
-          help: "The organization executing the query. Takes either the `ID` or `Name` interchangeably.")
+  @Option(name: .shortAndLong, help: "The name or id of the organization destination.")
   private var org: String
 
   @Option(name: .shortAndLong, help: "Authentication token.")
@@ -260,13 +245,17 @@ struct QueryCpu: ParsableCommand {
 
   @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
   private var url: String
+}
 
-  public func run() {
-    // Initialize Client with default Organization
+extension QueryCpu {
+  mutating func run() async throws {
+    //
+    // Initialize Client with default Bucket and Organization
+    //
     let client = InfluxDBClient(
             url: url,
             token: token,
-            options: InfluxDBClient.InfluxDBOptions(org: self.org))
+            options: InfluxDBClient.InfluxDBOptions(bucket: bucket, org: org))
 
     // Flux query
     let query = """
@@ -278,61 +267,28 @@ struct QueryCpu: ParsableCommand {
                     |> last()
                 """
 
-    print("\nQuery to execute:\n\n\(query)")
+    print("\nQuery to execute:\n\(query)\n")
 
-    client.queryAPI.query(query: query) { response, error in
-      // For handle error
-      if let error = error {
-        self.atExit(client: client, error: error)
-      }
+    let records = try await client.queryAPI.query(query: query)
 
-      // For Success response
-      if let response = response {
+    print("Query results:")
+    try records.forEach { print(" > \($0.values["_field"]!): \($0.values["_value"]!)") }
 
-        print("\nSuccess response...\n")
-        print("CPU usage:")
-        do {
-          try response.forEach { record in
-            print("\t\(record.values["_field"]!): \(record.values["_value"]!)")
-          }
-        } catch {
-          self.atExit(client: client, error: InfluxDBClient.InfluxDBError.cause(error))
-        }
-      }
-
-      self.atExit(client: client)
-    }
-
-    // Wait to end of script
-    RunLoop.current.run()
-  }
-
-  private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
-    // Dispose the Client
     client.close()
-    // Exit script
-    Self.exit(withError: error)
   }
 }
-
-QueryCpu.main()
-
 ```
-- sources - [QueryCpu/main.swift](/Examples/QueryCpu/Sources/QueryCpu/main.swift)
+- sources - [QueryCpu/QueryCpu.swift](/Examples/QueryCpu/Sources/QueryCpu/QueryCpu.swift)
 
 #### Query to Data
 
 ```swift
-import ArgumentParser
-import Foundation
-import InfluxDBSwift
-
-struct QueryCpuData: ParsableCommand {
-  @Option(name: .shortAndLong, help: "The bucket to query. The name or id of the bucket destination.")
+@main
+struct QueryCpuData: AsyncParsableCommand {
+  @Option(name: .shortAndLong, help: "The name or id of the bucket destination.")
   private var bucket: String
 
-  @Option(name: .shortAndLong,
-          help: "The organization executing the query. Takes either the `ID` or `Name` interchangeably.")
+  @Option(name: .shortAndLong, help: "The name or id of the organization destination.")
   private var org: String
 
   @Option(name: .shortAndLong, help: "Authentication token.")
@@ -340,13 +296,17 @@ struct QueryCpuData: ParsableCommand {
 
   @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
   private var url: String
+}
 
-  public func run() {
-    // Initialize Client with default Organization
+extension QueryCpuData {
+  mutating func run() async throws {
+    //
+    // Initialize Client with default Bucket and Organization
+    //
     let client = InfluxDBClient(
             url: url,
             token: token,
-            options: InfluxDBClient.InfluxDBOptions(org: self.org))
+            options: InfluxDBClient.InfluxDBOptions(bucket: bucket, org: org))
 
     // Flux query
     let query = """
@@ -358,36 +318,18 @@ struct QueryCpuData: ParsableCommand {
                     |> last()
                 """
 
-    client.queryAPI.queryRaw(query: query) { response, error in
-      // For handle error
-      if let error = error {
-        self.atExit(client: client, error: error)
-      }
+    print("\nQuery to execute:\n\(query)\n")
 
-      // For Success response
-      if let response = response {
-        let csv = String(decoding: response, as: UTF8.self)
-        print("InfluxDB response: \(csv)")
-      }
+    let response = try await client.queryAPI.queryRaw(query: query)
 
-      self.atExit(client: client)
-    }
+    let csv = String(decoding: response, as: UTF8.self)
+    print("InfluxDB response: \(csv)")
 
-    // Wait to end of script
-    RunLoop.current.run()
-  }
-
-  private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
-    // Dispose the Client
     client.close()
-    // Exit script
-    Self.exit(withError: error)
   }
 }
-
-QueryCpuData.main()
-
 ```
+- sources - [QueryCpuData/QueryCpuData.swift](/Examples/QueryCpuData/Sources/QueryCpuData/QueryCpuData.swift)
 
 #### Parameterized queries
 InfluxDB Cloud supports [Parameterized Queries](https://docs.influxdata.com/influxdb/cloud/query-data/parameterized-queries/)
@@ -406,8 +348,10 @@ Parameterized query example:
 import ArgumentParser
 import Foundation
 import InfluxDBSwift
+import InfluxDBSwiftApis
 
-struct ParameterizedQuery: ParsableCommand {
+@main
+struct ParameterizedQuery: AsyncParsableCommand {
   @Option(name: .shortAndLong, help: "The bucket to query. The name or id of the bucket destination.")
   private var bucket: String
 
@@ -420,65 +364,47 @@ struct ParameterizedQuery: ParsableCommand {
 
   @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
   private var url: String
+}
 
-  public func run() {
+extension ParameterizedQuery {
+  mutating func run() async throws {
     // Initialize Client with default Organization
     let client = InfluxDBClient(
             url: url,
             token: token,
-            options: InfluxDBClient.InfluxDBOptions(org: self.org))
+            options: InfluxDBClient.InfluxDBOptions(bucket: bucket, org: org))
+
+    for index in 1...3 {
+      let point = InfluxDBClient
+              .Point("demo")
+              .addTag(key: "type", value: "point")
+              .addField(key: "value", value: .int(index))
+      try await client.makeWriteAPI().write(point: point)
+    }
 
     // Flux query
     let query = """
                 from(bucket: params.bucketParam)
-                    |> range(start: duration(v: params.startParam))
-                    |> filter(fn: (r) => r["_measurement"] == "cpu")
-                    |> filter(fn: (r) => r["cpu"] == "cpu-total")
-                    |> filter(fn: (r) => r["_field"] == "usage_user" or r["_field"] == "usage_system")
-                    |> last()
+                    |> range(start: -10m)
+                    |> filter(fn: (r) => r["_measurement"] == params.measurement)
                 """
+
     // Query parameters [String:String]
-    let queryParams = [ "bucketParam":"\(self.bucket)", "startParam":"-10m" ]
+    let queryParams = ["bucketParam": "\(bucket)", "measurement": "demo"]
 
     print("\nQuery to execute:\n\n\(query)\n\n\(queryParams)")
 
-    client.queryAPI.query(query: query, params: queryParams) { response, error in
-      // For handle error
-      if let error = error {
-        self.atExit(client: client, error: error)
-      }
+    let records = try await client.queryAPI.query(query: query, params: queryParams)
 
-      // For Success response
-      if let response = response {
-        print("\nSuccess response...\n")
-        print("CPU usage:")
-        do {
-          try response.forEach { record in
-            print("\t\(record.values["_field"]!): \(record.values["_value"]!)")
-          }
-        } catch {
-          self.atExit(client: client, error: InfluxDBClient.InfluxDBError.cause(error))
-        }
-      }
+    print("\nSuccess response...\n")
 
-      self.atExit(client: client)
-    }
+    try records.forEach { print(" > \($0.values["_field"]!): \($0.values["_value"]!)") }
 
-    // Wait to end of script
-    RunLoop.current.run()
-  }
-
-  private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
-    // Dispose the Client
     client.close()
-    // Exit script
-    Self.exit(withError: error)
   }
 }
-
-ParameterizedQuery.main()
 ```
-- sources - [ParameterizedQuery/main.swift](/Examples/ParameterizedQuery/Sources/ParameterizedQuery/main.swift)
+- sources - [ParameterizedQuery/ParameterizedQuery.swift](/Examples/ParameterizedQuery/Sources/ParameterizedQuery/ParameterizedQuery.swift)
 
 ### Delete data
 
@@ -490,8 +416,10 @@ Use the [DeletePredicateRequest](https://influxdata.github.io/influxdb-client-sw
 import ArgumentParser
 import Foundation
 import InfluxDBSwift
+import InfluxDBSwiftApis
 
-struct DeleteData: ParsableCommand {
+@main
+struct DeleteData: AsyncParsableCommand {
   @Option(name: .shortAndLong, help: "Specifies the bucket name to delete data from.")
   private var bucket: String
 
@@ -507,8 +435,10 @@ struct DeleteData: ParsableCommand {
 
   @Option(name: .shortAndLong, help: "InfluxQL-like delete predicate statement.")
   private var predicate: String
+}
 
-  public func run() {
+extension DeleteData {
+  mutating func run() async throws {
     // Initialize Client with default Organization
     let client = InfluxDBClient(
             url: url,
@@ -521,70 +451,38 @@ struct DeleteData: ParsableCommand {
             stop: Date(),
             predicate: predicate)
 
-    client.deleteAPI.delete(predicate: predicateRequest, bucket: bucket, org: org) { result, error in
-      // For handle error
-      if let error = error {
-        self.atExit(client: client, error: error)
-      }
+    try await client.deleteAPI.delete(predicate: predicateRequest, bucket: bucket, org: org)
 
-      // For Success Delete
-      if result != nil {
-        print("\nDeleted data by predicate:\n\n\t\(predicateRequest)")
+    print("\nDeleted data by predicate:\n\n\t\(predicateRequest)")
 
-        // Print date after Delete
-        queryData(client: client)
-      }
-    }
+    // Print date after Delete
+    try await queryData(client: client)
 
-    // Wait to end of script
-    RunLoop.current.run()
+    client.close()
   }
 
-  private func queryData(client: InfluxDBClient) {
+  private func queryData(client: InfluxDBClient) async throws {
     let query = """
-                from(bucket: "\(self.bucket)")
+                from(bucket: "\(bucket)")
                     |> range(start: 0)
                     |> filter(fn: (r) => r["_measurement"] == "server")
                     |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
                 """
 
-    client.queryAPI.query(query: query) { response, error in
-      // For handle error
-      if let error = error {
-        self.atExit(client: client, error: error)
-      }
+    let response = try await client.queryAPI.query(query: query)
 
-      // For Success response
-      if let response = response {
-        print("\nRemaining data after delete:\n")
-        do {
-          try response.forEach { record in
-            let provider = record.values["provider"]!
-            let production = record.values["production"]
-            let app = record.values["app"]
-            return print("\t\(provider),production=\(production!),app=\(app!)")
-          }
-        } catch {
-          self.atExit(client: client, error: InfluxDBClient.InfluxDBError.cause(error))
-        }
-      }
+    print("\nRemaining data after delete:\n")
 
-      self.atExit(client: client)
+    try response.forEach { record in
+      let provider = record.values["provider"]!
+      let production = record.values["production"]
+      let app = record.values["app"]
+      return print("\t\(provider),production=\(production!),app=\(app!)")
     }
   }
-
-  private func atExit(client: InfluxDBClient, error: InfluxDBClient.InfluxDBError? = nil) {
-    // Dispose the Client
-    client.close()
-    // Exit script
-    Self.exit(withError: error)
-  }
 }
-
-DeleteData.main()
-
 ```
-- sources - [DeleteData/main.swift](/Examples/DeleteData/Sources/DeleteData/main.swift)
+- sources - [DeleteData/DeleteData.swift](/Examples/DeleteData/Sources/DeleteData/DeleteData.swift)
 
 ### Management API
 
@@ -617,89 +515,69 @@ import Foundation
 import InfluxDBSwift
 import InfluxDBSwiftApis
 
-struct CreateNewBucket: ParsableCommand {
-    @Option(name: .shortAndLong, help: "New bucket name.")
-    private var name: String
+@main
+struct CreateNewBucket: AsyncParsableCommand {
+  @Option(name: .shortAndLong, help: "New bucket name.")
+  private var name: String
 
-    @Option(name: .shortAndLong, help: "Duration bucket will retain data.")
-    private var retention: Int = 3600
+  @Option(name: .shortAndLong, help: "Duration bucket will retain data.")
+  private var retention: Int64 = 3600
 
-    @Option(name: .shortAndLong, help: "The ID of the organization.")
-    private var orgId: String
+  @Option(name: .shortAndLong, help: "Specifies the organization name.")
+  private var org: String
 
-    @Option(name: .shortAndLong, help: "Authentication token.")
-    private var token: String
+  @Option(name: .shortAndLong, help: "Authentication token.")
+  private var token: String
 
-    @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
-    private var url: String
-
-    public func run() {
-        // Initialize Client and API
-        let client = InfluxDBClient(url: url, token: token)
-        let api = InfluxDB2API(client: client)
-
-        // Bucket configuration
-        let request = PostBucketRequest(
-                orgID: self.orgId,
-                name: self.name,
-                retentionRules: [RetentionRule(type: RetentionRule.ModelType.expire, everySeconds: self.retention)])
-
-        // Create Bucket
-        api.bucketsAPI.postBuckets(postBucketRequest: request) { bucket, error in
-            // For error exit
-            if let error = error {
-                self.atExit(client: client, error: error)
-            }
-
-            if let bucket = bucket {
-                // Create Authorization with permission to read/write created bucket
-                let bucketResource = Resource(
-                        type: Resource.ModelType.buckets,
-                        id: bucket.id!,
-                        orgID: self.orgId
-                )
-                // Authorization configuration
-                let request = Authorization(
-                        description: "Authorization to read/write bucket: \(self.name)",
-                        orgID: self.orgId,
-                        permissions: [
-                            Permission(action: Permission.Action.read, resource: bucketResource),
-                            Permission(action: Permission.Action.write, resource: bucketResource)
-                        ])
-
-                // Create Authorization
-                api.authorizationsAPI.postAuthorizations(authorization: request) { authorization, error in
-                    // For error exit
-                    if let error = error {
-                        atExit(client: client, error: error)
-                    }
-
-                    // Print token
-                    if let authorization = authorization {
-                        let token = authorization.token!
-                        print("The token: '\(token)' is authorized to read/write from/to bucket: '\(bucket.id!)'.")
-                        atExit(client: client)
-                    }
-                }
-            }
-        }
-
-        // Wait to end of script
-        RunLoop.current.run()
-    }
-
-    private func atExit(client: InfluxDBClient, error: InfluxDBError? = nil) {
-        // Dispose the Client
-        client.close()
-        // Exit script
-        Self.exit(withError: error)
-    }
+  @Option(name: .shortAndLong, help: "HTTP address of InfluxDB.")
+  private var url: String
 }
 
-CreateNewBucket.main()
+extension CreateNewBucket {
+  mutating func run() async throws {
+    // Initialize Client and API
+    let client = InfluxDBClient(url: url, token: token)
+    let api = InfluxDB2API(client: client)
 
+    let orgId = (try await api.organizationsAPI.getOrgs(org: org)!).orgs?.first?.id
+
+    // Bucket configuration
+    let request = PostBucketRequest(
+            orgID: orgId!,
+            name: name,
+            retentionRules: [RetentionRule(type: RetentionRule.ModelType.expire, everySeconds: retention)])
+
+    // Create Bucket
+    let bucket = try await api.bucketsAPI.postBuckets(postBucketRequest: request)!
+
+    // Create Authorization with permission to read/write created bucket
+    let bucketResource = Resource(
+            type: Resource.ModelType.buckets,
+            id: bucket.id,
+            orgID: orgId
+    )
+
+    // Authorization configuration
+    let authorizationRequest = AuthorizationPostRequest(
+            description: "Authorization to read/write bucket: \(name)",
+            orgID: orgId!,
+            permissions: [
+              Permission(action: Permission.Action.read, resource: bucketResource),
+              Permission(action: Permission.Action.write, resource: bucketResource)
+            ])
+
+    // Create Authorization
+    let authorization = try await api.authorizationsAPI.postAuthorizations(authorizationPostRequest: authorizationRequest)!
+
+    print("The bucket: '\(bucket.name)' is successfully created.")
+    print("The following token could be use to read/write:")
+    print("\t\(authorization.token!)")
+
+    client.close()
+  }
+}
 ```
-- sources - [CreateNewBucket/main.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
+- sources - [CreateNewBucket/CreateNewBucket.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/CreateNewBucket.swift)
 
 ## Advanced Usage
 
@@ -734,15 +612,8 @@ let defaultTags = InfluxDBClient.PointSettings()
         .addDefaultTag(key: "customer", value: "California Miner")
         .addDefaultTag(key: "sensor_id", value: "${env.SENSOR_ID}")
 
-let writeAPI = client.makeWriteAPI(pointSettings: defaultTags)
-writeAPI.writeRecords(records: records) { _, error in
-        if let error = error {
-          print("Error: \(error)")
-          return
-        }
-
-        print("Successfully written default tags")
-}
+try await client.makeWriteAPI(pointSettings: defaultTags).writeRecords(records: records)
+print("Successfully written default tags")
 ```
 
 ##### Example Output

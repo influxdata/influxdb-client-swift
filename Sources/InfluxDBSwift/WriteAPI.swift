@@ -20,17 +20,10 @@ import Gzip
 /// //
 /// let recordString = "demo,type=string value=1i"
 ///
-/// client.makeWriteAPI().write(record: recordString) { result, error in
-///     // For handle error
-///     if let error = error {
-///         print("Error:\n\n\(error)")
-///     }
+/// try await client.makeWriteAPI().write(record: recordString)
 ///
-///     // For Success write
-///     if result != nil {
-///         print("Successfully written data:\n\n\(recordString)")
-///     }
-/// }
+/// // For Success write
+/// print("Successfully written data:\n\n\(recordString)")
 ///
 /// //
 /// // Record defined as Data Point
@@ -48,17 +41,10 @@ import Gzip
 ///         .addField(key: "value", value: .int(2))
 ///         .time(time: .date(Date()))
 ///
-/// client.makeWriteAPI().write(points: [recordPoint, recordPointDate]) { result, error in
-///     // For handle error
-///     if let error = error {
-///         print("Error:\n\n\(error)")
-///     }
+/// try await client.makeWriteAPI().write(points: [recordPoint, recordPointDate])
 ///
-///     // For Success write
-///     if result != nil {
-///         print("Successfully written data:\n\n\([recordPoint, recordPointDate])")
-///     }
-/// }
+/// // For Success write
+/// print("Successfully written data:\n\n\([recordPoint, recordPointDate])")
 ///
 /// //
 /// // Record defined as Tuple
@@ -66,17 +52,11 @@ import Gzip
 /// let recordTuple: InfluxDBClient.Point.Tuple
 ///     = (measurement: "demo", tags: ["type": "tuple"], fields: ["value": .int(3)], time: nil)
 ///
-/// client.makeWriteAPI().write(tuple: recordTuple) { result, error in
-///     // For handle error
-///     if let error = error {
-///         print("Error:\n\n\(error)")
-///     }
+/// try await client.makeWriteAPI().write(tuple: recordTuple)
 ///
-///     // For Success write
-///     if result != nil {
-///         print("Successfully written data:\n\n\(recordTuple)")
-///     }
-/// }
+/// // For Success write
+/// print("Successfully written data:\n\n\(recordTuple)")
+///
 /// ````
 public class WriteAPI {
     /// Shared client.

@@ -67,7 +67,7 @@ jobs:
     parameters:
       swift-image:
         type: string
-        default: &default-swift-image "swift:5.3"
+        default: &default-swift-image "swift:5.7"
       influxdb-image:
         type: string
         default: &default-influxdb-image "influxdb:latest"
@@ -126,7 +126,7 @@ jobs:
     parameters:
       xcode-version:
         type: string
-        default: &default-xcode "12.5.1"
+        default: &default-xcode "13.4.1"
       influxdb-package-version:
         type: string
         default: "2.0.4"
@@ -181,7 +181,7 @@ jobs:
 
   check-code-style:
     docker:
-      - image: *default-swift-image
+      - image: swift:5.5
     steps:
       - checkout
       - swiftlint-install
@@ -217,7 +217,7 @@ jobs:
       - restore_cache:
           name: Restoring Cache
           keys:
-            - &generate-sources-cache-key gs-cache-v1-swift:5.3
+            - &generate-sources-cache-key gs-cache-v1-swift:5.7
       - run:
           name: Install Maven & Curl
           command: |
@@ -246,7 +246,7 @@ jobs:
       - restore_cache:
           name: Restoring Example Cache
           keys:
-            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }
+            - &cache-example-key example-cache-v3-{{ checksum "Examples/CreateNewBucket/Package.swift" }}-{{ checksum "Examples/WriteData/Package.swift" }}-{{ checksum "Examples/QueryCpu/Package.swift" }}-{{ checksum "Examples/QueryCpuData/Package.swift" }}-{{ checksum "Examples/DeleteData/Package.swift" }}-{{ checksum "Examples/ParameterizedQuery/Package.swift" }}
             - example-cache-v3-
       - check-example:
           directory: CreateNewBucket
@@ -255,9 +255,13 @@ jobs:
       - check-example:
           directory: QueryCpu
       - check-example:
+          directory: QueryCpuData
+      - check-example:
           directory: DeleteData
       - check-example:
           directory: InfluxDBStatus
+      - check-example:
+          directory: ParameterizedQuery
       - save_cache:
           name: Saving Example Cache
           key: *cache-example-key
@@ -268,10 +272,14 @@ jobs:
             - Examples/WriteData/.build/repositories
             - Examples/QueryCpu/Package.resolved
             - Examples/QueryCpu/.build/repositories
+            - Examples/QueryCpuData/Package.resolved
+            - Examples/QueryCpuData/.build/repositories
             - Examples/DeleteData/Package.resolved
             - Examples/DeleteData/.build/repositories
             - Examples/InfluxDBStatus/Package.resolved
             - Examples/InfluxDBStatus/.build/repositories
+            - Examples/ParameterizedQuery/Package.resolved
+            - Examples/ParameterizedQuery/.build/repositories
 
   check-examples-macOS:
     macos:
@@ -285,8 +293,8 @@ jobs:
       - restore_cache:
           name: Restoring Example Cache
           keys:
-            - &cache-example-key example-macOS-cache-v0-{{ checksum "Examples/WriteDataInBatches/Package.swift" }}
-            - example-macOS-cache-v0-
+            - &cache-example-key example-macOS-cache-v1-{{ checksum "Examples/WriteDataInBatches/Package.swift" }}
+            - example-macOS-cache-v1-
       - run: |
           HOMEBREW_NO_AUTO_UPDATE=1
           brew install swiftlint
@@ -307,7 +315,9 @@ workflows:
       - check-documentation
       - check-examples
       - check-examples-macOS
-      - tests-linux
+      - tests-linux:
+          name: tests-linux-5.3
+          swift-image: "swift:5.3"
       - tests-linux:
           name: tests-linux-5.4
           swift-image: "swift:5.4"
@@ -317,6 +327,8 @@ workflows:
       - tests-linux:
           name: tests-linux-5.6
           swift-image: "swift:5.6"
+      - tests-linux:
+          name: tests-linux-5.7
       - tests-macOS
   nightly:
     triggers:

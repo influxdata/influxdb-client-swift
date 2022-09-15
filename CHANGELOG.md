@@ -1,5 +1,11 @@
 ## 1.4.0 [unreleased]
 
+### CI
+1. [#55](https://github.com/influxdata/influxdb-client-swift/pull/55): Add Swift 5.7 to CI and update XCode
+
+### Documentation
+1. [#55](https://github.com/influxdata/influxdb-client-swift/pull/55): Updated examples in `README`, code comments and `Examples` to async/await
+
 ## 1.3.0 [2022-07-29]
 
 ### Features
