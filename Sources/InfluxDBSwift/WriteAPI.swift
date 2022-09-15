@@ -22,8 +22,8 @@ import Gzip
 ///
 /// try await client.makeWriteAPI().write(record: recordString)
 ///
-///  // For Success write
-///  print("Successfully written data:\n\n\(recordString)")
+/// // For Success write
+/// print("Successfully written data:\n\n\(recordString)")
 ///
 /// //
 /// // Record defined as Data Point

@@ -31,7 +31,19 @@ This is an example how to query with query parameters in InfluxDB Cloud (no supp
 <img src="Images/api-token.png" alt="drawing" width="50%" >
 
 
-5. Execute Query by:
+5. Start SwiftCLI by:
+   ```bash
+    docker run --rm \
+      --link influxdb_v2 \
+      --privileged \
+      --interactive \
+      --tty \
+      --volume $PWD/../..:/client \
+      --workdir /client/Examples/ParameterizedQuery \
+      swift:5.7 /bin/bash
+   ```
+   
+6. Execute Query by:
    ```bash
    swift run parameterized-query --org @org --bucket @bucketName --token @apiToken --url @url
    ```

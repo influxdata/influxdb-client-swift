@@ -17,7 +17,7 @@ import FoundationNetworking
 /// let predicateRequest = DeletePredicateRequest(
 ///        start: Date(timeIntervalSince1970: 0),
 ///        stop: Date(),
-///        predicate: predicate)
+///        predicate: "_measurement=\"server\" AND production=\"no\"")
 ///
 /// try await client.deleteAPI.delete(predicate: predicateRequest, bucket: "my-bucket", org: "my-org")
 ///
