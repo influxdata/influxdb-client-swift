@@ -392,11 +392,11 @@ extension ParameterizedQuery {
             token: token,
             options: InfluxDBClient.InfluxDBOptions(bucket: bucket, org: org))
 
-    for i in 1...3 {
+    for index in 1...3 {
       let point = InfluxDBClient
               .Point("demo")
               .addTag(key: "type", value: "point")
-              .addField(key: "value", value: .int(i))
+              .addField(key: "value", value: .int(index))
       try await client.makeWriteAPI().write(point: point)
     }
 
@@ -408,7 +408,7 @@ extension ParameterizedQuery {
                 """
 
     // Query parameters [String:String]
-    let queryParams = [ "bucketParam":"\(bucket)", "measurement":"demo" ]
+    let queryParams = ["bucketParam": "\(bucket)", "measurement": "demo"]
 
     print("\nQuery to execute:\n\n\(query)\n\n\(queryParams)")
 
