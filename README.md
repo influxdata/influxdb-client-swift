@@ -612,15 +612,8 @@ let defaultTags = InfluxDBClient.PointSettings()
         .addDefaultTag(key: "customer", value: "California Miner")
         .addDefaultTag(key: "sensor_id", value: "${env.SENSOR_ID}")
 
-let writeAPI = client.makeWriteAPI(pointSettings: defaultTags)
-writeAPI.writeRecords(records: records) { _, error in
-        if let error = error {
-          print("Error: \(error)")
-          return
-        }
-
-        print("Successfully written default tags")
-}
+try await client.makeWriteAPI(pointSettings: defaultTags).writeRecords(records: records)
+print("Successfully written default tags")
 ```
 
 ##### Example Output
