@@ -32,4 +32,3 @@ extension InfluxDBStatus {
         client.close()
     }
 }
-

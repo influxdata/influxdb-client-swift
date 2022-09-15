@@ -7,6 +7,7 @@ import Foundation
 import InfluxDBSwift
 import InfluxDBSwiftApis
 
+@main
 struct CreateNewBucket: AsyncParsableCommand {
     @Option(name: .shortAndLong, help: "New bucket name.")
     private var name: String

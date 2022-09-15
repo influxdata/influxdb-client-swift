@@ -181,7 +181,7 @@ jobs:
 
   check-code-style:
     docker:
-      - image: *default-swift-image
+      - image: swift:5.5
     steps:
       - checkout
       - swiftlint-install
