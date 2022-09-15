@@ -52,7 +52,7 @@ See delete predicate syntax in InfluxDB docs - [delete-predicate](https://docs.i
       --tty \
       --volume $PWD/../..:/client \
       --workdir /client/Examples/DeleteData \
-      swift:5.3 /bin/bash
+      swift:5.7 /bin/bash
    ```
 1. Delete date where tag `production` is `no`:
    ```bash

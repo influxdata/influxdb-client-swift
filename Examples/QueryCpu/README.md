@@ -57,7 +57,7 @@ The Telegraf sends data from [CPU Input Plugin](https://github.com/influxdata/te
       --tty \
       --volume $PWD/../..:/client \
       --workdir /client/Examples/QueryCpu \
-      swift:5.3 /bin/bash
+      swift:5.7 /bin/bash
    ```
 1. Execute Query by:
    ```bash

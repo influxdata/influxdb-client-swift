@@ -41,7 +41,7 @@ This is an example how to check status of InfluxDB.
       --tty \
       --volume $PWD/../..:/client \
       --workdir /client/Examples/InfluxDBStatus \
-      swift:5.3 /bin/bash
+      swift:5.7 /bin/bash
    ```
 1. Check status of InfluxDB by:
    ```bash

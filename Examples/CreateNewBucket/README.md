@@ -12,7 +12,7 @@ This is an example how to create new bucket with permission to write.
 
 ## Sources:
 - [Package.swift](/Examples/CreateNewBucket/Package.swift)
-- [CreateNewBucket.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/main.swift)
+- [CreateNewBucket.swift](/Examples/CreateNewBucket/Sources/CreateNewBucket/CreateNewBucket.swift)
 
 
 ## How to test:
@@ -32,9 +32,6 @@ This is an example how to create new bucket with permission to write.
          -H 'accept: application/json' \
          -d '{"username": "my-user", "password": "my-password", "org": "my-org", "bucket": "my-bucket", "token": "my-token"}'
    ```
-1. Navigate to http://localhost:8086/ and find the id of your organization:
-    - Username: `my-user`, Password: `my-password`
-    - https://docs.influxdata.com/influxdb/latest/organizations/view-orgs/
 1. Start SwiftCLI by:
    ```bash
     docker run --rm \
@@ -44,7 +41,7 @@ This is an example how to create new bucket with permission to write.
       --tty \
       --volume $PWD/../..:/client \
       --workdir /client/Examples/CreateNewBucket \
-      swift:5.3 /bin/bash
+      swift:5.7 /bin/bash
    ```
 1. Create a new Bucket by:
    ```bash
