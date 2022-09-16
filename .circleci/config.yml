@@ -211,13 +211,13 @@ jobs:
 
   check-generate-sources:
     docker:
-      - image: *default-swift-image
+      - image: swift:5.5
     steps:
       - checkout
       - restore_cache:
           name: Restoring Cache
           keys:
-            - &generate-sources-cache-key gs-cache-v1-swift:5.7
+            - &generate-sources-cache-key gs-cache-v1-swift:5.5
       - run:
           name: Install Maven & Curl
           command: |
