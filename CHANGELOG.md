@@ -1,4 +1,4 @@
-## 1.4.0 [unreleased]
+## 1.4.0 [2022-09-30]
 
 ### CI
 1. [#55](https://github.com/influxdata/influxdb-client-swift/pull/55): Add Swift 5.7 to CI and update XCode

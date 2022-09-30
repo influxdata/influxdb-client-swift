@@ -77,7 +77,7 @@ import PackageDescription
 let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(name: "influxdb-client-swift", url: "https://github.com/influxdata/influxdb-client-swift", from: "1.3.0"),
+        .package(name: "influxdb-client-swift", url: "https://github.com/influxdata/influxdb-client-swift", from: "1.4.0"),
     ],
     targets: [
         .target(name: "MyModule", dependencies: [
