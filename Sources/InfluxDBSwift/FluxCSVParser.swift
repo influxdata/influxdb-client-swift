@@ -62,8 +62,12 @@ internal class FluxCSVParser {
             default:
                 if startNewTable {
                     if responseMode == .onlyNames && table?.columns.isEmpty ?? true {
-                        groups = row.map { _ in "false" }
-                        try addDatatype(row: row.map { _ in "string" })
+                        groups = row.map { _ in
+                            "false"
+                        }
+                        try addDatatype(row: row.map { _ in
+                            "string"
+                        })
                     }
                     try addGroups()
                     try addNames(row: row)
@@ -123,13 +127,27 @@ internal class FluxCSVParser {
             let column: QueryAPI.FluxColumn = table.columns[$0.offset]
             column.name = $0.element
         }
+
+        let duplicates = Dictionary(grouping: table.columns.compactMap { val in
+            val.name
+        }, by: { $0 })
+                .filter {
+                    $1.count > 1
+                }
+                .keys
+        if (duplicates.count > 0) {
+            print("""
+                  The response contains columns with duplicated names: \(duplicates.joined(separator: ", ")) 
+                  You should use the 'FluxRecord.row' to access your data instead of 'FluxRecord.values' dictionary.
+                  """)
+        }
     }
 
     private func parseRow(row: [String]) throws -> QueryAPI.FluxRecord {
         guard let table = table else {
             throw InfluxDBClient.InfluxDBError.generic(Self.errorMessage)
         }
-
+        var recordRow: Array<Any> = Array()
         let values: [String: Decodable] = table.columns.reduce(into: [String: Decodable]()) { result, column in
             var value: String = row[column.index + 1]
             if value.isEmpty {
@@ -137,27 +155,51 @@ internal class FluxCSVParser {
             }
             switch column.dataType {
             case "boolean":
-                result[column.name] = (value as NSString).boolValue
+                let strVal = (value as NSString).boolValue
+                result[column.name] = strVal
+                recordRow.append(strVal as Any)
+                break
             case "unsignedLong":
-                result[column.name] = UInt64(value)
+                let strVal = UInt64(value)
+                result[column.name] = strVal
+                recordRow.append(strVal! as Any)
+                break
             case "long":
-                result[column.name] = Int64(value)
+                let strVal = Int64(value)
+                result[column.name] = strVal
+                recordRow.append(strVal! as Any)
+                break
             case "double":
-                result[column.name] = Double(value)
+                let strVal = Double(value)
+                result[column.name] = strVal
+                recordRow.append(strVal! as Any)
+                break
             case "string":
                 result[column.name] = value
+                recordRow.append(value)
+                break
             case "dateTime:RFC3339", "dateTime:RFC3339Nano":
-                result[column.name] = CodableHelper.dateFormatter.date(from: value)
+                let strVal = CodableHelper.dateFormatter.date(from: value)
+                result[column.name] = strVal
+                recordRow.append(strVal! as Any)
+                break
             case "base64Binary":
-                result[column.name] = Data(base64Encoded: value)
+                let strVal = Data(base64Encoded: value)
+                result[column.name] = strVal
+                recordRow.append(strVal! as Any)
+                break
             case "duration":
-                result[column.name] = Int64(value)
+                let strVal = Int64(value)
+                result[column.name] = strVal
+                recordRow.append(strVal! as Any)
+                break
             default:
                 result[column.name] = value
+                recordRow.append(value as Any)
             }
         }
 
-        return QueryAPI.FluxRecord(values: values)
+        return QueryAPI.FluxRecord(values: values, row: recordRow)
     }
 }
 

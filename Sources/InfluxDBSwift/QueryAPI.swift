@@ -330,11 +330,16 @@ extension QueryAPI {
         /// The list of values in Record
         public let values: [String: Decodable]
 
+        /// The array of record's columns
+        public let row: [Any]
+
         /// Initialize records with values.
         ///
         /// - Parameter values: record values
-        public init(values: [String: Decodable]) {
+        ///             row: record's columns
+        public init(values: [String: Decodable], row: [Any]) {
             self.values = values
+            self.row = row
         }
 
         public static func == (lhs: FluxRecord, rhs: FluxRecord) -> Bool {
