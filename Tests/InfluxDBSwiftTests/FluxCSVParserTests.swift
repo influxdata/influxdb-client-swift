@@ -476,13 +476,14 @@ final class FluxCSVParserTests: XCTestCase {
 
     func testParseDuplicateColumnNames() throws {
         let data = """
-                   #datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,string,string,double
+                    #datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,string,string,double
                     #group,false,false,true,true,false,true,true,false
                     #default,_result,,,,,,,
-                     ,result,table,_start,_stop,_time,_measurement,location,result
+                    ,result,table,_start,_stop,_time,_measurement,location,result
                     ,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:33.746Z,my_measurement,Prague,25.3
                     ,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:39.299Z,my_measurement,Prague,25.3
                     ,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:40.454Z,my_measurement,Prague,25.3
+
                    """
         let records = try parse_to_records(data: data, responseMode: .onlyNames)
         XCTAssertEqual(3, records.count)
