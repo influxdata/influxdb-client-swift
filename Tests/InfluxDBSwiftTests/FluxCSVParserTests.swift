@@ -488,7 +488,7 @@ final class FluxCSVParserTests: XCTestCase {
         XCTAssertEqual(3, records.count)
         XCTAssertEqual(7, records[0].values.count)
         XCTAssertEqual(8, records[0].row.count)
-        XCTAssertEqual(25.3, records[0].row[7])
+        XCTAssertEqual(25.3, records[0].row[7] as! Double)
     }
 
     // swiftlint:enable line_length trailing_whitespace
