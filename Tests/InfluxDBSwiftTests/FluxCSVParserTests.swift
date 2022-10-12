@@ -238,7 +238,7 @@ final class FluxCSVParserTests: XCTestCase {
         XCTAssertEqual(10, tuples[0].table.columns.count)
         XCTAssertEqual(2, tuples[0].table.columns.filter {
                     $0.group
-                }
+        }
                 .count)
     }
 

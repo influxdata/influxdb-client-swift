@@ -135,9 +135,9 @@ internal class FluxCSVParser {
                     $1.count > 1
                 }
                 .keys
-        if (duplicates.count > 0) {
+        if duplicates.count > 0 {
             print("""
-                  The response contains columns with duplicated names: \(duplicates.joined(separator: ", ")) 
+                  The response contains columns with duplicated names: \(duplicates.joined(separator: ", "))
                   You should use the 'FluxRecord.row' to access your data instead of 'FluxRecord.values' dictionary.
                   """)
         }
@@ -147,7 +147,7 @@ internal class FluxCSVParser {
         guard let table = table else {
             throw InfluxDBClient.InfluxDBError.generic(Self.errorMessage)
         }
-        var recordRow: Array<Any> = Array()
+        var recordRow: [Any] = Array()
         let values: [String: Decodable] = table.columns.reduce(into: [String: Decodable]()) { result, column in
             var value: String = row[column.index + 1]
             if value.isEmpty {
