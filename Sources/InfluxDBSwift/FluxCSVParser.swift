@@ -128,14 +128,8 @@ internal class FluxCSVParser {
             column.name = $0.element
         }
 
-        let duplicates = Dictionary(grouping: table.columns.compactMap { val in
-            val.name
-        }, by: { $0 })
-                .filter {
-                    $1.count > 1
-                }
-                .keys
-        if duplicates.count > 0 {
+        let duplicates = Dictionary(grouping: table.columns.compactMap { $0.name }) { $0 }.filter { $1.count > 1 }.keys
+        if !duplicates.isEmpty {
             print("""
                   The response contains columns with duplicated names: \(duplicates.joined(separator: ", "))
                   You should use the 'FluxRecord.row' to access your data instead of 'FluxRecord.values' dictionary.
@@ -149,56 +143,41 @@ internal class FluxCSVParser {
         }
         var recordRow: [Any] = Array()
         let values: [String: Decodable] = table.columns.reduce(into: [String: Decodable]()) { result, column in
-            var value: String = row[column.index + 1]
-            if value.isEmpty {
-                value = column.defaultValue
-            }
+            let value: String = row[column.index + 1].isEmpty ? column.defaultValue : row[column.index + 1]
             switch column.dataType {
             case "boolean":
                 let strVal = (value as NSString).boolValue
                 result[column.name] = strVal
                 recordRow.append(strVal as Any)
-                break
             case "unsignedLong":
                 let strVal = UInt64(value)
                 result[column.name] = strVal
-                recordRow.append(strVal! as Any)
-                break
+                recordRow.append(strVal as Any)
             case "long":
                 let strVal = Int64(value)
                 result[column.name] = strVal
-                recordRow.append(strVal! as Any)
-                break
+                recordRow.append(strVal as Any)
             case "double":
                 let strVal = Double(value)
                 result[column.name] = strVal
-                recordRow.append(strVal! as Any)
-                break
-            case "string":
-                result[column.name] = value
-                recordRow.append(value)
-                break
+                recordRow.append(strVal as Any)
             case "dateTime:RFC3339", "dateTime:RFC3339Nano":
                 let strVal = CodableHelper.dateFormatter.date(from: value)
                 result[column.name] = strVal
-                recordRow.append(strVal! as Any)
-                break
+                recordRow.append(strVal as Any)
             case "base64Binary":
                 let strVal = Data(base64Encoded: value)
                 result[column.name] = strVal
-                recordRow.append(strVal! as Any)
-                break
+                recordRow.append(strVal as Any)
             case "duration":
                 let strVal = Int64(value)
                 result[column.name] = strVal
-                recordRow.append(strVal! as Any)
-                break
+                recordRow.append(strVal as Any)
             default:
                 result[column.name] = value
                 recordRow.append(value as Any)
             }
         }
-
         return QueryAPI.FluxRecord(values: values, row: recordRow)
     }
 }

@@ -476,20 +476,20 @@ final class FluxCSVParserTests: XCTestCase {
 
     func testParseDuplicateColumnNames() throws {
         let data = """
-                    #datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,string,string,double
-                    #group,false,false,true,true,false,true,true,false
-                    #default,_result,,,,,,,
-                    ,result,table,_start,_stop,_time,_measurement,location,result
-                    ,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:33.746Z,my_measurement,Prague,25.3
-                    ,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:39.299Z,my_measurement,Prague,25.3
-                    ,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:40.454Z,my_measurement,Prague,25.3
+                   #datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,string,double,string
+                   #group,false,false,true,true,false,true,false,false
+                   #default,_result,,,,,,,
+                   ,result,table,_start,_stop,_time,_measurement,result,table
+                   ,,0,2022-10-12T08:36:55.358106426Z,2022-10-12T08:37:55.358106426Z,2022-10-12T08:37:55.316995385Z,point,25.3,my-table
+                   ,,0,2022-10-12T08:36:55.358106426Z,2022-10-12T08:37:55.358106426Z,2022-10-12T08:37:55.329323051Z,point,25.3,my-table
+                   ,,0,2022-10-12T08:36:55.358106426Z,2022-10-12T08:37:55.358106426Z,2022-10-12T08:37:55.336790801Z,point,25.3,my-table
 
                    """
-        let records = try parse_to_records(data: data, responseMode: .onlyNames)
+        let records = try parse_to_records(data: data, responseMode: .full)
         XCTAssertEqual(3, records.count)
-        XCTAssertEqual(7, records[0].values.count)
+        XCTAssertEqual(6, records[0].values.count)
         XCTAssertEqual(8, records[0].row.count)
-        XCTAssertEqual(25.3, records[0].row[7] as? Double)
+        XCTAssertEqual(25.3, records[0].row[6] as? Double)
     }
 
     // swiftlint:enable line_length trailing_whitespace

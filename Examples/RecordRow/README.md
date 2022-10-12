@@ -50,19 +50,19 @@ Using 'FluxRecord.row' in case of duplicated column names in response.
 ## Expected output
 
 ```bash
-The response contains columns with duplicated names: table, result 
+The response contains columns with duplicated names: table, result
 You should use the 'FluxRecord.row' to access your data instead of 'FluxRecord.values' dictionary.
 ------------------------------------------ FluxRecord.values ------------------------------------------
-_measurement: point, _start: 2022-10-11 16:38:30 +0000, _stop: 2022-10-11 16:39:30 +0000, _time: 2022-10-11 16:39:30 +0000, result: 1.0, table: my-table
-_measurement: point, _start: 2022-10-11 16:38:30 +0000, _stop: 2022-10-11 16:39:30 +0000, _time: 2022-10-11 16:39:30 +0000, result: 2.0, table: my-table
-_measurement: point, _start: 2022-10-11 16:38:30 +0000, _stop: 2022-10-11 16:39:30 +0000, _time: 2022-10-11 16:39:30 +0000, result: 3.0, table: my-table
-_measurement: point, _start: 2022-10-11 16:38:30 +0000, _stop: 2022-10-11 16:39:30 +0000, _time: 2022-10-11 16:39:30 +0000, result: 4.0, table: my-table
-_measurement: point, _start: 2022-10-11 16:38:30 +0000, _stop: 2022-10-11 16:39:30 +0000, _time: 2022-10-11 16:39:30 +0000, result: 5.0, table: my-table
+_measurement: point, _start: 2022-10-12 09:24:33 +0000, _stop: 2022-10-12 09:25:33 +0000, _time: 2022-10-12 09:25:33 +0000, result: 1.0, table: my-table
+_measurement: point, _start: 2022-10-12 09:24:33 +0000, _stop: 2022-10-12 09:25:33 +0000, _time: 2022-10-12 09:25:33 +0000, result: 2.0, table: my-table
+_measurement: point, _start: 2022-10-12 09:24:33 +0000, _stop: 2022-10-12 09:25:33 +0000, _time: 2022-10-12 09:25:33 +0000, result: 3.0, table: my-table
+_measurement: point, _start: 2022-10-12 09:24:33 +0000, _stop: 2022-10-12 09:25:33 +0000, _time: 2022-10-12 09:25:33 +0000, result: 4.0, table: my-table
+_measurement: point, _start: 2022-10-12 09:24:33 +0000, _stop: 2022-10-12 09:25:33 +0000, _time: 2022-10-12 09:25:33 +0000, result: 5.0, table: my-table
 -------------------------------------------- FluxRecord.row -------------------------------------------
-_result, 0, 2022-10-11 16:38:30 +0000, 2022-10-11 16:39:30 +0000, 2022-10-11 16:39:30 +0000, point, 1.0, my-table
-_result, 0, 2022-10-11 16:38:30 +0000, 2022-10-11 16:39:30 +0000, 2022-10-11 16:39:30 +0000, point, 2.0, my-table
-_result, 0, 2022-10-11 16:38:30 +0000, 2022-10-11 16:39:30 +0000, 2022-10-11 16:39:30 +0000, point, 3.0, my-table
-_result, 0, 2022-10-11 16:38:30 +0000, 2022-10-11 16:39:30 +0000, 2022-10-11 16:39:30 +0000, point, 4.0, my-table
-_result, 0, 2022-10-11 16:38:30 +0000, 2022-10-11 16:39:30 +0000, 2022-10-11 16:39:30 +0000, point, 5.0, my-table
+_result, Optional(0), Optional(2022-10-12 09:24:33 +0000), Optional(2022-10-12 09:25:33 +0000), Optional(2022-10-12 09:25:33 +0000), point, Optional(1.0), my-table
+_result, Optional(0), Optional(2022-10-12 09:24:33 +0000), Optional(2022-10-12 09:25:33 +0000), Optional(2022-10-12 09:25:33 +0000), point, Optional(2.0), my-table
+_result, Optional(0), Optional(2022-10-12 09:24:33 +0000), Optional(2022-10-12 09:25:33 +0000), Optional(2022-10-12 09:25:33 +0000), point, Optional(3.0), my-table
+_result, Optional(0), Optional(2022-10-12 09:24:33 +0000), Optional(2022-10-12 09:25:33 +0000), Optional(2022-10-12 09:25:33 +0000), point, Optional(4.0), my-table
+_result, Optional(0), Optional(2022-10-12 09:24:33 +0000), Optional(2022-10-12 09:25:33 +0000), Optional(2022-10-12 09:25:33 +0000), point, Optional(5.0), my-table
 
 ```

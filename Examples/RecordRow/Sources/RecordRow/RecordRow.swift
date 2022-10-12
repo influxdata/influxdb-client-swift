@@ -48,6 +48,7 @@ extension RecordRow {
                     |> filter(fn: (r) => (r["_measurement"] == "point"))
                     |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
                     """
+
         let records = try await client.queryAPI.query(query: query)
 
         //

@@ -189,10 +189,10 @@ public class QueryAPI {
                          responseQueue: DispatchQueue = .main,
                          completion: @escaping (_ response: Data?, _ error: InfluxDBClient.InfluxDBError?) -> Void) {
         self.queryRaw(query: query,
-                org: org,
-                dialect: dialect,
-                params: params,
-                responseQueue: responseQueue) { result -> Void in
+                      org: org,
+                      dialect: dialect,
+                      params: params,
+                      responseQueue: responseQueue) { result -> Void in
             switch result {
             case let .success(data):
                 completion(data, nil)
@@ -252,10 +252,10 @@ public class QueryAPI {
                          responseQueue: DispatchQueue = .main) -> AnyPublisher<Data, InfluxDBClient.InfluxDBError> {
         Future<Data, InfluxDBClient.InfluxDBError> { promise in
             self.queryRaw(query: query,
-                    org: org,
-                    dialect: dialect,
-                    params: params,
-                    responseQueue: responseQueue) { result -> Void in
+                          org: org,
+                          dialect: dialect,
+                          params: params,
+                          responseQueue: responseQueue) { result -> Void in
                 switch result {
                 case let .success(data):
                     promise(.success(data))
@@ -344,7 +344,7 @@ extension QueryAPI {
             self.row = row
         }
 
-        public static func ==(lhs: FluxRecord, rhs: FluxRecord) -> Bool {
+        public static func == (lhs: FluxRecord, rhs: FluxRecord) -> Bool {
             NSDictionary(dictionary: lhs.values).isEqual(rhs.values)
         }
     }
