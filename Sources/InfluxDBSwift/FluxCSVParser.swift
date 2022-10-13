@@ -62,8 +62,12 @@ internal class FluxCSVParser {
             default:
                 if startNewTable {
                     if responseMode == .onlyNames && table?.columns.isEmpty ?? true {
-                        groups = row.map { _ in "false" }
-                        try addDatatype(row: row.map { _ in "string" })
+                        groups = row.map { _ in
+                            "false"
+                        }
+                        try addDatatype(row: row.map { _ in
+                            "string"
+                        })
                     }
                     try addGroups()
                     try addNames(row: row)
@@ -123,13 +127,21 @@ internal class FluxCSVParser {
             let column: QueryAPI.FluxColumn = table.columns[$0.offset]
             column.name = $0.element
         }
+
+        let duplicates = Dictionary(grouping: table.columns.compactMap { $0.name }) { $0 }.filter { $1.count > 1 }.keys
+        if !duplicates.isEmpty {
+            print("""
+                  The response contains columns with duplicated names: \(duplicates.joined(separator: ", "))
+                  You should use the 'FluxRecord.row' to access your data instead of 'FluxRecord.values' dictionary.
+                  """)
+        }
     }
 
     private func parseRow(row: [String]) throws -> QueryAPI.FluxRecord {
         guard let table = table else {
             throw InfluxDBClient.InfluxDBError.generic(Self.errorMessage)
         }
-
+        var recordRow: [Any] = Array()
         let values: [String: Decodable] = table.columns.reduce(into: [String: Decodable]()) { result, column in
             var value: String = row[column.index + 1]
             if value.isEmpty {
@@ -155,9 +167,9 @@ internal class FluxCSVParser {
             default:
                 result[column.name] = value
             }
+            recordRow.append(result[column.name] ?? "" as Any)
         }
-
-        return QueryAPI.FluxRecord(values: values)
+        return QueryAPI.FluxRecord(values: values, row: recordRow)
     }
 }
 

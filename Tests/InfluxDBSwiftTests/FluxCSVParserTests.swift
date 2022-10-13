@@ -237,8 +237,9 @@ final class FluxCSVParserTests: XCTestCase {
 
         XCTAssertEqual(10, tuples[0].table.columns.count)
         XCTAssertEqual(2, tuples[0].table.columns.filter {
-            $0.group
-        }.count)
+                    $0.group
+        }
+                .count)
     }
 
     func testUnknownTypeAsString() throws {
@@ -471,6 +472,24 @@ final class FluxCSVParserTests: XCTestCase {
         XCTAssertEqual("0", records[0].values["table"] as? String)
         XCTAssertEqual("11", records[0].values["value1"] as? String)
         XCTAssertEqual("west", records[0].values["region"] as? String)
+    }
+
+    func testParseDuplicateColumnNames() throws {
+        let data = """
+                   #datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,string,double,string
+                   #group,false,false,true,true,false,true,false,false
+                   #default,_result,,,,,,,
+                   ,result,table,_start,_stop,_time,_measurement,result,table
+                   ,,0,2022-10-12T08:36:55.358106426Z,2022-10-12T08:37:55.358106426Z,2022-10-12T08:37:55.316995385Z,point,25.3,my-table
+                   ,,0,2022-10-12T08:36:55.358106426Z,2022-10-12T08:37:55.358106426Z,2022-10-12T08:37:55.329323051Z,point,25.3,my-table
+                   ,,0,2022-10-12T08:36:55.358106426Z,2022-10-12T08:37:55.358106426Z,2022-10-12T08:37:55.336790801Z,point,25.3,my-table
+
+                   """
+        let records = try parse_to_records(data: data, responseMode: .full)
+        XCTAssertEqual(3, records.count)
+        XCTAssertEqual(6, records[0].values.count)
+        XCTAssertEqual(8, records[0].row.count)
+        XCTAssertEqual(25.3, records[0].row[6] as? Double)
     }
 
     // swiftlint:enable line_length trailing_whitespace

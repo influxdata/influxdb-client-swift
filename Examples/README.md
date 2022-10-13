@@ -16,4 +16,5 @@
 - [AsyncAwait](AsyncAwait#asyncawait) - How to use `async/await` with the InfluxDB client.
 - [InfluxDBStatus](InfluxDBStatus#influxdbstatus) - This is an example how to check status of InfluxDB
 - [InvokableScripts](InvokableScripts#invokablescripts) - How to use Invokable scripts Cloud API to create custom endpoints that query data
-  
+- [RecordRow](RecordRow#recordrow) - How to use `FluxRecord.row` instead of `FluxRecord.values`,
+  in case of duplicity column names  

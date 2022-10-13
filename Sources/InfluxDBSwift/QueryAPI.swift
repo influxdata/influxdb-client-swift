@@ -131,7 +131,7 @@ public class QueryAPI {
                       org: String? = nil,
                       params: [String: String]? = nil,
                       responseQueue: DispatchQueue = .main)
-                    -> AnyPublisher<FluxRecordCursor, InfluxDBClient.InfluxDBError> {
+            -> AnyPublisher<FluxRecordCursor, InfluxDBClient.InfluxDBError> {
         Future<FluxRecordCursor, InfluxDBClient.InfluxDBError> { promise in
             self.query(query: query, org: org, params: params, responseQueue: responseQueue) { result -> Void in
                 switch result {
@@ -141,7 +141,8 @@ public class QueryAPI {
                     promise(.failure(error))
                 }
             }
-        }.eraseToAnyPublisher()
+        }
+                .eraseToAnyPublisher()
     }
     #endif
 
@@ -262,7 +263,8 @@ public class QueryAPI {
                     promise(.failure(error))
                 }
             }
-        }.eraseToAnyPublisher()
+        }
+                .eraseToAnyPublisher()
     }
     #endif
 
@@ -330,11 +332,16 @@ extension QueryAPI {
         /// The list of values in Record
         public let values: [String: Decodable]
 
+        /// The array of record's columns
+        public let row: [Any]
+
         /// Initialize records with values.
         ///
         /// - Parameter values: record values
-        public init(values: [String: Decodable]) {
+        ///             row: record's columns
+        public init(values: [String: Decodable], row: [Any]) {
             self.values = values
+            self.row = row
         }
 
         public static func == (lhs: FluxRecord, rhs: FluxRecord) -> Bool {
