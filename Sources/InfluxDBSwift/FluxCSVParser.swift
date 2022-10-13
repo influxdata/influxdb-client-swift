@@ -143,40 +143,31 @@ internal class FluxCSVParser {
         }
         var recordRow: [Any] = Array()
         let values: [String: Decodable] = table.columns.reduce(into: [String: Decodable]()) { result, column in
-            let value: String = row[column.index + 1].isEmpty ? column.defaultValue : row[column.index + 1]
+            var value: String = row[column.index + 1]
+            if value.isEmpty {
+                value = column.defaultValue
+            }
             switch column.dataType {
             case "boolean":
-                let strVal = (value as NSString).boolValue
-                result[column.name] = strVal
-                recordRow.append(strVal as Any)
+                result[column.name] = (value as NSString).boolValue
             case "unsignedLong":
-                let strVal = UInt64(value)
-                result[column.name] = strVal
-                recordRow.append(strVal as Any)
+                result[column.name] = UInt64(value)
             case "long":
-                let strVal = Int64(value)
-                result[column.name] = strVal
-                recordRow.append(strVal as Any)
+                result[column.name] = Int64(value)
             case "double":
-                let strVal = Double(value)
-                result[column.name] = strVal
-                recordRow.append(strVal as Any)
+                result[column.name] = Double(value)
+            case "string":
+                result[column.name] = value
             case "dateTime:RFC3339", "dateTime:RFC3339Nano":
-                let strVal = CodableHelper.dateFormatter.date(from: value)
-                result[column.name] = strVal
-                recordRow.append(strVal as Any)
+                result[column.name] = CodableHelper.dateFormatter.date(from: value)
             case "base64Binary":
-                let strVal = Data(base64Encoded: value)
-                result[column.name] = strVal
-                recordRow.append(strVal as Any)
+                result[column.name] = Data(base64Encoded: value)
             case "duration":
-                let strVal = Int64(value)
-                result[column.name] = strVal
-                recordRow.append(strVal as Any)
+                result[column.name] = Int64(value)
             default:
                 result[column.name] = value
-                recordRow.append(value as Any)
             }
+            recordRow.append(result[column.name] ?? "" as Any)
         }
         return QueryAPI.FluxRecord(values: values, row: recordRow)
     }
