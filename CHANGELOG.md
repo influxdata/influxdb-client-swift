@@ -1,4 +1,4 @@
-## 1.5.0 [unreleased]
+## 1.5.0 [2022-10-27]
 
 ### Features
 1. [#57](https://github.com/influxdata/influxdb-client-swift/pull/57): Add `FluxRecord.row` which stores response data in a array
