@@ -25,11 +25,11 @@ cd "${SCRIPT_PATH}"/ || exit
 mvn org.openapitools:openapi-generator-maven-plugin:generate
 
 #### sync generated swift files to src
-mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/ || true
-mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/ || true
-mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/ || true
-mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/ || true
-mkdir "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/ || true
+mkdir -p "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/
+mkdir -p "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/
+mkdir -p "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/
+mkdir -p "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/
+mkdir -p "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 
 ## delete old sources
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/APIHelper.swift
@@ -41,7 +41,7 @@ rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/Models/*.swift
 rm -f "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/*.swift
 
 ## copy apis
-cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/AuthorizationsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
+cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/AuthorizationsAPITokensAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/AuthorizationsAPI.swift
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/BucketsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/DBRPsAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
 cp -r "${SCRIPT_PATH}"/generated/InfluxDB2/Classes/OpenAPIs/APIs/HealthAPI.swift "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/
@@ -162,6 +162,7 @@ sed -i 's/Void?/[String: String]?/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApi
 sed -i 's/.success/let .success(response)/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/PingAPI.swift
 sed -i 's/completion(()/completion(response.header/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/PingAPI.swift
 sed -i 's/returning: ()/returning: response.header/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/PingAPI.swift
+sed -i 's/AuthorizationsAPITokensAPI/AuthorizationsAPI/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwiftApis/Generated/APIs/AuthorizationsAPI.swift
 sed -i 's/extern: File? = nil, //' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i '/self.extern = extern/d' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
 sed -i 's/Any/String/' "${SCRIPT_PATH}"/../Sources/InfluxDBSwift/Generated/Models/Query.swift
