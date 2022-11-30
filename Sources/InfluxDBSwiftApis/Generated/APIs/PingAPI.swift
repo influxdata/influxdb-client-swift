@@ -19,7 +19,7 @@ public class PingAPI {
     }
 
     /**
-     Checks the status of InfluxDB instance and version of InfluxDB.
+     Get the status of the instance
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -37,7 +37,7 @@ public class PingAPI {
 
     #if swift(>=5.5)
     /**
-     Checks the status of InfluxDB instance and version of InfluxDB.
+     Get the status of the instance
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -58,8 +58,9 @@ public class PingAPI {
     #endif
 
     /**
-     Checks the status of InfluxDB instance and version of InfluxDB.
+     Get the status of the instance
      - GET /ping
+     - Retrieves the status and InfluxDB version of the instance.  Use this endpoint to monitor uptime for the InfluxDB instance. The response returns a HTTP `204` status code to inform you the instance is available.  #### InfluxDB Cloud  - Isn't versioned and doesn't return `X-Influxdb-Version` in the headers.  #### Related guides  - [Influx ping](https://docs.influxdata.com/influxdb/latest/reference/cli/influx/ping/) 
      - responseHeaders: [X-Influxdb-Build(String), X-Influxdb-Version(Int)]
      - returns: RequestBuilder<Void> 
      */
@@ -76,7 +77,7 @@ public class PingAPI {
     }
 
     /**
-     Checks the status of InfluxDB instance and version of InfluxDB.
+     Get the status of the instance
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -94,7 +95,7 @@ public class PingAPI {
 
     #if swift(>=5.5)
     /**
-     Checks the status of InfluxDB instance and version of InfluxDB.
+     Get the status of the instance
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -115,8 +116,9 @@ public class PingAPI {
     #endif
 
     /**
-     Checks the status of InfluxDB instance and version of InfluxDB.
+     Get the status of the instance
      - HEAD /ping
+     - Returns the status and InfluxDB version of the instance.  Use this endpoint to monitor uptime for the InfluxDB instance. The response returns a HTTP `204` status code to inform you the instance is available.  #### InfluxDB Cloud  - Isn't versioned and doesn't return `X-Influxdb-Version` in the headers.  #### Related guides  - [Influx ping](https://docs.influxdata.com/influxdb/latest/reference/cli/influx/ping/) 
      - responseHeaders: [X-Influxdb-Build(String), X-Influxdb-Version(Int)]
      - returns: RequestBuilder<Void> 
      */
