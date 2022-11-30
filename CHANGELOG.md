@@ -1,5 +1,8 @@
 ## 1.6.0 [unreleased]
 
+### Others
+1. [#60](https://github.com/influxdata/influxdb-client-swift/pull/60): Update generated `PingAPI`
+
 ## 1.5.0 [2022-10-27]
 
 ### Features
