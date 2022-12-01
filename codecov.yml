@@ -1,6 +1,0 @@
-ignore:
-  - "Tests/*"
-  - "Tests/**/*"
-  - "Sources/InfluxDBSwift/Generated/*"
-  - "Sources/InfluxDBSwiftApis/Generated/*"
-  - "Sources/InfluxDBSwiftApis/Generated/**/*"

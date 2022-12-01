@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>influxdb_client_swift  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="influxdb_client_swift  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+          influxdb_client_swift Docs
+        </a>
+        
+      </p>
+    
+      <div class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </div>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/influxdata/influxdb-client-swift">
+            <img class="header-icon" src="img/gh.png" alt="GitHub"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">influxdb_client_swift Reference</a>
+      <img class="carat" src="img/carat.png" alt=""/>
+      influxdb_client_swift  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Client.html">Client</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDBClient.html">InfluxDBClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDBClient/InfluxDBOptions.html">– InfluxDBOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDBClient/InfluxDBError.html">– InfluxDBError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDBClient/TimestampPrecision.html">– TimestampPrecision</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDBClient/HTTPLogger.html">– HTTPLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDBClient/Point.html">– Point</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDBClient/PointSettings.html">– PointSettings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/WriteAPI.html">WriteAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/QueryAPI.html">QueryAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/QueryAPI/FluxTable.html">– FluxTable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/QueryAPI/FluxColumn.html">– FluxColumn</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/QueryAPI/FluxRecord.html">– FluxRecord</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/QueryAPI/FluxRecordCursor.html">– FluxRecordCursor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DeleteAPI.html">DeleteAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Query.html">Query</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Query/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Dialect.html">Dialect</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Dialect/Annotations.html">– Annotations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Dialect/DateTimeFormat.html">– DateTimeFormat</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DeletePredicateRequest.html">DeletePredicateRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="APIs.html">APIs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API.html">InfluxDB2API</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/AuthorizationsAPI.html">– AuthorizationsAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/BucketsAPI.html">– BucketsAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/DBRPsAPI.html">– DBRPsAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/HealthAPI.html">– HealthAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/LabelsAPI.html">– LabelsAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/OrganizationsAPI.html">– OrganizationsAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/PingAPI.html">– PingAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/ReadyAPI.html">– ReadyAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/ScraperTargetsAPI.html">– ScraperTargetsAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/SecretsAPI.html">– SecretsAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/SetupAPI.html">– SetupAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/SourcesAPI.html">– SourcesAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/TasksAPI.html">– TasksAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/UsersAPI.html">– UsersAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InfluxDB2API/VariablesAPI.html">– VariablesAPI</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="APIs%20%2F%20Models.html">APIs / Models</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AddResourceMemberRequestBody.html">AddResourceMemberRequestBody</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Authorization.html">Authorization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Authorization/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AuthorizationAllOfLinks.html">AuthorizationAllOfLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AuthorizationAllOfLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Authorizations.html">Authorizations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AuthorizationUpdateRequest.html">AuthorizationUpdateRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AuthorizationUpdateRequest/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Bucket.html">Bucket</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Bucket/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BucketLinks.html">BucketLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BucketLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Buckets.html">Buckets</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DBRP.html">DBRP</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DBRP/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DBRPUpdate.html">DBRPUpdate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DBRPUpdate/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DBRPs.html">DBRPs</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/HealthCheck.html">HealthCheck</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/HealthCheck/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/IsOnboarding.html">IsOnboarding</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Label.html">Label</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/LabelCreateRequest.html">LabelCreateRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/LabelMapping.html">LabelMapping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/LabelResponse.html">LabelResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/LabelUpdate.html">LabelUpdate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/LabelsResponse.html">LabelsResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Links.html">Links</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Links/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/LogEvent.html">LogEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Logs.html">Logs</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/OnboardingRequest.html">OnboardingRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/OnboardingResponse.html">OnboardingResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Organization.html">Organization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Organization/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Organizations.html">Organizations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/OrganizationLinks.html">OrganizationLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/OrganizationLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PasswordResetBody.html">PasswordResetBody</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Permission.html">Permission</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Permission/Action.html">– Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PostBucketRequest.html">PostBucketRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Ready.html">Ready</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Ready/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Resource.html">Resource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Resource/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceMember.html">ResourceMember</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceMember/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceMember/Role.html">– Role</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceMembers.html">ResourceMembers</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceOwner.html">ResourceOwner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceOwner/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceOwner/Role.html">– Role</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceOwners.html">ResourceOwners</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/RetentionRule.html">RetentionRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/RetentionRule/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Run.html">Run</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Run/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/RunLinks.html">RunLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/RunLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/RunManually.html">RunManually</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Runs.html">Runs</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScraperTargetRequest.html">ScraperTargetRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScraperTargetRequest/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScraperTargetResponse.html">ScraperTargetResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScraperTargetResponse/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScraperTargetResponseAllOfLinks.html">ScraperTargetResponseAllOfLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScraperTargetResponseAllOfLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScraperTargetResponses.html">ScraperTargetResponses</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SecretKeysResponse.html">SecretKeysResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SecretKeysResponseAllOfLinks.html">SecretKeysResponseAllOfLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SecretKeysResponseAllOfLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SecretKeys.html">SecretKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Source.html">Source</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Source/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Source/Languages.html">– Languages</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Source/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SourceLinks.html">SourceLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SourceLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Sources.html">Sources</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Task.html">Task</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Task/LastRunStatus.html">– LastRunStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/TaskCreateRequest.html">TaskCreateRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/TaskLinks.html">TaskLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/TaskLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/TaskUpdateRequest.html">TaskUpdateRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/TaskStatusType.html">TaskStatusType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Tasks.html">Tasks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/User.html">User</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/User/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Users.html">Users</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Variable.html">Variable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/VariableLinks.html">VariableLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/VariableLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/VariableProperties.html">VariableProperties</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/VariableProperties/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Variables.html">Variables</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Supporting%20Files.html">Supporting Files</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AnyCursor.html">AnyCursor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/APIHelper.html">APIHelper</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CodableHelper.html">CodableHelper</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/Cursor.html">Cursor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DecodableRequestBuilderError.html">DecodableRequestBuilderError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DownloadException.html">DownloadException</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/HTTPMethod.html">HTTPMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/JSONDataEncoding.html">JSONDataEncoding</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/JSONEncodingHelper.html">JSONEncodingHelper</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/KeyedDecodingContainerProtocol.html">KeyedDecodingContainerProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/KeyedEncodingContainerProtocol.html">KeyedEncodingContainerProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/OpenISO8601DateFormatter.html">OpenISO8601DateFormatter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ParameterEncoding.html">ParameterEncoding</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Response.html">Response</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InvokableScriptsAPI.html">InvokableScriptsAPI</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/SchemaType.html">SchemaType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ScriptLanguage.html">ScriptLanguage</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other%20Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Sequence.html">Sequence</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Set.html">Set</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AuthorizationPostRequest.html">AuthorizationPostRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AuthorizationPostRequest/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DBRPCreate.html">DBRPCreate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DBRPCreate/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DBRPGet.html">DBRPGet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PatchBucketRequest.html">PatchBucketRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PatchOrganizationRequest.html">PatchOrganizationRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PatchRetentionRule.html">PatchRetentionRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PatchRetentionRule/ModelType.html">– ModelType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PostOrganizationRequest.html">PostOrganizationRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceMembersLinks.html">ResourceMembersLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ResourceMembersLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Script.html">Script</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScriptCreateRequest.html">ScriptCreateRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScriptInvocationParams.html">ScriptInvocationParams</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ScriptUpdateRequest.html">ScriptUpdateRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Scripts.html">Scripts</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/UserResponse.html">UserResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/UserResponse/Status.html">– Status</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/UserResponseLinks.html">UserResponseLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/UserResponseLinks/CodingKeys.html">– CodingKeys</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            
+            <h1 id='influxdb-client-swift' class='heading'>influxdb-client-swift</h1>
+
+<p><a href="https://circleci.com/gh/influxdata/influxdb-client-swift"><img src="https://circleci.com/gh/influxdata/influxdb-client-swift.svg?style=svg" alt="CircleCI"></a>
+<a href="https://codecov.io/gh/influxdata/influxdb-client-swift"><img src="https://codecov.io/gh/influxdata/influxdb-client-swift/branch/master/graph/badge.svg" alt="codecov"></a>
+<a href="https://github.com/influxdata/influxdb-client-swift/"><img src="https://img.shields.io/badge/platform-macOS%20%7C%20iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux-blue.svg" alt="Platforms"></a>
+<a href="https://github.com/influxdata/influxdb-client-swift/blob/master/LICENSE"><img src="https://img.shields.io/github/license/influxdata/influxdb-client-swift.svg" alt="License"></a>
+<a href="https://influxdata.github.io/influxdb-client-swift/"><img src="https://img.shields.io/badge/docs-latest-blue" alt="Documentation"></a>
+<a href="https://github.com/influxdata/influxdb-client-swift/issues"><img src="https://img.shields.io/github/issues-raw/influxdata/influxdb-client-swift.svg" alt="GitHub issues"></a>
+<a href="https://github.com/influxdata/influxdb-client-swift/pulls"><img src="https://img.shields.io/github/issues-pr-raw/influxdata/influxdb-client-swift.svg" alt="GitHub pull requests"></a>
+<a href="https://www.influxdata.com/slack"><img src="https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social" alt="Slack Status"></a></p>
+
+<p>This repository contains the reference Swift client for the InfluxDB 2.x.</p>
+
+<ul>
+<li><a href="#features">Features</a></li>
+<li><a href="#supported-platforms">Supported Platforms</a></li>
+<li><a href="#installation">Installation</a>
+
+<ul>
+<li><a href="#swift-package-manager">Swift Package Manager</a></li>
+</ul></li>
+<li><a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#creating-a-client">Creating a client</a></li>
+<li><a href="#writes">Writing data</a></li>
+<li><a href="#queries">Querying data</a></li>
+<li><a href="#delete-data">Delete data</a></li>
+<li><a href="#management-api">Management API</a></li>
+</ul></li>
+<li><a href="#advanced-usage">Advanced Usage</a>
+
+<ul>
+<li><a href="#default-tags">Default Tags</a></li>
+<li><a href="#proxy-and-redirects">Proxy and redirects</a></li>
+</ul></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+<h2 id='documentation' class='heading'>Documentation</h2>
+
+<p>This section contains links to the client library documentation.</p>
+
+<ul>
+<li><a href="https://docs.influxdata.com/influxdb/latest/api-guide/client-libraries/">Product documentation</a>, <a href="#installation">Getting Started</a></li>
+<li><a href="Examples/README.md#examples">Examples</a></li>
+<li><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDBClient.html">API Reference</a></li>
+<li><a href="CHANGELOG.md">Changelog</a></li>
+</ul>
+<h2 id='features' class='heading'>Features</h2>
+
+<p>InfluxDB 2.x client consists of two packages</p>
+
+<ul>
+<li><code>InfluxDBSwift</code>
+
+<ul>
+<li>Querying data using the Flux language</li>
+<li>Writing data</li>
+<li>batched in chunks on background</li>
+<li>automatic retries on write failures</li>
+</ul></li>
+<li><code>InfluxDBSwiftApis</code>
+
+<ul>
+<li>provides all other InfluxDB 2.x APIs for managing</li>
+<li>health check</li>
+<li>sources, buckets</li>
+<li>tasks</li>
+<li>authorizations</li>
+<li>&hellip;</li>
+<li>built on top of <code>InfluxDBSwift</code></li>
+</ul></li>
+</ul>
+<h2 id='supported-platforms' class='heading'>Supported Platforms</h2>
+
+<p>This package requires Swift 5 and Xcode 12+.</p>
+
+<ul>
+<li>iOS 14.0+</li>
+<li>macOS 11.0+</li>
+<li>tvOS 14.0+</li>
+<li>watchOS 7.0+</li>
+<li>Linux</li>
+</ul>
+<h2 id='installation' class='heading'>Installation</h2>
+<h3 id='swift-package-manager' class='heading'>Swift Package Manager</h3>
+
+<p>Add this line to your <code>Package.swift</code> :</p>
+<pre class="highlight swift"><code><span class="c1">// swift-tools-version:5.3</span>
+<span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"MyPackage"</span><span class="p">,</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"influxdb-client-swift"</span><span class="p">,</span> <span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/influxdata/influxdb-client-swift"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"1.6.0"</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"MyModule"</span><span class="p">,</span> <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+          <span class="o">.</span><span class="nf">product</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"InfluxDBSwift"</span><span class="p">,</span> <span class="nv">package</span><span class="p">:</span> <span class="s">"influxdb-client-swift"</span><span class="p">),</span>
+          <span class="c1">// or InfluxDBSwiftApis for management API</span>
+          <span class="o">.</span><span class="nf">product</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"InfluxDBSwiftApis"</span><span class="p">,</span> <span class="nv">package</span><span class="p">:</span> <span class="s">"influxdb-client-swift"</span><span class="p">)</span>
+        <span class="p">])</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</code></pre>
+<h2 id='usage' class='heading'>Usage</h2>
+<div class="aside aside-important">
+    <p class="aside-title">Important</p>
+    <p>You should call <code>close()</code> at the end of your application to release allocated resources.</p>
+
+</div>
+<h3 id='creating-a-client' class='heading'>Creating a client</h3>
+
+<p>Specify <strong>url</strong> and <strong>token</strong> via parameters:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"http://localhost:8086"</span><span class="p">,</span> <span class="nv">token</span><span class="p">:</span> <span class="s">"my-token"</span><span class="p">)</span>
+
+<span class="o">...</span>
+
+<span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+</code></pre>
+<h4 id='client-options' class='heading'>Client Options</h4>
+
+<table><thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>bucket</td>
+<td>Default destination bucket for writes</td>
+<td>String</td>
+<td>none</td>
+</tr>
+<tr>
+<td>org</td>
+<td>Default organization bucket for writes</td>
+<td>String</td>
+<td>none</td>
+</tr>
+<tr>
+<td>precision</td>
+<td>Default precision for the unix timestamps within the body line-protocol</td>
+<td>TimestampPrecision</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>timeoutIntervalForRequest</td>
+<td>The timeout interval to use when waiting for additional data.</td>
+<td>TimeInterval</td>
+<td>60 sec</td>
+</tr>
+<tr>
+<td>timeoutIntervalForResource</td>
+<td>The maximum amount of time that a resource request should be allowed to take.</td>
+<td>TimeInterval</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>enableGzip</td>
+<td>Enable Gzip compression for HTTP requests.</td>
+<td>Bool</td>
+<td>false</td>
+</tr>
+<tr>
+<td>debugging</td>
+<td>Enable debugging for HTTP request/response.</td>
+<td>Bool</td>
+<td>false</td>
+</tr>
+</tbody></table>
+<h5 id='configure-default-code-bucket-code-code-organization-code-and-code-precision-code' class='heading'>Configure default <code><a href="Structs/Bucket.html">Bucket</a></code>, <code><a href="Structs/Organization.html">Organization</a></code> and <code>Precision</code></h5>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">options</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span>
+        <span class="nv">bucket</span><span class="p">:</span> <span class="s">"my-bucket"</span><span class="p">,</span>
+        <span class="nv">org</span><span class="p">:</span> <span class="s">"my-org"</span><span class="p">,</span>
+        <span class="nv">precision</span><span class="p">:</span> <span class="o">.</span><span class="n">ns</span><span class="p">)</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"http://localhost:8086"</span><span class="p">,</span> <span class="nv">token</span><span class="p">:</span> <span class="s">"my-token"</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="n">options</span><span class="p">)</span>
+
+<span class="o">...</span>
+
+<span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+</code></pre>
+<h4 id='influxdb-1-8-api-compatibility' class='heading'>InfluxDB 1.8 API compatibility</h4>
+<pre class="highlight swift"><code><span class="n">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span>
+        <span class="nv">url</span><span class="p">:</span> <span class="s">"http://localhost:8086"</span><span class="p">,</span> 
+        <span class="nv">username</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> 
+        <span class="nv">password</span><span class="p">:</span> <span class="s">"pass"</span><span class="p">,</span>
+        <span class="nv">database</span><span class="p">:</span> <span class="s">"my-db"</span><span class="p">,</span> 
+        <span class="nv">retentionPolicy</span><span class="p">:</span> <span class="s">"autogen"</span><span class="p">)</span>
+
+<span class="o">...</span>
+
+<span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+</code></pre>
+<h3 id='writes' class='heading'>Writes</h3>
+
+<p>The WriteApi supports asynchronous writes into InfluxDB 2.x. 
+The results of writes could be handled by <code>(response, error)</code>, <code>Swift.Result</code> or <code>Combine</code>.</p>
+
+<p>The data could be written as:</p>
+
+<ol>
+<li><code>String</code> that is formatted as a InfluxDB&rsquo;s Line Protocol</li>
+<li><a href="/Sources/InfluxDBSwift/Point.swift#L11">Data Point</a> structure</li>
+<li>Tuple style mapping with keys: <code>measurement</code>, <code>tags</code>, <code>fields</code> and <code>time</code></li>
+<li>Array of above items</li>
+</ol>
+
+<p>The following example demonstrates how to write data with Data Point structure. For further information see docs and <a href="/Examples">examples</a>.</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">ArgumentParser</span>
+<span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwift</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwiftApis</span>
+
+<span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">WriteData</span><span class="p">:</span> <span class="kt">AsyncParsableCommand</span> <span class="p">{</span>
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"The name or id of the bucket destination."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">bucket</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"The name or id of the organization destination."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">org</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Authentication token."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"HTTP address of InfluxDB."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">WriteData</span> <span class="p">{</span>
+  <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="p">{</span>
+    <span class="c1">//</span>
+    <span class="c1">// Initialize Client with default Bucket and Organization</span>
+    <span class="c1">//</span>
+    <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span>
+            <span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="nv">token</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+            <span class="nv">options</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span><span class="nv">bucket</span><span class="p">:</span> <span class="n">bucket</span><span class="p">,</span> <span class="nv">org</span><span class="p">:</span> <span class="n">org</span><span class="p">))</span>
+
+    <span class="c1">//</span>
+    <span class="c1">// Record defined as Data Point</span>
+    <span class="c1">//</span>
+    <span class="k">let</span> <span class="nv">recordPoint</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span>
+            <span class="o">.</span><span class="kt">Point</span><span class="p">(</span><span class="s">"demo"</span><span class="p">)</span>
+            <span class="o">.</span><span class="nf">addTag</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"type"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="s">"point"</span><span class="p">)</span>
+            <span class="o">.</span><span class="nf">addField</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"value"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="o">.</span><span class="nf">int</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="c1">//</span>
+    <span class="c1">// Record defined as Data Point with Timestamp</span>
+    <span class="c1">//</span>
+    <span class="k">let</span> <span class="nv">recordPointDate</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span>
+            <span class="o">.</span><span class="kt">Point</span><span class="p">(</span><span class="s">"demo"</span><span class="p">)</span>
+            <span class="o">.</span><span class="nf">addTag</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"type"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="s">"point-timestamp"</span><span class="p">)</span>
+            <span class="o">.</span><span class="nf">addField</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"value"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="o">.</span><span class="nf">int</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+            <span class="o">.</span><span class="nf">time</span><span class="p">(</span><span class="nv">time</span><span class="p">:</span> <span class="o">.</span><span class="nf">date</span><span class="p">(</span><span class="kt">Date</span><span class="p">()))</span>
+
+    <span class="k">try</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="nf">makeWriteAPI</span><span class="p">()</span><span class="o">.</span><span class="nf">write</span><span class="p">(</span><span class="nv">points</span><span class="p">:</span> <span class="p">[</span><span class="n">recordPoint</span><span class="p">,</span> <span class="n">recordPointDate</span><span class="p">])</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"Written data:</span><span class="se">\n\n\(</span><span class="p">[</span><span class="n">recordPoint</span><span class="p">,</span> <span class="n">recordPointDate</span><span class="p">]</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="s">"</span><span class="se">\t</span><span class="s">- </span><span class="se">\(</span><span class="nv">$0</span><span class="se">)</span><span class="s">"</span> <span class="p">}</span><span class="o">.</span><span class="nf">joined</span><span class="p">(</span><span class="nv">separator</span><span class="p">:</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Success!"</span><span class="p">)</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<ul>
+<li>sources - <a href="/Examples/WriteData/Sources/WriteData/WriteData.swift">WriteData/WriteData.swift</a></li>
+</ul>
+<h3 id='queries' class='heading'>Queries</h3>
+
+<p>The result retrieved by <a href="/Sources/InfluxDBSwift/QueryAPI.swift#L62">QueryApi</a> could be formatted as a:</p>
+
+<ol>
+<li>Lazy sequence of <a href="/Sources/InfluxDBSwift/QueryAPI.swift#L258">FluxRecord</a></li>
+<li>Raw query response as a <code>Data</code>.</li>
+</ol>
+<h4 id='query-to-fluxrecord' class='heading'>Query to FluxRecord</h4>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">ArgumentParser</span>
+<span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwift</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwiftApis</span>
+
+<span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">QueryCpu</span><span class="p">:</span> <span class="kt">AsyncParsableCommand</span> <span class="p">{</span>
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"The name or id of the bucket destination."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">bucket</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"The name or id of the organization destination."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">org</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Authentication token."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"HTTP address of InfluxDB."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">QueryCpu</span> <span class="p">{</span>
+  <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="p">{</span>
+    <span class="c1">//</span>
+    <span class="c1">// Initialize Client with default Bucket and Organization</span>
+    <span class="c1">//</span>
+    <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span>
+            <span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="nv">token</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+            <span class="nv">options</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span><span class="nv">bucket</span><span class="p">:</span> <span class="n">bucket</span><span class="p">,</span> <span class="nv">org</span><span class="p">:</span> <span class="n">org</span><span class="p">))</span>
+
+    <span class="c1">// Flux query</span>
+    <span class="k">let</span> <span class="nv">query</span> <span class="o">=</span> <span class="s">"""
+                from(bucket: "</span><span class="p">\(</span><span class="k">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span><span class="s">")
+                    |&gt; range(start: -10m)
+                    |&gt; filter(fn: (r) =&gt; r["</span><span class="n">_measurement</span><span class="s">"] == "</span><span class="n">cpu</span><span class="s">")
+                    |&gt; filter(fn: (r) =&gt; r["</span><span class="n">cpu</span><span class="s">"] == "</span><span class="n">cpu</span><span class="o">-</span><span class="n">total</span><span class="s">")
+                    |&gt; filter(fn: (r) =&gt; r["</span><span class="n">_field</span><span class="s">"] == "</span><span class="n">usage_user</span><span class="s">" or r["</span><span class="n">_field</span><span class="s">"] == "</span><span class="n">usage_system</span><span class="s">")
+                    |&gt; last()
+                """</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Query to execute:</span><span class="se">\n\(</span><span class="n">query</span><span class="se">)\n</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">let</span> <span class="nv">records</span> <span class="o">=</span> <span class="k">try</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">queryAPI</span><span class="o">.</span><span class="nf">query</span><span class="p">(</span><span class="nv">query</span><span class="p">:</span> <span class="n">query</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"Query results:"</span><span class="p">)</span>
+    <span class="k">try</span> <span class="n">records</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="s">" &gt; </span><span class="se">\(</span><span class="nv">$0</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">"_field"</span><span class="p">]</span><span class="o">!</span><span class="se">)</span><span class="s">: </span><span class="se">\(</span><span class="nv">$0</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">"_value"</span><span class="p">]</span><span class="o">!</span><span class="se">)</span><span class="s">"</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<ul>
+<li>sources - <a href="/Examples/QueryCpu/Sources/QueryCpu/QueryCpu.swift">QueryCpu/QueryCpu.swift</a></li>
+</ul>
+<h4 id='query-to-data' class='heading'>Query to Data</h4>
+<pre class="highlight swift"><code><span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">QueryCpuData</span><span class="p">:</span> <span class="kt">AsyncParsableCommand</span> <span class="p">{</span>
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"The name or id of the bucket destination."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">bucket</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"The name or id of the organization destination."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">org</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Authentication token."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"HTTP address of InfluxDB."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">QueryCpuData</span> <span class="p">{</span>
+  <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="p">{</span>
+    <span class="c1">//</span>
+    <span class="c1">// Initialize Client with default Bucket and Organization</span>
+    <span class="c1">//</span>
+    <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span>
+            <span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="nv">token</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+            <span class="nv">options</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span><span class="nv">bucket</span><span class="p">:</span> <span class="n">bucket</span><span class="p">,</span> <span class="nv">org</span><span class="p">:</span> <span class="n">org</span><span class="p">))</span>
+
+    <span class="c1">// Flux query</span>
+    <span class="k">let</span> <span class="nv">query</span> <span class="o">=</span> <span class="s">"""
+                from(bucket: "</span><span class="p">\(</span><span class="k">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span><span class="s">")
+                    |&gt; range(start: -10m)
+                    |&gt; filter(fn: (r) =&gt; r["</span><span class="n">_measurement</span><span class="s">"] == "</span><span class="n">cpu</span><span class="s">")
+                    |&gt; filter(fn: (r) =&gt; r["</span><span class="n">cpu</span><span class="s">"] == "</span><span class="n">cpu</span><span class="o">-</span><span class="n">total</span><span class="s">")
+                    |&gt; filter(fn: (r) =&gt; r["</span><span class="n">_field</span><span class="s">"] == "</span><span class="n">usage_user</span><span class="s">" or r["</span><span class="n">_field</span><span class="s">"] == "</span><span class="n">usage_system</span><span class="s">")
+                    |&gt; last()
+                """</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Query to execute:</span><span class="se">\n\(</span><span class="n">query</span><span class="se">)\n</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">let</span> <span class="nv">response</span> <span class="o">=</span> <span class="k">try</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">queryAPI</span><span class="o">.</span><span class="nf">queryRaw</span><span class="p">(</span><span class="nv">query</span><span class="p">:</span> <span class="n">query</span><span class="p">)</span>
+
+    <span class="k">let</span> <span class="nv">csv</span> <span class="o">=</span> <span class="kt">String</span><span class="p">(</span><span class="nv">decoding</span><span class="p">:</span> <span class="n">response</span><span class="p">,</span> <span class="nv">as</span><span class="p">:</span> <span class="kt">UTF8</span><span class="o">.</span><span class="k">self</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"InfluxDB response: </span><span class="se">\(</span><span class="n">csv</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<ul>
+<li>sources - <a href="/Examples/QueryCpuData/Sources/QueryCpuData/QueryCpuData.swift">QueryCpuData/QueryCpuData.swift</a></li>
+</ul>
+<h4 id='parameterized-queries' class='heading'>Parameterized queries</h4>
+
+<p>InfluxDB Cloud supports <a href="https://docs.influxdata.com/influxdb/cloud/query-data/parameterized-queries/">Parameterized Queries</a>
+that let you dynamically change values in a query using the InfluxDB API. Parameterized queries make Flux queries more
+reusable and can also be used to help prevent injection attacks.</p>
+
+<p>InfluxDB Cloud inserts the params object into the Flux query as a Flux record named <code>params</code>. Use dot or bracket
+notation to access parameters in the <code>params</code> record in your Flux query. Parameterized Flux queries support only <code>int</code>
+, <code>float</code>, and <code>string</code> data types. To convert the supported data types into
+other <a href="https://docs.influxdata.com/influxdb/cloud/query-data/parameterized-queries/#supported-parameter-data-types">Flux basic data types, use Flux type conversion functions</a>.</p>
+
+<p>Parameterized query example:</p>
+
+<blockquote>
+<p>:warning: Parameterized Queries are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.</p>
+</blockquote>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">ArgumentParser</span>
+<span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwift</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwiftApis</span>
+
+<span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">ParameterizedQuery</span><span class="p">:</span> <span class="kt">AsyncParsableCommand</span> <span class="p">{</span>
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"The bucket to query. The name or id of the bucket destination."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">bucket</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span>
+          <span class="nv">help</span><span class="p">:</span> <span class="s">"The organization executing the query. Takes either the `ID` or `Name` interchangeably."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">org</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Authentication token."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"HTTP address of InfluxDB."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">ParameterizedQuery</span> <span class="p">{</span>
+  <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="p">{</span>
+    <span class="c1">// Initialize Client with default Organization</span>
+    <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span>
+            <span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="nv">token</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+            <span class="nv">options</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span><span class="nv">bucket</span><span class="p">:</span> <span class="n">bucket</span><span class="p">,</span> <span class="nv">org</span><span class="p">:</span> <span class="n">org</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="mi">1</span><span class="o">...</span><span class="mi">3</span> <span class="p">{</span>
+      <span class="k">let</span> <span class="nv">point</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span>
+              <span class="o">.</span><span class="kt">Point</span><span class="p">(</span><span class="s">"demo"</span><span class="p">)</span>
+              <span class="o">.</span><span class="nf">addTag</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"type"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="s">"point"</span><span class="p">)</span>
+              <span class="o">.</span><span class="nf">addField</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"value"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="o">.</span><span class="nf">int</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+      <span class="k">try</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="nf">makeWriteAPI</span><span class="p">()</span><span class="o">.</span><span class="nf">write</span><span class="p">(</span><span class="nv">point</span><span class="p">:</span> <span class="n">point</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Flux query</span>
+    <span class="k">let</span> <span class="nv">query</span> <span class="o">=</span> <span class="s">"""
+                from(bucket: params.bucketParam)
+                    |&gt; range(start: -10m)
+                    |&gt; filter(fn: (r) =&gt; r["</span><span class="n">_measurement</span><span class="s">"] == params.measurement)
+                """</span>
+
+    <span class="c1">// Query parameters [String:String]</span>
+    <span class="k">let</span> <span class="nv">queryParams</span> <span class="o">=</span> <span class="p">[</span><span class="s">"bucketParam"</span><span class="p">:</span> <span class="s">"</span><span class="se">\(</span><span class="n">bucket</span><span class="se">)</span><span class="s">"</span><span class="p">,</span> <span class="s">"measurement"</span><span class="p">:</span> <span class="s">"demo"</span><span class="p">]</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Query to execute:</span><span class="se">\n\n\(</span><span class="n">query</span><span class="se">)\n\n\(</span><span class="n">queryParams</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">let</span> <span class="nv">records</span> <span class="o">=</span> <span class="k">try</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">queryAPI</span><span class="o">.</span><span class="nf">query</span><span class="p">(</span><span class="nv">query</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="nv">params</span><span class="p">:</span> <span class="n">queryParams</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Success response...</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">try</span> <span class="n">records</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="s">" &gt; </span><span class="se">\(</span><span class="nv">$0</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">"_field"</span><span class="p">]</span><span class="o">!</span><span class="se">)</span><span class="s">: </span><span class="se">\(</span><span class="nv">$0</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">"_value"</span><span class="p">]</span><span class="o">!</span><span class="se">)</span><span class="s">"</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<ul>
+<li>sources - <a href="/Examples/ParameterizedQuery/Sources/ParameterizedQuery/ParameterizedQuery.swift">ParameterizedQuery/ParameterizedQuery.swift</a></li>
+</ul>
+<h3 id='delete-data' class='heading'>Delete data</h3>
+
+<p>The <a href="https://influxdata.github.io/influxdb-client-swift/Classes/DeleteAPI.html">DeleteAPI</a> supports deletes 
+<a href="https://docs.influxdata.com/influxdb/latest/reference/glossary/#point">points</a> from an InfluxDB bucket. 
+Use the <a href="https://influxdata.github.io/influxdb-client-swift/Structs/DeletePredicateRequest.html">DeletePredicateRequest</a> identifies which points to delete.</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">ArgumentParser</span>
+<span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwift</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwiftApis</span>
+
+<span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">DeleteData</span><span class="p">:</span> <span class="kt">AsyncParsableCommand</span> <span class="p">{</span>
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Specifies the bucket name to delete data from."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">bucket</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span>
+          <span class="nv">help</span><span class="p">:</span> <span class="s">"Specifies the organization name to delete data from."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">org</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Authentication token."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"HTTP address of InfluxDB."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"InfluxQL-like delete predicate statement."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">predicate</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">DeleteData</span> <span class="p">{</span>
+  <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="p">{</span>
+    <span class="c1">// Initialize Client with default Organization</span>
+    <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span>
+            <span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="nv">token</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+            <span class="nv">options</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span><span class="nv">org</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">org</span><span class="p">))</span>
+
+    <span class="c1">// Create DeletePredicateRequest</span>
+    <span class="k">let</span> <span class="nv">predicateRequest</span> <span class="o">=</span> <span class="kt">DeletePredicateRequest</span><span class="p">(</span>
+            <span class="nv">start</span><span class="p">:</span> <span class="kt">Date</span><span class="p">(</span><span class="nv">timeIntervalSince1970</span><span class="p">:</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="nv">stop</span><span class="p">:</span> <span class="kt">Date</span><span class="p">(),</span>
+            <span class="nv">predicate</span><span class="p">:</span> <span class="n">predicate</span><span class="p">)</span>
+
+    <span class="k">try</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">deleteAPI</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="nv">predicate</span><span class="p">:</span> <span class="n">predicateRequest</span><span class="p">,</span> <span class="nv">bucket</span><span class="p">:</span> <span class="n">bucket</span><span class="p">,</span> <span class="nv">org</span><span class="p">:</span> <span class="n">org</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Deleted data by predicate:</span><span class="se">\n\n\t\(</span><span class="n">predicateRequest</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="c1">// Print date after Delete</span>
+    <span class="k">try</span> <span class="k">await</span> <span class="nf">queryData</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">)</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="kd">private</span> <span class="kd">func</span> <span class="nf">queryData</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="p">)</span> <span class="k">async</span> <span class="k">throws</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">query</span> <span class="o">=</span> <span class="s">"""
+                from(bucket: "</span><span class="p">\(</span><span class="n">bucket</span><span class="p">)</span><span class="s">")
+                    |&gt; range(start: 0)
+                    |&gt; filter(fn: (r) =&gt; r["</span><span class="n">_measurement</span><span class="s">"] == "</span><span class="n">server</span><span class="s">")
+                    |&gt; pivot(rowKey:["</span><span class="n">_time</span><span class="s">"], columnKey: ["</span><span class="n">_field</span><span class="s">"], valueColumn: "</span><span class="n">_value</span><span class="s">")
+                """</span>
+
+    <span class="k">let</span> <span class="nv">response</span> <span class="o">=</span> <span class="k">try</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">queryAPI</span><span class="o">.</span><span class="nf">query</span><span class="p">(</span><span class="nv">query</span><span class="p">:</span> <span class="n">query</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Remaining data after delete:</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">try</span> <span class="n">response</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">record</span> <span class="k">in</span>
+      <span class="k">let</span> <span class="nv">provider</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">"provider"</span><span class="p">]</span><span class="o">!</span>
+      <span class="k">let</span> <span class="nv">production</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">"production"</span><span class="p">]</span>
+      <span class="k">let</span> <span class="nv">app</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">"app"</span><span class="p">]</span>
+      <span class="k">return</span> <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\t\(</span><span class="n">provider</span><span class="se">)</span><span class="s">,production=</span><span class="se">\(</span><span class="n">production</span><span class="o">!</span><span class="se">)</span><span class="s">,app=</span><span class="se">\(</span><span class="n">app</span><span class="o">!</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<ul>
+<li>sources - <a href="/Examples/DeleteData/Sources/DeleteData/DeleteData.swift">DeleteData/DeleteData.swift</a></li>
+</ul>
+<h3 id='management-api' class='heading'>Management API</h3>
+
+<p>The client supports following management API:</p>
+
+<table><thead>
+<tr>
+<th></th>
+<th>API docs</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/AuthorizationsAPI.html"><strong>AuthorizationsAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Authorizations">https://docs.influxdata.com/influxdb/latest/api/#tag/Authorizations</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/BucketsAPI.html"><strong>BucketsAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Buckets">https://docs.influxdata.com/influxdb/latest/api/#tag/Buckets</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/DBRPsAPI.html"><strong>DBRPsAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/DBRPs">https://docs.influxdata.com/influxdb/latest/api/#tag/DBRPs</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/HealthAPI.html"><strong>HealthAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Health">https://docs.influxdata.com/influxdb/latest/api/#tag/Health</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/PingAPI.html"><strong>PingAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Ping">https://docs.influxdata.com/influxdb/latest/api/#tag/Ping</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/LabelsAPI.html"><strong>LabelsAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Labels">https://docs.influxdata.com/influxdb/latest/api/#tag/Labels</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/OrganizationsAPI.html"><strong>OrganizationsAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Organizations">https://docs.influxdata.com/influxdb/latest/api/#tag/Organizations</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ReadyAPI.html"><strong>ReadyAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Ready">https://docs.influxdata.com/influxdb/latest/api/#tag/Ready</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/ScraperTargetsAPI.html"><strong>ScraperTargetsAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/ScraperTargets">https://docs.influxdata.com/influxdb/latest/api/#tag/ScraperTargets</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SecretsAPI.html"><strong>SecretsAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Secrets">https://docs.influxdata.com/influxdb/latest/api/#tag/Secrets</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SetupAPI.html"><strong>SetupAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks">https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/SourcesAPI.html"><strong>SourcesAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Sources">https://docs.influxdata.com/influxdb/latest/api/#tag/Sources</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/TasksAPI.html"><strong>TasksAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks">https://docs.influxdata.com/influxdb/latest/api/#tag/Tasks</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/UsersAPI.html"><strong>UsersAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Users">https://docs.influxdata.com/influxdb/latest/api/#tag/Users</a></td>
+</tr>
+<tr>
+<td><a href="https://influxdata.github.io/influxdb-client-swift/Classes/InfluxDB2API/VariablesAPI.html"><strong>VariablesAPI</strong></a></td>
+<td><a href="https://docs.influxdata.com/influxdb/latest/api/#tag/Variables">https://docs.influxdata.com/influxdb/latest/api/#tag/Variables</a></td>
+</tr>
+</tbody></table>
+
+<p>The following example demonstrates how to use a InfluxDB 2.0 Management API to create new bucket. For further information see docs and <a href="/Examples">examples</a>.</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">ArgumentParser</span>
+<span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwift</span>
+<span class="kd">import</span> <span class="kt">InfluxDBSwiftApis</span>
+
+<span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">CreateNewBucket</span><span class="p">:</span> <span class="kt">AsyncParsableCommand</span> <span class="p">{</span>
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"New bucket name."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Duration bucket will retain data."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">retention</span><span class="p">:</span> <span class="kt">Int64</span> <span class="o">=</span> <span class="mi">3600</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Specifies the organization name."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">org</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"Authentication token."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="kd">@Option</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">shortAndLong</span><span class="p">,</span> <span class="nv">help</span><span class="p">:</span> <span class="s">"HTTP address of InfluxDB."</span><span class="p">)</span>
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">CreateNewBucket</span> <span class="p">{</span>
+  <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="p">{</span>
+    <span class="c1">// Initialize Client and API</span>
+    <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="nv">token</span><span class="p">:</span> <span class="n">token</span><span class="p">)</span>
+    <span class="k">let</span> <span class="nv">api</span> <span class="o">=</span> <span class="kt">InfluxDB2API</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">)</span>
+
+    <span class="k">let</span> <span class="nv">orgId</span> <span class="o">=</span> <span class="p">(</span><span class="k">try</span> <span class="k">await</span> <span class="n">api</span><span class="o">.</span><span class="n">organizationsAPI</span><span class="o">.</span><span class="nf">getOrgs</span><span class="p">(</span><span class="nv">org</span><span class="p">:</span> <span class="n">org</span><span class="p">)</span><span class="o">!</span><span class="p">)</span><span class="o">.</span><span class="n">orgs</span><span class="p">?</span><span class="o">.</span><span class="n">first</span><span class="p">?</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="c1">// Bucket configuration</span>
+    <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">PostBucketRequest</span><span class="p">(</span>
+            <span class="nv">orgID</span><span class="p">:</span> <span class="n">orgId</span><span class="o">!</span><span class="p">,</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+            <span class="nv">retentionRules</span><span class="p">:</span> <span class="p">[</span><span class="kt">RetentionRule</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">RetentionRule</span><span class="o">.</span><span class="kt">ModelType</span><span class="o">.</span><span class="n">expire</span><span class="p">,</span> <span class="nv">everySeconds</span><span class="p">:</span> <span class="n">retention</span><span class="p">)])</span>
+
+    <span class="c1">// Create Bucket</span>
+    <span class="k">let</span> <span class="nv">bucket</span> <span class="o">=</span> <span class="k">try</span> <span class="k">await</span> <span class="n">api</span><span class="o">.</span><span class="n">bucketsAPI</span><span class="o">.</span><span class="nf">postBuckets</span><span class="p">(</span><span class="nv">postBucketRequest</span><span class="p">:</span> <span class="n">request</span><span class="p">)</span><span class="o">!</span>
+
+    <span class="c1">// Create Authorization with permission to read/write created bucket</span>
+    <span class="k">let</span> <span class="nv">bucketResource</span> <span class="o">=</span> <span class="kt">Resource</span><span class="p">(</span>
+            <span class="nv">type</span><span class="p">:</span> <span class="kt">Resource</span><span class="o">.</span><span class="kt">ModelType</span><span class="o">.</span><span class="n">buckets</span><span class="p">,</span>
+            <span class="nv">id</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="nv">orgID</span><span class="p">:</span> <span class="n">orgId</span>
+    <span class="p">)</span>
+
+    <span class="c1">// Authorization configuration</span>
+    <span class="k">let</span> <span class="nv">authorizationRequest</span> <span class="o">=</span> <span class="kt">AuthorizationPostRequest</span><span class="p">(</span>
+            <span class="nv">description</span><span class="p">:</span> <span class="s">"Authorization to read/write bucket: </span><span class="se">\(</span><span class="n">name</span><span class="se">)</span><span class="s">"</span><span class="p">,</span>
+            <span class="nv">orgID</span><span class="p">:</span> <span class="n">orgId</span><span class="o">!</span><span class="p">,</span>
+            <span class="nv">permissions</span><span class="p">:</span> <span class="p">[</span>
+              <span class="kt">Permission</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt">Permission</span><span class="o">.</span><span class="kt">Action</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="nv">resource</span><span class="p">:</span> <span class="n">bucketResource</span><span class="p">),</span>
+              <span class="kt">Permission</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt">Permission</span><span class="o">.</span><span class="kt">Action</span><span class="o">.</span><span class="n">write</span><span class="p">,</span> <span class="nv">resource</span><span class="p">:</span> <span class="n">bucketResource</span><span class="p">)</span>
+            <span class="p">])</span>
+
+    <span class="c1">// Create Authorization</span>
+    <span class="k">let</span> <span class="nv">authorization</span> <span class="o">=</span> <span class="k">try</span> <span class="k">await</span> <span class="n">api</span><span class="o">.</span><span class="n">authorizationsAPI</span><span class="o">.</span><span class="nf">postAuthorizations</span><span class="p">(</span><span class="nv">authorizationPostRequest</span><span class="p">:</span> <span class="n">authorizationRequest</span><span class="p">)</span><span class="o">!</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"The bucket: '</span><span class="se">\(</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="se">)</span><span class="s">' is successfully created."</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"The following token could be use to read/write:"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\t\(</span><span class="n">authorization</span><span class="o">.</span><span class="n">token</span><span class="o">!</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<ul>
+<li>sources - <a href="/Examples/CreateNewBucket/Sources/CreateNewBucket/CreateNewBucket.swift">CreateNewBucket/CreateNewBucket.swift</a></li>
+</ul>
+<h2 id='advanced-usage' class='heading'>Advanced Usage</h2>
+<h3 id='default-tags' class='heading'>Default Tags</h3>
+
+<p>Sometimes is useful to store same information in every measurement e.g. <code>hostname</code>, <code>location</code>, <code>customer</code>.
+The client is able to use static value or env variable as a tag value.</p>
+
+<p>The expressions:</p>
+
+<ul>
+<li><code>California Miner</code> - static value</li>
+<li><code>${env.HOST_NAME}</code> - environment property</li>
+</ul>
+<h4 id='example' class='heading'>Example</h4>
+<pre class="highlight swift"><code><span class="n">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span>
+        <span class="nv">url</span><span class="p">:</span> <span class="s">"http://localhost:8086"</span><span class="p">,</span>
+        <span class="nv">token</span><span class="p">:</span> <span class="s">"my-token"</span><span class="p">,</span>
+        <span class="nv">options</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span><span class="nv">bucket</span><span class="p">:</span> <span class="s">"my-bucket"</span><span class="p">,</span> <span class="nv">org</span><span class="p">:</span> <span class="s">"my-org"</span><span class="p">))</span>
+
+<span class="k">let</span> <span class="nv">tuple</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">Point</span><span class="o">.</span><span class="kt">Tuple</span>
+        <span class="o">=</span> <span class="p">(</span><span class="nv">measurement</span><span class="p">:</span> <span class="s">"mem"</span><span class="p">,</span> <span class="nv">tags</span><span class="p">:</span> <span class="p">[</span><span class="s">"tag"</span><span class="p">:</span> <span class="s">"a"</span><span class="p">],</span> <span class="nv">fields</span><span class="p">:</span> <span class="p">[</span><span class="s">"value"</span><span class="p">:</span> <span class="o">.</span><span class="nf">int</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span> <span class="nv">time</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+
+<span class="k">let</span> <span class="nv">records</span><span class="p">:</span> <span class="p">[</span><span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">Point</span><span class="p">(</span><span class="s">"mining"</span><span class="p">)</span>
+                <span class="o">.</span><span class="nf">addTag</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"sensor_state"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="s">"normal"</span><span class="p">)</span>
+                <span class="o">.</span><span class="nf">addField</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"depth"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="o">.</span><span class="nf">int</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+        <span class="n">tuple</span>
+<span class="p">]</span>
+
+<span class="k">let</span> <span class="nv">defaultTags</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">PointSettings</span><span class="p">()</span>
+        <span class="o">.</span><span class="nf">addDefaultTag</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"customer"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="s">"California Miner"</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">addDefaultTag</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"sensor_id"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="s">"${env.SENSOR_ID}"</span><span class="p">)</span>
+
+<span class="k">try</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="nf">makeWriteAPI</span><span class="p">(</span><span class="nv">pointSettings</span><span class="p">:</span> <span class="n">defaultTags</span><span class="p">)</span><span class="o">.</span><span class="nf">writeRecords</span><span class="p">(</span><span class="nv">records</span><span class="p">:</span> <span class="n">records</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Successfully written default tags"</span><span class="p">)</span>
+</code></pre>
+<h5 id='example-output' class='heading'>Example Output</h5>
+<pre class="highlight shell"><code>mining,customer<span class="o">=</span>California<span class="se">\ </span>Miner,sensor_id<span class="o">=</span>123-456-789,sensor_state<span class="o">=</span>normal <span class="nv">depth</span><span class="o">=</span>2i
+mining,customer<span class="o">=</span>California<span class="se">\ </span>Miner,sensor_id<span class="o">=</span>123-456-789,sensor_state<span class="o">=</span>normal <span class="nv">pressure</span><span class="o">=</span>3i
+</code></pre>
+<h3 id='proxy-and-redirects' class='heading'>Proxy and redirects</h3>
+
+<blockquote>
+<p>:warning: The <code>connectionProxyDictionary</code> cannot be defined on <strong>Linux</strong>. You have to set <code>HTTPS_PROXY</code> or <code>HTTP_PROXY</code> system environment.</p>
+</blockquote>
+
+<p>You can configure the client to tunnel requests through an HTTP proxy by <code>connectionProxyDictionary</code> option:</p>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">connectionProxyDictionary</span> <span class="o">=</span> <span class="p">[</span><span class="kt">AnyHashable</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]()</span>
+<span class="n">connectionProxyDictionary</span><span class="p">[</span><span class="n">kCFNetworkProxiesHTTPEnable</span> <span class="k">as</span> <span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">connectionProxyDictionary</span><span class="p">[</span><span class="n">kCFNetworkProxiesHTTPProxy</span> <span class="k">as</span> <span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="s">"localhost"</span>
+<span class="n">connectionProxyDictionary</span><span class="p">[</span><span class="n">kCFNetworkProxiesHTTPPort</span> <span class="k">as</span> <span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3128</span>
+
+<span class="k">let</span> <span class="nv">options</span><span class="p">:</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span>
+        <span class="nv">bucket</span><span class="p">:</span> <span class="s">"my-bucket"</span><span class="p">,</span>
+        <span class="nv">org</span><span class="p">:</span> <span class="s">"my-org"</span><span class="p">,</span>
+        <span class="nv">precision</span><span class="p">:</span> <span class="o">.</span><span class="n">ns</span><span class="p">,</span>
+        <span class="nv">connectionProxyDictionary</span><span class="p">:</span> <span class="n">connectionProxyDictionary</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"http://localhost:8086"</span><span class="p">,</span> <span class="nv">token</span><span class="p">:</span> <span class="s">"my-token"</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="n">options</span><span class="p">)</span>
+</code></pre>
+
+<p>For more info see - <a href="https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1411499-connectionproxydictionary">URLSessionConfiguration.connectionProxyDictionary</a>, <a href="https://developer.apple.com/documentation/cfnetwork/global_proxy_settings_constants/">Global Proxy Settings Constants</a>.</p>
+<h4 id='redirects' class='heading'>Redirects</h4>
+
+<p>Client automatically follows HTTP redirects. You can disable redirects by an <code>urlSessionDelegate</code> configuration:</p>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DisableRedirect</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">URLSessionTaskDelegate</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">urlSession</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">URLSession</span><span class="p">,</span>
+                    <span class="nv">task</span><span class="p">:</span> <span class="kt">URLSessionTask</span><span class="p">,</span>
+                    <span class="n">willPerformHTTPRedirection</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+                    <span class="n">newRequest</span> <span class="nv">request</span><span class="p">:</span> <span class="kt">URLRequest</span><span class="p">,</span>
+                    <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">URLRequest</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">completionHandler</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">let</span> <span class="nv">options</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="o">.</span><span class="kt">InfluxDBOptions</span><span class="p">(</span>
+        <span class="nv">bucket</span><span class="p">:</span> <span class="s">"my-bucket"</span><span class="p">,</span>
+        <span class="nv">org</span><span class="p">:</span> <span class="s">"my-org"</span><span class="p">,</span>
+        <span class="nv">urlSessionDelegate</span><span class="p">:</span> <span class="kt">DisableRedirect</span><span class="p">())</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="kt">InfluxDBClient</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"http://localhost:8086"</span><span class="p">,</span> <span class="nv">token</span><span class="p">:</span> <span class="s">"my-token"</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="n">options</span><span class="p">)</span>
+</code></pre>
+
+<p>For more info see - <a href="https://developer.apple.com/documentation/foundation/urlsessiondelegate">URLSessionDelegate</a>.</p>
+<h2 id='contributing' class='heading'>Contributing</h2>
+
+<p>If you would like to contribute code you can do through GitHub by forking the repository and sending a pull request into the <code>master</code> branch.</p>
+
+<p>Build Requirements:</p>
+
+<ul>
+<li>swift 5.3 or higher</li>
+</ul>
+
+<p>Build source and test targets:</p>
+<pre class="highlight shell"><code>swift build <span class="nt">--build-tests</span>
+</code></pre>
+
+<p>Run tests:</p>
+<pre class="highlight shell"><code>./Scripts/influxdb-restart.sh
+swift <span class="nb">test</span>
+</code></pre>
+
+<p>Check code coverage:</p>
+<pre class="highlight shell"><code>./Scripts/influxdb-restart.sh
+swift <span class="nb">test</span> <span class="nt">--enable-code-coverage</span>
+</code></pre>
+
+<p>You could also use a <code>docker-cli</code> without installing the Swift SDK:</p>
+<pre class="highlight shell"><code>make docker-cli
+swift build
+</code></pre>
+<h2 id='license' class='heading'>License</h2>
+
+<p>The client is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2022 <a class="link" href="https://www.influxdata.com" target="_blank" rel="external noopener">InfluxData</a>. All rights reserved. (Last updated: 2022-12-01)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+    </section>
+  </body>
+</html>
