@@ -95,7 +95,7 @@ extension InfluxDBClient {
     ///         .addDefaultTag(key: "customer", value: "California Miner")
     ///         .addDefaultTag(key: "data_center", value: "${env.DATA_CENTER_LOCATION}")
     /// ````
-    public struct PointSettings: Sendable {
+    public struct PointSettings {
         // Default tags which will be added to each point written by api.
         var tags: [String: String?] = [:]
 

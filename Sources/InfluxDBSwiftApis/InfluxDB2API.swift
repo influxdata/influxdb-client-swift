@@ -28,7 +28,7 @@ import InfluxDBSwift
 ///
 /// client.close()
 /// ````
-public struct InfluxDB2API: Sendable {
+public struct InfluxDB2API {
     internal let client: InfluxDBClient
     internal let basePath: String
     internal let requestBuilderFactory: RequestBuilderFactory

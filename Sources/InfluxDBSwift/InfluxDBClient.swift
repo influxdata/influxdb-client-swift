@@ -22,7 +22,7 @@ import FoundationNetworking
 ///
 /// client.close()
 /// ````
-public struct InfluxDBClient: Sendable {
+public struct InfluxDBClient {
     /// Version of client.
     public static var version: String = "1.7.0dev"
     /// InfluxDB host and port.
@@ -131,7 +131,7 @@ public struct InfluxDBClient: Sendable {
 
 extension InfluxDBClient {
     /// Options to use when creating a `InfluxDBClient`.
-    public struct InfluxDBOptions: @unchecked Sendable {
+    public struct InfluxDBOptions: {
         /// Default organization bucket for writes.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/organizations/buckets/view-buckets/
         public let bucket: String?
@@ -247,7 +247,7 @@ extension InfluxDBClient {
 
     /// An enum represents the precision for the unix timestamps within the body line-protocol.
     /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/write-data/#timestamp-precision
-    public enum TimestampPrecision: String, Codable, CaseIterable, Sendable {
+    public enum TimestampPrecision: String, Codable, CaseIterable {
         /// Milliseconds
         case ms
         /// Seconds
