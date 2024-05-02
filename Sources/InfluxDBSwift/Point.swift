@@ -95,9 +95,11 @@ extension InfluxDBClient {
     ///         .addDefaultTag(key: "customer", value: "California Miner")
     ///         .addDefaultTag(key: "data_center", value: "${env.DATA_CENTER_LOCATION}")
     /// ````
-    public class PointSettings {
+    public struct PointSettings: Sendable {
         // Default tags which will be added to each point written by api.
         var tags: [String: String?] = [:]
+
+        public init() {}
 
         /// Add new default tag with key and value.
         ///
@@ -107,7 +109,9 @@ extension InfluxDBClient {
         /// - Returns: Self
         public func addDefaultTag(key: String?, value: String?) -> PointSettings {
             if let key = key {
-                tags[key] = value
+                var result = self
+                result.tags[key] = value
+                return result
             }
             return self
         }

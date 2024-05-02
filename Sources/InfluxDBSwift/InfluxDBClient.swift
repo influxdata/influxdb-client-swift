@@ -22,7 +22,7 @@ import FoundationNetworking
 ///
 /// client.close()
 /// ````
-public class InfluxDBClient {
+public struct InfluxDBClient: Sendable {
     /// Version of client.
     public static var version: String = "1.7.0dev"
     /// InfluxDB host and port.
@@ -36,20 +36,20 @@ public class InfluxDBClient {
     /// Shared URLSession across the client.
     public let session: URLSession
 
-    /// Lazy initialized `QueryAPI`.
-    public lazy var queryAPI: QueryAPI = {
+    /// `QueryAPI`.
+    public var queryAPI: QueryAPI {
         QueryAPI(client: self)
-    }()
+    }
 
-    /// Lazy initialized `DeleteAPI`.
-    public lazy var deleteAPI: DeleteAPI = {
+    /// `DeleteAPI`.
+    public var deleteAPI: DeleteAPI {
         DeleteAPI(client: self)
-    }()
+    }
 
-    /// Lazy initialized `InvokableScriptsApi`.
-    public lazy var invokableScriptsApi: InvokableScriptsAPI = {
+    /// `InvokableScriptsApi`.
+    public var invokableScriptsApi: InvokableScriptsAPI {
         InvokableScriptsAPI(client: self)
-    }()
+    }
 
     /// Create a new client for a InfluxDB.
     ///
@@ -102,7 +102,7 @@ public class InfluxDBClient {
     ///   - protocolClasses: optional array of extra protocol subclasses that handle requests.
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v1.8/tools/api/#influxdb-2-0-api-compatibility-endpoints
-    public convenience init(url: String,
+    public init(url: String,
                             username: String,
                             password: String,
                             database: String,
@@ -131,7 +131,7 @@ public class InfluxDBClient {
 
 extension InfluxDBClient {
     /// Options to use when creating a `InfluxDBClient`.
-    public struct InfluxDBOptions {
+    public struct InfluxDBOptions: @unchecked Sendable {
         /// Default organization bucket for writes.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/organizations/buckets/view-buckets/
         public let bucket: String?
@@ -247,7 +247,7 @@ extension InfluxDBClient {
 
     /// An enum represents the precision for the unix timestamps within the body line-protocol.
     /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/write-data/#timestamp-precision
-    public enum TimestampPrecision: String, Codable, CaseIterable {
+    public enum TimestampPrecision: String, Codable, CaseIterable, Sendable {
         /// Milliseconds
         case ms
         /// Seconds

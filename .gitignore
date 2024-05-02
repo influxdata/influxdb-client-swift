@@ -106,3 +106,4 @@ tests.xml
 
 Scripts/*.yml
 Scripts/influxdb-clients-apigen/
+.DS_Store

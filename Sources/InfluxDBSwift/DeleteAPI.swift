@@ -23,7 +23,7 @@ import FoundationNetworking
 ///
 /// print("Successfully data data by:\n\n\(predicateRequest)")
 /// ````
-public class DeleteAPI {
+public struct DeleteAPI: Sendable {
     /// Shared client.
     private let client: InfluxDBClient
 

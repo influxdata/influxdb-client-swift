@@ -1,4 +1,10 @@
+## 1.8.0 [unreleased]
+
 ## 1.7.0 [unreleased]
+1. [#63](https://github.com/influxdata/influxdb-client-swift/pull/64): Remove reference cycle and add `Sendable` conformances
+
+### Others
+1. [#64](https://github.com/influxdata/influxdb-client-swift/pull/64): 
 
 ## 1.6.0 [2022-12-01]
 

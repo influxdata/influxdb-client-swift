@@ -11,7 +11,7 @@ import InfluxDBSwift
 extension InfluxDB2API {
 
 
-public class OrganizationsAPI {
+public struct OrganizationsAPI: Sendable {
     private let influxDB2API: InfluxDB2API
 
     public init(influxDB2API: InfluxDB2API) {

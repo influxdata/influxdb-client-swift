@@ -53,7 +53,7 @@ internal class RequestBuilder<T> {
     }
 }
 
-internal protocol RequestBuilderFactory {
+internal protocol RequestBuilderFactory: Sendable {
     func getRequestNonDecodableBuilder<T>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String], influxDB2API: InfluxDB2API) -> RequestBuilder<T>
     func getRequestDecodableBuilder<T:Decodable>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String], influxDB2API: InfluxDB2API) -> RequestBuilder<T>
 }
