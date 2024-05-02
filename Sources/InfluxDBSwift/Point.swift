@@ -99,6 +99,7 @@ extension InfluxDBClient {
         // Default tags which will be added to each point written by api.
         var tags: [String: String?] = [:]
 
+        /// Create a new PointSettings.
         public init() {}
 
         /// Add new default tag with key and value.
