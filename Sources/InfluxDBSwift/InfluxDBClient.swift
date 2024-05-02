@@ -103,12 +103,12 @@ public struct InfluxDBClient: Sendable {
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v1.8/tools/api/#influxdb-2-0-api-compatibility-endpoints
     public init(url: String,
-                            username: String,
-                            password: String,
-                            database: String,
-                            retentionPolicy: String,
-                            precision: TimestampPrecision = TimestampPrecision.ns,
-                            protocolClasses: [AnyClass]? = nil) {
+                username: String,
+                password: String,
+                database: String,
+                retentionPolicy: String,
+                precision: TimestampPrecision = TimestampPrecision.ns,
+                protocolClasses: [AnyClass]? = nil) {
         let options = InfluxDBOptions(bucket: "\(database)/\(retentionPolicy)", precision: precision)
 
         self.init(url: url, token: "\(username):\(password)", options: options, protocolClasses: protocolClasses)
