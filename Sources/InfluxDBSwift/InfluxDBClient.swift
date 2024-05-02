@@ -131,7 +131,7 @@ public struct InfluxDBClient {
 
 extension InfluxDBClient {
     /// Options to use when creating a `InfluxDBClient`.
-    public struct InfluxDBOptions: {
+    public struct InfluxDBOptions {
         /// Default organization bucket for writes.
         /// - SeeAlso: https://docs.influxdata.com/influxdb/latest/organizations/buckets/view-buckets/
         public let bucket: String?
