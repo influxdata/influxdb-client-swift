@@ -67,7 +67,7 @@ jobs:
     parameters:
       swift-image:
         type: string
-        default: &default-swift-image "swift:5.7"
+        default: &default-swift-image "swift:5.10"
       influxdb-image:
         type: string
         default: &default-influxdb-image "influxdb:latest"
@@ -319,19 +319,11 @@ workflows:
       - check-examples
       - check-examples-macOS
       - tests-linux:
-          name: tests-linux-5.3
-          swift-image: "swift:5.3"
+          name: tests-linux-5.8
+          swift-image: "swift:5.8"
       - tests-linux:
-          name: tests-linux-5.4
-          swift-image: "swift:5.4"
-      - tests-linux:
-          name: tests-linux-5.5
-          swift-image: "swift:5.5"
-      - tests-linux:
-          name: tests-linux-5.6
-          swift-image: "swift:5.6"
-      - tests-linux:
-          name: tests-linux-5.7
+          name: tests-linux-5.9
+          swift-image: "swift:5.9"
       - tests-linux:
           name: tests-linux-5.10
           swift-image: "swift:5.10"
