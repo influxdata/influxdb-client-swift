@@ -332,6 +332,9 @@ workflows:
           swift-image: "swift:5.6"
       - tests-linux:
           name: tests-linux-5.7
+      - tests-linux:
+          name: tests-linux-5.10
+          swift-image: "swift:5.10"
       - tests-macOS
   nightly:
     when:
