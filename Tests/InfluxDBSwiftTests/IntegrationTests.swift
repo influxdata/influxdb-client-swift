@@ -33,7 +33,7 @@ final class IntegrationTests: XCTestCase {
     }
 
     func testQueryWriteIntegration() {
-        var expectation = self.expectation(description: "Success response from API doesn't arrive")
+        var expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
 
         let measurement = "h2o_\(Date().timeIntervalSince1970)"
 
@@ -52,8 +52,8 @@ final class IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
-        expectation = self.expectation(description: "Success response from API doesn't arrive")
+        wait(for: [expectation], timeout: 5)
+        expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
 
         let query = """
                     from(bucket: "my-bucket")
@@ -84,11 +84,11 @@ final class IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 
     func testDelete() {
-        var expectation = self.expectation(description: "Success response from Write API doesn't arrive")
+        var expectation = XCTestExpectation(description: "Success response from Write API doesn't arrive")
 
         let measurement = "h2o_\(Date().timeIntervalSince1970)"
 
@@ -117,8 +117,8 @@ final class IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
-        expectation = self.expectation(description: "Success response from Query API doesn't arrive")
+        wait(for: [expectation], timeout: 5)
+        expectation = XCTestExpectation(description: "Success response from Query API doesn't arrive")
 
         let query = """
                     from(bucket: "my-bucket")
@@ -146,9 +146,9 @@ final class IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
 
-        expectation = self.expectation(description: "Success response from Delete API doesn't arrive")
+        expectation = XCTestExpectation(description: "Success response from Delete API doesn't arrive")
 
         let predicate = DeletePredicateRequest(
                 start: Date(2019, 10, 5),
@@ -162,9 +162,9 @@ final class IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
 
-        expectation = self.expectation(description: "Success response from Query API doesn't arrive")
+        expectation = XCTestExpectation(description: "Success response from Query API doesn't arrive")
 
         client.queryAPI.query(query: query) { response, error in
             if let error = error {
@@ -185,6 +185,6 @@ final class IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 }

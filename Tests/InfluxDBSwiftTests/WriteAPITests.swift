@@ -37,7 +37,7 @@ final class WriteAPITests: XCTestCase {
     }
 
     func testWriteRecord() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
@@ -54,11 +54,11 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testWritePoint() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
@@ -78,11 +78,11 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testWritePointsDifferentPrecision() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         var requests: [URLRequest] = []
@@ -110,7 +110,7 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual(1, requests.count)
         XCTAssertEqual(
@@ -121,7 +121,7 @@ final class WriteAPITests: XCTestCase {
     }
 
     func testWriteArrayOfArray() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { _, bodyData in
@@ -153,7 +153,7 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testWriteRecordGzip() {
@@ -165,7 +165,7 @@ final class WriteAPITests: XCTestCase {
                 options: InfluxDBClient.InfluxDBOptions(bucket: "my-bucket", org: "my-org", enableGzip: true),
                 protocolClasses: [MockURLProtocol.self])
 
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { request, bodyData in
@@ -185,11 +185,11 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testWriteRecords() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { _, bodyData in
@@ -211,11 +211,11 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testWriteRecordTypes() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 6
 
         var body: [String] = []
@@ -261,12 +261,12 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
         XCTAssertEqual(required, body.joined(separator: "\n"))
     }
 
     func testWriteRecordResult() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
@@ -282,12 +282,12 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testWriteRecordCombine() {
         #if canImport(Combine)
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
@@ -305,7 +305,7 @@ final class WriteAPITests: XCTestCase {
                 })
                 .store(in: &bag)
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
         #endif
     }
 
@@ -316,7 +316,7 @@ final class WriteAPITests: XCTestCase {
                 token: "my-token",
                 protocolClasses: [MockURLProtocol.self])
 
-        let expectation = self.expectation(description: "Check requirements from API")
+        let expectation = XCTestExpectation(description: "Check requirements from API")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { _, _ in
@@ -346,11 +346,11 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testUnsuccessfulResponse() {
-        let expectation = self.expectation(description: "Check requirements from API")
+        let expectation = XCTestExpectation(description: "Check requirements from API")
         expectation.expectedFulfillmentCount = 1
 
         MockURLProtocol.handler = { _, _ in
@@ -372,11 +372,11 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testDefaultTags() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 6
 
         var body: [String] = []
@@ -422,12 +422,12 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
         XCTAssertEqual(required, body.joined(separator: "\n"))
     }
 
     func testEmptyRecords() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
 
         MockURLProtocol.handler = { _, _ in
             XCTFail("unexpected HTTP call")
@@ -443,12 +443,12 @@ final class WriteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     #if swift(>=5.5)
     func testWriteAsync() async throws {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 3
 
         MockURLProtocol.handler = simpleWriteHandler(expectation: expectation)
@@ -469,7 +469,7 @@ final class WriteAPITests: XCTestCase {
         )
         try await client.makeWriteAPI().write(tuple: tuple)
 
-        await waitForExpectations(timeout: 1, handler: nil)
+        await wait(for: [expectation], timeout: 1)
     }
     #endif
 

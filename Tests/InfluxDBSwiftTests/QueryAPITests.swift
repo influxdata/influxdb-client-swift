@@ -30,7 +30,7 @@ final class QueryAPITests: XCTestCase {
     }
 
     func testQuery() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         let csv = """
@@ -71,11 +71,11 @@ final class QueryAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testParameterizedQuery() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         let csv = """
@@ -122,11 +122,11 @@ final class QueryAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testQueryRaw() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         let csv = """
@@ -177,11 +177,11 @@ final class QueryAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testParameterizedQueryRaw() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         let csv = """
@@ -237,7 +237,7 @@ final class QueryAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     #if swift(>=5.5)
