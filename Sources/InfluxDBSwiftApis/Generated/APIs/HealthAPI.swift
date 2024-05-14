@@ -11,7 +11,7 @@ import InfluxDBSwift
 extension InfluxDB2API {
 
 
-public class HealthAPI {
+public struct HealthAPI {
     private let influxDB2API: InfluxDB2API
 
     public init(influxDB2API: InfluxDB2API) {

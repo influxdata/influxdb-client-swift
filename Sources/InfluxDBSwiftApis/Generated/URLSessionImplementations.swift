@@ -13,7 +13,7 @@ import MobileCoreServices
 #endif
 import InfluxDBSwift
 
-class URLSessionRequestBuilderFactory: RequestBuilderFactory {
+final class URLSessionRequestBuilderFactory: RequestBuilderFactory {
     func getRequestNonDecodableBuilder<T>(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String] = [:], influxDB2API: InfluxDB2API) -> RequestBuilder<T> {
         URLSessionRequestBuilder<T>(method: method, URLString: URLString, parameters: parameters, isBody: isBody, influxDB2API: influxDB2API)
     }

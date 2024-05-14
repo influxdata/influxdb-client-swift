@@ -41,7 +41,7 @@ import Gzip
 ///
 /// client.close()
 /// ````
-public class QueryAPI {
+public struct QueryAPI {
     /// The default Query Dialect with annotation = ["datatype", "group", "default"]
     public static let defaultDialect = Dialect(annotations:
     [

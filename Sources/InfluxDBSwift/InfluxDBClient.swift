@@ -22,7 +22,7 @@ import FoundationNetworking
 ///
 /// client.close()
 /// ````
-public class InfluxDBClient {
+public struct InfluxDBClient {
     /// Version of client.
     public static var version: String = "1.7.0dev"
     /// InfluxDB host and port.
@@ -36,20 +36,20 @@ public class InfluxDBClient {
     /// Shared URLSession across the client.
     public let session: URLSession
 
-    /// Lazy initialized `QueryAPI`.
-    public lazy var queryAPI: QueryAPI = {
+    /// `QueryAPI`.
+    public var queryAPI: QueryAPI {
         QueryAPI(client: self)
-    }()
+    }
 
-    /// Lazy initialized `DeleteAPI`.
-    public lazy var deleteAPI: DeleteAPI = {
+    /// `DeleteAPI`.
+    public var deleteAPI: DeleteAPI {
         DeleteAPI(client: self)
-    }()
+    }
 
-    /// Lazy initialized `InvokableScriptsApi`.
-    public lazy var invokableScriptsApi: InvokableScriptsAPI = {
+    /// `InvokableScriptsApi`.
+    public var invokableScriptsApi: InvokableScriptsAPI {
         InvokableScriptsAPI(client: self)
-    }()
+    }
 
     /// Create a new client for a InfluxDB.
     ///
@@ -102,13 +102,13 @@ public class InfluxDBClient {
     ///   - protocolClasses: optional array of extra protocol subclasses that handle requests.
     ///
     /// - SeeAlso: https://docs.influxdata.com/influxdb/v1.8/tools/api/#influxdb-2-0-api-compatibility-endpoints
-    public convenience init(url: String,
-                            username: String,
-                            password: String,
-                            database: String,
-                            retentionPolicy: String,
-                            precision: TimestampPrecision = TimestampPrecision.ns,
-                            protocolClasses: [AnyClass]? = nil) {
+    public init(url: String,
+                username: String,
+                password: String,
+                database: String,
+                retentionPolicy: String,
+                precision: TimestampPrecision = TimestampPrecision.ns,
+                protocolClasses: [AnyClass]? = nil) {
         let options = InfluxDBOptions(bucket: "\(database)/\(retentionPolicy)", precision: precision)
 
         self.init(url: url, token: "\(username):\(password)", options: options, protocolClasses: protocolClasses)

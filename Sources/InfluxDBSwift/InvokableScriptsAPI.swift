@@ -8,7 +8,7 @@ import Foundation
 ///
 /// API invokable scripts let you assign scripts to API endpoints and then execute them
 /// as standard REST operations in InfluxDB Cloud.
-public class InvokableScriptsAPI {
+public struct InvokableScriptsAPI {
     /// Shared client.
     private let client: InfluxDBClient
 

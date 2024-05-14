@@ -58,7 +58,7 @@ import Gzip
 /// print("Successfully written data:\n\n\(recordTuple)")
 ///
 /// ````
-public class WriteAPI {
+public struct WriteAPI {
     /// Shared client.
     private let client: InfluxDBClient
     /// Settings for DataPoint.

@@ -17,7 +17,7 @@ extension {{projectName}}API {
 
 {{#description}}
 /** {{description}} */{{/description}}
-{{#objcCompatible}}@objc {{/objcCompatible}}{{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} class {{classname}}{{#objcCompatible}} : NSObject{{/objcCompatible}} {
+{{#objcCompatible}}@objc {{/objcCompatible}}{{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} {{^objcCompatible}}struct {{classname}}{{/objcCompatible}}{{#objcCompatible}}class {{classname}} : NSObject{{/objcCompatible}} {
     private let influxDB2API: InfluxDB2API
 
     public init(influxDB2API: InfluxDB2API) {
