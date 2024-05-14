@@ -25,7 +25,7 @@ class SecretsAPITests: APIXCTestCase {
     func testCreateSecret() {
         let request = [generateName("secret"): generateName("secret")]
 
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
 
         self.api.secretsAPI.patchOrgsIDSecrets(orgID: Self.orgID, requestBody: request) { _, error in
             if let error = error {
@@ -35,6 +35,6 @@ class SecretsAPITests: APIXCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 }

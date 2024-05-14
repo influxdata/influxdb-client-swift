@@ -30,7 +30,7 @@ final class DeleteAPITests: XCTestCase {
     }
 
     func testBucketOrgParameters() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { request, _ in
@@ -53,11 +53,11 @@ final class DeleteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testBucketIDOrgIDParameters() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { request, _ in
@@ -80,11 +80,11 @@ final class DeleteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testWithoutBucketOrgParameters() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { request, _ in
@@ -106,11 +106,11 @@ final class DeleteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testPredicateRequestSerialization() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { _, bodyData in
@@ -140,11 +140,11 @@ final class DeleteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testErrorResponse() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
 
         MockURLProtocol.handler = { request, _ in
@@ -165,12 +165,12 @@ final class DeleteAPITests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     #if swift(>=5.5)
     func testDeleteAsync() async throws {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 1
 
         MockURLProtocol.handler = { _, _ in
@@ -187,7 +187,7 @@ final class DeleteAPITests: XCTestCase {
 
         try await client.deleteAPI.delete(predicate: predicate)
 
-        await waitForExpectations(timeout: 1, handler: nil)
+        await wait(for: [expectation], timeout: 1)
     }
     #endif
 }

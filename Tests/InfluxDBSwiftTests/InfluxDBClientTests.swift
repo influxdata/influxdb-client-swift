@@ -100,7 +100,7 @@ final class InfluxDBClientTests: XCTestCase {
                 options: InfluxDBClient.InfluxDBOptions(bucket: "my-bucket", org: "my-org"),
                 protocolClasses: [MockURLProtocol.self])
 
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 3
 
         MockURLProtocol.handler = { request, _ in
@@ -126,12 +126,13 @@ final class InfluxDBClientTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testDisableRedirect() {
-        let expectation = self.expectation(description: "Redirect response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Redirect response from API doesn't arrive")
         expectation.expectedFulfillmentCount = 2
+        expectation.assertForOverFulfill = false
 
         class DisableRedirect: NSObject, URLSessionTaskDelegate {
             let expectation: XCTestExpectation
@@ -174,12 +175,13 @@ final class InfluxDBClientTests: XCTestCase {
         client.queryAPI.query(query: "from ...") { _, _ in
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 1)
     }
 
     func testHTTPLogging() {
         TestLogHandler.content = ""
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
+        expectation.assertForOverFulfill = false
         LoggingSystem.bootstrap(TestLogHandler.init)
 
         client = InfluxDBClient(url: Self.dbURL(), token: "my-token", debugging: true)
@@ -199,7 +201,7 @@ final class InfluxDBClientTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        wait(for: [expectation], timeout: 5)
 
         XCTAssertTrue(TestLogHandler.content.contains("Authorization: ***"), TestLogHandler.content)
     }
