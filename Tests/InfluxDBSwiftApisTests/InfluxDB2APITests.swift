@@ -19,6 +19,12 @@ final class InfluxDB2APITests: XCTestCase {
         }
     }
 
+    override func tearDownWithError() throws {
+        if let client = client {
+            client.close()
+        }
+    }
+
     func testCreateInstance() {
         let api = InfluxDB2API(client: client!)
         XCTAssertNotNil(api)
@@ -79,13 +85,13 @@ class APIXCTestCase: XCTestCase {
             XCTFail("Request is not defined!")
         }
 
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
 
         if let request = request {
             request(nil, nil, checkResponse(check: checker, expectation: expectation))
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 
     func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
@@ -100,13 +106,13 @@ class APIXCTestCase: XCTestCase {
             return
         }
 
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
 
         if let request = request {
             request(body, nil, checkResponse(check: checker, expectation: expectation))
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 
     func checkPost<BodyType: Codable, ResponseType: Codable>(_ request: ((BodyType,
@@ -122,13 +128,13 @@ class APIXCTestCase: XCTestCase {
             return
         }
 
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
 
         if let request = request {
             request(body, nil, nil, checkResponse(check: checker, expectation: expectation))
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 
     private func checkResponse<ResponseType: Codable>(check: @escaping (ResponseType) -> Void,
@@ -153,7 +159,7 @@ class APIXCTestCase: XCTestCase {
         guard Self.orgID.isEmpty else {
             return
         }
-        let expectation = self.expectation(description: "Cannot find my-org")
+        let expectation = XCTestExpectation(description: "Cannot find my-org")
         api.organizationsAPI.getOrgs(limit: 100) { organizations, error in
             if let error = error {
                 XCTFail("\(error)")
@@ -165,14 +171,14 @@ class APIXCTestCase: XCTestCase {
                 expectation.fulfill()
             }
         }
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 
     private func findMyBucket() {
         guard Self.bucketID.isEmpty else {
             return
         }
-        let expectation = self.expectation(description: "Cannot find my-bucket")
+        let expectation = XCTestExpectation(description: "Cannot find my-bucket")
         api.bucketsAPI.getBuckets(limit: 100) { response, error in
             if let error = error {
                 XCTFail("\(error)")
@@ -184,7 +190,7 @@ class APIXCTestCase: XCTestCase {
                 expectation.fulfill()
             }
         }
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 }
 

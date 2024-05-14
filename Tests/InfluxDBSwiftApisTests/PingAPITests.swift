@@ -8,7 +8,7 @@ import XCTest
 
 final class PingAPITests: APIXCTestCase {
     func testPing() {
-        let expectation = self.expectation(description: "Success response from API doesn't arrive")
+        let expectation = XCTestExpectation(description: "Success response from API doesn't arrive")
 
         api.pingAPI.getPing { headers, error -> Void in
             if let error = error {
@@ -23,7 +23,7 @@ final class PingAPITests: APIXCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation], timeout: 5)
     }
 
     #if swift(>=5.5)

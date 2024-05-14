@@ -1,7 +1,10 @@
 ## 1.7.0 [unreleased]
 
-### Others
+### Bug Fixes
 1. [#63](https://github.com/influxdata/influxdb-client-swift/pull/64): Remove reference cycle
+
+### CI
+1. [#55](https://github.com/influxdata/influxdb-client-swift/pull/55): Use Swift 5.8, 5.9 and 5.10 in CI and update XCode to 15.3.0
 
 ## 1.6.0 [2022-12-01]
 
