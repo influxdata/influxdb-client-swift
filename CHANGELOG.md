@@ -1,4 +1,4 @@
-## 1.7.0 [unreleased]
+## 1.7.0 [2024-05-17]
 
 ### Bug Fixes
 1. [#63](https://github.com/influxdata/influxdb-client-swift/pull/64): Remove reference cycle
