@@ -24,7 +24,7 @@ import FoundationNetworking
 /// ````
 public struct InfluxDBClient {
     /// Version of client.
-    public static var version: String = "1.7.0dev"
+    public static var version: String = "1.7.0"
     /// InfluxDB host and port.
     public let url: String
     /// Authentication token.
